@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    font-family: 'karla', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
   }
 
   body.fontLoaded {

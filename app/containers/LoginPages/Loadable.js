@@ -1,7 +1,5 @@
 /**
- *
- * Asynchronously loads the component for Login
- *
+ * Asynchronously loads the component for HomePage
  */
 
 import loadable from 'utils/loadable';

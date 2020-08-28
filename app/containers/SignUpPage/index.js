@@ -12,12 +12,24 @@ export default function SignupPage() {
     const [password, setPassword] = useState("");
     const [fname, setFname] = useState("");
     const [lname, setLname] = useState("");
+    const [asCharity, setAsCharity] = useState(false);
+    const [charityName, setCharityName] = useState("");
+    const [registrationNumber, setRegistrationNumber] = useState("");
 
     function validateForm() {
         return email.length > 0 && password.length > 0 && fname.length > 0 && lname.length > 0;
     }
 
     function handleSubmit(event) {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ firstName: fname, lastName: lname, email: email, password: password, isCharity: asCharity })
+        };
+        fetch('http://192.168.18.119:4000/signup', requestOptions).then(response => response.json())
+            .then(user => console.log(user));
         event.preventDefault();
     }
 
@@ -41,11 +53,11 @@ export default function SignupPage() {
                                         <div className="bar"></div>
                                     </div>
 
-                                    <p className="para">When we wanted to make a real difference, we created Right Fund.</p>
+                                    <p className="para">Enter your detail below.</p>
 
                                     <div className="Login">
                                         <form onSubmit={handleSubmit}>
-                                            <Form.Group controlId="fname" bsSize="large">
+                                            <Form.Group controlId="fname" bssize="large">
 
                                                 <Form.Control
                                                     autoFocus
@@ -55,20 +67,18 @@ export default function SignupPage() {
                                                     onChange={e => setFname(e.target.value)}
                                                 />
                                             </Form.Group>
-                                            <Form.Group controlId="lname" bsSize="large">
+                                            <Form.Group controlId="lname" bssize="large">
 
                                                 <Form.Control
-                                                    autoFocus
                                                     placeholder="Last Name"
                                                     type="text"
                                                     value={lname}
                                                     onChange={e => setLname(e.target.value)}
                                                 />
                                             </Form.Group>
-                                            <Form.Group controlId="email" bsSize="large">
+                                            <Form.Group controlId="email" bssize="large">
 
                                                 <Form.Control
-                                                    autoFocus
                                                     placeholder="Email"
                                                     type="email"
                                                     value={email}
@@ -76,7 +86,7 @@ export default function SignupPage() {
                                                 />
                                             </Form.Group>
 
-                                            <Form.Group controlId="password" bsSize="large">
+                                            <Form.Group controlId="password" bssize="large">
 
                                                 <Form.Control
                                                     placeholder="Password"
@@ -85,7 +95,35 @@ export default function SignupPage() {
                                                     type="password"
                                                 />
                                             </Form.Group>
-                                            <Button block bsSize="large" disabled={!validateForm()} type="submit" className="btn">Signup</Button>
+                                            <Form.Group controlId="asCharity">
+                                                <Form.Check type="checkbox"
+                                                    label="Signup as a charity"
+                                                    onChange={e => setAsCharity(e.target.value)} />
+                                            </Form.Group>
+
+                                            {
+                                                asCharity ? <div>
+                                                    <Form.Group controlId="charityName" bssize="large">
+
+                                                        <Form.Control
+                                                            placeholder="Charity Name"
+                                                            type="text"
+                                                            value={charityName}
+                                                            onChange={e => setCharityName(e.target.value)}
+                                                        />
+                                                    </Form.Group>
+                                                    <Form.Group controlId="registrationNumber" bssize="large">
+
+                                                        <Form.Control
+                                                            placeholder="Registration Number"
+                                                            type="text"
+                                                            value={registrationNumber}
+                                                            onChange={e => setRegistrationNumber(e.target.value)}
+                                                        />
+                                                    </Form.Group>
+                                                </div> : null
+                                            }
+                                            <Button block bssize="large" disabled={!validateForm()} type="submit" className="btn">Signup</Button>
                                         </form>
                                     </div>
                                 </div>

@@ -1,9 +1,9 @@
 // import produce from 'immer';
-import loginReducer from '../reducer';
+import loginPageReducer from '../reducer';
 // import { someAction } from '../actions';
 
 /* eslint-disable default-case, no-param-reassign */
-describe('loginReducer', () => {
+describe('loginPageReducer', () => {
   let state;
   beforeEach(() => {
     state = {
@@ -13,7 +13,7 @@ describe('loginReducer', () => {
 
   it('returns the initial state', () => {
     const expectedResult = state;
-    expect(loginReducer(undefined, {})).toEqual(expectedResult);
+    expect(loginPageReducer(undefined, {})).toEqual(expectedResult);
   });
 
   /**

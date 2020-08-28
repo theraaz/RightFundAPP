@@ -1,6 +1,6 @@
 /**
  *
- * Tests for Login
+ * Tests for LoginPage
  *
  * @see https://github.com/react-boilerplate/react-boilerplate/tree/master/docs/testing
  *
@@ -8,21 +8,15 @@
 
 import React from 'react';
 import { render } from 'react-testing-library';
-import { IntlProvider } from 'react-intl';
 // import 'jest-dom/extend-expect'; // add some helpful assertions
 
-import { Login } from '../index';
-import { DEFAULT_LOCALE } from '../../../i18n';
+import { LoginPage } from '../index';
 
-describe('<Login />', () => {
+describe('<LoginPage />', () => {
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
     const dispatch = jest.fn();
-    render(
-      <IntlProvider locale={DEFAULT_LOCALE}>
-        <Login dispatch={dispatch} />
-      </IntlProvider>,
-    );
+    render(<LoginPage dispatch={dispatch} />);
     expect(spy).not.toHaveBeenCalled();
   });
 
@@ -38,11 +32,7 @@ describe('<Login />', () => {
   it.skip('Should render and match the snapshot', () => {
     const {
       container: { firstChild },
-    } = render(
-      <IntlProvider locale={DEFAULT_LOCALE}>
-        <Login />
-      </IntlProvider>,
-    );
+    } = render(<LoginPage />);
     expect(firstChild).toMatchSnapshot();
   });
 });
