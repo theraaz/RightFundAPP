@@ -1,3 +1,5 @@
+@import 'app/styles/mixin.scss';
+
 .main-div {
   background: #e8e7e73b;
 
@@ -8,29 +10,66 @@
       box-shadow: 0px 0px 9px #eaeaea;
       border-radius: 5px;
 
-      .pag1 {
-        background-image: url('../../images/Background_Image.png');
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: inherit;
-        position: relative;
-        height: 514px;
-        width: 100%;
-        display: block;
+      .fistCol {
+        @include respond-to(mobile){
+          // css code here
+          display: none;
+        }
+        .pag1 {
+          background-image: url('../../images/Background_Image.png');
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: inherit;
+          position: relative;
+          height: 514px;
+          width: 100%;
+          display: block;
 
-        .logo {
-          max-width: 170px;
-          position: absolute;
-          left: 25%;
-          top: 20%;
+          .logo {
+            max-width: 170px;
+            position: absolute;
+            left: 25%;
+            top: 20%;
+          }
         }
       }
-      .heading {
-        text-align: -webkit-center;
-        .bar {
-          border: 3px solid #e8e7e7;
-          width: 80px;
-          margin: 16px 0;
+      .form-main-div {
+        margin-left: -9px;
+        margin-top: 78px;
+        padding: 0 55px 0 44px;
+
+        .heading {
+          text-align: -webkit-center;
+          padding-right: 22px;
+          margin-bottom: 33px;
+
+          .bar {
+            border: 3px solid #e8e7e7;
+            width: 80px;
+            margin: 16px 0;
+          }
+        }
+        .form-input {
+         
+          &:focus {
+            outline: 0;
+          }
+        }
+        .forgetPass {
+          position: relative;
+
+          .forgetPassLabel {
+            color: #f15a24;
+            position: absolute;
+            right: 8px;
+            cursor: pointer;
+            top: 3px;
+          }
+        }
+        .submitBtn {
+          background-color: #f15a24;
+          border-color: #ced4da;
+          font-family: 'Ubuntu', sans-serif;
         }
       }
     }
