@@ -16,9 +16,11 @@ import reducer from './reducer';
 import Layout from '../../components/AuthLayout'
 import './login.scss'
 
+import { Helmet } from 'react-helmet';
 
 import { Button, Form, Col } from 'react-bootstrap';
 
+import { withRouter } from 'react-router-dom';
 
 
 export function LoginPage({ children }) {
@@ -43,20 +45,27 @@ export function LoginPage({ children }) {
       },
       body: JSON.stringify({ email: email, password: password })
     };
-    fetch('http://192.168.18.119:4000/signin', requestOptions).then(response => console.log(response))
+    fetch(`${process.env.baseURL}/signin`, requestOptions).then(response => console.log(response))
 
     event.preventDefault();
   }
 
+  function nextPath(path) {
+    console.log(path)
+  }
 
   const onChange = useCallback(e => { setPassword(e.target.value) }, [])
 
 
   return (
     <div>
+      <Helmet>
+        <title>Login</title>
+        <meta name="description" content="Please do login" />
+      </Helmet>
       <Layout title={'Login'} description={'When we wanted to make a real difference, we created Right Fund'}>
         <div className="loginForm">
-          <form onSubmit={handleSubmit}>
+          <form  onSubmit={handleSubmit}>
 
             <Form.Group controlid="email" bssize="large">
               <div style={{ position: 'relative' }}>
@@ -78,7 +87,7 @@ export function LoginPage({ children }) {
                   value={email}
                   onChange={(event) => setEmail(event.target.value)} />
               </div>
-
+              <div class="invalid-feedback">Example invalid custom select feedback</div>
             </Form.Group>
             <Form.Group controlid="password" bssize="large">
               <div style={{ position: 'relative' }}>
@@ -103,7 +112,7 @@ export function LoginPage({ children }) {
                   <Form.Check className="remberMeLabel" label="Remember me" />
                 </Col>
                 <Col className="forgetPass">
-                  <Form.Label className="forgetPassLabel">Forget Password</Form.Label>
+                  <Form.Label className="forgetPassLabel" onClick={() => nextPath('/forgetPassword')}>Forget Password</Form.Label>
                 </Col>
               </Form.Row>
             </Form.Group>

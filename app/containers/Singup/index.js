@@ -17,6 +17,7 @@ import Layout from '../../components/AuthLayout'
 
 import { Button, Form, Col } from 'react-bootstrap';
 import './signup.scss';
+import { Helmet } from 'react-helmet';
 export function Singup() {
   useInjectReducer({ key: 'singup', reducer });
 
@@ -40,13 +41,18 @@ export function Singup() {
       },
       body: JSON.stringify({ firstName: fname, lastName: lname, email: email, password: password, isCharity: asCharity })
     };
-    fetch('http://192.168.18.119:4000/signup', requestOptions).then(response => response.json())
+    console.log('############### ',process.env.baseURL)
+    fetch(`${process.env.baseURL}/signup`, requestOptions).then(response => response.json())
       .then(user => console.log(user));
     event.preventDefault();
   }
 
   return (
     <div>
+      <Helmet>
+        <title>Register</title>
+        <meta name="description" content="Please do login" />
+      </Helmet>
       <Layout title={'Signup'} description={'Enter your detail below.'}>
         <div className="signup-form">
           <form onSubmit={handleSubmit}>

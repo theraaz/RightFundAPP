@@ -17,10 +17,7 @@ const AuthLayout = ({ children, title, description }) => {
   return (
     <div className="main-div">
       <div className="container">
-        <Helmet>
-          <title>Login</title>
-          <meta name="description" content="Please do login" />
-        </Helmet>
+      
         <Wrapper>
           <div className="main-container">
             <div className="inner-box">
