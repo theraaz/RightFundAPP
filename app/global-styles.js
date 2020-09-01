@@ -30,7 +30,7 @@ const GlobalStyle = createGlobalStyle`
 
   .form-control:focus {
     border-color: #f59470;
-    box-shadow: 0 0 0 0.2rem rgb(245 148 112);
+    
   }
 
 `;
