@@ -55,7 +55,7 @@ export function LoginPage({ children }) {
   return (
     <div>
       <Layout title={'Login'} description={'When we wanted to make a real difference, we created Right Fund'}>
-        <div className="Login">
+        <div className="loginForm">
           <form onSubmit={handleSubmit}>
 
             <Form.Group controlid="email" bssize="large">

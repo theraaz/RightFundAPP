@@ -1,0 +1,25 @@
+.formsDiv {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  left: 16px;
+  top: 8px;
+
+  .icons {
+    color: #c4c2c2;
+  }
+}
+
+.form-input {
+  padding: 20px 20px 20px 50px;
+  &:focus {
+    outline: 0;
+    box-shadow: none;
+  }
+}
+
+.submitBtn {
+  background-color: #f15a24 !important;
+  border-color: #ced4da !important;
+  font-family: 'Ubuntu', sans-serif;
+}
