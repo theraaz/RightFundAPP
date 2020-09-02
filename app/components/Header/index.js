@@ -10,9 +10,9 @@ const logo = require('../../images/logo.png');
 const profile = require('../../images/dashboard1.png');
 import './header.scss';
 
-import { Title, Heading, Description } from './styled';
+import { Title, Heading, Description, } from './styled';
 
-function Header() {
+const Header = ({ children }) => {
   return (
     <div>
       <div className='header'>
@@ -30,6 +30,7 @@ function Header() {
         <div className='container'>
           <Heading>Dasboard</Heading>
           <Description>Welcome to Right Funds</Description>
+          {children}
         </div>
       </div>
     </div >

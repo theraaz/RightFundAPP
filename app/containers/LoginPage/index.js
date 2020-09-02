@@ -20,7 +20,7 @@ import { Helmet } from 'react-helmet';
 
 import { Button, Form, Col } from 'react-bootstrap';
 
-import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 export function LoginPage({ children }) {
@@ -65,7 +65,7 @@ export function LoginPage({ children }) {
       </Helmet>
       <Layout title={'Login'} description={'When we wanted to make a real difference, we created Right Fund'}>
         <div className="loginForm">
-          <form  onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
 
             <Form.Group controlid="email" bssize="large">
               <div style={{ position: 'relative' }}>
@@ -112,7 +112,8 @@ export function LoginPage({ children }) {
                   <Form.Check className="remberMeLabel" label="Remember me" />
                 </Col>
                 <Col className="forgetPass">
-                  <Form.Label className="forgetPassLabel" onClick={() => nextPath('/forgetPassword')}>Forget Password</Form.Label>
+                  <Link className="forgetPassLabel" to="/forgetPassword">Forget Password</Link>
+                  {/* <Form.Label className="forgetPassLabel" onClick={() => nextPath('/forgetPassword')}>Forget Password</Form.Label> */}
                 </Col>
               </Form.Row>
             </Form.Group>

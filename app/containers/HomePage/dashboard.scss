@@ -1,0 +1,54 @@
+.card-header-main {
+  height: 220px;
+
+  .card-img {
+    display: block;
+    box-sizing: border-box;
+    height: 90%;
+    width: 215px;
+    border-radius: 50;
+    align-items: center;
+    text-align: center;
+    margin: 10px 10px;
+    background: transparent;
+
+    img {
+      border-radius: 94px;
+      width: 100%;
+      border: 2px solid #adadad;
+    }
+  }
+
+  .card-data {
+    margin: 70px 0 0 7px;
+    vertical-align: middle;
+    position: relative;
+  }
+
+  .table-col {
+    text-align: center;
+  }
+
+  .complaints-data {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    vertical-align: middle;
+  }
+}
+.listItem {
+  border: none;
+  height: 50px;
+  display: flex;
+}
+.line {
+  margin: 0 13px;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-width: 0 0 1px;
+  width: 90%;
+}
+
+.iconImage {
+  width: 20px;
+  margin: 0 10px 0 0px;
+}

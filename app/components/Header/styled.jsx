@@ -1,10 +1,5 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.section`
-  padding: 4em 10em;
-  height: 100vh;
-`;
-
 export const Title = styled.h1`
   text-align: center;
   font-weight: 500;
