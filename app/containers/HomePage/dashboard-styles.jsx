@@ -17,7 +17,7 @@ export const Image = styled.img`
 `;
 
 export const Description = styled.p`
-  font-size: 15px;
+  font-size: 13px;
 `;
 
 export const Heading = styled.h5`
