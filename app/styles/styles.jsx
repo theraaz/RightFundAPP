@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.section`
-  padding: 4em 10em;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
   height: 100vh;
 `;
 
