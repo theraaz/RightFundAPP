@@ -1,10 +1,10 @@
+@import 'App/styles/mixin.scss';
+
 .card-body {
   padding: 1.25rem 8px 1.25rem 8px;
 }
 
 .card-header-main {
-  height: 220px;
-  border-radius: 6px;
   margin-bottom: 15px;
 
   .compaignData {
@@ -33,7 +33,10 @@
   }
 
   .card-data {
-    margin: 70px 0 0 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
     vertical-align: middle;
     position: relative;
   }
@@ -58,11 +61,23 @@
     vertical-align: middle;
   }
 }
+
+.sideNav {
+  height: 28rem;
+  @include respond-to(mobile) {
+    // css code here
+    height: auto;
+  }
+}
 .listItem {
-  border: none;
+  // border: none;
   height: 50px;
   display: flex;
+  color: unset;
 
+  &:hover {
+    color: #f15a24;
+  }
   .active {
     color: #f15a24;
   }
@@ -87,7 +102,15 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-
+    @include respond-to(mobile) {
+      // css code here
+      flex-direction: column;
+    }
+    .campaignHeader1 {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+    }
     .dropBtn {
       background: white;
       color: black;
@@ -172,6 +195,13 @@
     width: calc(100% - 40px);
     margin-bottom: 20px;
     margin-top: 20px;
+
+    .progress {
+      height: 0.4rem;
+      .progress-bar {
+        background-color: #f15a24;
+      }
+    }
 
     .count-bar {
       background-color: #f15a24;

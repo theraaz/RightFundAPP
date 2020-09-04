@@ -7,12 +7,12 @@
 import React, { memo } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Wrapper } from './footer-styles';
+import { Wrapper, Title } from './footer-styles';
 
 function Footer() {
   return (
     <Wrapper>
-      <h5>2020 Copyright Right Fund</h5>
+      <Title>2020 Copyright Right Fund</Title>
     </Wrapper>
   );
 }

@@ -9,3 +9,8 @@ export const Wrapper = styled.section`
   flex-flow: column;
   background: #efefef;
 `;
+
+export const Title = styled.h5`
+  font-size: 16px;
+  font-weight: 400;
+`;
