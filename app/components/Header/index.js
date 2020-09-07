@@ -12,7 +12,7 @@ import './header.scss';
 
 import { Title, Heading, Description, } from './styled';
 
-const Header = ({ children }) => {
+const Header = ({ children, title }) => {
   return (
     <div>
       <div className='header'>
@@ -28,7 +28,7 @@ const Header = ({ children }) => {
       </div>
       <div className="header2">
         <div className='container'>
-          <Heading>Dasboard</Heading>
+          <Heading>{title}</Heading>
           <Description>Welcome to Right Funds</Description>
           {children}
         </div>

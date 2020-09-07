@@ -6,7 +6,7 @@ import Footer from '../../components/Footer/Loadable';
 import { NavLink } from 'react-router-dom'
 import './dashboard.scss';
 import { Title, Image, Description, Heading } from './dashboard-styles';
-
+import { Link } from 'react-router-dom';
 
 const logo = require('../../images/icon-512x512.png');
 const teamsLogo = require('../../images/icons/team.svg');
@@ -16,7 +16,7 @@ export default function HomePage() {
   return (
     <div>
 
-      <Header />
+      <Header title="Dasboard" />
       <div className='container mt-n5'>
         <Row>
           <Col xs={12} sm={12} md={7}>
@@ -145,7 +145,14 @@ export default function HomePage() {
                         <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
-                    <Button className="campaignBtn" >Create New Campaign</Button>{' '}
+                    <Link to="/createCampaign">
+                      {/* <Button renderAs="button">
+                        <span>Login</span>
+                      </Button> */}
+                      <Button className="campaignBtn" >Create New Campaign</Button>{' '}
+
+                    </Link>
+                    {/* <Button className="campaignBtn" >Create New Campaign</Button>{' '} */}
                   </div>
                 </Card.Title></Card.Header>
 
@@ -164,32 +171,32 @@ export default function HomePage() {
                         <Card.Body>
                           <Card.Title className='d-flex align-items-center author_details'>
                             <div className="author-photo">
-                              <img alt="" src="https://0.gravatar.com/avatar/6a7831cd395934213cf4dc10a70a7e80?s=96&amp;d=mm&amp;r=g" class="avatar avatar-96 photo" height="96" width="96" />
+                              <img alt="" src="https://0.gravatar.com/avatar/6a7831cd395934213cf4dc10a70a7e80?s=96&amp;d=mm&amp;r=g" className="avatar avatar-96 photo" height="96" width="96" />
                             </div>
-                            <span class="author-name">Ashekur_rahman</span>
+                            <span className="author-name">Ashekur_rahman</span>
 
                           </Card.Title>
-                          <h3 class="give-card__title">Clothes For Everyone</h3>
-                          <div class="skillbar">
+                          <h3 className="give-card__title">Clothes For Everyone</h3>
+                          <div className="skillbar">
                             <ProgressBar animated now={100} />
                             {/* <div style={{ width: "100%" }}></div> */}
-                            <div class="count"><span>100%</span></div>
+                            <div className="count"><span>100%</span></div>
                           </div>
                           <Card.Text>
                             Some quick example text to build on the card title and make up the bulk of
                             the card's content.</Card.Text>
-                          <ul class="campign-info">
-                            <li class="raised">
-                              <span class="title">Raised</span>
-                              <span class="content">$5,900</span>
+                          <ul className="campign-info">
+                            <li className="raised">
+                              <span className="title">Raised</span>
+                              <span className="content">$5,900</span>
                             </li>
-                            <li class="pledged">
-                              <span class="title">Pledged</span>
-                              <span class="content">$3,000</span>
+                            <li className="pledged">
+                              <span className="title">Pledged</span>
+                              <span className="content">$3,000</span>
                             </li>
-                            <li class="donators">
-                              <span class="title">Donators</span>
-                              <span class="content">29</span>
+                            <li className="donators">
+                              <span className="title">Donators</span>
+                              <span className="content">29</span>
                             </li>
                           </ul>
                           <div className='campaignBtns'>
@@ -210,32 +217,32 @@ export default function HomePage() {
                         <Card.Body>
                           <Card.Title className='d-flex align-items-center author_details'>
                             <div className="author-photo">
-                              <img alt="" src="https://0.gravatar.com/avatar/6a7831cd395934213cf4dc10a70a7e80?s=96&amp;d=mm&amp;r=g" class="avatar avatar-96 photo" height="96" width="96" />
+                              <img alt="" src="https://0.gravatar.com/avatar/6a7831cd395934213cf4dc10a70a7e80?s=96&amp;d=mm&amp;r=g" className="avatar avatar-96 photo" height="96" width="96" />
                             </div>
-                            <span class="author-name">Ashekur_rahman</span>
+                            <span className="author-name">Ashekur_rahman</span>
 
                           </Card.Title>
-                          <h3 class="give-card__title">Clothes For Everyone</h3>
-                          <div class="skillbar">
+                          <h3 className="give-card__title">Clothes For Everyone</h3>
+                          <div className="skillbar">
                             <ProgressBar animated now={60} />
                             {/* <div style={{ width: "100%" }}></div> */}
-                            <div class="count"><span>60%</span></div>
+                            <div className="count"><span>60%</span></div>
                           </div>
                           <Card.Text>
                             Some quick example text to build on the card title and make up the bulk of
                             the card's content.</Card.Text>
-                          <ul class="campign-info">
-                            <li class="raised">
-                              <span class="title">Raised</span>
-                              <span class="content">$5,900</span>
+                          <ul className="campign-info">
+                            <li className="raised">
+                              <span className="title">Raised</span>
+                              <span className="content">$5,900</span>
                             </li>
-                            <li class="pledged">
-                              <span class="title">Pledged</span>
-                              <span class="content">$3,000</span>
+                            <li className="pledged">
+                              <span className="title">Pledged</span>
+                              <span className="content">$3,000</span>
                             </li>
-                            <li class="donators">
-                              <span class="title">Donators</span>
-                              <span class="content">29</span>
+                            <li className="donators">
+                              <span className="title">Donators</span>
+                              <span className="content">29</span>
                             </li>
                           </ul>
                           <div className='campaignBtns'>
@@ -257,33 +264,33 @@ export default function HomePage() {
                         <Card.Body>
                           <Card.Title className='d-flex align-items-center author_details'>
                             <div className="author-photo">
-                              <img alt="" src="https://0.gravatar.com/avatar/6a7831cd395934213cf4dc10a70a7e80?s=96&amp;d=mm&amp;r=g" class="avatar avatar-96 photo" height="96" width="96" />
+                              <img alt="" src="https://0.gravatar.com/avatar/6a7831cd395934213cf4dc10a70a7e80?s=96&amp;d=mm&amp;r=g" className="avatar avatar-96 photo" height="96" width="96" />
                             </div>
-                            <span class="author-name">Ashekur_rahman</span>
+                            <span className="author-name">Ashekur_rahman</span>
 
                           </Card.Title>
-                          <h3 class="give-card__title">Clothes For Everyone</h3>
-                          <div class="skillbar">
+                          <h3 className="give-card__title">Clothes For Everyone</h3>
+                          <div className="skillbar">
                             <ProgressBar animated now={60} />
                             {/* <div style={{ width: "100%" }}></div> */}
-                            <div class="count"><span>60%</span></div>
+                            <div className="count"><span>60%</span></div>
                           </div>
 
                           <Card.Text>
                             Some quick example text to build on the card title and make up the bulk of
                             the card's content.</Card.Text>
-                          <ul class="campign-info">
-                            <li class="raised">
-                              <span class="title">Raised</span>
-                              <span class="content">$5,900</span>
+                          <ul className="campign-info">
+                            <li className="raised">
+                              <span className="title">Raised</span>
+                              <span className="content">$5,900</span>
                             </li>
-                            <li class="pledged">
-                              <span class="title">Pledged</span>
-                              <span class="content">$3,000</span>
+                            <li className="pledged">
+                              <span className="title">Pledged</span>
+                              <span className="content">$3,000</span>
                             </li>
-                            <li class="donators">
-                              <span class="title">Donators</span>
-                              <span class="content">29</span>
+                            <li className="donators">
+                              <span className="title">Donators</span>
+                              <span className="content">29</span>
                             </li>
                           </ul>
                           <div className='campaignBtns'>

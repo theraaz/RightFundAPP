@@ -14,6 +14,7 @@ import HomePage from 'containers/HomePage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import Signup from 'containers/Singup/Loadable';
 import forgetPass from 'containers/ForgetPassword/Loadable';
+import CreateCampaign from 'containers/CampaignCreate/Loadable';
 
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
@@ -27,6 +28,7 @@ export default function App() {
         <Route exact path="/login" component={LoginPage} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/forgetPassword" component={forgetPass} />
+        <Route exact path="/createCampaign" component={CreateCampaign} />
         <Route component={NotFoundPage} />
       </Switch>
 

@@ -1,0 +1,35 @@
+.main {
+  height: 70vh;
+  width: 100%;
+
+  .main-box {
+    background-color: white;
+    display: flex;
+    width: 100%;
+    margin: 0px 10px;
+
+    .firstCol {
+      height: 100%;
+      background-color: lightgray;
+
+      .listItem {
+        // border: none;
+        height: 50px;
+        display: flex;
+        color: unset;
+        background: transparent;
+        &:hover {
+          color: #f15a24;
+        }
+        .active {
+          color: #f15a24;
+        }
+
+        .iconImage {
+          width: 20px;
+          margin: 0 10px 0 0px;
+        }
+      }
+    }
+  }
+}

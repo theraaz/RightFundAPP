@@ -1,0 +1,32 @@
+.main-form1 {
+  text-align: center;
+  margin: 30px 0 0 0;
+
+  .main-heading {
+    padding: 0 143px;
+    margin-bottom: 30px;
+  }
+
+  .dropBtn {
+    background: white;
+    color: black;
+    border-color: #f2f2f2;
+    width: 195px;
+    &:focus {
+      box-shadow: none !important;
+    }
+    &:active {
+      background: white;
+      color: black;
+      border-color: #f2f2f2;
+    }
+
+    .dropItem {
+      &:active {
+        color: #fff;
+        text-decoration: none;
+        background-color: #f15a24;
+      }
+    }
+  }
+}
