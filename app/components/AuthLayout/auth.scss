@@ -32,6 +32,34 @@
             left: 25%;
             top: 20%;
           }
+          .paraG {
+            padding: 10px 30px;
+            top: 40%;
+            margin-left: -5px;
+            position: relative;
+            text-align: center;
+          }
+        }
+      }
+
+      .form-main-div-signup {
+        margin-left: -9px;
+        margin-top: 20px;
+        padding: 0 55px 0 44px;
+
+        .heading {
+          text-align: -webkit-center;
+          padding-right: 22px;
+          margin-bottom: 15px;
+
+          .bar {
+            border: 3px solid #e8e7e7;
+            width: 80px;
+            margin: 16px 0;
+          }
+        }
+        .para {
+          text-align: center;
         }
       }
       .form-main-div {

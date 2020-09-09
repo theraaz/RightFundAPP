@@ -1,11 +1,4 @@
-/**
- *
- * App.js
- *
- * This component is the skeleton around the actual pages, and should only
- * contain code that should be seen on all pages. (e.g. navigation bar)
- *
- */
+
 
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
@@ -15,6 +8,8 @@ import LoginPage from 'containers/LoginPage/Loadable';
 import Signup from 'containers/Singup/Loadable';
 import forgetPass from 'containers/ForgetPassword/Loadable';
 import CreateCampaign from 'containers/CampaignCreate/Loadable';
+import ResetPassword from 'containers/Resetpassword/Loadable';
+import AccountVerify from 'containers/AccountVerify/index';
 
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
@@ -29,6 +24,9 @@ export default function App() {
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/forgetPassword" component={forgetPass} />
         <Route exact path="/createCampaign" component={CreateCampaign} />
+        <Route exact path="/resetPassword" component={ResetPassword} />
+        {/* <Route exact path="/accountVerify" component={AccountVerify} /> */}
+        <Route exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} />
         <Route component={NotFoundPage} />
       </Switch>
 

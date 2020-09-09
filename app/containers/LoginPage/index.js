@@ -105,7 +105,7 @@ export function LoginPage({ children }) {
               />
 
               <Form.Control.Feedback type="invalid">
-                Example invalid custom select feedback
+                Invalid custom select feedback
             </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="password" bssize="large" style={{ position: 'relative' }}>

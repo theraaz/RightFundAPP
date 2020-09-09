@@ -44,4 +44,13 @@
   background-color: #f15a24 !important;
   border-color: #ced4da !important;
   font-family: 'Ubuntu', sans-serif;
+  &:active {
+    outline: 0;
+    box-shadow: none;
+  }
+
+  &:focus {
+    outline: 0;
+    box-shadow: none !important;
+  }
 }

@@ -8,12 +8,17 @@ import React, { memo } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-import { Row, Col, Card, ListGroup, Dropdown, Button, Container, ProgressBar } from 'react-bootstrap/'
+import { Row, Col, Card, ListGroup, Dropdown, Button, Container, ProgressBar, Form } from 'react-bootstrap/'
 
 import { FormattedMessage } from 'react-intl';
 import './form1.scss';
 
-import { Formik, Form } from 'formik';
+import { Formik } from 'formik';
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
+import { H5, H4 } from './form1.styles';
 
 const Form1 = ({ children }) => {
 
@@ -36,13 +41,13 @@ const Form1 = ({ children }) => {
     <div>
       <div className='main-form1'>
         <div className='main-heading'>
-          <h5>
+          <H4>
             Campaign Information
-      </h5>
+      </H4>
           <p>Please enter your campaign information and proceed to the next step so we can build your campaign.</p>
         </div>
         <Formik
-          initialValues={{ value: '', currency: '$ USD' }}
+          initialValues={{ value: '', currency: '$ USD', date: new Date() }}
           validate={validate}
           onSubmit={(values, actions) => {
             setTimeout(() => {
@@ -52,40 +57,89 @@ const Form1 = ({ children }) => {
           }}
         >
           {props => (
-            <Form onSubmit={props.handleSubmit}>
-              <div style={{ display: 'flex' }}>
-                <h5>Campaign Goal</h5>
+            <form onSubmit={props.handleSubmit}>
+              <div className="mainForm">
+                <Form.Group controlId="email" bssize="large" style={{ position: 'relative' }}>
 
-                <Dropdown>
-                  <Dropdown.Toggle id="dropdown-basic" className="dropBtn">
-                    {props.values.currency}</Dropdown.Toggle>
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <Row>
+                      <Col ms={3}>
+                        <H5>Campaign Goal</H5>
+                      </Col>
+                      <Col xs={2}>
+                        <Dropdown>
+                          <Dropdown.Toggle id="dropdown-basic" className="dropBtn">
+                            {props.values.currency}</Dropdown.Toggle>
 
-                  <Dropdown.Menu>
-                    <Dropdown.Item className="dropItem" onClick={() => props.setFieldValue('currency', '$ USD')}>$USD</Dropdown.Item>
-                    <Dropdown.Item onClick={() => props.setFieldValue('currency', '$ EUR')}>$EUR</Dropdown.Item>
-                    <Dropdown.Item >Something else</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <input
-                  type="text"
-                  onChange={props.handleChange}
-                  value={props.values.value}
-                  name="value"
-                />
-                {props.errors.value && <div id="feedback">{props.errors.value}</div>}
+                          <Dropdown.Menu>
+                            <Dropdown.Item className="dropItem" onClick={() => props.setFieldValue('currency', '$ USD')}>$USD</Dropdown.Item>
+                            <Dropdown.Item onClick={() => props.setFieldValue('currency', '$ EUR')}>$EUR</Dropdown.Item>
+                            <Dropdown.Item >Something else</Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      </Col>
+                      <Col md={7}>
+                        <input
+                          type="text"
+                          onChange={props.handleChange}
+                          value={props.values.value}
+                          name="value"
+                          className="inputForm"
+                        />
+                      </Col>
+                      {props.errors.value && <div id="feedback">{props.errors.value}</div>}
+                    </Row>
+                  </div>
+                </Form.Group>
+                <Form.Group controlId="email" bssize="large" style={{ position: 'relative' }}>
+
+
+                  <input
+                    type="text"
+                    onChange={props.handleChange}
+                    value={props.values.title}
+                    name="title"
+                    placeholder="Campaign Title"
+                    className="inputForm"
+                  />
+                  {props.errors.title && <div id="feedback">{props.errors.title}</div>}
+                </Form.Group>
+                <Form.Group controlId="email" bssize="large" style={{ position: 'relative' }}>
+
+                  <input
+                    type="text"
+                    onChange={props.handleChange}
+                    value={props.values.address}
+                    name="address"
+                    placeholder="Address"
+                    className="inputForm"
+                  />
+                  {props.errors.address && <div id="feedback">{props.errors.address}</div>}
+                </Form.Group>
+                <Form.Group controlId="email" bssize="large" style={{ position: 'relative' }}>
+
+                  <DatePicker name="date" selected={props.values.date} value={props.values.date} onChange={(data) => props.setFieldValue('date', data)}
+                    className="inputForm"
+                  />
+                  {props.errors.date && <div id="feedback">{props.errors.date}</div>}
+                </Form.Group>
+
+                <Form.Group controlId="email" bssize="large" style={{ position: 'relative' }}>
+
+                  <Dropdown>
+                    <Dropdown.Toggle id="dropdown-basic" className="dropBtn">
+                      {props.values.currency}</Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Item className="dropItem" onClick={() => props.setFieldValue('currency', '$ USD')}>$USD</Dropdown.Item>
+                      <Dropdown.Item onClick={() => props.setFieldValue('currency', '$ EUR')}>$EUR</Dropdown.Item>
+                      <Dropdown.Item >Something else</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </Form.Group>
               </div>
-
-
-
-              {/* <input
-                type="text"
-                onChange={props.handleChange}
-                value={props.values.email}
-                name="email"
-              />
-              {props.errors.email && <div id="feedback">{props.errors.email}</div>} */}
               {/* <button type="submit">Submit</button> */}
-            </Form>
+            </form>
           )}
         </Formik>
       </div>

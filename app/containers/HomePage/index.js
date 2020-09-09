@@ -20,16 +20,27 @@ export default function HomePage() {
       <div className='container mt-n5'>
         <Row>
           <Col xs={12} sm={12} md={7}>
-            <div className="card card-header-main flex-row shadow bg-white rounded">
-              <div className="card-header card-img border-0">
-                <Image src="//placehold.it/200" alt="" /> </div>
-              <div className="card-block card-data px-2">
-                <div className="card-title">
-                  <Title>Raza Ahmed</Title>
-                  <p className="card-text">razaahmed@rightfunds.com</p>
-                </div>
-                <p>765 Folsan Ave, Suite 600 San Francisco, CADGE 94017</p>
-              </div>
+            <div className="card card-header-main  shadow bg-white rounded">
+              <Row>
+                <Col xs={12} sm={5} md={5}>
+                  <div className="card-header card-img border-0">
+                    <div className='sub-card-img'>
+                      <Image src="//placehold.it/200" alt="" />
+                    </div>
+                  </div>
+                </Col>
+                <Col xs={12} sm={7} md={7} className="titleCol">
+                  <div className="card-block card-data px-2">
+                    <div className="card-title">
+                      <Title>Raza Ahmed</Title>
+                      <p className="card-text">razaahmed@rightfunds.com</p>
+                    </div>
+                    <p>765 Folsan Ave, Suite 600 San Francisco, CADGE 94017</p>
+                  </div>
+                </Col>
+              </Row>
+
+
             </div>
           </Col>
           <Col xs={12} sm={12} md={5}>
@@ -64,7 +75,7 @@ export default function HomePage() {
         <Row style={{ marginTop: 15, marginBottom: 15 }}>
           <Col sm={12} md={3} >
             <Card className="shadow mb-5 bg-white sideNav dataCard">
-              <ListGroup variant="flush" className='d-flex flex-row flex-sm-column'>
+              <ListGroup variant="flush">
 
 
 
@@ -134,7 +145,9 @@ export default function HomePage() {
               <Card.Header style={{ background: 'transparent' }}>
                 <Card.Title className="campaignHeader">
                   <span style={{ marginTop: '8px' }}>My Campaigns</span>
-                  <div className="campaignHeader1">
+
+
+                  <div className="campaignHeader1 d-flex flex-column flex-sm-row">
                     <Dropdown>
                       <Dropdown.Toggle id="dropdown-basic" className="dropBtn">
                         Active Campaigns</Dropdown.Toggle>
@@ -149,7 +162,7 @@ export default function HomePage() {
                       {/* <Button renderAs="button">
                         <span>Login</span>
                       </Button> */}
-                      <Button className="campaignBtn" >Create New Campaign</Button>{' '}
+                      <Button className="campaignBtn" >New Campaign</Button>{' '}
 
                     </Link>
                     {/* <Button className="campaignBtn" >Create New Campaign</Button>{' '} */}
@@ -162,7 +175,7 @@ export default function HomePage() {
 
                   <Row>
                     <Col xs={12} sm={6} md={4}>
-                      <Card >
+                      <Card className='campaign-card'>
                         <div className='give-card__media'>
                           <img style={{ width: '100%' }} src="http://quomodosoft.com/wp/profund/wp-content/uploads/2019/08/causes-5.jpg" alt="" />
                           {/* <Card.Img variant="top" src={logo} /> */}
@@ -208,7 +221,7 @@ export default function HomePage() {
                       </Card>
                     </Col>
                     <Col xs={12} sm={6} md={4}>
-                      <Card >
+                      <Card className='campaign-card' >
                         <div className='give-card__media'>
                           <img style={{ width: '100%' }} src="http://quomodosoft.com/wp/profund/wp-content/uploads/2019/08/causes-5.jpg" alt="" />
                           {/* <Card.Img variant="top" src={logo} /> */}
@@ -255,7 +268,7 @@ export default function HomePage() {
                     </Col>
 
                     <Col xs={12} sm={6} md={4}>
-                      <Card >
+                      <Card className='campaign-card'>
                         <div className='give-card__media'>
                           <img style={{ width: '100%' }} src="http://quomodosoft.com/wp/profund/wp-content/uploads/2019/08/causes-5.jpg" alt="" />
                           {/* <Card.Img variant="top" src={logo} /> */}

@@ -5,8 +5,6 @@
  */
 
 import React, { memo } from 'react';
-// import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
 import { Title, Wrapper } from '../../styles/styles';
 import './auth.scss';
 import { Image } from 'react-bootstrap';
@@ -17,7 +15,7 @@ const AuthLayout = ({ children, title, description }) => {
   return (
     <div className="main-div">
       <div className="container">
-      
+
         <Wrapper>
           <div className="main-container">
             <div className="inner-box">
@@ -26,12 +24,19 @@ const AuthLayout = ({ children, title, description }) => {
                   <div className="pag1" >
                     <div className="logo">
                       <Image src={logo} fluid />
+
+                    </div>
+                    <div className='paraG'>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+                    </p>
                     </div>
                   </div>
+
                 </div>
 
                 <div className="col-6 pl-0">
-                  <div className="form-main-div">
+                  <div className={`${title === 'Signup' ? 'form-main-div-signup' : 'form-main-div'}`} >
                     <div className="heading">
                       <Title>{title}</Title>
                       <div className="bar"></div>

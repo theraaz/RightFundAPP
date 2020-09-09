@@ -7,11 +7,26 @@
     margin-bottom: 30px;
   }
 
+  .mainForm {
+    display: flex;
+    flex-direction: column;
+    max-width: 473px;
+    text-align: center;
+    margin: 0 auto;
+
+    .inputForm {
+      width: 100%;
+      padding: 0 10px;
+      &:focus {
+        outline: 0;
+      }
+    }
+  }
   .dropBtn {
     background: white;
     color: black;
     border-color: #f2f2f2;
-    width: 195px;
+    margin: 0 10px;
     &:focus {
       box-shadow: none !important;
     }
