@@ -120,7 +120,7 @@ export function LoginPage({ children }) {
               />
 
               <Form.Control.Feedback type="invalid">
-                Enter your proper email
+                Enter valid email
             </Form.Control.Feedback>
             </Form.Group>
             <Form.Group controlId="password" bssize="large" style={{ position: 'relative' }}>
