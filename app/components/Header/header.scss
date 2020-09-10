@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background: white;
+
+  .img {
+    max-width: 140px;
+    margin-left: 40px;
+  }
+
+  .profile {
+    display: flex;
+    /* padding: 0px 0 0 0; */
+    margin-top: 12px;
+
+    .profileImg {
+      width: 35px;
+      border: 1px solid gray;
+      border-radius: 50px;
+      height: 35px;
+    }
+  }
+}
+.header2 {
+  display: block;
+  height: 175px;
+  width: 100%;
+  background: #f15a24;
+}

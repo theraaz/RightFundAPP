@@ -12,7 +12,9 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
-import SignUpPage from 'containers/SignUpPage/Loadable';
+import Signup from 'containers/Singup/Loadable';
+import forgetPass from 'containers/ForgetPassword/Loadable';
+
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
@@ -23,9 +25,11 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/signup" component={SignUpPage} />
+        <Route exact path="/signup" component={Signup} />
+        <Route exact path="/forgetPassword" component={forgetPass} />
         <Route component={NotFoundPage} />
       </Switch>
+
       <GlobalStyle />
     </div>
   );

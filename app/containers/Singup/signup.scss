@@ -1,15 +1,3 @@
-.heading {
-  text-align: -webkit-center;
-  padding-right: 22px;
-  margin-bottom: 33px;
-
-  .bar {
-    border: 3px solid #e8e7e7;
-    width: 80px;
-    margin: 16px 0;
-  }
-}
-
 .formsDiv {
   width: 20px;
   height: 20px;
@@ -21,6 +9,7 @@
     color: #c4c2c2;
   }
 }
+
 .form-input {
   padding: 20px 20px 20px 50px;
   &:focus {
@@ -28,18 +17,7 @@
     box-shadow: none;
   }
 }
-.forgetPass {
-  position: relative;
 
-  .forgetPassLabel {
-    color: #f15a24;
-    position: absolute;
-    right: 8px;
-    cursor: pointer;
-    top: 3px;
-    font-size: 14px;
-  }
-}
 .submitBtn {
   background-color: #f15a24 !important;
   border-color: #ced4da !important;

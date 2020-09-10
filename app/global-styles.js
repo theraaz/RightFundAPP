@@ -12,7 +12,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body.fontLoaded {
-    font-family:  'karla', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
   }
 
   #app {
@@ -23,9 +23,16 @@ const GlobalStyle = createGlobalStyle`
 
   p,
   label {
-    font-family: 'karla', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
     line-height: 1.5em;
+    font-size: 13px;
   }
+
+  .form-control:focus {
+    border-color: #f59470;
+    
+  }
+
 `;
 
 export default GlobalStyle;
