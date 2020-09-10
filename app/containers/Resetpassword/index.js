@@ -12,6 +12,7 @@ import { compose } from 'redux';
 import Layout from '../../components/AuthLayout'
 import { Button, Form } from 'react-bootstrap';
 import '../LoginPage/login.scss';
+import { useSnackbar } from 'notistack';
 
 export function Resetpassword(props) {
   let name = props.location.search.split('=');
@@ -19,12 +20,20 @@ export function Resetpassword(props) {
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const { enqueueSnackbar } = useSnackbar();
   const [validated, setValidated] = useState(false);
 
   function validateForm() {
     return newPassword.length > 0 && newPassword === confirmPassword;
   }
+
+
+  const handleClickVariant = (variant, message) => {
+
+    console.log(variant)
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar(message, { variant });
+  };
 
 
   function handleSubmit(event) {
@@ -50,7 +59,14 @@ export function Resetpassword(props) {
       };
 
       fetch(`${process.env.baseURL}/resetPassword`, requestOptions).then(response => response.json())
-        .then(user => console.log(user));
+        .then(user => {
+          console.log(user)
+          if (user.statusCode == 200) {
+            handleClickVariant('success', user.response.message);
+          } else {
+            handleClickVariant('error', user.response.message);
+          }
+        });
     }
 
 

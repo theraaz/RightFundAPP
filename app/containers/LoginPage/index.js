@@ -22,10 +22,13 @@ import { Button, Form, Col } from 'react-bootstrap';
 
 import { Link } from 'react-router-dom';
 
+import { SnackbarProvider, useSnackbar } from 'notistack';
+
 
 export function LoginPage({ children }) {
   useInjectReducer({ key: 'loginPage', reducer });
 
+  const { enqueueSnackbar } = useSnackbar();
 
 
   const [email, setEmail] = useState("");
@@ -38,6 +41,12 @@ export function LoginPage({ children }) {
     return email.length > 0 && password.length > 0;
   }
 
+  const handleClickVariant = (variant, message) => {
+
+    console.log(variant)
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar(message, { variant });
+  };
 
   function handleSubmit(event) {
     const form = event.currentTarget;
@@ -55,7 +64,15 @@ export function LoginPage({ children }) {
         },
         body: JSON.stringify({ email: email, password: password })
       };
-      fetch(`${process.env.baseURL}/signin`, requestOptions).then(response => console.log(response))
+      fetch(`${process.env.baseURL}/signin`, requestOptions).then(response => response.json())
+        .then(user => {
+          console.log(user)
+          if (user.statusCode == 200) {
+            handleClickVariant('success', 'Successfully Login');
+          } else {
+            handleClickVariant('error', user.response.message);
+          }
+        })
     }
 
 
@@ -63,9 +80,7 @@ export function LoginPage({ children }) {
   }
 
 
-  function nextPath(path) {
-    console.log(path)
-  }
+
 
   const onChange = useCallback(e => { setPassword(e.target.value) }, [])
 
@@ -143,7 +158,14 @@ export function LoginPage({ children }) {
             {/* disabled={!validateForm()} */}
             <Button block bssize="large" type="submit" className="submitBtn">Login</Button>
           </Form >
-
+          {/* <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success">
+              This is a success message!
+              </Alert>
+          </Snackbar> */}
+          {/* <SnackbarProvider maxSnack={3}> */}
+          {/* <LoginPage /> */}
+          {/* </SnackbarProvider> */}
         </div>
       </Layout>
 

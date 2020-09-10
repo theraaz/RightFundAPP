@@ -12,9 +12,11 @@ import { compose } from 'redux';
 import Layout from '../../components/AuthLayout'
 import { Button, Form } from 'react-bootstrap';
 import '../LoginPage/login.scss';
+import { useSnackbar } from 'notistack';
 export function ForgetPassword() {
   const [email, setEmail] = useState("");
   const [validated, setValidated] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
 
   const [response, setResponse] = useState("");
@@ -23,6 +25,13 @@ export function ForgetPassword() {
   function validateForm() {
     return email.length > 0;
   }
+
+  const handleClickVariant = (variant, message) => {
+
+    console.log(variant)
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar(message, { variant });
+  };
 
 
   function handleSubmit(event) {
@@ -48,8 +57,13 @@ export function ForgetPassword() {
 
       fetch(`${process.env.baseURL}/forgotPassword`, requestOptions).then(response => response.json())
         .then(user => {
+          console.log(user)
           setResponse(user.response.message)
-          console.log(response)
+          if (user.statusCode == 200) {
+            handleClickVariant('success', user.response.message);
+          } else {
+            handleClickVariant('error', user.response.message);
+          }
         });
     }
 

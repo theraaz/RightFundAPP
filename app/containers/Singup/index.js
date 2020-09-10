@@ -18,6 +18,8 @@ import Layout from '../../components/AuthLayout'
 import { Button, Form, Col } from 'react-bootstrap';
 import './signup.scss';
 import { Helmet } from 'react-helmet';
+import { useSnackbar } from 'notistack';
+
 export function Singup() {
   useInjectReducer({ key: 'singup', reducer });
 
@@ -29,10 +31,18 @@ export function Singup() {
   const [charityName, setCharityName] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [validated, setValidated] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   function validateForm() {
     return email.length > 0 && password.length > 0 && fname.length > 0 && lname.length > 0;
   }
+
+  const handleClickVariant = (variant, message) => {
+
+    console.log(variant)
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar(message, { variant });
+  };
 
   function handleSubmit(event) {
 
@@ -56,7 +66,13 @@ export function Singup() {
       };
 
       fetch(`${process.env.baseURL}/signup`, requestOptions).then(response => response.json())
-        .then(user => console.log(user));
+        .then(user => {
+          if (user.statusCode == 200) {
+            handleClickVariant('success', 'Successfully Login');
+          } else {
+            handleClickVariant('error', user.response.message);
+          }
+        });
     }
 
 

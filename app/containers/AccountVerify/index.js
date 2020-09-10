@@ -4,13 +4,17 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
 import Layout from '../../components/AuthLayout';
 
+import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
+
+import './accountvVerify.scss';
 export function AccountVerify(props) {
 
   const [message, setMessage] = useState("");
@@ -30,24 +34,46 @@ export function AccountVerify(props) {
   };
 
   fetch(`${process.env.baseURL}/accountVerify`, requestOptions).then(response => response.json())
-    .then(user => console.log(user));
+    .then(user => {
+      if (user.statusCode == 200) {
+        setMessage('Congragulaions! your account is verified');
+      } else {
+        setMessage('Something went missing, Please try again');
+
+      }
+      console.log(message);
+    });
 
 
 
-return (
-  <div>
-    <Helmet>
-      <title>Account Verify</title>
-      <meta name="description" content="Description of AccountVerify" />
-    </Helmet>
+  return (
+    <div>
+      <Helmet>
+        <title>Account Verify</title>
+        <meta name="description" content="Description of AccountVerify" />
+      </Helmet>
 
-    <Layout title={'Verification'} description={'Account verification'} >
-      <div>
+      <Layout title={'Verification'} description={'Account verification'} >
+        <div style={{ textAlign: 'center' }}>
+          <p className='message'> {message}</p>
 
-      </div>
-    </Layout>
-  </div>
-);
+          <div className='authBtns'>
+            <Link to="/login">
+
+              <Button className="campaignBtn" >Login</Button>{' '}
+
+            </Link>
+
+            <Link to="/signup">
+
+              <Button className="campaignBtn" >Sign up</Button>{' '}
+
+            </Link>
+          </div>
+        </div>
+      </Layout>
+    </div>
+  );
 }
 
 AccountVerify.propTypes = {
