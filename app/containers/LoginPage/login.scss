@@ -28,6 +28,15 @@
     box-shadow: none;
   }
 }
+
+.remberMeLabel {
+  .form-check-input {
+    margin-top: 8px;
+  }
+  .form-check-label {
+    color: unset !important;
+  }
+}
 .forgetPass {
   position: relative;
 

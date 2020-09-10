@@ -35,7 +35,7 @@ const AuthLayout = ({ children, title, description }) => {
 
                 </div>
 
-                <div className="col-6 pl-0">
+                <div className="col-6 pl-0 secondCol">
                   <div className={`${title === 'Signup' ? 'form-main-div-signup' : 'form-main-div'}`} >
                     <div className="heading">
                       <Title>{title}</Title>

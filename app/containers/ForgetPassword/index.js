@@ -16,6 +16,10 @@ export function ForgetPassword() {
   const [email, setEmail] = useState("");
   const [validated, setValidated] = useState(false);
 
+
+  const [response, setResponse] = useState("");
+
+
   function validateForm() {
     return email.length > 0;
   }
@@ -43,7 +47,10 @@ export function ForgetPassword() {
       };
 
       fetch(`${process.env.baseURL}/forgotPassword`, requestOptions).then(response => response.json())
-        .then(user => console.log(user));
+        .then(user => {
+          setResponse(user.response.message)
+          console.log(response)
+        });
     }
 
 

@@ -183,8 +183,9 @@ export function Singup() {
 
             <Form.Group controlId="asCharity">
               <Form.Check type="checkbox"
+                className="remberMeLabel"
                 label="Signup as a charity"
-                onChange={e => setAsCharity(e.target.value)} />
+                onChange={e => setAsCharity(e.target.checked)} />
             </Form.Group>
 
             {
