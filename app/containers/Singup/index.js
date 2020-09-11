@@ -15,13 +15,14 @@ import makeSelectSingup from './selectors';
 import reducer from './reducer';
 import Layout from '../../components/AuthLayout'
 
-import { Button, Form, Col } from 'react-bootstrap';
+import { Button, Form, Col, Spinner } from 'react-bootstrap';
 import './signup.scss';
 import { Helmet } from 'react-helmet';
 import { useSnackbar } from 'notistack';
 import { Link } from 'react-router-dom';
+import { stubFalse } from 'lodash';
 
-export function Singup() {
+export function Singup(props) {
   useInjectReducer({ key: 'singup', reducer });
 
   const [email, setEmail] = useState("");
@@ -32,8 +33,19 @@ export function Singup() {
   const [charityName, setCharityName] = useState("");
   const [registrationNumber, setRegistrationNumber] = useState("");
   const [validated, setValidated] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
+
+  function resetField() {
+    setEmail("")
+    setPassword("")
+    setFname("")
+    setLname("")
+    setAsCharity(stubFalse)
+    setCharityName("")
+    setRegistrationNumber("")
+  }
   function validateForm() {
     return email.length > 0 && password.length > 0 && fname.length > 0 && lname.length > 0;
   }
@@ -42,7 +54,7 @@ export function Singup() {
 
     console.log(variant)
     // variant could be success, error, warning, info, or default
-    enqueueSnackbar(message, { variant });
+    enqueueSnackbar(message, { variant, anchorOrigin: { horizontal: 'center', vertical: 'bottom' } });
   };
 
   function handleSubmit(event) {
@@ -65,11 +77,15 @@ export function Singup() {
         },
         body: JSON.stringify({ firstName: fname, lastName: lname, email: email, password: password, isCharity: asCharity, role: 1 })
       };
-
+      setLoading(true);
       fetch(`${process.env.baseURL}/signup`, requestOptions).then(response => response.json())
         .then(user => {
+          setLoading(false);
+
           if (user.statusCode == 200) {
-            handleClickVariant('success', 'Successfully Login');
+            handleClickVariant('success', 'Successfully Signup');
+            resetField();
+            // props.history.push("/");
           } else {
             handleClickVariant('error', user.response.message);
           }
@@ -204,7 +220,7 @@ export function Singup() {
                 label="Signup as a charity"
                 onChange={e => setAsCharity(e.target.checked)} /></Col>
                 <Col>
-                  <div className="forgetPass1">
+                  <div className="loginBtn">
                     <Link className="forgetPassLabel" to="/login">Do login</Link>
                   </div></Col> </Form.Row>
 
@@ -232,7 +248,8 @@ export function Singup() {
                 </Form.Group>
               </div> : null
             }
-            <Button block bssize="large" type="submit" className="submitBtn">Signup</Button>
+            <Button disabled={loading} block bssize="large" type="submit" className="submitBtn"> {loading == false && <div>Signup</div>}
+            {loading && <Spinner animation="border" size='sm' />}   </Button>
           </Form>
         </div>
 

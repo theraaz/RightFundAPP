@@ -18,14 +18,14 @@ import './login.scss'
 
 import { Helmet } from 'react-helmet';
 
-import { Button, Form, Col } from 'react-bootstrap';
+import { Button, Form, Col, Spinner } from 'react-bootstrap';
 
 import { Link } from 'react-router-dom';
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
 
-export function LoginPage({ children }) {
+export function LoginPage(props) {
   useInjectReducer({ key: 'loginPage', reducer });
 
   const { enqueueSnackbar } = useSnackbar();
@@ -35,20 +35,28 @@ export function LoginPage({ children }) {
   const [password, setPassword] = useState("");
   const [remeberme, setRemeberMe] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
   }
 
+  function resetField() {
+    setEmail("")
+    setPassword("")
+    setRemeberMe(false)
+  }
+
   const handleClickVariant = (variant, message) => {
 
     console.log(variant)
     // variant could be success, error, warning, info, or default
-    enqueueSnackbar(message, { variant });
+    enqueueSnackbar(message, { variant, anchorOrigin: { horizontal: 'center', vertical: 'bottom' } });
   };
 
   function handleSubmit(event) {
+    
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -57,6 +65,7 @@ export function LoginPage({ children }) {
 
     setValidated(true);
     if (validateForm()) {
+      setLoading(true);
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -66,9 +75,13 @@ export function LoginPage({ children }) {
       };
       fetch(`${process.env.baseURL}/signin`, requestOptions).then(response => response.json())
         .then(user => {
+          setLoading(false);
           console.log(user)
           if (user.statusCode == 200) {
             handleClickVariant('success', 'Successfully Login');
+            localStorage.setItem('token', user.response.data.token);
+            resetField();
+            props.history.push("/");
           } else {
             handleClickVariant('error', user.response.message);
           }
@@ -154,12 +167,13 @@ export function LoginPage({ children }) {
                   {/* <Form.Label className="forgetPassLabel" onClick={() => nextPath('/forgetPassword')}>Forget Password</Form.Label> */}
                 </Col>
               </Form.Row>
-              <div className="forgetPass1">
+              <div className="signupBtn">
                 <Link className="forgetPassLabel" to="/signup">Register yourself</Link>
               </div>
             </Form.Group>
             {/* disabled={!validateForm()} */}
-            <Button block bssize="large" type="submit" className="submitBtn">Login</Button>
+            <Button block bssize="large" type="submit" className="submitBtn"> {loading == false && <div>Login</div>}
+              {loading && <Spinner animation="border" size='sm' />} </Button>
           </Form >
 
         </div>

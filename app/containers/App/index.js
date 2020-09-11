@@ -14,23 +14,29 @@ import AccountVerify from 'containers/AccountVerify/index';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
-
+import AuthRoute from '../../components/AuthRoutes';
+import LoginRoute from '../../components/routes';
 export default function App() {
+  // localStorage.getItem('token')
   return (
     <div>
       <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route exact path="/login" component={LoginPage} />
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/forgetPassword" component={forgetPass} />
-        <Route exact path="/createCampaign" component={CreateCampaign} />
+
+        <AuthRoute exact path="/" component={HomePage} />
+        {/* {!localStorage.getItem('token') && <Route path="/login" component={LoginPage} exact />} */}
+        <LoginRoute exact path="/login" component={LoginPage} />
+        <LoginRoute exact path="/signup" component={Signup} />
+        <LoginRoute exact path="/forgetPassword" component={forgetPass} />
+        <LoginRoute exact path="/createCampaign" component={CreateCampaign} />
         <Route exact path="/resetPassword" component={ResetPassword} />
         {/* <Route exact path="/accountVerify" component={AccountVerify} /> */}
-        <Route exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} />
+        <LoginRoute exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} />
         <Route component={NotFoundPage} />
+
       </Switch>
 
       <GlobalStyle />
+      
     </div>
   );
 }
