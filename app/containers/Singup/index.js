@@ -19,6 +19,7 @@ import { Button, Form, Col } from 'react-bootstrap';
 import './signup.scss';
 import { Helmet } from 'react-helmet';
 import { useSnackbar } from 'notistack';
+import { Link } from 'react-router-dom';
 
 export function Singup() {
   useInjectReducer({ key: 'singup', reducer });
@@ -198,10 +199,15 @@ export function Singup() {
             </Form.Group>
 
             <Form.Group controlId="asCharity">
-              <Form.Check type="checkbox"
+              <Form.Row><Col><Form.Check type="checkbox"
                 className="remberMeLabel"
                 label="Signup as a charity"
-                onChange={e => setAsCharity(e.target.checked)} />
+                onChange={e => setAsCharity(e.target.checked)} /></Col>
+                <Col>
+                  <div className="forgetPass1">
+                    <Link className="forgetPassLabel" to="/login">Do login</Link>
+                  </div></Col> </Form.Row>
+
             </Form.Group>
 
             {

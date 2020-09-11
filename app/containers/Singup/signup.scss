@@ -26,6 +26,17 @@
 }
 
 
+.forgetPass1 {
+  position: relative;
+  text-align: end;
+
+  .forgetPassLabel {
+    color: #f15a24;
+    cursor: pointer;
+    font-size: 14px;
+  }
+}
+
 .submitBtn {
   background-color: #f15a24 !important;
   border-color: #ced4da !important;

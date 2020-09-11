@@ -154,18 +154,14 @@ export function LoginPage({ children }) {
                   {/* <Form.Label className="forgetPassLabel" onClick={() => nextPath('/forgetPassword')}>Forget Password</Form.Label> */}
                 </Col>
               </Form.Row>
+              <div className="forgetPass1">
+                <Link className="forgetPassLabel" to="/signup">Register yourself</Link>
+              </div>
             </Form.Group>
             {/* disabled={!validateForm()} */}
             <Button block bssize="large" type="submit" className="submitBtn">Login</Button>
           </Form >
-          {/* <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success">
-              This is a success message!
-              </Alert>
-          </Snackbar> */}
-          {/* <SnackbarProvider maxSnack={3}> */}
-          {/* <LoginPage /> */}
-          {/* </SnackbarProvider> */}
+
         </div>
       </Layout>
 

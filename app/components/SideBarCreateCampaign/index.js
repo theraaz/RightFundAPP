@@ -20,22 +20,21 @@ const SideBarCreateCampaign = ({ children }) => {
 
                 <ListGroup.Item className='listItem' onClick={() => setActiveLink(0)}>
                   {console.log(activeLink)}
-                  <div className={`text-decoration-none listItem ${activeLink === 0 ? 'active' : ''}`} >
+                  <div className={`text-decoration-none listItem ${activeLink === 0 ? '' : ''}`} >
                     <div className='iconImage'>
-                      {/* <img src={logo} fluid /> */}
+                      <span className={`${activeLink === 0 ? 'tagNumberActive' : 'tagNumber'}`} > 01</span>
                     </div>
 
-
-Campaign Information
-</div>
+                    <span>Campaign Information</span>
+                  </div>
                 </ListGroup.Item>
 
                 {/* <div className='line'></div> */}
                 <ListGroup.Item className='listItem' onClick={() => setActiveLink(1)}>
 
-                  <div className={`text-decoration-none listItem ${activeLink === 1 ? 'active' : ''}`}>
+                  <div className={`text-decoration-none listItem ${activeLink === 1 ? '' : ''}`}>
                     <div className='iconImage'>
-                      {/* <img src={logo} fluid /> */}
+                      <span className={`${activeLink === 1 ? 'tagNumberActive' : 'tagNumber'}`}>02</span>
                     </div>
                     Tell your story
                     </div>
@@ -45,9 +44,9 @@ Campaign Information
                 {/* <div className='line'></div> */}
 
                 <ListGroup.Item className='listItem' onClick={() => setActiveLink(2)}>
-                  <div className={`text-decoration-none listItem ${activeLink === 2 ? 'active' : ''}`}>
+                  <div className={`text-decoration-none listItem ${activeLink === 2 ? '' : ''}`}>
                     <div className='iconImage'>
-                      {/* <img src={logo} fluid /> */}
+                      <span className={`${activeLink === 2 ? 'tagNumberActive' : 'tagNumber'}`}>03</span>
                     </div>
 
 
@@ -58,9 +57,9 @@ Campaign Information
                 {/* <div className='line'></div> */}
 
                 <ListGroup.Item className='listItem' onClick={() => setActiveLink(3)}>
-                  <div className={`text-decoration-none listItem ${activeLink === 3 ? 'active' : ''}`}>
+                  <div className={`text-decoration-none listItem ${activeLink === 3 ? '' : ''}`}>
                     <div className='iconImage'>
-                      {/* <img src={logo} fluid /> */}
+                      <span className={`${activeLink === 3 ? 'tagNumberActive' : 'tagNumber'}`}>04</span>
                     </div>
                       Campaign Status
                       </div>
@@ -83,7 +82,7 @@ Campaign Information
 
         </Row>
       </Container>
-    </div>
+    </div >
   );
 }
 

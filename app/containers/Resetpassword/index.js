@@ -66,6 +66,7 @@ export function Resetpassword(props) {
           } else {
             handleClickVariant('error', user.response.message);
           }
+          props.history.push("/login");
         });
     }
 

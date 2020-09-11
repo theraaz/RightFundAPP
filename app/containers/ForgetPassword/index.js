@@ -13,12 +13,16 @@ import Layout from '../../components/AuthLayout'
 import { Button, Form } from 'react-bootstrap';
 import '../LoginPage/login.scss';
 import { useSnackbar } from 'notistack';
-export function ForgetPassword() {
+// import { useHistory } from "react-router-dom";
+import { push } from 'connected-react-router'
+export function ForgetPassword(props) {
+  // const history = useHistory();
+
+
   const [email, setEmail] = useState("");
   const [validated, setValidated] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-
-
+  
   const [response, setResponse] = useState("");
 
 
@@ -61,6 +65,8 @@ export function ForgetPassword() {
           setResponse(user.response.message)
           if (user.statusCode == 200) {
             handleClickVariant('success', user.response.message);
+            console.log(props)
+            props.history.push("/login");
           } else {
             handleClickVariant('error', user.response.message);
           }
