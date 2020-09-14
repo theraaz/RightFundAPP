@@ -28,6 +28,15 @@
     box-shadow: none;
   }
 }
+
+.remberMeLabel {
+  .form-check-input {
+    margin-top: 8px;
+  }
+  .form-check-label {
+    color: unset !important;
+  }
+}
 .forgetPass {
   position: relative;
 
@@ -40,8 +49,29 @@
     font-size: 14px;
   }
 }
+
+.signupBtn {
+  position: relative;
+  // margin-top: 10px;
+  text-align: end;
+
+  .forgetPassLabel {
+    color: #f15a24;
+    cursor: pointer;
+    font-size: 14px;
+  }
+}
 .submitBtn {
   background-color: #f15a24 !important;
   border-color: #ced4da !important;
   font-family: 'Ubuntu', sans-serif;
+  &:active {
+    outline: 0;
+    box-shadow: none;
+  }
+
+  &:focus {
+    outline: 0;
+    box-shadow: none !important;
+  }
 }

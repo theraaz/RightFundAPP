@@ -1,28 +1,43 @@
-@import 'app/styles/mixin.scss';
+@import 'App/styles/mixin.scss';
 
 .main-div {
-  background: #e8e7e73b;
+  // background: #e8e7e73b;
   .main-container {
+    display: flex;
+    justify-content: center;
     .inner-box {
       background: white;
       height: 100%;
       box-shadow: 0px 0px 9px #eaeaea;
       border-radius: 5px;
-
+      width: 70%;
       .fistCol {
+        @include respond-to(handhelds-landscape) {
+          // css code here
+          display: none;
+        }
+        @include respond-to(handhelds) {
+          // css code here
+          display: none;
+        }
         @include respond-to(mobile) {
+          // css code here
+          display: none;
+        }
+        @include respond-to(mobile-portrait) {
           // css code here
           display: none;
         }
         .pag1 {
           background-image: url('../../images/Background_Image.png');
           background-repeat: no-repeat;
-          background-size: contain;
-          background-position: inherit;
+          background-size: cover;
+          background-position: center;
           position: relative;
-          height: 514px;
+          min-height: 550px;
           width: 100%;
           display: block;
+          height: 100%;
 
           .logo {
             max-width: 170px;
@@ -30,26 +45,85 @@
             left: 25%;
             top: 20%;
           }
-        }
-      }
-      .form-main-div {
-        margin-left: -9px;
-        margin-top: 78px;
-        padding: 0 55px 0 44px;
-
-        .heading {
-          text-align: -webkit-center;
-          padding-right: 22px;
-          margin-bottom: 20px;
-
-          .bar {
-            border: 3px solid #e8e7e7;
-            width: 80px;
-            margin: 16px 0;
+          .paraG {
+            padding: 10px 30px;
+            top: 50%;
+            position: absolute;
+            text-align: center;
           }
         }
-        .para {
-          text-align: center;
+      }
+
+      .secondCol {
+        padding: 0 0 20px;
+        background: white;
+        @include respond-to(handhelds-landscape) {
+          // css code here
+          flex: 0 0 100%;
+          max-width: 100%;
+        }
+
+        @include respond-to(handhelds) {
+          // css code here
+          flex: 0 0 100%;
+          max-width: 100%;
+        }
+        @include respond-to(mobile) {
+          // css code here
+          flex: 0 0 100%;
+          max-width: 100%;
+        }
+        @include respond-to(mobile-portrait) {
+          // css code here
+          flex: 0 0 100%;
+          max-width: 100%;
+        }
+        .form-main-div-signup {
+          // margin-left: -9px;
+          margin-top: 20px;
+          padding: 0 44px 0 44px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          .heading {
+            text-align: -webkit-center;
+            // padding-right: 22px;
+            margin-bottom: 5px;
+
+            .bar {
+              border: 3px solid #e8e7e7;
+              width: 80px;
+              margin: 16px 0;
+            }
+          }
+          .para {
+            text-align: center;
+          }
+        }
+        .form-main-div {
+          // margin-left: -9px;
+          margin-top: 78px;
+          // padding: 0 44px 0 44px;
+          padding: 0 44px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+
+          .heading {
+            text-align: -webkit-center;
+            // padding-right: 22px;
+            margin-bottom: 5px;
+
+            .bar {
+              border: 3px solid #e8e7e7;
+              width: 80px;
+              margin: 16px 0;
+            }
+          }
+          .para {
+            text-align: center;
+          }
         }
       }
     }

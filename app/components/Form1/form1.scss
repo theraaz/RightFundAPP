@@ -1,0 +1,140 @@
+.main-form1 {
+  text-align: center;
+  margin: 30px 0 0 0;
+
+  .main-heading {
+    padding: 0 143px;
+    margin-bottom: 30px;
+  }
+
+  .mainForm {
+    display: flex;
+    flex-direction: column;
+    padding: 0 130px;
+    // text-align: center;
+    margin: 0 auto;
+
+    .formGroup {
+      position: relative;
+      display: flex;
+
+      .label-field {
+        margin-top: 12px;
+        margin-right: 10px;
+      }
+
+      .formsDiv {
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        width: 415px;
+        display: flex;
+
+        .selectClass {
+          border: none;
+          border-right: 1px solid #ced4da;
+          width: 80px;
+        }
+
+        .inputForm {
+          width: 100%;
+          padding: 0 10px;
+          border: none;
+          border: none !important;
+          &:focus {
+            outline: 0;
+            box-shadow: none !important;
+          }
+        }
+      }
+    }
+  }
+  .categoriesSelect {
+    div {
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+    }
+  }
+  .datePicker {
+    div {
+      &:focus {
+        outline: 0;
+      }
+
+      &:hover {
+        outline: 0 !important;
+        font-family: 'Ubuntu', sans-serif;
+      }
+      input {
+        padding: 10.5px 14px !important;
+      }
+    }
+
+    &:focus {
+      outline: 0;
+    }
+  }
+  .dropBtn {
+    background: white;
+    color: black;
+    border-color: #f2f2f2;
+    margin: 0 10px;
+    &:focus {
+      box-shadow: none !important;
+    }
+    &:active {
+      background: white;
+      color: black;
+      border-color: #f2f2f2;
+    }
+
+    .dropItem {
+      &:active {
+        color: #fff;
+        text-decoration: none;
+        background-color: #f15a24;
+      }
+    }
+  }
+
+  .campaignBtns {
+    justify-content: space-between;
+    display: flex;
+    width: 50%;
+    .viewCampaignBtn {
+      background-color: #f15a24;
+      border-color: #f2f2f2;
+      width: 100%;
+      font-size: 11px;
+      &:focus {
+        box-shadow: none;
+      }
+      &:active {
+        background: white;
+        color: black;
+        border-color: #f2f2f2;
+      }
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+    .editCampaignBtn {
+      background-color: gray;
+      border-color: #f2f2f2;
+      margin-left: 5px;
+      font-size: 11px;
+      width: 100%;
+
+      &:hover {
+        opacity: 0.8;
+      }
+      &:focus {
+        box-shadow: none;
+      }
+      &:active {
+        background: white;
+        color: black;
+        border-color: #f2f2f2;
+      }
+    }
+  }
+}

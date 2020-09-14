@@ -28,3 +28,12 @@
   width: 100%;
   background: #f15a24;
 }
+
+.logout {
+  color: #f15a24;
+
+  &:hover {
+    color: #f15a24;
+    text-decoration: none;
+  }
+}

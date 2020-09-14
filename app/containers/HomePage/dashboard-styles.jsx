@@ -7,7 +7,7 @@ export const Wrapper = styled.section`
 
 export const Title = styled.h4`
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 600;
 `;
 
 export const Image = styled.img`
@@ -17,11 +17,11 @@ export const Image = styled.img`
 `;
 
 export const Description = styled.p`
-  font-size: 15px;
+  font-size: 13px;
 `;
 
 export const Heading = styled.h5`
   font-weight: 600;
   color: #f15a24;
-  font-size: 18px;
+  font-size: 20px;
 `;

@@ -16,7 +16,7 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
-
+import {SnackbarProvider} from 'notistack'; 
 // Import root app
 import App from 'containers/App';
 
@@ -43,8 +43,11 @@ const render = messages => {
   ReactDOM.render(
     <Provider store={store}>
       <LanguageProvider messages={messages}>
+      
         <ConnectedRouter history={history}>
+        <SnackbarProvider maxSnack={3}>
           <App />
+        </SnackbarProvider>
         </ConnectedRouter>
       </LanguageProvider>
     </Provider>,

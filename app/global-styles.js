@@ -29,10 +29,13 @@ const GlobalStyle = createGlobalStyle`
   }
 
   .form-control:focus {
-    border-color: #f59470;
-    
+    border-color: #f59470; 
   }
 
+  .form-control:valid{
+    background-image: none !important;
+    box-shadow: 0 !important;
+  }
 `;
 
 export default GlobalStyle;

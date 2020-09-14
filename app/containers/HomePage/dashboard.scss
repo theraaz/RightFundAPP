@@ -1,16 +1,36 @@
+@import 'App/styles/mixin.scss';
+
+.card-body {
+  padding: 1.25rem 8px 1.25rem 8px;
+}
+
 .card-header-main {
-  height: 220px;
+  margin-bottom: 15px;
+  min-height: 223px;
+  /* text-align: center; */
+  justify-content: center;
+  .compaignData {
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    justify-content: center;
+  }
 
   .card-img {
-    display: block;
+    display: flex;
     box-sizing: border-box;
-    height: 90%;
-    width: 215px;
+    // height: 90%;
+    // width: 215px;
+    justify-content: center;
     border-radius: 50;
     align-items: center;
     text-align: center;
     margin: 10px 10px;
     background: transparent;
+
+    .sub-card-img {
+      width: 178px;
+    }
 
     img {
       border-radius: 94px;
@@ -19,14 +39,36 @@
     }
   }
 
-  .card-data {
-    margin: 70px 0 0 7px;
-    vertical-align: middle;
-    position: relative;
+  .titleCol {
+    display: flex;
+    justify-content: center;
+
+    @include respond-to(mobile) {
+      // css code here
+      text-align: center;
+    }
+
+    .card-data {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      vertical-align: middle;
+      position: relative;
+    }
   }
 
-  .table-col {
+  .table-col1 {
     text-align: center;
+    border-bottom-width: 0.1px;
+    border-bottom-color: rgba(0, 0, 0, 0.05);
+    border-bottom-style: solid;
+    // margin-bottom: 15px;
+  }
+  .tableRight {
+    border-right-width: 0.1px;
+    border-right-color: rgba(0, 0, 0, 0.05);
+    border-right-style: solid;
   }
 
   .complaints-data {
@@ -36,10 +78,26 @@
     vertical-align: middle;
   }
 }
+
+.sideNav {
+  height: 28rem;
+  @include respond-to(handhelds) {
+    // css code here
+    height: auto;
+  }
+}
 .listItem {
-  border: none;
+  // border: none;
   height: 50px;
   display: flex;
+  color: unset;
+
+  &:hover {
+    color: #f15a24;
+  }
+  .active {
+    color: #f15a24;
+  }
 }
 .line {
   margin: 0 13px;
@@ -51,4 +109,209 @@
 .iconImage {
   width: 20px;
   margin: 0 10px 0 0px;
+}
+
+.campaign-card {
+  margin: 10px 0;
+}
+.dataCard {
+  border-radius: 6px;
+  padding: 7px 12px;
+
+  .campaignHeader {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    // @include respond-to(mobile) {
+    //   // css code here
+    //   flex-direction: column;
+    // }
+    .campaignHeader1 {
+      justify-content: space-between;
+    }
+    .dropBtn {
+      background: white;
+      color: black;
+      border-color: #f2f2f2;
+      &:focus {
+        box-shadow: none !important;
+      }
+      &:active {
+        background: white;
+        color: black;
+        border-color: #f2f2f2;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+
+      .dropItem {
+        &:active {
+          color: #fff;
+          text-decoration: none;
+          background-color: #f15a24;
+        }
+      }
+    }
+
+    .campaignBtn {
+      background-color: #f15a24;
+      border-color: #f2f2f2;
+      margin-left: 5px;
+      &:focus {
+        box-shadow: none !important;
+      }
+      &:active {
+        background: white;
+        color: black;
+        border-color: #f2f2f2;
+      }
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .author_details {
+    .author-photo {
+      width: 20px;
+      height: 20px;
+      line-height: 0;
+      overflow: hidden;
+      border-radius: 3px;
+      margin-right: 10px;
+      display: inline-block;
+      float: left;
+      margin-top: 5px;
+    }
+
+    .author-name {
+      font-size: 13px;
+      font-weight: 700;
+      display: inline-block;
+      margin-top: 0;
+      color: #6a6a6a;
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      clear: both;
+      margin-bottom: 15px;
+    }
+  }
+
+  .give-card__title {
+    padding: 0;
+    font-weight: 600;
+    letter-spacing: -1px;
+    font-size: 18px;
+  }
+
+  .skillbar {
+    background-clip: padding-box;
+    background-color: #d4d4d4;
+    border-radius: 50px;
+    box-sizing: border-box;
+    height: 6px;
+    position: relative;
+    width: calc(100% - 40px);
+    margin-bottom: 15px;
+    margin-top: 15px;
+
+    .progress {
+      height: 0.4rem;
+      .progress-bar {
+        background-color: #f15a24;
+      }
+    }
+
+    .count-bar {
+      background-color: #f15a24;
+      background-clip: padding-box;
+      // background-color: rgb(117, 69, 69);
+      height: 6px;
+      width: 0;
+      border-radius: 6px;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1);
+    }
+    .count {
+      font-size: 14px;
+      font-weight: 600;
+      width: 40px;
+      position: absolute;
+      left: 100%;
+      top: -4px;
+      text-align: right;
+      line-height: 16px;
+      white-space: nowrap;
+      color: #f15a24;
+      padding-left: 5px;
+    }
+  }
+
+  .campign-info {
+    list-style: none;
+    margin: 15px 0 15px;
+    padding: 15px 0 0;
+    border-top: 1px solid #eaeaea;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+
+    .title {
+      font-size: 13px;
+      font-weight: 700;
+      display: block;
+      color: #6a6a6a;
+    }
+    .content {
+      color: #f15a24;
+      font-size: 14px;
+      font-weight: 700;
+    }
+  }
+
+  .campaignBtns {
+    justify-content: space-between;
+    display: flex;
+    .viewCampaignBtn {
+      background-color: #f15a24;
+      border-color: #f2f2f2;
+      width: 100%;
+      font-size: 11px;
+      &:focus {
+        box-shadow: none;
+      }
+      &:active {
+        background: white;
+        color: black;
+        border-color: #f2f2f2;
+      }
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+    .editCampaignBtn {
+      background-color: gray;
+      border-color: #f2f2f2;
+      margin-left: 5px;
+      font-size: 11px;
+      width: 100%;
+
+      &:hover {
+        opacity: 0.8;
+      }
+      &:focus {
+        box-shadow: none;
+      }
+      &:active {
+        background: white;
+        color: black;
+        border-color: #f2f2f2;
+      }
+    }
+  }
 }

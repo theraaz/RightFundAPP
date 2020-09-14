@@ -1,0 +1,53 @@
+.main {
+  height: 70vh;
+  width: 100%;
+
+  .main-box {
+    background-color: white;
+    display: flex;
+    width: 100%;
+    margin: 0px 10px;
+
+    .firstCol {
+      height: 100%;
+      background-color: #f6f6f6;
+
+      .listItem {
+        // border: none;
+        height: 50px;
+        display: flex;
+        color: unset;
+        background: transparent;
+        &:hover {
+          color: #f15a24;
+        }
+        .active {
+          color: #f15a24;
+        }
+
+        .iconImage {
+          width: auto;
+          margin: 0 10px 0 0px;
+
+          .tagNumber {
+            border: 1px solid #f6f6f6;
+            border-radius: 50%;
+            margin: -1px;
+            padding: 5px;
+            background: #e4e0e0;
+            color: black;
+          }
+
+          .tagNumberActive {
+            border: 1px solid #f6f6f6;
+            border-radius: 50%;
+            margin: -1px;
+            padding: 5px;
+            background: #f15a24;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
