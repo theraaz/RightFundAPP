@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
 import Layout from '../../components/AuthLayout'
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Spinner } from 'react-bootstrap';
 import '../LoginPage/login.scss';
 import { useSnackbar } from 'notistack';
 // import { useHistory } from "react-router-dom";
@@ -22,7 +22,7 @@ export function ForgetPassword(props) {
   const [email, setEmail] = useState("");
   const [validated, setValidated] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-  
+  const [loading, setLoading] = useState(false);
   const [response, setResponse] = useState("");
 
 
@@ -34,7 +34,8 @@ export function ForgetPassword(props) {
 
     console.log(variant)
     // variant could be success, error, warning, info, or default
-    enqueueSnackbar(message, { variant });
+    enqueueSnackbar(message, { variant, anchorOrigin: { horizontal: 'center', vertical: 'bottom' } });
+
   };
 
 
@@ -50,7 +51,7 @@ export function ForgetPassword(props) {
 
 
     if (validateForm()) {
-
+      setLoading(true);
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -61,7 +62,7 @@ export function ForgetPassword(props) {
 
       fetch(`${process.env.baseURL}/forgotPassword`, requestOptions).then(response => response.json())
         .then(user => {
-          console.log(user)
+          setLoading(false);
           setResponse(user.response.message)
           if (user.statusCode == 200) {
             handleClickVariant('success', user.response.message);
@@ -70,6 +71,8 @@ export function ForgetPassword(props) {
           } else {
             handleClickVariant('error', user.response.message);
           }
+        }).catch(error => {
+          console.log(error)
         });
     }
 
@@ -116,7 +119,8 @@ export function ForgetPassword(props) {
                 Enter valid email
             </Form.Control.Feedback>
             </Form.Group>
-            <Button block bssize="large" type="submit" className="submitBtn">Send</Button>
+            <Button block bssize="large" type="submit" className="submitBtn"> {loading == false && <div>Send</div>}
+              {loading && <Spinner animation="border" size='sm' />}</Button>
           </Form>
         </div>
       </Layout>

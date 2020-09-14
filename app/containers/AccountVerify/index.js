@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -23,8 +23,6 @@ export function AccountVerify(props) {
   let name = props.location.search.split('=');
   console.log('token', name[1]);
 
-
-
   const requestOptions = {
     method: 'GET',
     headers: {
@@ -32,17 +30,26 @@ export function AccountVerify(props) {
       'authorization': name[1]
     },
   };
+  
+  useEffect(() => {
 
-  fetch(`${process.env.baseURL}/accountVerify`, requestOptions).then(response => response.json())
-    .then(user => {
-      if (user.statusCode == 200) {
-        setMessage('Congragulaions! your account is verified');
-      } else {
-        setMessage('Something went missing, Please try again');
 
-      }
-      console.log(message);
-    });
+    fetch(`${process.env.baseURL}/accountVerify`, requestOptions).then(response => response.json())
+      .then(user => {
+        if (user.statusCode == 200) {
+          setMessage('Congratulations! your account is verified');
+        } else {
+          setMessage('Something went missing, Please try again');
+
+        }
+        console.log(message);
+      });
+    //   return ()=>{
+    // //Component unmount    
+    //   }
+  },[]);
+
+
 
 
 
@@ -60,7 +67,7 @@ export function AccountVerify(props) {
           <div className='authBtns'>
             <Link to="/login">
 
-              <Button className="campaignBtn" >Login</Button>{' '}
+              <Button className="campaignBtn">Login</Button>{' '}
 
             </Link>
 

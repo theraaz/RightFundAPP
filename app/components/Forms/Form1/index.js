@@ -23,7 +23,7 @@ import {
 } from '@material-ui/pickers';
 
 
-import { H5, H4 } from './form1.styles';
+import { H5, H4 } from '../form.styles';
 
 
 
@@ -154,9 +154,9 @@ const Form1 = ({ children }) => {
                       <MenuItem value="">
                         <em>None</em>
                       </MenuItem>
-                      <MenuItem value={10}>Ten</MenuItem>
-                      <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem>
+                      <MenuItem value={10}>$</MenuItem>
+                      {/* <MenuItem value={20}>Twenty</MenuItem>
+                      <MenuItem value={30}>Thirty</MenuItem> */}
                     </Select>
 
 
@@ -207,7 +207,7 @@ const Form1 = ({ children }) => {
                       className="datePicker"
                       id="date-picker-dialog"
                       format="MM/dd/yyyy"
-                      inputVariant="outlined"
+                      // inputVariant="outlined"
                       placeholder="Campaign Date"
                       value={selectedDate}
                       onChange={handleDateChange}
@@ -226,7 +226,7 @@ const Form1 = ({ children }) => {
                     className="categoriesSelect"
                     labelId="demo-customized-select-label"
                     fullWidth
-                    inputVariant="outlined"
+                    // inputVariant="outlined"
                     id="demo-customized-select"
                     placeholder="Categories"
                     value={age}

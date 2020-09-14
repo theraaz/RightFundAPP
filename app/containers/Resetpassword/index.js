@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
 import Layout from '../../components/AuthLayout'
-import { Button, Form } from 'react-bootstrap';
+import { Button, Form, Spinner } from 'react-bootstrap';
 import '../LoginPage/login.scss';
 import { useSnackbar } from 'notistack';
 
@@ -22,6 +22,7 @@ export function Resetpassword(props) {
   const [confirmPassword, setConfirmPassword] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   const [validated, setValidated] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function validateForm() {
     return newPassword.length > 0 && newPassword === confirmPassword;
@@ -32,7 +33,8 @@ export function Resetpassword(props) {
 
     console.log(variant)
     // variant could be success, error, warning, info, or default
-    enqueueSnackbar(message, { variant });
+    enqueueSnackbar(message, { variant, anchorOrigin: { horizontal: 'center', vertical: 'bottom' } });
+
   };
 
 
@@ -48,7 +50,7 @@ export function Resetpassword(props) {
 
 
     if (validateForm()) {
-
+      setLoading(true);
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -60,6 +62,7 @@ export function Resetpassword(props) {
 
       fetch(`${process.env.baseURL}/resetPassword`, requestOptions).then(response => response.json())
         .then(user => {
+          setLoading(true);
           console.log(user)
           if (user.statusCode == 200) {
             handleClickVariant('success', user.response.message);
@@ -67,6 +70,8 @@ export function Resetpassword(props) {
             handleClickVariant('error', user.response.message);
           }
           props.history.push("/login");
+        }).catch(error => {
+          console.log(error)
         });
     }
 
@@ -122,7 +127,8 @@ export function Resetpassword(props) {
                 Password is not matched
             </Form.Control.Feedback>
             </Form.Group>
-            <Button block bssize="large" type="submit" className="submitBtn">Update</Button>
+            <Button block bssize="large" type="submit" className="submitBtn"> {loading == false && <div>Update</div>}
+              {loading && <Spinner animation="border" size='sm' />}</Button>
           </Form>
         </div>
       </Layout>

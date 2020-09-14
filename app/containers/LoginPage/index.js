@@ -56,7 +56,7 @@ export function LoginPage(props) {
   };
 
   function handleSubmit(event) {
-    
+
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -78,14 +78,18 @@ export function LoginPage(props) {
           setLoading(false);
           console.log(user)
           if (user.statusCode == 200) {
-            handleClickVariant('success', 'Successfully Login');
+            handleClickVariant('success', user.response.message);
             localStorage.setItem('token', user.response.data.token);
             resetField();
             props.history.push("/");
           } else {
             handleClickVariant('error', user.response.message);
           }
-        })
+        }).catch(error => {
+          console.log(error)
+        });
+
+
     }
 
 

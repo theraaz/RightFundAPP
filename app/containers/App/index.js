@@ -27,10 +27,10 @@ export default function App() {
         <LoginRoute exact path="/login" component={LoginPage} />
         <LoginRoute exact path="/signup" component={Signup} />
         <LoginRoute exact path="/forgetPassword" component={forgetPass} />
-        <LoginRoute exact path="/createCampaign" component={CreateCampaign} />
-        <Route exact path="/resetPassword" component={ResetPassword} />
-        {/* <Route exact path="/accountVerify" component={AccountVerify} /> */}
-        <LoginRoute exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} />
+        <AuthRoute exact path="/createCampaign" component={CreateCampaign} />
+        <LoginRoute exact path="/resetPassword" component={ResetPassword} />
+        <LoginRoute exact path="/accountVerify" component={AccountVerify} />
+        {/* <LoginRoute exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} /> */}
         <Route component={NotFoundPage} />
 
       </Switch>

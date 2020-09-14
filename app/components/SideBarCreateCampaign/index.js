@@ -2,10 +2,11 @@
 import React, { memo, useState } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-
 import { Row, Col, ListGroup, Dropdown, Button, Container, ProgressBar } from 'react-bootstrap/'
 import './sideCampaign.scss';
-import Form1 from '../Form1/Loadable';
+import Form1 from '../Forms/Form1/Loadable';
+import Form2 from '../Forms/Form2/Loadable';
+import Form3 from '../Forms/Form3/Loadable';
 
 const SideBarCreateCampaign = ({ children }) => {
   const [activeLink, setActiveLink] = useState(0);
@@ -16,7 +17,7 @@ const SideBarCreateCampaign = ({ children }) => {
         <Row className='main'>
           <div className="main-box">
             <Col md={3} className='firstCol'>
-              <ListGroup variant="flush" className='d-flex flex-row flex-sm-column'>
+              <ListGroup variant="flush" className='d-flex flex-row flex-sm-column mt15'>
 
                 <ListGroup.Item className='listItem' onClick={() => setActiveLink(0)}>
                   {console.log(activeLink)}
@@ -73,8 +74,8 @@ const SideBarCreateCampaign = ({ children }) => {
             </Col>
             <Col md={9}>
               {activeLink === 0 && <Form1 />}
-              {activeLink === 1 && <div>1</div>}
-              {activeLink === 2 && <div>2</div>}
+              {activeLink === 1 && <Form2 />}
+              {activeLink === 2 && <Form3 />}
               {activeLink === 3 && <div>3</div>}
 
             </Col>

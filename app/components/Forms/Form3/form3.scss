@@ -1,0 +1,51 @@
+.main-form1 {
+  text-align: center;
+  margin: 30px 0 0 0;
+
+  .main-heading {
+    padding: 0 143px;
+    margin-bottom: 30px;
+  }
+
+  .mainForm {
+    display: flex;
+    flex-direction: column;
+    padding: 0 120px;
+    // text-align: center;
+    margin: 0 auto;
+
+    .defined-payments {
+      padding: 10px;
+      background: #f6f6f6;
+
+      .card-heading-inner {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+
+    
+    }
+  }
+  .addPackajeBtn {
+    margin: 15px;
+    padding: 7px 15px;
+    border-radius: 0;
+    background: green;
+    border-color: #f6f6f6;
+
+    svg {
+      width: 15px;
+      height: 15px;
+      margin: 0 10px 0 0px;
+      margin-top: -1px;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+    &:focus {
+      box-shadow: none;
+    }
+  }
+}

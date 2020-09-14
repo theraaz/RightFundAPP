@@ -37,7 +37,8 @@ export function Singup(props) {
   const { enqueueSnackbar } = useSnackbar();
 
 
-  function resetField() {
+  function resetField(event) {
+    console.log(event)
     setEmail("")
     setPassword("")
     setFname("")
@@ -45,6 +46,8 @@ export function Singup(props) {
     setAsCharity(stubFalse)
     setCharityName("")
     setRegistrationNumber("")
+    event.preventDefault();
+    Form = new Form
   }
   function validateForm() {
     return email.length > 0 && password.length > 0 && fname.length > 0 && lname.length > 0;
@@ -83,8 +86,8 @@ export function Singup(props) {
           setLoading(false);
 
           if (user.statusCode == 200) {
-            handleClickVariant('success', 'Successfully Signup');
-            resetField();
+            handleClickVariant('success', user.response.message);
+            resetField(event);
             // props.history.push("/");
           } else {
             handleClickVariant('error', user.response.message);
@@ -249,7 +252,7 @@ export function Singup(props) {
               </div> : null
             }
             <Button disabled={loading} block bssize="large" type="submit" className="submitBtn"> {loading == false && <div>Signup</div>}
-            {loading && <Spinner animation="border" size='sm' />}   </Button>
+              {loading && <Spinner animation="border" size='sm' />}   </Button>
           </Form>
         </div>
 
