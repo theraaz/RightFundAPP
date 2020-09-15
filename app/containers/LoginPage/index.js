@@ -1,8 +1,9 @@
-/**
+/*
+/!**
  *
  * LoginPage
  *
- */
+ *!/
 
 import React, { memo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
@@ -10,6 +11,9 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectReducer } from 'utils/injectReducer';
+import injectSaga from 'utils/injectSaga';
+import { DAEMON } from 'utils/constants';
+import saga from './saga';
 
 import makeSelectLoginPage from './selectors';
 import reducer from './reducer';
@@ -168,14 +172,14 @@ export function LoginPage(props) {
                 </Col>
                 <Col className="forgetPass">
                   <Link className="forgetPassLabel" to="/forgetPassword">Forget Password</Link>
-                  {/* <Form.Label className="forgetPassLabel" onClick={() => nextPath('/forgetPassword')}>Forget Password</Form.Label> */}
+                  {/!* <Form.Label className="forgetPassLabel" onClick={() => nextPath('/forgetPassword')}>Forget Password</Form.Label> *!/}
                 </Col>
               </Form.Row>
               <div className="signupBtn">
                 <Link className="forgetPassLabel" to="/signup">Register yourself</Link>
               </div>
             </Form.Group>
-            {/* disabled={!validateForm()} */}
+            {/!* disabled={!validateForm()} *!/}
             <Button block bssize="large" type="submit" className="submitBtn"> {loading == false && <div>Login</div>}
               {loading && <Spinner animation="border" size='sm' />} </Button>
           </Form >
@@ -199,6 +203,78 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
+  };
+}
+
+const withConnect = connect(
+  mapStateToProps,
+  mapDispatchToProps,
+);
+const withSaga = injectSaga({ key: 'yourcomponent', saga, mode: DAEMON });
+
+export default compose(
+  withSaga,
+)(LoginPage);
+// export default compose(
+//   withConnect,
+//   memo,
+// )(LoginPage);
+*/
+
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import React, { useEffect, memo } from 'react';
+import { compose } from 'redux';
+import { createStructuredSelector } from 'reselect';
+import { useInjectSaga } from '../../utils/injectSaga';
+import saga from './saga';
+import reducer from './reducer';
+import { useInjectReducer } from '../../utils/injectReducer';
+import {
+  makeSelectAccount,
+  makeSelectError,
+  makeSelectLoading,
+} from './selectors';
+import { login } from './actions';
+
+const key = 'auth';
+
+export function LoginPage({ loading, error, onLogin, account }) {
+  useInjectReducer({ key, reducer });
+  useInjectSaga({ key, saga });
+
+  /* useEffect(() => {
+
+  }, []); */
+
+  return (
+    <form onSubmit={onLogin}>
+      <label>tset</label>
+      <input type="text" />
+      <button>test</button>
+    </form>
+  );
+}
+
+LoginPage.propTypes = {
+  loading: PropTypes.bool,
+  error: PropTypes.object,
+  account: PropTypes.object,
+  onLogin: PropTypes.func,
+};
+
+const mapStateToProps = createStructuredSelector({
+  account: makeSelectAccount(),
+  loading: makeSelectLoading(),
+  error: makeSelectError(),
+});
+
+export function mapDispatchToProps(dispatch) {
+  return {
+    onLogin: evt => {
+      if (evt !== undefined && evt.preventDefault) evt.preventDefault();
+      dispatch(login('admin@test.com', 'Smart2016.@'));
+    },
   };
 }
 

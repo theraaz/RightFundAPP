@@ -4,10 +4,11 @@
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
+import { LOGIN_REQUEST } from './constants';
 
-export function defaultAction() {
+export function login(email, password) {
   return {
-    type: DEFAULT_ACTION,
+    type: LOGIN_REQUEST,
+    params: { email, password },
   };
 }
