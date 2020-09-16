@@ -17,14 +17,13 @@
     .defined-payments {
       padding: 10px;
       background: #f6f6f6;
+      height: 150px;
 
       .card-heading-inner {
         display: flex;
         justify-content: space-between;
         margin-bottom: 10px;
       }
-
-    
     }
   }
   .addPackajeBtn {
@@ -46,6 +45,92 @@
     }
     &:focus {
       box-shadow: none;
+    }
+  }
+
+  .campaign-description {
+    width: 350px;
+    background: #f6f6f6;
+    border-radius: 4px;
+    margin: 0 auto;
+    padding: 15px;
+
+    .formsDiv {
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      padding: 2px;
+      width: 100%;
+      display: flex;
+      margin: 10px 0;
+
+      .selectClass {
+        border: none;
+        border-right: 1px solid #ced4da;
+        width: 80px;
+      }
+
+      .inputForm {
+        width: 100%;
+        padding: 0 10px;
+        border: none !important;
+        &:focus {
+          outline: 0;
+          box-shadow: none !important;
+        }
+      }
+    }
+
+    .description {
+      border: 1px solid #ced4da;
+      width: 100%;
+      padding: 10px;
+      border-radius: 4px;
+      
+      &:focus {
+        outline: 0;
+      }
+    }
+  }
+
+  .campaignBtns {
+    justify-content: space-between;
+    display: flex;
+    width: 50%;
+    .viewCampaignBtn {
+      background-color: #f15a24;
+      border-color: #f2f2f2;
+      width: 100%;
+      font-size: 11px;
+      &:focus {
+        box-shadow: none;
+      }
+      &:active {
+        background: white;
+        color: black;
+        border-color: #f2f2f2;
+      }
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+    .editCampaignBtn {
+      background-color: gray;
+      border-color: #f2f2f2;
+      margin-left: 5px;
+      font-size: 11px;
+      width: 100%;
+
+      &:hover {
+        opacity: 0.8;
+      }
+      &:focus {
+        box-shadow: none;
+      }
+      &:active {
+        background: white;
+        color: black;
+        border-color: #f2f2f2;
+      }
     }
   }
 }

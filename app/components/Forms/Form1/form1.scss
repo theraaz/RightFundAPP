@@ -25,9 +25,11 @@
 
       .formsDiv {
         border: 1px solid #ced4da;
-        border-radius: 4px;
-        width: 415px;
+        width: 80%;
+        text-align: -webkit-right;
         display: flex;
+        border-radius: 4px;
+        height: 42px;
 
         .selectClass {
           border: none;
@@ -38,7 +40,6 @@
         .inputForm {
           width: 100%;
           padding: 0 10px;
-          border: none;
           border: none !important;
           &:focus {
             outline: 0;
@@ -52,17 +53,22 @@
     div {
       border: 1px solid #ced4da;
       border-radius: 4px;
+      box-shadow: none;
     }
   }
   .datePicker {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-family: 'Ubuntu', sans-serif;
     div {
+      font-family: 'Ubuntu', sans-serif;
+
       &:focus {
         outline: 0;
       }
 
       &:hover {
         outline: 0 !important;
-        font-family: 'Ubuntu', sans-serif;
       }
       input {
         padding: 10.5px 14px !important;
@@ -71,6 +77,13 @@
 
     &:focus {
       outline: 0;
+    }
+    .MuiInput-underline:before {
+      border-bottom: none !important;
+    }
+
+    .MuiInput-underline:after {
+      border-bottom: none !important;
     }
   }
   .dropBtn {
@@ -97,14 +110,14 @@
   }
 
   .campaignBtns {
-    justify-content: space-between;
-    display: flex;
-    width: 50%;
+    width: 160px;
+    height: 40px;
+
     .viewCampaignBtn {
       background-color: #f15a24;
       border-color: #f2f2f2;
       width: 100%;
-      font-size: 11px;
+      font-size: 14px;
       &:focus {
         box-shadow: none;
       }
@@ -117,24 +130,6 @@
         opacity: 0.8;
       }
     }
-    .editCampaignBtn {
-      background-color: gray;
-      border-color: #f2f2f2;
-      margin-left: 5px;
-      font-size: 11px;
-      width: 100%;
-
-      &:hover {
-        opacity: 0.8;
-      }
-      &:focus {
-        box-shadow: none;
-      }
-      &:active {
-        background: white;
-        color: black;
-        border-color: #f2f2f2;
-      }
-    }
+  
   }
 }

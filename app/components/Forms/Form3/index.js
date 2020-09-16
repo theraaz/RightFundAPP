@@ -4,11 +4,11 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { CustomHeading, CustomHeadingNum, H4 } from '../form.styles';
-import { Row, Col, Card, Dropdown, Button, Container, Input, Form } from 'react-bootstrap/'
+import { Row, Col, Card, Dropdown, Button, Container, Input, Form } from 'react-bootstrap';
 import './form3.scss';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -46,7 +46,86 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function Form3() {
+const Form3 = ({ id, setActiveLink }) => {
+  const [currency, setCurrency] = React.useState([]);
+  const [packages, setPackages] = React.useState([]);
+  const [title, setTitle] = React.useState('');
+  const [amount, setAmount] = React.useState('');
+  const [description, setDescription] = React.useState('');
+  const [selectedCurrency, setSelectedCurrency] = React.useState('');
+  const [showEnterPackaje, setShowEnterPackaje] = React.useState(false);
+  const token = localStorage.getItem('token');
+
+  const handleChange = (event) => {
+    setSelectedCurrency(event.target.value)
+  };
+  useEffect(() => {
+    console.log(id)
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+      },
+    };
+
+    fetch(`${process.env.baseURL}/currency`, requestOptions).then(response => response.json())
+      .then(user => {
+        console.log(user.response.data.res)
+        setCurrency(user.response.data.res)
+      }).catch(error => {
+        console.log(error)
+      });
+
+    getAllPackages();
+
+  }, []);
+
+  function getAllPackages() {
+
+
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+      },
+    };
+
+    fetch(`${process.env.baseURL}/packages/compaign/${id}`, requestOptions).then(response => response.json())
+      .then(user => {
+        console.log(user.response.data.res)
+        console.log(user)
+        setPackages(user.response.data.res)
+      }).catch(error => {
+        console.log(error)
+      });
+  }
+
+  function addPackaje() {
+    console.log(id)
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+      },
+      body: JSON.stringify({ amount: 12, amountSymbolId: selectedCurrency, description: description, title: title, compaignId: id })
+
+    };
+
+
+    fetch(`${process.env.baseURL}/packages`, requestOptions).then(response => response.json())
+      .then(user => {
+        console.log(user)
+        setShowEnterPackaje(false);
+        getAllPackages();
+      }).catch(error => {
+        console.log(error)
+      });
+
+  }
+
   return (
     <div>
       <div className='main-form1'>
@@ -59,70 +138,86 @@ function Form3() {
 
         <div className='mainForm'>
           <Row>
-            <Col sm={6}>
-              <Card className='defined-payments'>
-                <div className='card-heading-inner'>
-                  <CustomHeading>Save one small family</CustomHeading>
-                  <CustomHeadingNum>$ 106</CustomHeadingNum>
-                </div>
-                <div style={{ textAlign: 'initial' }}>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                </div>
-              </Card>
-            </Col>
-            <Col sm={6}>
-              <Card className='defined-payments'>
-                <div className='card-heading-inner'>
-                  <CustomHeading>Save one large family</CustomHeading>
-                  <CustomHeadingNum>$ 906</CustomHeadingNum>
-                </div>
-                <div style={{ textAlign: 'initial' }}>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                </div>
-              </Card>
-            </Col>
+            {packages.map(data => (
+
+              <Col key={data.id} sm={6} style={{ marginBottom: '30px' }}>
+                <Card className='defined-payments'>
+                  <div className='card-heading-inner'>
+                    <CustomHeading>{data.title}</CustomHeading>
+                    <CustomHeadingNum>{data.amount}</CustomHeadingNum>
+                  </div>
+                  <div style={{ textAlign: 'initial' }}>
+                    <p>{data.description}</p>
+                  </div>
+                </Card>
+              </Col>
+            ))}
           </Row>
           <div>
-            <Button className='addPackajeBtn'>
+            <Button className='addPackajeBtn' onClick={() => setShowEnterPackaje(true)}>
               <svg version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 496 496" ><g><g><path d="M488,240H256V8c0-4.418-3.582-8-8-8s-8,3.582-8,8v232H8c-4.418,0-8,3.582-8,8s3.582,8,8,8h232v232c0,4.418,3.582,8,8,8s8-3.582,8-8V256h232c4.418,0,8-3.582,8-8S492.418,240,488,240z" /></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
-              <span>Add Packaje</span>
+              <span>Add Package</span>
             </Button>
           </div>
 
-          <div>
-            
+          {showEnterPackaje && <div className='campaign-description' >
+            <H4 style={{ textAlign: 'initial', padding: '10px' }}>Add Package</H4>
+            <input
+              required
+              className="form-input description"
+              placeholder="Title"
+              type="text"
+              value={title}
+              onChange={(event) => setTitle(event.target.value)}
+            />
             <div className="formsDiv" >
               <Select
                 labelId="demo-customized-select-label"
                 className='selectClass'
                 id="demo-customized-select"
-                
-                
+                onChange={handleChange}
                 input={<BootstrapInput />}
               >
+
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                <MenuItem value={10}>$</MenuItem>
+                {currency.map(data => (
+                  <MenuItem value={data.id} key={data.id}>{data.symbol}</MenuItem>
+                ))}
               </Select>
 
-
-
-              <Input
+              <input
                 required
                 className="form-input inputForm"
                 placeholder="Enter amount here"
                 type="number"
-
-                onChange={(event) => setEmail(event.target.value)}
+                value={amount}
+                onChange={(event) => setAmount(event.target.value)}
               />
             </div>
-            
-          </div>
+            <textarea placeholder='Description'
+              onChange={(event) => setDescription(event.target.value)}
+              className='description' type='text' />
 
+            <div style={{ textAlign: '-webkit-right', marginTop: '10px' }}>
+              <div className='campaignBtns'>
+
+                <Button className="viewCampaignBtn" onClick={addPackaje} >Save</Button>
+              </div>
+            </div>
+          </div>
+          }
+          <div style={{ textAlign: '-webkit-right', marginTop: '10px' }}>
+            <div className='campaignBtns'>
+
+              <Button className="editCampaignBtn" onClick={() => setActiveLink(1)} >Back</Button>
+              <Button type="submit" className="viewCampaignBtn" onClick={() => setActiveLink(3)} >Save and Continue</Button>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

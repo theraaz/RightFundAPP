@@ -11,8 +11,8 @@ export const Wrapper = styled.section`
 `;
 
 export const H4 = styled.h4`
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
 `;
 export const H5 = styled.h5`
   font-size: 14px;
@@ -30,4 +30,7 @@ export const CustomHeadingNum = styled.h5`
   color: #f15a24;
 `;
 
-
+export const Errors= styled.div`
+text-align: initial;
+color: red;
+`;

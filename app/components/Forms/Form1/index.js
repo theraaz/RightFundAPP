@@ -4,16 +4,15 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
 import { Row, Col, Card, ListGroup, Dropdown, Button, Container, ProgressBar, Form } from 'react-bootstrap/'
 
-import { FormattedMessage } from 'react-intl';
+
 import './form1.scss';
 
-import { Formik } from 'formik';
 
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
@@ -23,7 +22,7 @@ import {
 } from '@material-ui/pickers';
 
 
-import { H5, H4 } from '../form.styles';
+import { H5, H4, Errors } from '../form.styles';
 
 
 
@@ -33,7 +32,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
-
+import { Field } from 'formik';
 import { green } from '@material-ui/core/colors';
 import Radio from '@material-ui/core/Radio';
 
@@ -80,23 +79,30 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Form1 = ({ children }) => {
+const Form1 = ({ setFieldValue, values, errors, children, setActiveLink }) => {
   const classes = useStyles();
 
-  const [age, setAge] = React.useState('');
+  const [currency, setCurrency] = React.useState([]);
+  const [categories, setCategories] = React.useState([]);
   const [selectedDate, setSelectedDate] = React.useState();
   const [selectedValue, setSelectedValue] = React.useState('a');
 
   const handleRadioChange = (event) => {
-    setSelectedValue(event.target.value);
+    setFieldValue('fundraiser', event.target.value);
   };
+
+
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    setFieldValue('date', date);
+  };
+
+  const handleChangeCategories = (event) => {
+    setFieldValue('categories', event.target.value);
   };
 
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setFieldValue('currencySymbol', event.target.value)
   };
 
   const validate = (values, props /* only available when using withFormik */) => {
@@ -114,6 +120,39 @@ const Form1 = ({ children }) => {
   };
 
 
+  useEffect(() => {
+
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    };
+
+    fetch(`${process.env.baseURL}/currency`, requestOptions).then(response => response.json())
+      .then(user => {
+        if (user.statusCode == 200) {
+
+        } else {
+          setMessage('Something went missing, Please try again');
+
+        }
+        console.log(user.response.data.res)
+        setCurrency(user.response.data.res)
+      }).catch(error => {
+        console.log(error)
+      });;
+
+    fetch(`${process.env.baseURL}/categories`, requestOptions).then(response => response.json())
+      .then(user => {
+
+        console.log(user.response.data.res)
+        setCategories(user.response.data.res)
+      }).catch(error => {
+        console.log(error)
+      });;
+
+  }, []);
 
 
 
@@ -126,166 +165,173 @@ const Form1 = ({ children }) => {
       </H4>
           <p>Please enter your campaign information and proceed to the next step so we can build your campaign.</p>
         </div>
-        <Formik
-          initialValues={{ value: '', currency: '$ USD', date: new Date() }}
-          validate={validate}
-          onSubmit={(values, actions) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              actions.setSubmitting(false);
-            }, 1000);
-          }}
-        >
-          {props => (
-            <form onSubmit={props.handleSubmit}>
-              <div className="mainForm">
+        <div className="mainForm">
 
-                <Form.Group controlId="email" bssize="large" className='formGroup'>
-                  <H5 className='label-field'>Campaign Goal</H5>
-                  <div className="formsDiv" >
-                    <Select
-                      labelId="demo-customized-select-label"
-                      className='selectClass'
-                      id="demo-customized-select"
-                      value={age}
-                      onChange={handleChange}
-                      input={<BootstrapInput />}
-                    >
-                      <MenuItem value="">
-                        <em>None</em>
-                      </MenuItem>
-                      <MenuItem value={10}>$</MenuItem>
-                      {/* <MenuItem value={20}>Twenty</MenuItem>
-                      <MenuItem value={30}>Thirty</MenuItem> */}
-                    </Select>
+          <Form.Group controlId="email" bssize="large">
+            <div className='formGroup'>
+
+              <H5 className='label-field'>Campaign Goal</H5>
+              <div className="formsDiv">
+                <Select
+                  labelId="demo-customized-select-label"
+                  className='selectClass'
+                  id="demo-customized-select"
+                  value={values.currencySymbol}
+                  name='currencySymbol'
+                  onChange={handleChange}
+                  input={<BootstrapInput />}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {currency.map(data => (
+                    <MenuItem value={data.id} key={data.id}>{data.symbol}</MenuItem>
+                  ))}
+                </Select>
 
 
 
-                    <Form.Control
-                      required
-                      className="form-input inputForm"
-                      placeholder="Enter amount here"
-                      type="text"
+                <Form.Control
+                  className="form-input inputForm"
+                  placeholder="Enter amount here"
+                  type="number"
+                  isInvalid={errors.amount}
+                  value={values.amount}
+                  name="amount"
+                  onChange={(event) => setFieldValue('amount', event.target.value)}
+                />
 
-                      onChange={(event) => setEmail(event.target.value)}
-                    />
-                  </div>
-                </Form.Group>
-
-
-                <Form.Group controlId="email" bssize="large" style={{ position: 'relative' }}>
-
-
-                  <Form.Control
-                    type="text"
-                    onChange={props.handleChange}
-                    value={props.values.title}
-                    name="title"
-                    placeholder="Campaign Title"
-                    className="inputForm"
-                  />
-                  {props.errors.title && <div id="feedback">{props.errors.title}</div>}
-                </Form.Group>
-                <Form.Group controlId="email" bssize="large" style={{ position: 'relative' }}>
-
-                  <Form.Control
-                    type="text"
-                    onChange={props.handleChange}
-                    value={props.values.address}
-                    name="address"
-                    placeholder="Address"
-                    className="inputForm"
-                  />
-                  {props.errors.address && <div id="feedback">{props.errors.address}</div>}
-                </Form.Group>
-                <Form.Group controlId="email" bssize="large" style={{ position: 'relative' }}>
-                  <MuiPickersUtilsProvider utils={DateFnsUtils} >
+              </div>
+            </div>
+            {errors.amount && <div style={{ color: 'red' }} id="feedback">{errors.amount}</div>}
+          </Form.Group>
 
 
-                    <KeyboardDatePicker
-                      fullWidth
-                      className="datePicker"
-                      id="date-picker-dialog"
-                      format="MM/dd/yyyy"
-                      // inputVariant="outlined"
-                      placeholder="Campaign Date"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
+          <Form.Group controlId="campaignTitle" bssize="large" style={{ position: 'relative' }}>
 
 
-                  </MuiPickersUtilsProvider>
-                </Form.Group>
+            <Form.Control
+              type="text"
+              isInvalid={errors.campaignTitle}
+              value={values.campaignTitle}
+              name="campaignTitle"
+              placeholder="Campaign Title"
+              className="inputForm"
+              onChange={(event) => setFieldValue('campaignTitle', event.target.value)}
+            />
+            {errors.campaignTitle && <Errors id="feedback">{errors.campaignTitle}</Errors>}
+          </Form.Group>
+          <Form.Group controlId="address" bssize="large" style={{ position: 'relative' }}>
 
-                <Form.Group controlId="email" bssize="large" >
+            <Form.Control
+              type="text"
+              isInvalid={errors.address}
+              value={values.address}
+              name="address"
+              placeholder="Address"
+              className="inputForm"
+              onChange={(event) => setFieldValue('address', event.target.value)}
+            />
+            {errors.address && <Errors id="feedback">{errors.address}</Errors>}
+          </Form.Group>
 
-                  <Select
-                    className="categoriesSelect"
-                    labelId="demo-customized-select-label"
-                    fullWidth
-                    // inputVariant="outlined"
-                    id="demo-customized-select"
-                    placeholder="Categories"
-                    value={age}
-                    onChange={handleChange}
-                    input={<BootstrapInput />}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    <MenuItem value={10}>Ten</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                  </Select>
-                </Form.Group>
-
-                <Form.Group controlId="email" bssize="large" style={{ textAlign: 'initial' }} >
-                  <div>Fundraiser as:</div>
-                  <div style={{ display: 'flex' }}>
-                    <div style={{ margin: '0 10px' }}>
-                      <GreenRadio
-                        checked={selectedValue === 'a'}
-                        onChange={handleRadioChange}
-                        value="a"
-                        name="radio-button-demo"
-                        label="Individual"
-                        inputProps={{ 'aria-label': 'a' }}
+          <Form.Group bssize="large" style={{ position: 'relative' }}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils} >
 
 
-                      />
-                      <span>Individual</span>
-                    </div>
-                    <div style={{ margin: '0 10px' }}>
-                      <GreenRadio
-                        checked={selectedValue === 'b'}
-                        onChange={handleRadioChange}
+              <KeyboardDatePicker
+                fullWidth
+                className="datePicker"
+                id="date-picker-dialog"
+                format="MM/dd/yyyy"
+                disablePast
+                isInvalid={errors.date}
 
-                        value="b"
-                        name="radio-button-demo"
-                        inputProps={{ 'aria-label': 'b' }}
-                      />
-                      <span>Charity</span>
-                    </div>
-                  </div>
-                </Form.Group>
-                <p style={{ textAlign: 'initial' }}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
+                // inputVariant="outlined"
+                placeholder="Campaign Date"
+                value={selectedDate}
+                onChange={handleDateChange}
+                KeyboardButtonProps={{
+                  'aria-label': 'change date',
+                }}
+              />
+
+
+            </MuiPickersUtilsProvider>
+            {errors.date && <Errors id="feedback">{errors.date}</Errors>}
+
+          </Form.Group>
+
+          <Form.Group controlId="categories" bssize="large" >
+
+            <Select
+              className="categoriesSelect"
+              labelId="demo-customized-select-label"
+              fullWidth
+              style={{ textAlign: 'initial' }}
+              name='categories'
+              id="demo-customized-select"
+              placeholder="Categories"
+              // isInvalid={errors.categories}
+
+              value={values.categories}
+              onChange={handleChangeCategories}
+              input={<BootstrapInput />}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {categories.map(data => (
+                <MenuItem value={data.id} name={data.name} key={data.id}>{data.name}</MenuItem>
+              ))}
+
+            </Select>
+            {errors.categories && <Errors id="feedback">{errors.categories}</Errors>}
+
+          </Form.Group>
+
+          <Form.Group controlId="radio-button-demo" bssize="large" style={{ textAlign: 'initial' }} >
+            <div>Fundraiser as:</div>
+            <div style={{ display: 'flex' }}>
+              <div style={{ margin: '0 10px' }}>
+                <GreenRadio
+                  checked={selectedValue === 'a'}
+                  onChange={handleRadioChange}
+                  value="a"
+                  name="radio-button-demo"
+                  label="Individual"
+                  inputProps={{ 'aria-label': 'a' }}
+
+
+                />
+                <span>Individual</span>
+              </div>
+              <div style={{ margin: '0 10px' }}>
+                <GreenRadio
+                  checked={selectedValue === 'b'}
+                  onChange={handleRadioChange}
+
+                  value="b"
+                  name="radio-button-demo"
+                  inputProps={{ 'aria-label': 'b' }}
+                />
+                <span>Charity</span>
+              </div>
+            </div>
+          </Form.Group>
+          <p style={{ textAlign: 'initial' }}>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam
                     </p>
 
-                <div style={{ textAlign: '-webkit-right' }}>
-                  <div className='campaignBtns'>
+          <div style={{ textAlign: '-webkit-right', marginBottom: '10px' }}>
+            <div className='campaignBtns'>
 
-                    <Button className="editCampaignBtn" >Preview</Button>
-                    <Button type="submit" className="viewCampaignBtn" >Save</Button>
-                  </div>
-                </div>
-              </div>
-            </form>
-          )}
-        </Formik>
+              {/* <Button className="editCampaignBtn" >Preview</Button> */}
+              <Button type="submit" className="viewCampaignBtn" >Save and Continue</Button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div >
   );

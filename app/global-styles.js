@@ -34,7 +34,7 @@ const GlobalStyle = createGlobalStyle`
 
   .form-control:valid{
     background-image: none !important;
-    box-shadow: 0 !important;
+    box-shadow: none;
   }
 `;
 
