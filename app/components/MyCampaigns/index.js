@@ -10,7 +10,7 @@ import React, { memo } from 'react';
 import { Row, Col, Card, ListGroup, Dropdown, Button, Container, ProgressBar } from 'react-bootstrap';
 import '../../containers/HomePage/dashboard.scss';
 import { Link } from 'react-router-dom';
-
+// import {HomePage} from '../../containers/HomePage/Loadable'
 function MyCampaigns() {
   return <div>
     <Card className="dataCard shadow mb-5 bg-white">
@@ -193,7 +193,7 @@ function MyCampaigns() {
       </Card.Body>
     </Card>
 
-  </div>;
+  </div>
 }
 
 MyCampaigns.propTypes = {};
