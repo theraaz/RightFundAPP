@@ -13,7 +13,7 @@ import { Formik } from 'formik';
 
 
 const SideBarCreateCampaign = ({ children }) => {
-  const [activeLink, setActiveLink] = useState(1);
+  const [activeLink, setActiveLink] = useState(0);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [campaignId, setCampaignId] = useState('');
   // const [imageBase64, setImageBase64] = useState('');
