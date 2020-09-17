@@ -143,7 +143,7 @@ const Form1 = ({ setFieldValue, values, errors, children, setActiveLink }) => {
         console.log(error)
       });;
 
-    fetch(`${process.env.baseURL}/categories`, requestOptions).then(response => response.json())
+    fetch(`${process.env.baseURL}/category`, requestOptions).then(response => response.json())
       .then(user => {
 
         console.log(user.response.data.res)
@@ -168,7 +168,49 @@ const Form1 = ({ setFieldValue, values, errors, children, setActiveLink }) => {
         <div className="mainForm">
 
           <Form.Group controlId="email" bssize="large">
-            <div className='formGroup'>
+            <Row>
+
+              <Col sm={3}>
+                <H5 className='label-field' style={{ marginTop: '13px' }}>Campaign Goal</H5>
+              </Col>
+              <Col sm={9}>
+                <Row>
+                  <div className='formsDiv'>
+                    <Col sm={2}>
+                      <Select
+                        labelId="demo-customized-select-label"
+                        className='selectClass'
+                        id="demo-customized-select"
+                        value={values.currencySymbol}
+                        name='currencySymbol'
+                        onChange={handleChange}
+                        input={<BootstrapInput />}
+                      >
+                        <MenuItem value="">
+                          <em>None</em>
+                        </MenuItem>
+                        {currency.map(data => (
+                          <MenuItem value={data.id} key={data.id}>{data.symbol}</MenuItem>
+                        ))}
+                      </Select>
+
+                    </Col>
+                    <Col sm={10}>
+                      <Form.Control
+                        className="form-input inputForm"
+                        placeholder="Enter amount here"
+                        type="number"
+                        isInvalid={errors.amount}
+                        value={values.amount}
+                        name="amount"
+                        onChange={(event) => setFieldValue('amount', event.target.value)}
+                      />
+                    </Col>
+                  </div>
+                </Row>
+              </Col>
+            </Row>
+            {/* <div className='formGroup'>
 
               <H5 className='label-field'>Campaign Goal</H5>
               <div className="formsDiv">
@@ -203,6 +245,7 @@ const Form1 = ({ setFieldValue, values, errors, children, setActiveLink }) => {
 
               </div>
             </div>
+             */}
             {errors.amount && <div style={{ color: 'red' }} id="feedback">{errors.amount}</div>}
           </Form.Group>
 

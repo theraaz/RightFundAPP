@@ -22,29 +22,34 @@
         margin-top: 12px;
         margin-right: 10px;
       }
+    }
 
-      .formsDiv {
-        border: 1px solid #ced4da;
-        width: 80%;
-        text-align: -webkit-right;
-        display: flex;
-        border-radius: 4px;
-        height: 42px;
+    .formsDiv {
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      width: 100%;
+      display: flex;
+      margin-right: 15px;
 
-        .selectClass {
-          border: none;
-          border-right: 1px solid #ced4da;
-          width: 80px;
-        }
-
-        .inputForm {
-          width: 100%;
-          padding: 0 10px;
-          border: none !important;
+      .selectClass {
+        border: none;
+        border-right: 1px solid #ced4da;
+        div {
           &:focus {
-            outline: 0;
-            box-shadow: none !important;
+            box-shadow: none;
+            border-color: transparent;
+            border-radius: 0;
+            background-color: transparent;
           }
+        }
+      }
+
+      .inputForm {
+        // padding: 0 10px;
+        border: none !important;
+        &:focus {
+          outline: 0;
+          box-shadow: none !important;
         }
       }
     }
@@ -130,6 +135,5 @@
         opacity: 0.8;
       }
     }
-  
   }
 }

@@ -92,7 +92,7 @@ const Form3 = ({ id, setActiveLink }) => {
       },
     };
 
-    fetch(`${process.env.baseURL}/packages/compaign/${id}`, requestOptions).then(response => response.json())
+    fetch(`${process.env.baseURL}/package/compaign/${id}`, requestOptions).then(response => response.json())
       .then(user => {
         console.log(user.response.data.res)
         console.log(user)
@@ -115,7 +115,7 @@ const Form3 = ({ id, setActiveLink }) => {
     };
 
 
-    fetch(`${process.env.baseURL}/packages`, requestOptions).then(response => response.json())
+    fetch(`${process.env.baseURL}/package`, requestOptions).then(response => response.json())
       .then(user => {
         console.log(user)
         setShowEnterPackaje(false);

@@ -4,7 +4,8 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
+import { Helmet } from 'react-helmet';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Row, Col, Card, ListGroup, Dropdown, Button, Container, ProgressBar } from 'react-bootstrap';
@@ -12,7 +13,35 @@ import '../../containers/HomePage/dashboard.scss';
 import { Link } from 'react-router-dom';
 // import {HomePage} from '../../containers/HomePage/Loadable'
 function MyCampaigns() {
+  const token = localStorage.getItem('token');
+  const [campaign, setCampaign] = React.useState([]);
+
+  useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': token
+      },
+    };
+
+    fetch(`${process.env.baseURL}/compaign`, requestOptions).then(response => response.json())
+      .then(user => {
+        console.log(user.response.data.res)
+        campaign
+      }).catch(error => {
+        console.log(error)
+      });
+
+  }, []);
+
+
+
   return <div>
+    <Helmet>
+      <title>Dashborad</title>
+      <meta name="description" content="Description of MyProfile" />
+    </Helmet>
     <Card className="dataCard shadow mb-5 bg-white">
       <Card.Header style={{ background: 'transparent' }}>
         <Card.Title className="campaignHeader">

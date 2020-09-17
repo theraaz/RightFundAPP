@@ -18,7 +18,7 @@ import { Title, Heading, Description, } from './styled';
 // import IconButton from '@material-ui/icons/IconButton';
 
 
-const Header = ({ children, title }) => {
+const Header = ({ children, title, firstName, lastName }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -46,7 +46,7 @@ const Header = ({ children, title }) => {
           <Image src={logo} fluid />
         </div>
         <div className="profile">
-          <Title style={{ margin: '7px 10px' }} onClick={handleClick}>Raza Ahmad</Title>
+          <Title style={{ margin: '7px 10px' }} onClick={handleClick}>{firstName} {lastName}</Title>
           <Menu
             id="simple-menu"
             anchorEl={anchorEl}

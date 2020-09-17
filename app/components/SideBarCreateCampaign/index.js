@@ -13,7 +13,7 @@ import { Formik } from 'formik';
 
 
 const SideBarCreateCampaign = ({ children }) => {
-  const [activeLink, setActiveLink] = useState(3);
+  const [activeLink, setActiveLink] = useState(0);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [campaignId, setCampaignId] = useState('');
 
@@ -34,7 +34,7 @@ const SideBarCreateCampaign = ({ children }) => {
       };
 
       console.log(event.amount.length)
-      fetch(`${process.env.baseURL}/compaigns/${campaignId}`, requestOptions).then(response => response.json())
+      fetch(`${process.env.baseURL}/compaign/${campaignId}`, requestOptions).then(response => response.json())
         .then(res => {
 
           console.log(res)
@@ -63,7 +63,7 @@ const SideBarCreateCampaign = ({ children }) => {
       };
 
       console.log(event.amount.length)
-      fetch(`${process.env.baseURL}/compaigns`, requestOptions).then(response => response.json())
+      fetch(`${process.env.baseURL}/compaign`, requestOptions).then(response => response.json())
         .then(res => {
           setCampaignId(res.response.data.id);
           console.log(res)
