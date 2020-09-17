@@ -1,5 +1,5 @@
 
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useRef } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Row, Col, ListGroup, Dropdown, Button, Container, ProgressBar } from 'react-bootstrap/'
@@ -13,41 +13,60 @@ import { Formik } from 'formik';
 
 
 const SideBarCreateCampaign = ({ children }) => {
-  const [activeLink, setActiveLink] = useState(0);
+  const [activeLink, setActiveLink] = useState(1);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [campaignId, setCampaignId] = useState('');
+  // const [imageBase64, setImageBase64] = useState('');
 
 
+  const getBase64 = (file, cb) => {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      cb(reader.result)
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+  }
 
   function handleSubmit(event) {
     const token = localStorage.getItem('token')
+    console.log(selectedFiles[0]);
 
     if (activeLink == 1) {
-      const requestOptions = {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'authorization': token
-        },
-        body: JSON.stringify({ zakatEligible: event.zakatEligible, description: event.editorValue, titleImage: event.selectedFiles })
+      // getBase64()
+      getBase64(selectedFiles[0], (result) => {
+        // console.log(result)
+        const requestOptions = {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'authorization': token
+          },
+          body: JSON.stringify({ zakatEligible: event.zakatEligible, description: event.editorValue, titleImage: result })
 
-      };
+        };
 
-      console.log(event.amount.length)
-      fetch(`${process.env.baseURL}/compaign/${campaignId}`, requestOptions).then(response => response.json())
-        .then(res => {
+        setActiveLink(2)
+        fetch(`${process.env.baseURL}/compaign/${campaignId}`, requestOptions).then(response => response.json())
+          .then(res => {
 
-          console.log(res)
+            console.log(res)
 
-        }).catch(error => {
-          console.log(error)
-        });
+          }).catch(error => {
+            console.log(error)
+          });
+
+
+      });
+
 
     }
-    if (activeLink == 2) {
+    else if (activeLink == 2) {
       setActiveLink(3)
     }
-    if (activeLink == 3) {
+    else if (activeLink == 3) {
       // setActiveLink(3)
       console.log('reached')
     }
@@ -114,13 +133,11 @@ const SideBarCreateCampaign = ({ children }) => {
 
 
     }
-    if (activeLink == 2) {
+    if (activeLink == 1) {
       if (!values.editorValue) {
-        errors.amount = 'Required';
+        errors.editorValue = 'Required';
       } else if (values.editorValue < 5) {
-        errors.amount = 'Enter amount';
-      } else if (!values.image) {
-        errors.amount = 'Required';
+        errors.editorValue = 'Enter Description';
       }
     }
     // if (!values.email) {

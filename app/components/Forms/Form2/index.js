@@ -93,7 +93,7 @@ const Form2 = ({ setFieldValue, values, errors, selectedFiles, setSelectedFiles,
                 <div className='campaignBtns'>
 
                   <Button className="editCampaignBtn" onClick={() => setActiveLink(0)} >Back</Button>
-                  <Button type="submit" className="viewCampaignBtn" onClick={() => setActiveLink(2)} >Save and Continue</Button>
+                  <Button type="submit" className="viewCampaignBtn" onClick={() => console.log(selectedFiles)} >Save and Continue</Button>
                 </div>
               </div>
             </div>
