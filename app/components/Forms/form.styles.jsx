@@ -11,11 +11,11 @@ export const Wrapper = styled.section`
 `;
 
 export const H4 = styled.h4`
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 600;
 `;
 export const H5 = styled.h5`
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
 `;
 

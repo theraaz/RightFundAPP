@@ -191,7 +191,7 @@
       font-size: 13px;
       font-weight: 700;
       display: inline-block;
-      margin-top: 0;
+      margin-top: 4px;
       color: #6a6a6a;
     }
 
@@ -280,7 +280,7 @@
     .viewCampaignBtn {
       background-color: #f15a24;
       border-color: #f2f2f2;
-      width: 100%;
+      // width: 100%;
       font-size: 11px;
       &:focus {
         box-shadow: none;

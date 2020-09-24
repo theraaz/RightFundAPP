@@ -6,12 +6,17 @@ export const Wrapper = styled.div`
 `;
 
 export const Chip = styled.div`
-  background: #efefef;
-  width: fit-content;
-  padding: 7px 10px;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
   margin-left: 10px;
+  height: 25px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #f15a25;
+  align-items: center;
+  margin-top: 5px;
 `;
 export const Heading = styled.h4`
   font-size: 16px;

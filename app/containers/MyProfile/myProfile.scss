@@ -1,21 +1,24 @@
 .updateProfileBtn {
   background-color: #f15a24;
-  border-color: #ced4da;
-  font-size: 15px;
+  border-color: #f15a24;
+  font-size: 14px;
   &:hover {
     background-color: #f15a24;
-    border-color: #ced4da;
+    border-color: #f15a24;
     opacity: 0.8;
   }
   &:focus {
     box-shadow: none !important;
-    border-color: #f2f2f2 !important;
+    border-color: #f15a24 !important;
     background-color: #f15a24 !important;
   }
   &:active {
     background-color: #f15a24 !important;
-    border-color: #ced4da;
+    border-color: #f15a24;
     color: black;
-    border-color: #f2f2f2 !important;
   }
+}
+.profile-icon {
+  width: 15px;
+  // height: 20px;
 }

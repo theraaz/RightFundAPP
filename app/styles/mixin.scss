@@ -1,4 +1,4 @@
-$small-desktop: 960px;
+$small-desktop: 1000px;
 $large-desktop: 1200px;
 $handheld: 768px;
 $handhelds-landscape: 1000px;
@@ -7,7 +7,7 @@ $mobile-landscape: 480px;
 
 @mixin respond-to($media) {
   @if $media == largeDesktop {
-    @media only screen and (min-width: $large-desktop) { @content }
+    @media only screen and (max-width: $large-desktop) { @content }
   }
   @if $media == smallDesktop {
     @media only screen and (max-width: $small-desktop) { @content; }

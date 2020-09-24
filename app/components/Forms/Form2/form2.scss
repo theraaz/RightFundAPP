@@ -1,3 +1,5 @@
+@import 'App/styles/mixin.scss';
+
 .main-form1 {
   text-align: center;
   margin: 30px 0 0 0;
@@ -5,6 +7,25 @@
   .main-heading {
     padding: 0 143px;
     margin-bottom: 30px;
+
+    @include respond-to(largeDesktop) {
+      // css code here
+      padding: 0 85px;
+    }
+    @include respond-to(smallDesktop) {
+      // css code here
+      padding: 0 35px;
+    }
+    @include respond-to(handhelds) {
+      // css code here
+      padding: 0;
+    }
+
+    .headingPara {
+      color: rgb(156, 156, 156);
+      margin-top: 20px;
+      margin-bottom: 45px;
+    }
   }
   .mainForm {
     display: flex;
@@ -13,16 +34,39 @@
     // text-align: center;
     margin: 0 auto;
 
+    @include respond-to(largeDesktop) {
+      // css code here
+      padding: 0 75px;
+    }
+    @include respond-to(smallDesktop) {
+      // css code here
+      padding: 0 35px;
+    }
+    @include respond-to(handhelds) {
+      // css code here
+      padding: 0;
+    }
+
+    .mce-container {
+      border-radius: 4px;
+      border-color: rgba(0, 0, 0, 0.05);
+
+      #mceu_23-body {
+        display: none !important;
+      }
+    }
+
     .mce-path-item {
       display: none !important;
     }
 
     .formGroupMain {
-      margin-top: 15px;
+      margin-top: 20px;
       text-align: initial;
 
       .toggle-custom {
         border: 1px solid;
+        border-color: rgba(0, 0, 0, 0.05);
         width: 234px;
         border-radius: 36px;
       }
@@ -31,15 +75,24 @@
         margin: 5px;
 
         background: #f15a24;
-        border-color: lightgray;
+        border-color: #f15a24;
+
+        &:focus{
+          outline: none;
+          box-shadow: none;
+        }
       }
       .toggle-unselectedBtn {
         border-radius: 36px;
         margin: 5px;
         // width: 50%;
         background: transparent;
-        color: lightgray;
+        color: #ababab;
         border-color: transparent;
+        &:focus{
+          outline: none;
+          box-shadow: none;
+        }
       }
     }
   }
@@ -153,5 +206,4 @@
       }
     }
   }
-
 }

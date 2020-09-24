@@ -1,3 +1,5 @@
+@import 'App/styles/mixin.scss';
+
 .main-form1 {
   text-align: center;
   margin: 30px 0 0 0;
@@ -5,6 +7,19 @@
   .main-heading {
     padding: 0 143px;
     margin-bottom: 30px;
+
+    @include respond-to(largeDesktop) {
+      // css code here
+      padding: 0 85px;
+    }
+    @include respond-to(smallDesktop) {
+      // css code here
+      padding: 0 35px;
+    }
+    @include respond-to(handhelds) {
+      // css code here
+      padding: 0;
+    }
   }
 
   .mainForm {
@@ -13,6 +28,19 @@
     padding: 0 130px;
     // text-align: center;
     margin: 0 auto;
+
+    @include respond-to(largeDesktop) {
+      // css code here
+      padding: 0 75px;
+    }
+    @include respond-to(smallDesktop) {
+      // css code here
+      padding: 0 35px;
+    }
+    @include respond-to(handhelds) {
+      // css code here
+      padding: 0;
+    }
 
     .formGroup {
       position: relative;
@@ -25,15 +53,30 @@
     }
 
     .formsDiv {
-      border: 1px solid #ced4da;
+      border: 1px solid #e9e9e9;
       border-radius: 4px;
       width: 100%;
       display: flex;
       margin-right: 15px;
 
+      @include respond-to(mobile) {
+        // css code here
+        margin-left: 15px;
+      }
+
+      .selection-col-div {
+        border-right: 1px solid #e9e9e9;
+
+        @include respond-to(mobile) {
+          // css code here
+          width: min-content;
+        }
+      }
       .selectClass {
         border: none;
-        border-right: 1px solid #ced4da;
+        font-size: 16px;
+        font-weight: 600;
+
         div {
           &:focus {
             box-shadow: none;
@@ -51,18 +94,31 @@
           outline: 0;
           box-shadow: none !important;
         }
+        &::-webkit-input-placeholder {
+          color: #9c9c9c;
+        }
       }
+    }
+  }
+
+  .controlForm {
+    border: 1px solid #e9e9e9;
+
+    &::-webkit-input-placeholder {
+      color: #9c9c9c;
+      font: 13px;
     }
   }
   .categoriesSelect {
     div {
-      border: 1px solid #ced4da;
+      border: 1px solid #e9e9e9;
+      padding: 8px 26px 8px 12px;
       border-radius: 4px;
       box-shadow: none;
     }
   }
   .datePicker {
-    border: 1px solid #ced4da;
+    border: 1px solid #e9e9e9;
     border-radius: 4px;
     font-family: 'Ubuntu', sans-serif;
     div {
@@ -76,7 +132,21 @@
         outline: 0 !important;
       }
       input {
-        padding: 10.5px 14px !important;
+        padding: 8px 12px !important;
+        &::-webkit-input-placeholder {
+          color: #9c9c9c;
+          opacity: 1;
+        }
+      }
+
+      button {
+        color: #e9e9e9;
+        &:hover {
+          background-color: transparent;
+        }
+        &:focus {
+          outline: none !important;
+        }
       }
     }
 
@@ -119,17 +189,16 @@
     height: 40px;
 
     .viewCampaignBtn {
-      background-color: #f15a24;
-      border-color: #f2f2f2;
-      width: 100%;
-      font-size: 14px;
+      background-color: #f15a25;
+      width: 98%;
+      font-size: 13px;
+
       &:focus {
-        box-shadow: none;
+        box-shadow: none !important;
       }
       &:active {
         background: white;
         color: black;
-        border-color: #f2f2f2;
       }
       &:hover {
         opacity: 0.8;

@@ -7,7 +7,7 @@ export const Wrapper = styled.section`
   justify-content: center;
   display: flex;
   flex-flow: column;
-  background: #efefef;
+  background: #f7faff;
 `;
 
 export const Title = styled.h5`

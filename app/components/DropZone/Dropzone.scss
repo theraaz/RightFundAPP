@@ -25,12 +25,12 @@
 }
 
 .upload-icon {
-    width: 50px;
-    height: 50px;
-    background-size: 100%;
-    text-align: center;
-    margin: 0 auto;
-    padding-top: 0px;
+  width: 50px;
+  height: 50px;
+  background-size: 100%;
+  text-align: center;
+  margin: 0 auto;
+  padding-top: 0px;
 }
 
 .drop-message {
@@ -65,6 +65,7 @@
 }
 
 .file-display-container {
+  display: none;
 }
 
 .file-status-bar {
@@ -148,29 +149,31 @@
   z-index: 999;
   display: none;
   overflow: hidden;
+  position: absolute;
 }
 
 .modal .overlay {
-  width: 100%;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.66);
-  position: absolute;
-  top: 0;
-  left: 0;
+  // width: 100%;
+  // height: 100vh;
+  // background: rgba(0, 0, 0, 0.66);
+  // position: absolute;
+  // top: 0;
+  // left: 0;
 }
 
 .modal .modal-image {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  overflow: hidden;
-  object-fit: cover;
+  // position: absolute;
+  // top: 50%;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
+  // overflow: hidden;
+  // object-fit: cover;
   width: 100%;
-  height: 300px;
+  height: 200px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  background-color: #f0f0f0;
 }
 
 .modal-image-text {
@@ -184,12 +187,14 @@
 
 .close {
   position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
+  // top: 15px;
+  right: 0;
+  color: red;
   transition: 0.3s;
+
+  svg {
+    width: 20px;
+  }
 }
 
 .upload-modal {
