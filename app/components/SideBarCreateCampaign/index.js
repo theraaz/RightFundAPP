@@ -18,7 +18,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
   console.log(editCampaignData.editCampaignData);
 
   const getBase64 = (file, cb) => {
-    if (editCampaignData.editCampaignData != undefined) {
+    if (event.base64) {
       cb(event.base64);
     } else {
       const reader = new FileReader();
@@ -52,7 +52,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
             titleImage: result,
           }),
         };
-        debugger
+        
         if (editCampaignData.editCampaignData != undefined) {
           fetch(`${process.env.baseURL}/campaign/${editCampaignData.editCampaignData.id}`, requestOptions)
             .then(response => response.json())

@@ -7,24 +7,16 @@
 import React, { memo, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import {
-  Row,
-  Col,
-  Card,
-  Button,
-  Spinner,
-
-} from 'react-bootstrap';
+import { Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import './form3.scss';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
-import { CustomHeading, CustomHeadingNum, H4 } from '../form.styles';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
 import Menu from '@material-ui/core/Menu';
-
+import { CustomHeading, CustomHeadingNum, H4 } from '../form.styles';
 
 const BootstrapInput = withStyles(theme => ({
   root: {
@@ -72,7 +64,7 @@ const Form3 = ({ id, setActiveLink }) => {
   const [packageId, setPackageId] = React.useState(null);
   const [packageData, setPackageData] = React.useState(null);
 
-  const handleClick = (data) => event => {
+  const handleClick = data => event => {
     setAnchorEl(event.currentTarget);
     setPackageData(data);
   };
@@ -95,7 +87,7 @@ const Form3 = ({ id, setActiveLink }) => {
   };
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     console.log(id);
     const requestOptions = {
       method: 'GET',
@@ -129,7 +121,6 @@ const Form3 = ({ id, setActiveLink }) => {
     };
     setLoading(true);
 
-
     fetch(`${process.env.baseURL}/package/campaign/${id}`, requestOptions)
       .then(response => response.json())
       .then(user => {
@@ -149,7 +140,7 @@ const Form3 = ({ id, setActiveLink }) => {
     setTitle('');
     setDescription('');
     setAmount('');
-    setPackageId('')
+    setPackageId('');
   }
 
   function addPackaje() {
@@ -177,19 +168,15 @@ const Form3 = ({ id, setActiveLink }) => {
             handleClickVariant('success', user.response.message);
             getAllPackages();
             resetValue();
-
           } else {
             handleClickVariant('error', user.response.message);
           }
           console.log(user);
-
         })
         .catch(error => {
           console.log(error);
         });
-    }
-    else {
-
+    } else {
       const requestOptions = {
         method: 'POST',
         headers: {
@@ -215,19 +202,16 @@ const Form3 = ({ id, setActiveLink }) => {
 
           if (user.statusCode == 200) {
             handleClickVariant('success', user.response.message);
-
           } else {
             handleClickVariant('error', user.response.message);
           }
           console.log(user);
-
         })
         .catch(error => {
           console.log(error);
         });
     }
   }
-
 
   function edit() {
     setEditPackage(true);
@@ -237,9 +221,7 @@ const Form3 = ({ id, setActiveLink }) => {
     setAmount(packageData.amount);
     setSelectedCurrency(packageData.amountSymbolId.id);
     handleClose();
-    setPackageId(packageData.id)
-
-
+    setPackageId(packageData.id);
   }
 
   function deletePackage() {
@@ -249,7 +231,7 @@ const Form3 = ({ id, setActiveLink }) => {
       headers: {
         'Content-Type': 'application/json',
         authorization: token,
-      }
+      },
     };
     setLoading(true);
 
@@ -260,12 +242,10 @@ const Form3 = ({ id, setActiveLink }) => {
         if (user.statusCode == 200) {
           handleClickVariant('success', user.response.message);
           getAllPackages();
-
         } else {
           handleClickVariant('error', user.response.message);
         }
         console.log(user);
-
       })
       .catch(error => {
         console.log(error);
@@ -274,7 +254,6 @@ const Form3 = ({ id, setActiveLink }) => {
 
   return (
     <div>
-
       <div className="main-form1">
         <div className="main-heading">
           <H4>Campaign Packages</H4>
@@ -288,20 +267,62 @@ const Form3 = ({ id, setActiveLink }) => {
 
         <div className="mainForm">
           <Row>
-            {loading ? <div className='col-12' style={{ alignItems: 'center', width: '100%', justifyContent: 'center', display: 'flex', height: '150px' }}>
-              <Spinner animation="border" />
-            </div> :
+            {loading ? (
+              <div
+                className="col-12"
+                style={{
+                  alignItems: 'center',
+                  width: '100%',
+                  justifyContent: 'center',
+                  display: 'flex',
+                  height: '150px',
+                }}
+              >
+                <Spinner animation="border" />
+              </div>
+            ) : (
               packages.map(data => (
                 <Col key={data.id} sm={6} style={{ marginBottom: '30px' }}>
                   <Card className="defined-payments">
                     <div className="card-heading-inner">
                       <CustomHeading>{data.title}</CustomHeading>
-                      <CustomHeadingNum>{data.amountSymbolId.symbol} {data.amount}
-
+                      <CustomHeadingNum>
+                        {data.amountSymbolId.symbol} {data.amount}
                       </CustomHeadingNum>
                     </div>
-                    <span className='menuIcon' onClick={handleClick(data)}>
-                      <svg version="1.1" id="Capa_1" width='15px' y="0px" viewBox="0 0 512 512"><g><g><g><circle cx="256" cy="256" r="64" /><circle cx="256" cy="448" r="64" /><circle cx="256" cy="64" r="64" /></g></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+                    <span className="menuIcon" onClick={handleClick(data)}>
+                      <svg
+                        version="1.1"
+                        id="Capa_1"
+                        width="15px"
+                        y="0px"
+                        viewBox="0 0 512 512"
+                      >
+                        <g>
+                          <g>
+                            <g>
+                              <circle cx="256" cy="256" r="64" />
+                              <circle cx="256" cy="448" r="64" />
+                              <circle cx="256" cy="64" r="64" />
+                            </g>
+                          </g>
+                        </g>
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                        <g />
+                      </svg>
                     </span>
                     <Menu
                       id="simple-menu"
@@ -310,22 +331,25 @@ const Form3 = ({ id, setActiveLink }) => {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                       getContentAnchorEl={null}
-                      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'center',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'center',
+                      }}
                     >
-                      <MenuItem onClick={edit}>
-                        Edit
-                    </MenuItem>
-                      <MenuItem onClick={ deletePackage}>
-                        Delete
-                    </MenuItem>
+                      <MenuItem onClick={edit}>Edit</MenuItem>
+                      <MenuItem onClick={deletePackage}>Delete</MenuItem>
                     </Menu>
                     <div style={{ textAlign: 'initial' }}>
                       <p>{data.description}</p>
                     </div>
                   </Card>
                 </Col>
-              ))}
+              ))
+            )}
           </Row>
           <div>
             <Button
@@ -447,7 +471,7 @@ const Form3 = ({ id, setActiveLink }) => {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

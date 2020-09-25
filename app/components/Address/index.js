@@ -4,7 +4,7 @@
  *
  */
 
-import React,{memo} from 'react';
+import React, { memo } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
@@ -28,14 +28,14 @@ function loadScript(src, position, id) {
 
 const autocompleteService = { current: null };
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   icon: {
     color: theme.palette.text.secondary,
     marginRight: theme.spacing(2),
   },
 }));
 
-function Address({setFieldValue}) {
+function Address({ setFieldValue }) {
   const classes = useStyles();
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
@@ -77,7 +77,7 @@ function Address({setFieldValue}) {
       return undefined;
     }
 
-    fetch({ input: inputValue }, (results) => {
+    fetch({ input: inputValue }, results => {
       if (active) {
         let newOptions = [];
 
@@ -152,13 +152,15 @@ function Address({setFieldValue}) {
     // );
     // setOptions(newValue ? [newValue, ...options] : options);
     // setValue(newValue);
-  }
+  };
   return (
     <Autocomplete
       id="google-map-demo"
       style={{ width: 300 }}
-      getOptionLabel={(option) => (typeof option === 'string' ? option : option.description)}
-      filterOptions={(x) => x}
+      getOptionLabel={option =>
+        typeof option === 'string' ? option : option.description
+      }
+      filterOptions={x => x}
       options={options}
       autoComplete
       includeInputInList
@@ -168,14 +170,20 @@ function Address({setFieldValue}) {
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
-      renderInput={(params) => (
-        <TextField {...params} label="Add a location" variant="outlined" fullWidth />
+      renderInput={params => (
+        <TextField
+          {...params}
+          label="Add a location"
+          variant="outlined"
+          fullWidth
+        />
       )}
-      renderOption={(option) => {
-        const matches = option.structured_formatting.main_text_matched_substrings;
+      renderOption={option => {
+        const matches =
+          option.structured_formatting.main_text_matched_substrings;
         const parts = parse(
           option.structured_formatting.main_text,
-          matches.map((match) => [match.offset, match.offset + match.length]),
+          matches.map(match => [match.offset, match.offset + match.length]),
         );
 
         return (
@@ -185,7 +193,10 @@ function Address({setFieldValue}) {
             </Grid>
             <Grid item xs>
               {parts.map((part, index) => (
-                <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+                <span
+                  key={index}
+                  style={{ fontWeight: part.highlight ? 700 : 400 }}
+                >
                   {part.text}
                 </span>
               ))}
@@ -199,7 +210,6 @@ function Address({setFieldValue}) {
       }}
     />
   );
-
 }
 
 Address.propTypes = {};

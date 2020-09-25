@@ -134,7 +134,8 @@ function MyCampaigns() {
                           <span>100%</span>
                         </div>
                       </div>
-                      <Card.Text className='descriptionCampaign'
+                      <Card.Text
+                        className="descriptionCampaign"
                         dangerouslySetInnerHTML={{ __html: data.description }}
                       />
                       <ul className="campign-info">

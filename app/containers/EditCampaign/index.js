@@ -14,7 +14,7 @@ import SideBarCreateCampaign from '../../components/SideBarCreateCampaign/Loadab
 import Footer from '../../components/Footer/Loadable';
 
 export function EditCampaign(props) {
-  console.log('id', props.match.params.id)
+  console.log('id', props.match.params.id);
   const [editCampaignData, setEditCampaignData] = useState(null);
   const token = localStorage.getItem('token');
 
@@ -27,7 +27,10 @@ export function EditCampaign(props) {
       },
     };
 
-    fetch(`${process.env.baseURL}/campaign/${props.match.params.id}`, requestOptions)
+    fetch(
+      `${process.env.baseURL}/campaign/${props.match.params.id}`,
+      requestOptions,
+    )
       .then(response => response.json())
       .then(user => {
         console.log(user.response.data.res);

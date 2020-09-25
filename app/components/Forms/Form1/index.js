@@ -80,13 +80,19 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Form1 = ({ setFieldValue, values, errors, children, setActiveLink, loading }) => {
+const Form1 = ({
+  setFieldValue,
+  values,
+  errors,
+  children,
+  setActiveLink,
+  loading,
+}) => {
   const classes = useStyles();
 
   const [currency, setCurrency] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('a');
-
 
   const handleRadioChange = event => {
     setFieldValue('fundraiser', event.target.value);
@@ -101,7 +107,7 @@ const Form1 = ({ setFieldValue, values, errors, children, setActiveLink, loading
   };
 
   const handleChange = event => {
-    console.log(event.target.value)
+    console.log(event.target.value);
     setFieldValue('currencySymbol', event.target.value);
   };
 
@@ -355,7 +361,6 @@ const Form1 = ({ setFieldValue, values, errors, children, setActiveLink, loading
                 {' '}
                 {loading == false && <div> Save and Continue</div>}
                 {loading && <Spinner animation="border" size="sm" />}{' '}
-
               </Button>
             </div>
           </div>
