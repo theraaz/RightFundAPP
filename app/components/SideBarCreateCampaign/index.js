@@ -1,48 +1,45 @@
-import React, { memo, useState, useRef } from 'react';
+import React, { memo, useState } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import {
-  Row,
-  Col,
-  ListGroup,
-  Dropdown,
-  Button,
-  Container,
-  ProgressBar,
-} from 'react-bootstrap/';
+import { Row, Col, ListGroup, Container } from 'react-bootstrap/';
 import './sideCampaign.scss';
 import { Formik } from 'formik';
 import Form1 from '../Forms/Form1/Loadable';
 import Form2 from '../Forms/Form2/Loadable';
 import Form3 from '../Forms/Form3/Loadable';
 import Form4 from '../Forms/Form4/index';
-// const [selectedFiles, setSelectedFiles] = useState([]);
 
-const SideBarCreateCampaign = ({ children }) => {
+const SideBarCreateCampaign = (editCampaignData) => {
   const [activeLink, setActiveLink] = useState(0);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [campaignId, setCampaignId] = useState('');
-  // const [imageBase64, setImageBase64] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  console.log(editCampaignData.editCampaignData);
 
   const getBase64 = (file, cb) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = function() {
-      cb(reader.result);
-    };
-    reader.onerror = function(error) {
-      console.log('Error: ', error);
-    };
+    if (editCampaignData.editCampaignData != undefined) {
+      cb(event.base64);
+    } else {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = function () {
+        cb(reader.result);
+      };
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+      };
+    }
+
   };
 
   function handleSubmit(event) {
+    console.log(event)
     const token = localStorage.getItem('token');
-    console.log(selectedFiles[0]);
+    setLoading(true);
+    if (activeLink === 1) {
 
-    if (activeLink == 1) {
-      // getBase64()
       getBase64(selectedFiles[0], result => {
-        // console.log(result)
         const requestOptions = {
           method: 'PUT',
           headers: {
@@ -55,50 +52,102 @@ const SideBarCreateCampaign = ({ children }) => {
             titleImage: result,
           }),
         };
+        debugger
+        if (editCampaignData.editCampaignData != undefined) {
+          fetch(`${process.env.baseURL}/campaign/${editCampaignData.editCampaignData.id}`, requestOptions)
+            .then(response => response.json())
+            .then(res => {
+              setLoading(false);
+              console.log(res)
+              setActiveLink(2);
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
+        else {
+          fetch(`${process.env.baseURL}/campaign/${campaignId}`, requestOptions)
+            .then(response => response.json())
+            .then(() => {
+              setLoading(false);
+              setActiveLink(2);
+            })
+            .catch(error => {
+              console.log(error);
+            });
+        }
 
-        fetch(`${process.env.baseURL}/compaign/${campaignId}`, requestOptions)
+      });
+    } else if (activeLink === 2) {
+      setLoading(false);
+      setActiveLink(3);
+    } else if (activeLink === 3) {
+      setLoading(false);
+      // setActiveLink(3)
+      console.log('reached');
+    } else {
+      if (editCampaignData.editCampaignData != undefined) {
+        const requestOptions = {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: token,
+          },
+          body: JSON.stringify({
+            title: event.campaignTitle,
+            amount: event.amount,
+            address: event.address,
+            endDate: event.date,
+            categoryId: event.categories,
+            amountSymbolId: event.currencySymbol,
+          }),
+        };
+        console.log(editCampaignData.editCampaignData)
+
+        fetch(`${process.env.baseURL}/campaign/${editCampaignData.editCampaignData.id}`, requestOptions)
           .then(response => response.json())
           .then(res => {
-            setActiveLink(2);
+            setLoading(false);
+            // setCampaignId(res.response.data.id);
             console.log(res);
+            setActiveLink(1);
           })
           .catch(error => {
             console.log(error);
           });
-      });
-    } else if (activeLink == 2) {
-      setActiveLink(3);
-    } else if (activeLink == 3) {
-      // setActiveLink(3)
-      console.log('reached');
-    } else {
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: token,
-        },
-        body: JSON.stringify({
-          title: event.campaignTitle,
-          amount: event.amount,
-          address: event.address,
-          endDate: event.date,
-          categoryId: event.categories,
-          amountSymbolId: event.currencySymbol,
-        }),
-      };
 
-      console.log(event.amount.length);
-      fetch(`${process.env.baseURL}/compaign`, requestOptions)
-        .then(response => response.json())
-        .then(res => {
-          setCampaignId(res.response.data.id);
-          console.log(res);
-          setActiveLink(1);
-        })
-        .catch(error => {
-          console.log(error);
-        });
+
+
+      } else {
+        const requestOptions = {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: token,
+          },
+          body: JSON.stringify({
+            title: event.campaignTitle,
+            amount: event.amount,
+            address: event.address,
+            endDate: event.date,
+            categoryId: event.categories,
+            amountSymbolId: event.currencySymbol,
+          }),
+        };
+
+        fetch(`${process.env.baseURL}/campaign`, requestOptions)
+          .then(response => response.json())
+          .then(res => {
+            setLoading(false);
+            setCampaignId(res.response.data.id);
+            console.log(res);
+            setActiveLink(1);
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      }
+
     }
     console.log(event);
   }
@@ -130,7 +179,7 @@ const SideBarCreateCampaign = ({ children }) => {
         errors.categories = 'Select Categories';
       }
     }
-    if (activeLink == 1) {
+    if (activeLink === 1) {
       if (!values.editorValue) {
         errors.editorValue = 'Required';
       } else if (values.editorValue < 5) {
@@ -160,23 +209,20 @@ const SideBarCreateCampaign = ({ children }) => {
               >
                 <ListGroup.Item
                   className="listItem"
-                  //  onClick={() => setActiveLink(0)}
+                //  onClick={() => setActiveLink(0)}
                 >
                   {console.log(activeLink)}
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${
-                      activeLink === 0 ? '' : ''
-                    }`}
+                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 0 ? '' : ''
+                      }`}
                   >
                     <div
-                      className={`${
-                        activeLink === 0 ? 'iconImageActive' : 'iconImage'
-                      }`}
+                      className={`${activeLink === 0 ? 'iconImageActive' : 'iconImage'
+                        }`}
                     >
                       <span
-                        className={`${
-                          activeLink === 0 ? 'tagNumberActive' : 'tagNumber'
-                        }`}
+                        className={`${activeLink === 0 ? 'tagNumberActive' : 'tagNumber'
+                          }`}
                       >
                         {' '}
                         01
@@ -184,11 +230,10 @@ const SideBarCreateCampaign = ({ children }) => {
                     </div>
 
                     <span
-                      className={`${
-                        activeLink === 0
-                          ? 'sidebartitleListActive'
-                          : 'sidebartitleList'
-                      }`}
+                      className={`${activeLink === 0
+                        ? 'sidebartitleListActive'
+                        : 'sidebartitleList'
+                        }`}
                     >
                       Campaign Information
                     </span>
@@ -198,32 +243,28 @@ const SideBarCreateCampaign = ({ children }) => {
                 {/* <div className='line'></div> */}
                 <ListGroup.Item
                   className="listItem"
-                  // onClick={() => setActiveLink(1)}
+                // onClick={() => setActiveLink(1)}
                 >
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${
-                      activeLink === 1 ? '' : ''
-                    }`}
+                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 1 ? '' : ''
+                      }`}
                   >
                     <div
-                      className={`${
-                        activeLink === 1 ? 'iconImageActive' : 'iconImage'
-                      }`}
+                      className={`${activeLink === 1 ? 'iconImageActive' : 'iconImage'
+                        }`}
                     >
                       <span
-                        className={`${
-                          activeLink === 1 ? 'tagNumberActive' : 'tagNumber'
-                        }`}
+                        className={`${activeLink === 1 ? 'tagNumberActive' : 'tagNumber'
+                          }`}
                       >
                         02
                       </span>
                     </div>
                     <span
-                      className={`${
-                        activeLink === 1
-                          ? 'sidebartitleListActive'
-                          : 'sidebartitleList'
-                      }`}
+                      className={`${activeLink === 1
+                        ? 'sidebartitleListActive'
+                        : 'sidebartitleList'
+                        }`}
                     >
                       Tell your story
                     </span>
@@ -233,32 +274,28 @@ const SideBarCreateCampaign = ({ children }) => {
 
                 <ListGroup.Item
                   className="listItem"
-                  // onClick={() => setActiveLink(2)}
+                // onClick={() => setActiveLink(2)}
                 >
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${
-                      activeLink === 2 ? '' : ''
-                    }`}
+                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 2 ? '' : ''
+                      }`}
                   >
                     <div
-                      className={`${
-                        activeLink === 2 ? 'iconImageActive' : 'iconImage'
-                      }`}
+                      className={`${activeLink === 2 ? 'iconImageActive' : 'iconImage'
+                        }`}
                     >
                       <span
-                        className={`${
-                          activeLink === 2 ? 'tagNumberActive' : 'tagNumber'
-                        }`}
+                        className={`${activeLink === 2 ? 'tagNumberActive' : 'tagNumber'
+                          }`}
                       >
                         03
                       </span>
                     </div>
                     <span
-                      className={`${
-                        activeLink === 2
-                          ? 'sidebartitleListActive'
-                          : 'sidebartitleList'
-                      }`}
+                      className={`${activeLink === 2
+                        ? 'sidebartitleListActive'
+                        : 'sidebartitleList'
+                        }`}
                     >
                       Campaign Packages
                     </span>
@@ -268,32 +305,28 @@ const SideBarCreateCampaign = ({ children }) => {
 
                 <ListGroup.Item
                   className="listItem"
-                  //  onClick={() => setActiveLink(3)}
+                //  onClick={() => setActiveLink(3)}
                 >
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${
-                      activeLink === 3 ? '' : ''
-                    }`}
+                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 3 ? '' : ''
+                      }`}
                   >
                     <div
-                      className={`${
-                        activeLink === 3 ? 'iconImageActive' : 'iconImage'
-                      }`}
+                      className={`${activeLink === 3 ? 'iconImageActive' : 'iconImage'
+                        }`}
                     >
                       <span
-                        className={`${
-                          activeLink === 3 ? 'tagNumberActive' : 'tagNumber'
-                        }`}
+                        className={`${activeLink === 3 ? 'tagNumberActive' : 'tagNumber'
+                          }`}
                       >
                         04
                       </span>
                     </div>
                     <span
-                      className={`${
-                        activeLink === 3
-                          ? 'sidebartitleListActive'
-                          : 'sidebartitleList'
-                      }`}
+                      className={`${activeLink === 3
+                        ? 'sidebartitleListActive'
+                        : 'sidebartitleList'
+                        }`}
                     >
                       Campaign Status{' '}
                     </span>
@@ -304,18 +337,30 @@ const SideBarCreateCampaign = ({ children }) => {
             </Col>
             <Col md={9} sm={12} className="formsMain">
               <Formik
-                initialValues={{
-                  currencySymbol: '',
+                initialValues={editCampaignData.editCampaignData ? {
+                  currencySymbol: editCampaignData.editCampaignData.amountSymbolId.id,
                   fundraiser: '',
-                  date: null,
-                  campaignTitle: '',
-                  address: '',
-                  categories: '',
-                  amount: null,
-                  editorValue: '',
-                  zakatEligible: false,
-                  image: [],
-                }}
+                  date: editCampaignData.editCampaignData.endDate,
+                  campaignTitle: editCampaignData.editCampaignData.title,
+                  address: editCampaignData.editCampaignData.address,
+                  categories: editCampaignData.editCampaignData.categoryId.id,
+                  amount: editCampaignData.editCampaignData.amount,
+                  editorValue: editCampaignData.editCampaignData.description,
+                  zakatEligible: editCampaignData.editCampaignData.zakatEligible,
+                  base64: editCampaignData.editCampaignData.titleImage
+                } : {
+                    currencySymbol: 1,
+                    fundraiser: '',
+                    date: null,
+                    campaignTitle: '',
+                    address: '',
+                    categories: '',
+                    amount: null,
+                    editorValue: '',
+                    zakatEligible: false,
+                    image: [],
+                  }}
+                enableReinitialize
                 validate={validate}
                 validateOnChange={false}
                 validateOnBlur={false}
@@ -329,6 +374,7 @@ const SideBarCreateCampaign = ({ children }) => {
                         setFieldValue={props.setFieldValue}
                         values={props.values}
                         errors={props.errors}
+                        loading={loading}
                       />
                     )}
                     {activeLink === 1 && (
@@ -339,6 +385,8 @@ const SideBarCreateCampaign = ({ children }) => {
                         errors={props.errors}
                         selectedFiles={selectedFiles}
                         setSelectedFiles={setSelectedFiles}
+                        loading={loading}
+
                       />
                     )}
                     {activeLink === 2 && (
@@ -350,6 +398,7 @@ const SideBarCreateCampaign = ({ children }) => {
                   </form>
                 )}
               </Formik>
+
             </Col>
           </div>
         </Row>

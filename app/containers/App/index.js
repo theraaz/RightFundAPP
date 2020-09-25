@@ -29,7 +29,8 @@ export default function App() {
         <LoginRoute exact path="/signup" component={Signup} />
         <LoginRoute exact path="/forgetPassword" component={forgetPass} />
         <AuthRoute exact path="/createCampaign" component={CreateCampaign} />
-        <AuthRoute exact path="/editCampaign" component={EditCampaign} />
+        {/* <AuthRoute exact path="/editCampaign" component={EditCampaign} /> */}
+        <AuthRoute exact path="/editCampaign/:id" component={EditCampaign} />
         <LoginRoute exact path="/resetPassword" component={ResetPassword} />
         <LoginRoute exact path="/accountVerify" component={AccountVerify} />
         {/* <LoginRoute exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} /> */}

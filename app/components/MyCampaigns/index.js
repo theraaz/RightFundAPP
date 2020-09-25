@@ -34,7 +34,7 @@ function MyCampaigns() {
       },
     };
 
-    fetch(`${process.env.baseURL}/compaign`, requestOptions)
+    fetch(`${process.env.baseURL}/campaign`, requestOptions)
       .then(response => response.json())
       .then(user => {
         console.log(user.response.data.res);
@@ -134,7 +134,7 @@ function MyCampaigns() {
                           <span>100%</span>
                         </div>
                       </div>
-                      <Card.Text
+                      <Card.Text className='descriptionCampaign'
                         dangerouslySetInnerHTML={{ __html: data.description }}
                       />
                       <ul className="campign-info">
@@ -158,7 +158,7 @@ function MyCampaigns() {
                           View Campaign
                         </Button>
                         {/* <Button className="editCampaignBtn" >Edit Campaign</Button> */}
-                        <Link to="/editCampaign">
+                        <Link to={`/editCampaign/${data.id}`}>
                           <Button className="editCampaignBtn">
                             Edit Campaign
                           </Button>{' '}

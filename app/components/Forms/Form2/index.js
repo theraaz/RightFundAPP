@@ -19,20 +19,19 @@ const Form2 = ({
   selectedFiles,
   setSelectedFiles,
   setActiveLink,
+  loading,
 }) => {
-  const [zakatEligible, setZakatEligible] = React.useState('');
+
   const [btnSelected, setBtnSelected] = React.useState(false);
 
   const handleEditorChange = event => {
-    console.log(event.target.getContent());
     setFieldValue('editorValue', event.target.getContent());
   };
 
-  const doStuffWhenFileChanges = event => {
-    event.preventDefault();
-    console.log(tinyMCE, event);
-    tinyMCE.context.execCommand('mceInsertContent', false, 'Hello');
-  };
+
+  const handleImage = event => {
+    setFieldValue('base64', null)
+  }
 
   return (
     <div>
@@ -57,7 +56,7 @@ const Form2 = ({
                 'undo redo | bold italic | alignleft aligncenter alignright | media image link',
             }}
             name="editorValue"
-            // value={editorValue}
+            value={values.editorValue}
             onChange={handleEditorChange}
           />
 
@@ -71,6 +70,8 @@ const Form2 = ({
                   type="checkbox"
                   className="remberMeLabel"
                   label="Yes, this campaign is zakat eligible."
+                  value={values.zakatEligible}
+                  checked={values.editorValue}
                   onChange={e =>
                     setFieldValue('zakatEligible', e.target.checked)
                   }
@@ -89,11 +90,10 @@ const Form2 = ({
                 <div className="toggle-custom">
                   <Button
                     style={{ width: '41%' }}
-                    className={`${
-                      btnSelected
-                        ? 'toggle-unselectedBtn'
-                        : 'toggle-selectedBtn'
-                    } `}
+                    className={`${btnSelected
+                      ? 'toggle-unselectedBtn'
+                      : 'toggle-selectedBtn'
+                      } `}
                     onClick={() => setBtnSelected(false)}
                   >
                     {' '}
@@ -101,11 +101,10 @@ const Form2 = ({
                   </Button>
                   <Button
                     style={{ width: '50%' }}
-                    className={`${
-                      btnSelected
-                        ? 'toggle-selectedBtn'
-                        : 'toggle-unselectedBtn'
-                    }`}
+                    className={`${btnSelected
+                      ? 'toggle-selectedBtn'
+                      : 'toggle-unselectedBtn'
+                      }`}
                     onClick={() => setBtnSelected(true)}
                   >
                     {' '}
@@ -118,10 +117,38 @@ const Form2 = ({
           </Form.Group>
           <Form.Group>
             <div style={{ position: 'relative' }}>
-              <DropZone
-                selectedFiles={selectedFiles}
-                setSelectedFiles={setSelectedFiles}
-              />
+              {values.base64 ? <div className='base64ImageHandling'>
+                <img className='base64Img' src={values.base64} />
+                <svg version="1.1" className='closeIcon' onClick={handleImage} id="Capa_1" x="0px" y="0px" viewBox="0 0 496 496">
+                  <g>
+                    <g>
+                      <g>
+                        <path d="M248,0C111.033,0,0,111.033,0,248s111.033,248,248,248s248-111.033,248-248C495.841,111.099,384.901,0.159,248,0z M248,480C119.87,480,16,376.13,16,248S119.87,16,248,16s232,103.87,232,232C479.859,376.072,376.072,479.859,248,480z" />
+                        <path d="M361.136,134.864c-3.124-3.123-8.188-3.123-11.312,0L248,236.688L146.176,134.864c-3.069-3.178-8.134-3.266-11.312-0.197c-3.178,3.069-3.266,8.134-0.197,11.312c0.064,0.067,0.13,0.132,0.197,0.197L236.688,248L134.864,349.824c-3.178,3.07-3.266,8.134-0.196,11.312c3.07,3.178,8.134,3.266,11.312,0.196c0.067-0.064,0.132-0.13,0.196-0.196L248,259.312l101.824,101.824c3.178,3.07,8.242,2.982,11.312-0.196c2.995-3.1,2.995-8.016,0-11.116L259.312,248l101.824-101.824C364.259,143.052,364.259,137.988,361.136,134.864z" />
+                      </g>
+                    </g>
+                  </g>
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                </svg>
+
+              </div> : <DropZone
+                  selectedFiles={selectedFiles}
+                  setSelectedFiles={setSelectedFiles}
+                />}
             </div>
           </Form.Group>
 
@@ -144,7 +171,9 @@ const Form2 = ({
                 className="viewCampaignBtn"
                 onClick={() => console.log(selectedFiles)}
               >
-                Save and Continue
+                {' '}
+                {loading == false && <div> Save and Continue</div>}
+                {loading && <Spinner animation="border" size="sm" />}{' '}
               </Button>
             </div>
           </div>

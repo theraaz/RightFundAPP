@@ -50,6 +50,14 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 10px;
+        margin-right: 11px;
+      }
+
+      .menuIcon {
+        position: absolute;
+        right: 1px;
+        top: 2px;
+        color: #f15a24;
       }
     }
   }

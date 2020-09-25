@@ -11,11 +11,9 @@ import {
   Row,
   Col,
   Card,
-  Dropdown,
   Button,
-  Container,
-  Input,
-  Form,
+  Spinner,
+
 } from 'react-bootstrap';
 import './form3.scss';
 import Select from '@material-ui/core/Select';
@@ -23,6 +21,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import InputBase from '@material-ui/core/InputBase';
 import { CustomHeading, CustomHeadingNum, H4 } from '../form.styles';
+import { SnackbarProvider, useSnackbar } from 'notistack';
+
+import Menu from '@material-ui/core/Menu';
+
 
 const BootstrapInput = withStyles(theme => ({
   root: {
@@ -58,16 +60,42 @@ const Form3 = ({ id, setActiveLink }) => {
   const [currency, setCurrency] = React.useState([]);
   const [packages, setPackages] = React.useState([]);
   const [title, setTitle] = React.useState('');
-  const [amount, setAmount] = React.useState('');
+  const [amount, setAmount] = React.useState(null);
   const [description, setDescription] = React.useState('');
-  const [selectedCurrency, setSelectedCurrency] = React.useState('');
+  const [selectedCurrency, setSelectedCurrency] = React.useState(1);
   const [showEnterPackaje, setShowEnterPackaje] = React.useState(false);
   const token = localStorage.getItem('token');
+  const [loading, setLoading] = React.useState(false);
+  const { enqueueSnackbar } = useSnackbar();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [editPackage, setEditPackage] = React.useState(false);
+  const [packageId, setPackageId] = React.useState(null);
+  const [packageData, setPackageData] = React.useState(null);
+
+  const handleClick = (data) => event => {
+    setAnchorEl(event.currentTarget);
+    setPackageData(data);
+  };
 
   const handleChange = event => {
     setSelectedCurrency(event.target.value);
   };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleClickVariant = (variant, message) => {
+    console.log(variant);
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
+    });
+  };
+
   useEffect(() => {
+    setLoading(true)
     console.log(id);
     const requestOptions = {
       method: 'GET',
@@ -76,14 +104,15 @@ const Form3 = ({ id, setActiveLink }) => {
         authorization: token,
       },
     };
-
     fetch(`${process.env.baseURL}/currency`, requestOptions)
       .then(response => response.json())
       .then(user => {
+        setLoading(false);
         console.log(user.response.data.res);
         setCurrency(user.response.data.res);
       })
       .catch(error => {
+        setLoading(false);
         console.log(error);
       });
 
@@ -98,45 +127,145 @@ const Form3 = ({ id, setActiveLink }) => {
         authorization: token,
       },
     };
+    setLoading(true);
 
-    fetch(`${process.env.baseURL}/package/compaign/${id}`, requestOptions)
+
+    fetch(`${process.env.baseURL}/package/campaign/${id}`, requestOptions)
       .then(response => response.json())
       .then(user => {
         console.log(user.response.data.res);
         console.log(user);
         setPackages(user.response.data.res);
+        setLoading(false);
       })
       .catch(error => {
         console.log(error);
       });
   }
 
+  function resetValue() {
+    setShowEnterPackaje(false);
+    getAllPackages();
+    setTitle('');
+    setDescription('');
+    setAmount('');
+    setPackageId('')
+  }
+
   function addPackaje() {
-    console.log(id);
+    if (editPackage) {
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: token,
+        },
+        body: JSON.stringify({
+          amount: JSON.parse(amount),
+          amountSymbolId: selectedCurrency,
+          description,
+          title,
+          campaignId: id,
+        }),
+      };
+
+      fetch(`${process.env.baseURL}/package/${packageId}`, requestOptions)
+        .then(response => response.json())
+        .then(user => {
+          setEditPackage(false);
+          if (user.statusCode == 200) {
+            handleClickVariant('success', user.response.message);
+            getAllPackages();
+            resetValue();
+
+          } else {
+            handleClickVariant('error', user.response.message);
+          }
+          console.log(user);
+
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+    else {
+
+      const requestOptions = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: token,
+        },
+        body: JSON.stringify({
+          amount: JSON.parse(amount),
+          amountSymbolId: selectedCurrency,
+          description,
+          title,
+          campaignId: id,
+        }),
+      };
+      setLoading(true);
+
+      fetch(`${process.env.baseURL}/package`, requestOptions)
+        .then(response => response.json())
+        .then(user => {
+          setEditPackage(false);
+          setLoading(false);
+          resetValue();
+
+          if (user.statusCode == 200) {
+            handleClickVariant('success', user.response.message);
+
+          } else {
+            handleClickVariant('error', user.response.message);
+          }
+          console.log(user);
+
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }
+
+
+  function edit() {
+    setEditPackage(true);
+    setShowEnterPackaje(true);
+    setTitle(packageData.title);
+    setDescription(packageData.description);
+    setAmount(packageData.amount);
+    setSelectedCurrency(packageData.amountSymbolId.id);
+    handleClose();
+    setPackageId(packageData.id)
+
+
+  }
+
+  function deletePackage() {
+    handleClose();
     const requestOptions = {
-      method: 'POST',
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
         authorization: token,
-      },
-      body: JSON.stringify({
-        amount: 12,
-        amountSymbolId: selectedCurrency,
-        description,
-        title,
-        compaignId: id,
-      }),
+      }
     };
+    setLoading(true);
 
-    fetch(`${process.env.baseURL}/package`, requestOptions)
+    fetch(`${process.env.baseURL}/package/${packageData.id}`, requestOptions)
       .then(response => response.json())
       .then(user => {
+        setLoading(false);
+        if (user.statusCode == 200) {
+          handleClickVariant('success', user.response.message);
+          getAllPackages();
+
+        } else {
+          handleClickVariant('error', user.response.message);
+        }
         console.log(user);
-        setShowEnterPackaje(false);
-        getAllPackages();
-        setTitle('');
-        setDescription('');
-        setAmount('');
+
       })
       .catch(error => {
         console.log(error);
@@ -145,6 +274,7 @@ const Form3 = ({ id, setActiveLink }) => {
 
   return (
     <div>
+
       <div className="main-form1">
         <div className="main-heading">
           <H4>Campaign Packages</H4>
@@ -158,19 +288,44 @@ const Form3 = ({ id, setActiveLink }) => {
 
         <div className="mainForm">
           <Row>
-            {packages.map(data => (
-              <Col key={data.id} sm={6} style={{ marginBottom: '30px' }}>
-                <Card className="defined-payments">
-                  <div className="card-heading-inner">
-                    <CustomHeading>{data.title}</CustomHeading>
-                    <CustomHeadingNum>{data.amount}</CustomHeadingNum>
-                  </div>
-                  <div style={{ textAlign: 'initial' }}>
-                    <p>{data.description}</p>
-                  </div>
-                </Card>
-              </Col>
-            ))}
+            {loading ? <div className='col-12' style={{ alignItems: 'center', width: '100%', justifyContent: 'center', display: 'flex', height: '150px' }}>
+              <Spinner animation="border" />
+            </div> :
+              packages.map(data => (
+                <Col key={data.id} sm={6} style={{ marginBottom: '30px' }}>
+                  <Card className="defined-payments">
+                    <div className="card-heading-inner">
+                      <CustomHeading>{data.title}</CustomHeading>
+                      <CustomHeadingNum>{data.amountSymbolId.symbol} {data.amount}
+
+                      </CustomHeadingNum>
+                    </div>
+                    <span className='menuIcon' onClick={handleClick(data)}>
+                      <svg version="1.1" id="Capa_1" width='15px' y="0px" viewBox="0 0 512 512"><g><g><g><circle cx="256" cy="256" r="64" /><circle cx="256" cy="448" r="64" /><circle cx="256" cy="64" r="64" /></g></g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
+                    </span>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                      getContentAnchorEl={null}
+                      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+                    >
+                      <MenuItem onClick={edit}>
+                        Edit
+                    </MenuItem>
+                      <MenuItem onClick={ deletePackage}>
+                        Delete
+                    </MenuItem>
+                    </Menu>
+                    <div style={{ textAlign: 'initial' }}>
+                      <p>{data.description}</p>
+                    </div>
+                  </Card>
+                </Col>
+              ))}
           </Row>
           <div>
             <Button
@@ -251,6 +406,7 @@ const Form3 = ({ id, setActiveLink }) => {
               </div>
               <textarea
                 placeholder="Description"
+                value={description}
                 onChange={event => setDescription(event.target.value)}
                 className="description"
                 type="text"
@@ -259,7 +415,8 @@ const Form3 = ({ id, setActiveLink }) => {
               <div style={{ textAlign: '-webkit-right', marginTop: '10px' }}>
                 <div className="d-flex" style={{ justifyContent: 'flex-end' }}>
                   <Button className="saveBtn" onClick={addPackaje}>
-                    Save
+                    {loading == false && <div>Save</div>}
+                    {loading && <Spinner animation="border" size="sm" />}{' '}
                   </Button>
                 </div>
               </div>
@@ -290,7 +447,7 @@ const Form3 = ({ id, setActiveLink }) => {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

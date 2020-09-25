@@ -15,8 +15,6 @@ import Header from '../../components/Header/Loadable';
 import SideBarCreateCampaign from '../../components/SideBarCreateCampaign/Loadable';
 import Footer from '../../components/Footer/Loadable';
 
-import { Row, Col, ListGroup, Dropdown, Button, Container, ProgressBar } from 'react-bootstrap/'
-
 
 export function CampaignCreate() {
   return (

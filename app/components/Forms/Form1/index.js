@@ -16,7 +16,7 @@ import {
   Dropdown,
   Button,
   Container,
-  ProgressBar,
+  Spinner,
   Form,
 } from 'react-bootstrap/';
 
@@ -31,7 +31,6 @@ import {
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
@@ -39,6 +38,7 @@ import { Field } from 'formik';
 import { green } from '@material-ui/core/colors';
 import Radio from '@material-ui/core/Radio';
 import { H5, H4, Errors } from '../form.styles';
+import Address from '../../Address/Loadable';
 
 const GreenRadio = withStyles({
   root: {
@@ -80,12 +80,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Form1 = ({ setFieldValue, values, errors, children, setActiveLink }) => {
+const Form1 = ({ setFieldValue, values, errors, children, setActiveLink, loading }) => {
   const classes = useStyles();
 
   const [currency, setCurrency] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('a');
+
 
   const handleRadioChange = event => {
     setFieldValue('fundraiser', event.target.value);
@@ -100,6 +101,7 @@ const Form1 = ({ setFieldValue, values, errors, children, setActiveLink }) => {
   };
 
   const handleChange = event => {
+    console.log(event.target.value)
     setFieldValue('currencySymbol', event.target.value);
   };
 
@@ -253,6 +255,7 @@ const Form1 = ({ setFieldValue, values, errors, children, setActiveLink }) => {
               className="controlForm"
               onChange={event => setFieldValue('address', event.target.value)}
             />
+            {/* <Address setFieldValue={setFieldValue}/> */}
             {errors.address && <Errors id="feedback">{errors.address}</Errors>}
           </Form.Group>
 
@@ -349,7 +352,10 @@ const Form1 = ({ setFieldValue, values, errors, children, setActiveLink }) => {
             <div className="campaignBtns">
               {/* <Button className="editCampaignBtn" >Preview</Button> */}
               <Button type="submit" className="viewCampaignBtn">
-                Save and Continue
+                {' '}
+                {loading == false && <div> Save and Continue</div>}
+                {loading && <Spinner animation="border" size="sm" />}{' '}
+
               </Button>
             </div>
           </div>
