@@ -8,6 +8,8 @@ export const Wrapper = styled.section`
   display: flex;
   flex-flow: column;
   background: #f7faff;
+  position: fixed;
+  bottom: 0;
 `;
 
 export const Title = styled.h5`

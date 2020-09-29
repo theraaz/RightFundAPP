@@ -37,7 +37,7 @@ function Form4() {
 
           <Button className="editCampaignBtn" onClick={() => setActiveLink(0)} >Preview</Button>
           <Button type="submit" className="viewCampaignBtn" onClick={() => setActiveLink(2)} >
-            <Link to="/">Save</Link></Button>
+            <Link to="/">Publish</Link></Button>
         </div>
       </div>
     </div>

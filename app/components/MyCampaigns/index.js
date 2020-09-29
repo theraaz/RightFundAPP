@@ -95,7 +95,7 @@ const MyCampaigns = ({ setActiveCard }) => {
                       >
                         {data.titleImage ? (
                           <img
-                            style={{ width: '100%', height: '100%' }}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                             src={data.titleImage}
                             alt=""
                           />

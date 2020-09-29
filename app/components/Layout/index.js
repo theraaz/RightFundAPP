@@ -60,7 +60,7 @@ function Layout({ children, activeCard }) {
   return (
     <div>
       <Header title="Dasboard" firstName={firstName} lastName={lastName} />
-      <div className="container mt-n5">
+      <div className="container mt-n5" style={{ minHeight: '700px' }}>
 
         {activeCard === 0 && <Row>
 

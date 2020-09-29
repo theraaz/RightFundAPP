@@ -273,6 +273,7 @@ const Form1 = ({
                 id="date-picker-dialog"
                 format="MM/dd/yyyy"
                 disablePast
+                headerColor="#f15a24"
                 // isInvalid={errors.date}
                 // inputVariant="outlined"
                 placeholder="Campaign end date"
@@ -328,7 +329,7 @@ const Form1 = ({
               <div style={{ margin: '0 10px' }}>
                 <GreenRadio
                   checked={selectedValue === 'a'}
-                  onChange={handleRadioChange}
+                  onChange={() => setSelectedValue('a')}
                   value="a"
                   name="radio-button-demo"
                   label="Individual"
@@ -339,8 +340,8 @@ const Form1 = ({
               <div style={{ margin: '0 10px' }}>
                 <GreenRadio
                   checked={selectedValue === 'b'}
-                  onChange={handleRadioChange}
-                  value="b"
+                  onChange={() => setSelectedValue('b')}
+                  value={selectedValue}
                   name="radio-button-demo"
                   inputProps={{ 'aria-label': 'b' }}
                 />

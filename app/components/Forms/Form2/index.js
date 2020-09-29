@@ -69,7 +69,7 @@ const Form2 = ({
                   className="remberMeLabel"
                   label="Yes, this campaign is zakat eligible."
                   value={values.zakatEligible}
-                  checked={values.editorValue}
+                  checked={values.zakatEligible}
                   onChange={e =>
                     setFieldValue('zakatEligible', e.target.checked)
                   }

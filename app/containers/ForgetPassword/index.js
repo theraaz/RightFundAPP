@@ -88,7 +88,7 @@ export function ForgetPassword(props) {
         <title>ForgetPassword</title>
         <meta name="description" content="Description of ForgetPassword" />
       </Helmet>
-      <Layout title={'Forget Password'} description={'Enter your email'}>
+      <Layout title={'Forgot Password'} description={'Enter your email'}>
         <div className="loginForm">
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             <Form.Group controlid="email" bssize="large" style={{ position: 'relative' }}>

@@ -10,7 +10,7 @@ import Form3 from '../Forms/Form3/Loadable';
 import Form4 from '../Forms/Form4/index';
 
 const SideBarCreateCampaign = (editCampaignData) => {
-  const [activeLink, setActiveLink] = useState(0);
+  const [activeLink, setActiveLink] = useState(1);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [campaignId, setCampaignId] = useState('');
   const [loading, setLoading] = useState(false);
@@ -199,7 +199,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
 
   return (
     <div>
-      <Container className="mt-n5">
+      <Container className="mt-n5" style={{ minHeight: '900px' }}>
         <Row className="main">
           <div className="main-box shadow">
             <Col md={3} sm={12} className="firstCol p-0">

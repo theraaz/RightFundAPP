@@ -35,12 +35,11 @@
       background-color: #f15a24;
       border-color: #f2f2f2;
       width: 100%;
+      margin-left: 5px;
       font-size: 11px;
 
       a {
         color: white;
-
-       
       }
       &:focus {
         box-shadow: none;
@@ -60,7 +59,7 @@
     .editCampaignBtn {
       background-color: gray;
       border-color: #f2f2f2;
-      margin-left: 5px;
+      margin-left: 10px;
       font-size: 11px;
       width: 100%;
 

@@ -36,6 +36,18 @@ const GlobalStyle = createGlobalStyle`
     background-image: none !important;
     box-shadow: none;
   }
+
+  .MuiPickersToolbar-toolbar {
+    background-color: #f15a24 !important;
+  }
+
+  .MuiPickersDay-daySelected {
+    background-color: #f15a24 !important;
+  }
+
+  .MuiButton-textPrimary{
+    color: #f15a24 !important;
+  }
 `;
 
 export default GlobalStyle;
