@@ -10,7 +10,7 @@ export default function HomePage({ children }) {
 
   return (
     <div>
-      <Layout activeCard={activeCard}>
+      <Layout activeCard={activeCard} setActiveCard={setActiveCard}>
         <MyCampaigns setActiveCard={setActiveCard} setCampaignData={setCampaignData} />
       </Layout>
 

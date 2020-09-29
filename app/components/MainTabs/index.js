@@ -11,7 +11,7 @@ import React, { memo } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 
-function MainTabs() {
+const MainTabs = ({ setActiveCard }) => {
   return (
     <div>
       <ListGroup variant="flush">
@@ -340,6 +340,7 @@ function MainTabs() {
             to="/profile"
             className="text-decoration-none listItem"
             activeClassName="active"
+            onClick={() => setActiveCard(0)}
           >
             <div className="iconImage">
               <svg

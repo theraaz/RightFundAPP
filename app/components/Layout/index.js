@@ -23,7 +23,7 @@ import '../../containers/HomePage/dashboard.scss';
 import Header from '../Header/Loadable';
 import Footer from '../Footer/Loadable';
 
-function Layout({ children, activeCard }) {
+function Layout({ children, activeCard, setActiveCard }) {
   const token = localStorage.getItem('token');
 
   const [firstName, setFirstName] = React.useState('');
@@ -123,7 +123,7 @@ function Layout({ children, activeCard }) {
             <Card className="shadow mb-5 bg-white sideNav dataCard">
               {
                 activeCard === 0 ?
-                  <MainTabs /> :
+                  <MainTabs setActiveCard={setActiveCard} /> :
                   <CampaignTabs />}
             </Card>
           </Col>
