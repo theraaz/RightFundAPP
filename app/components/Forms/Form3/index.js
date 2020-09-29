@@ -77,6 +77,8 @@ const Form3 = ({ id, setActiveLink }) => {
     setAnchorEl(null);
   };
 
+  console.log(id)
+
   const handleClickVariant = (variant, message) => {
     console.log(variant);
     // variant could be success, error, warning, info, or default

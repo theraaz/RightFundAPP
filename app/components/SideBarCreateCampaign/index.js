@@ -17,9 +17,9 @@ const SideBarCreateCampaign = (editCampaignData) => {
 
   console.log(editCampaignData.editCampaignData);
 
-  const getBase64 = (file, cb) => {
-    if (event.base64) {
-      cb(event.base64);
+  const getBase64 = (base64, file, cb) => {
+    if (base64) {
+      cb(base64);
     } else {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -39,7 +39,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
     setLoading(true);
     if (activeLink === 1) {
 
-      getBase64(selectedFiles[0], result => {
+      getBase64(event.base64 ? event.base64 : false, selectedFiles[0], result => {
         const requestOptions = {
           method: 'PUT',
           headers: {
@@ -52,7 +52,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
             titleImage: result,
           }),
         };
-        
+
         if (editCampaignData.editCampaignData != undefined) {
           fetch(`${process.env.baseURL}/campaign/${editCampaignData.editCampaignData.id}`, requestOptions)
             .then(response => response.json())
@@ -345,7 +345,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   address: editCampaignData.editCampaignData.address,
                   categories: editCampaignData.editCampaignData.categoryId.id,
                   amount: editCampaignData.editCampaignData.amount,
-                  editorValue: editCampaignData.editCampaignData.description,
+                  editorValue: editCampaignData.editCampaignData.description ? editCampaignData.editCampaignData.description : "",
                   zakatEligible: editCampaignData.editCampaignData.zakatEligible,
                   base64: editCampaignData.editCampaignData.titleImage
                 } : {
@@ -390,7 +390,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
                       />
                     )}
                     {activeLink === 2 && (
-                      <Form3 setActiveLink={setActiveLink} id={campaignId} />
+                      <Form3 setActiveLink={setActiveLink} id={editCampaignData.editCampaignData ? editCampaignData.editCampaignData.id : campaignId} />
                     )}
                     {activeLink === 3 && (
                       <Form4 setActiveLink={setActiveLink} />

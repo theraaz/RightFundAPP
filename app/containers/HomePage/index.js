@@ -5,14 +5,13 @@ import Layout from '../../components/Layout/index';
 import MyCampaigns from '../../components/MyCampaigns/Loadable';
 
 export default function HomePage({ children }) {
-  const [activeLink, setActiveLink] = React.useState(0)
+  const [activeCard, setActiveCard] = React.useState(0);
+  const [campaignData, setCampaignData] = React.useState([]);
+
   return (
     <div>
-
-      
-      <Layout>
-        <MyCampaigns />
-        
+      <Layout activeCard={activeCard}>
+        <MyCampaigns setActiveCard={setActiveCard} setCampaignData={setCampaignData} />
       </Layout>
 
     </div>
