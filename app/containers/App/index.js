@@ -11,6 +11,7 @@ import EditCampaign from 'containers/EditCampaign/Loadable';
 import ResetPassword from 'containers/Resetpassword/Loadable';
 import AccountVerify from 'containers/AccountVerify/index';
 import CampaignUpdatesContainer from 'containers/CampaignUpdatesContainer/index';
+import DonationsContainer from 'containers/DonationsContainer/index';
 
 
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -32,6 +33,7 @@ export default function App() {
         <LoginRoute exact path="/forgetPassword" component={forgetPass} />
         <AuthRoute exact path="/createCampaign" component={CreateCampaign} />
         <AuthRoute exact path="/addCampaignUpdates/:id" component={CampaignUpdatesContainer} />
+        <AuthRoute exact path="/donations/:id" component={DonationsContainer} />
         <AuthRoute exact path="/editCampaign/:id" component={EditCampaign} />
         <LoginRoute exact path="/resetPassword" component={ResetPassword} />
         <LoginRoute exact path="/accountVerify" component={AccountVerify} />

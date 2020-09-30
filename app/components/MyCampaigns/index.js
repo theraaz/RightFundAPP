@@ -102,7 +102,8 @@ const MyCampaigns = ({ setActiveCard }) => {
                         ) : (
                             <img
                               style={{ width: '100%', height: '100%' }}
-                              src="//placehold.it/200"
+                              // src="//placehold.it/200"
+                              src={"require('../../images/placeholder.png')"}
                               alt=""
                             />
                           )}

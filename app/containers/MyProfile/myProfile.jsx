@@ -26,3 +26,12 @@ export const Heading = styled.h4`
   width: fit-content;
   margin-top: 5px;
 `;
+
+export const Errors = styled.div`
+  display: block;
+  color: red;
+  position: absolute;
+  top: 38px;
+  font-size: 12px;
+  left: 6px;
+`;

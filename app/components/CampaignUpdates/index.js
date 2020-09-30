@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import {
@@ -21,16 +21,24 @@ import { SnackbarProvider, useSnackbar } from 'notistack';
 
 import TinyMCE from 'react-tinymce';
 
+import Timeline from '@material-ui/lab/Timeline';
+import TimelineItem from '@material-ui/lab/TimelineItem';
+import TimelineSeparator from '@material-ui/lab/TimelineSeparator';
+import TimelineConnector from '@material-ui/lab/TimelineConnector';
+import TimelineContent from '@material-ui/lab/TimelineContent';
+import TimelineDot from '@material-ui/lab/TimelineDot';
+
+
 
 const CampaignUpdates = ({ editCampaignData }) => {
   const [editorVal, setEditorVal] = useState('');
   const token = localStorage.getItem('token');
   const [loading, setLoading] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
-
+  const [allUpdateStatus, setAllUpdateStatus] = useState([]);
   const handleEditorChange = event => {
     setEditorVal(event.target.getContent());
-    console.log(event.target.getContent())
+
   };
 
   const handleClickVariant = (variant, message) => {
@@ -41,6 +49,30 @@ const CampaignUpdates = ({ editCampaignData }) => {
       anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
     });
   };
+
+
+  useEffect(() => {
+    if (editCampaignData) {
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: token,
+        },
+      };
+      fetch(`${process.env.baseURL}/campaignStatus/campaign/${editCampaignData.id}`, requestOptions)
+        .then(response => response.json())
+        .then(user => {
+          setAllUpdateStatus(user.response.data.res);
+          console.log(user.response.data.res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }, [
+    editCampaignData
+  ]);
 
 
   function addUpdates() {
@@ -82,7 +114,25 @@ const CampaignUpdates = ({ editCampaignData }) => {
       <Card className="dataCard shadow mb-5 bg-white">
         <Card.Header style={{ background: 'transparent' }}>
           <Card.Title className="campaignHeader">
-            <span style={{ marginTop: '8px' }}>{editCampaignData ? editCampaignData.title : ''}</span>
+            <div style={{ width: '30%'}}>
+              <span style={{ marginTop: '8px' }}>{editCampaignData ? editCampaignData.title : ''}</span>
+              <ul className="campign-Status">
+                <li className="raised">
+                  <span className="title">Raised</span>
+                  <span className="content">$5,900</span>
+                </li>
+                <li className="pledged">
+                  <span className="title">Pledged</span>
+                  <span className="content">
+                    {editCampaignData ? editCampaignData.amountSymbolId.symbol : ''} {editCampaignData ? editCampaignData.amount : ''}
+                  </span>
+                </li>
+                <li className="donators">
+                  <span className="title">Donators</span>
+                  <span className="content">29</span>
+                </li>
+              </ul>
+            </div>
 
             <div className="campaignHeader1 d-flex flex-column flex-sm-row">
               <Link to="/">
@@ -164,6 +214,25 @@ const CampaignUpdates = ({ editCampaignData }) => {
               </Button>{' '}
             </div>
           </Container>
+
+          {
+            allUpdateStatus.map(data => (
+              <Timeline>
+                <TimelineItem className='timelineItem'>
+                  <TimelineSeparator>
+                    <TimelineDot variant="outlined" />
+                    <TimelineConnector />
+                  </TimelineSeparator>
+                  <TimelineContent className='timelineContent'>
+                    <h3>{editCampaignData.title}</h3>
+                    <Card.Text
+                      className="descriptionCampaign"
+                      dangerouslySetInnerHTML={{ __html: data.description }}
+                    />
+                  </TimelineContent>
+                </TimelineItem>
+              </Timeline>
+            ))}
 
         </Card.Body>
 

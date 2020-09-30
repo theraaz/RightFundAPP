@@ -449,11 +449,7 @@ const Form3 = ({ id, setActiveLink }) => {
             </div>
           )}
           <div
-            style={{
-              textAlign: '-webkit-right',
-              marginTop: '10px',
-              marginBottom: '20px',
-            }}
+           style={{ margin: '10px 0px 20px auto' }}
           >
             <div className="campaignBtns">
               <Button

@@ -32,7 +32,7 @@ function Form4() {
       </div>
 
 
-      <div style={{ textAlign: '-webkit-right', marginTop: '10px', marginBottom: '20px', }}>
+      <div style={{ margin: '10px 0px 20px auto' }}>
         <div className='campaignBtns'>
 
           <Button className="editCampaignBtn" onClick={() => setActiveLink(0)} >Preview</Button>

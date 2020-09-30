@@ -126,16 +126,12 @@
 }
 
 .descriptionCampaign {
-  min-height: 45px;
-  p {
-    span {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-align: initial !important;
-    }
-  }
+  min-height: 37px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-align: initial !important;
 }
 .campaign-card {
   margin: 10px 0;

@@ -14,6 +14,43 @@
     /* padding: 0px 0 0 0; */
     margin-top: 12px;
 
+    .dropper {
+      margin: 0 5px;
+
+      button {
+        background-color: transparent;
+        border: transparent;
+        color: black;
+        &:focus {
+          box-shadow: none !important;
+          background-color: transparent;
+          border: transparent;
+          color: black;
+        }
+        &:active {
+          background-color: transparent;
+          border: transparent;
+          color: black;
+        }
+        &:hover {
+          background-color: transparent;
+          border: transparent;
+          color: black;
+        }
+      }
+
+      .dropItem {
+        &:hover {
+          color: #f15a24;
+        }
+        &:active {
+          color: #fff;
+          text-decoration: none;
+          background-color: #f15a24;
+        }
+      }
+    }
+
     .profileImg {
       width: 35px;
       border: 1px solid gray;
@@ -29,11 +66,11 @@
   background: #f15a24;
 }
 
-.logout {
-  color: #f15a24;
+// .logout {
+//   color: #f15a24;
 
-  &:hover {
-    color: #f15a24;
-    text-decoration: none;
-  }
-}
+//   &:hover {
+//     color: #f15a24;
+//     text-decoration: none;
+//   }
+// }

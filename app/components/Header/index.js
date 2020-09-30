@@ -5,15 +5,12 @@
  */
 
 import React, { memo, useState } from 'react';
-import { Image } from 'react-bootstrap';
+import { Image, Dropdown } from 'react-bootstrap';
 import './header.scss';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 
-import { Link } from 'react-router-dom';
 import { Title, Heading, Description } from './styled';
 const logo = require('../../images/logo.png');
-const profile = require('../../images/dashboard1.png');
+const profile = require('../../images/placeholder.png');
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // import IconButton from '@material-ui/icons/IconButton';
 
@@ -33,7 +30,7 @@ const Header = ({ children, title, firstName, lastName }) => {
     localStorage.removeItem('token');
   }
 
-  
+
 
   return (
     <div className="shadow">
@@ -42,7 +39,24 @@ const Header = ({ children, title, firstName, lastName }) => {
           <Image src={logo} fluid />
         </div>
         <div className="profile">
-          <Title style={{ margin: '7px 10px' }} onClick={handleClick}>
+
+          <Dropdown className="dropper">
+            <Dropdown.Toggle id="dropdown-basic" className="dropBtn">
+              {firstName} {lastName}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              <Dropdown.Item className="dropItem" href="profile">
+                Profile
+                  </Dropdown.Item>
+
+              <Dropdown.Item className="dropItem" href="login" onClick={logout}>
+                Logout
+                  </Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+
+          {/* <Title style={{ margin: '7px 10px' }} onClick={handleClick}>
             {firstName} {lastName}
           </Title>
           <Menu
@@ -55,18 +69,15 @@ const Header = ({ children, title, firstName, lastName }) => {
             anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
             transformOrigin={{ vertical: 'top', horizontal: 'center' }}
           >
-            {/* <MenuItem onClick={handleClose}>Profile</MenuItem> */}
             <MenuItem onClick={logout}>
               <Link className="logout" to="/login">
                 Logout
               </Link>
             </MenuItem>
-          </Menu>
-          {/* <IconButton aria-label="delete" className={classes.margin} size="small">
-          <ArrowDropDownIcon fontSize="inherit" />
-        </IconButton> */}
+          </Menu> */}
+
           <div className="profileImg">
-            <Image src={profile} fluid />
+            <Image src={profile} style={{ borderRadius: '50px' }} fluid />
           </div>
         </div>
       </div>

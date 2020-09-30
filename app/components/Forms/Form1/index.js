@@ -34,8 +34,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
-import { Field } from 'formik';
-import { green } from '@material-ui/core/colors';
+
 import Radio from '@material-ui/core/Radio';
 import { H5, H4, Errors } from '../form.styles';
 import Address from '../../Address/Loadable';
@@ -93,6 +92,7 @@ const Form1 = ({
   const [currency, setCurrency] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('a');
+  const token = localStorage.getItem('token');
 
   const handleRadioChange = event => {
     setFieldValue('fundraiser', event.target.value);
@@ -135,6 +135,7 @@ const Form1 = ({
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        authorization: token,
       },
     };
 
@@ -355,7 +356,7 @@ const Form1 = ({
             ad minim veniam
           </p>
 
-          <div style={{ textAlign: '-webkit-right', marginBottom: '20px' }}>
+          <div style={{ margin: '0px 0px 20px auto' }}>
             <div className="campaignBtns">
               {/* <Button className="editCampaignBtn" >Preview</Button> */}
               <Button type="submit" className="viewCampaignBtn">

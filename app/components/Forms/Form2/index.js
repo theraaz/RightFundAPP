@@ -88,11 +88,10 @@ const Form2 = ({
                 <div className="toggle-custom">
                   <Button
                     style={{ width: '41%' }}
-                    className={`${
-                      btnSelected
+                    className={`${btnSelected
                         ? 'toggle-unselectedBtn'
                         : 'toggle-selectedBtn'
-                    } `}
+                      } `}
                     onClick={() => setBtnSelected(false)}
                   >
                     {' '}
@@ -100,11 +99,10 @@ const Form2 = ({
                   </Button>
                   <Button
                     style={{ width: '50%' }}
-                    className={`${
-                      btnSelected
+                    className={`${btnSelected
                         ? 'toggle-selectedBtn'
                         : 'toggle-unselectedBtn'
-                    }`}
+                      }`}
                     onClick={() => setBtnSelected(true)}
                   >
                     {' '}
@@ -155,20 +153,16 @@ const Form2 = ({
                   </svg>
                 </div>
               ) : (
-                <DropZone
-                  selectedFiles={selectedFiles}
-                  setSelectedFiles={setSelectedFiles}
-                />
-              )}
+                  <DropZone
+                    selectedFiles={selectedFiles}
+                    setSelectedFiles={setSelectedFiles}
+                  />
+                )}
             </div>
           </Form.Group>
 
           <div
-            style={{
-              textAlign: '-webkit-right',
-              marginTop: '5px',
-              marginBottom: '20px',
-            }}
+            style={{ margin: '5px 0px 20px auto' }}
           >
             <div className="campaignBtns">
               <Button
