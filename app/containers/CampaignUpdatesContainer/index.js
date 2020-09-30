@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
-import Layout from '../../components/Layout/index';
+import CampaignTabs from '../../components/CampaignTabs/Loadable';
 import CampaignUpdates from '../../components/CampaignUpdates/Loadable';
 
 
@@ -52,11 +52,11 @@ export function CampaignUpdatesContainer(props) {
         />
       </Helmet>
 
-      <Layout>
+      <CampaignTabs>
 
         <CampaignUpdates editCampaignData={editCampaignData} />
 
-      </Layout>
+      </CampaignTabs>
     </div>
   );
 }

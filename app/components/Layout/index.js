@@ -10,7 +10,6 @@ import React, { memo, useEffect } from 'react';
 import { Row, Col, Card } from 'react-bootstrap';
 
 import MainTabs from '../MainTabs/Loadable';
-import CampaignTabs from '../CampaignTabs/Loadable';
 
 
 import {
@@ -23,14 +22,14 @@ import '../../containers/HomePage/dashboard.scss';
 import Header from '../Header/Loadable';
 import Footer from '../Footer/Loadable';
 
-function Layout({ children, activeCard, setActiveCard }) {
+function Layout({ children }) {
   const token = localStorage.getItem('token');
 
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState('');
 
-  console.log(activeCard);
+
 
   useEffect(() => {
     const requestOptions = {
@@ -62,7 +61,7 @@ function Layout({ children, activeCard, setActiveCard }) {
       <Header title="Dasboard" firstName={firstName} lastName={lastName} />
       <div className="container mt-n5" style={{ minHeight: '700px' }}>
 
-        {activeCard === 0 && <Row>
+        <Row>
 
           <Col xs={12} sm={12} md={7}>
             <div className="card card-header-main  shadow bg-white rounded">
@@ -117,20 +116,15 @@ function Layout({ children, activeCard, setActiveCard }) {
             </Card>
           </Col>
         </Row>
-        }
-        <Row style={activeCard === 0 ? { marginTop: 15, marginBottom: 15 } : { marginBottom: 15 }}>
+
+        <Row style={{ marginTop: 15, marginBottom: 15 }}>
           <Col sm={12} md={3}>
             <Card className="shadow mb-5 bg-white sideNav dataCard">
-              {
-                activeCard === 0 ?
-                  <MainTabs setActiveCard={setActiveCard} /> :
-                  <CampaignTabs />}
+              <MainTabs />
             </Card>
           </Col>
           <Col>
             {children}
-            {/* {activeLink == 0 && <MyCampaigns />} */}
-            {/* {activeLink == 0 && <MyCampaigns />} */}
           </Col>
         </Row>
       </div>

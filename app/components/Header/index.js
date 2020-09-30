@@ -33,6 +33,8 @@ const Header = ({ children, title, firstName, lastName }) => {
     localStorage.removeItem('token');
   }
 
+  
+
   return (
     <div className="shadow">
       <div className="header">

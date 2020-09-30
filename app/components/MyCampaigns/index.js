@@ -88,7 +88,7 @@ const MyCampaigns = ({ setActiveCard }) => {
               {campaign.map(data => (
                 <Col key={data.id} xs={12} sm={6} md={4}>
                   <Card className="campaign-card" onClick={() => setActiveCard(1)}>
-                    <Link id="RouterNavLink" className='anchorTag' to={`addCampaignUpdates/${data.id}`}>
+                    <Link className='anchorTag' to={`addCampaignUpdates/${data.id}`}>
                       <div
                         className="give-card__media"
                         style={{ maxWidth: '230px', height: '130px' }}
