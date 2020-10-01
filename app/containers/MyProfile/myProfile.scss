@@ -22,3 +22,12 @@
   width: 15px;
   // height: 20px;
 }
+
+.address {
+  position: relative;
+  margin-bottom: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.125) !important;
+  border-radius: 4px;
+  padding: 5px 10px;
+  background-color: #f0f0f0
+}

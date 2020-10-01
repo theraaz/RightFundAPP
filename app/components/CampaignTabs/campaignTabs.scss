@@ -1,0 +1,52 @@
+.campaignUpdatesHeader {
+  justify-content: center;
+  text-align: center;
+  margin: auto 0;
+
+  .campaignViewBtn {
+    background: white;
+    color: black;
+    border-color: #f2f2f2;
+    &:focus {
+      background-color: #f15a24 !important;
+      border-color: #f15a24;
+      box-shadow: none !important;
+      opacity: 0.8;
+    }
+    &:hover {
+      background-color: #f15a24 !important;
+      border-color: #f15a24 !important;
+    }
+    &:active {
+      background-color: #f15a24 !important;
+      border-color: #f15a24 !important;
+    }
+  }
+
+  .editCampaign {
+    margin-left: 5px;
+    background: #f15a24;
+    border-color: #f15a24;
+    &:focus {
+      background-color: #f15a24 !important;
+      border-color: #f15a24;
+      box-shadow: none !important;
+      opacity: 0.8;
+    }
+    &:hover {
+      background-color: #f15a24 !important;
+      border-color: #f15a24 !important;
+    }
+    &:active {
+      background-color: #f15a24 !important;
+      border-color: #f15a24 !important;
+    }
+  }
+}
+
+.campaignUpdates {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}

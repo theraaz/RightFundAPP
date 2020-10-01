@@ -86,6 +86,13 @@ const SideBarCreateCampaign = (editCampaignData) => {
       // setActiveLink(3)
       console.log('reached');
     } else {
+      let address = {
+        line1: event.line1,
+        line2: event.line2,
+        city: event.city,
+        state: event.state,
+        country: event.country,
+      }
       if (editCampaignData.editCampaignData != undefined) {
         const requestOptions = {
           method: 'PUT',
@@ -119,6 +126,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
 
 
       } else {
+
         const requestOptions = {
           method: 'POST',
           headers: {
@@ -128,7 +136,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
           body: JSON.stringify({
             title: event.campaignTitle,
             amount: event.amount,
-            address: event.address,
+            address: address,
             endDate: event.date,
             categoryId: event.categories,
             amountSymbolId: event.currencySymbol,
@@ -167,11 +175,13 @@ const SideBarCreateCampaign = (editCampaignData) => {
         errors.campaignTitle = 'Required';
       } else if (values.campaignTitle.length < 3) {
         errors.campaignTitle = 'Enter campaign title';
-      } else if (!values.address) {
-        errors.address = 'Required';
-      } else if (values.address.length < 3) {
-        errors.address = 'Enter address';
-      } else if (!values.date) {
+      } 
+      // else if (!values.address) {
+      //   errors.address = 'Required';
+      // } else if (values.address.length < 3) {
+      //   errors.address = 'Enter address';
+      // }
+       else if (!values.date) {
         errors.date = 'Enter date';
       } else if (!values.categories) {
         errors.categories = 'Required';
@@ -209,7 +219,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
               >
                 <ListGroup.Item
                   className="listItem"
-                //  onClick={() => setActiveLink(0)}
+                  onClick={() => editCampaignData.editCampaignData ? setActiveLink(0) : null}
                 >
                   {console.log(activeLink)}
                   <div
@@ -240,10 +250,9 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   </div>
                 </ListGroup.Item>
 
-                {/* <div className='line'></div> */}
                 <ListGroup.Item
                   className="listItem"
-                // onClick={() => setActiveLink(1)}
+                  onClick={() => editCampaignData.editCampaignData ? setActiveLink(1) : null}
                 >
                   <div
                     className={`text-decoration-none d-flex iconMainDiv ${activeLink === 1 ? '' : ''
@@ -270,11 +279,15 @@ const SideBarCreateCampaign = (editCampaignData) => {
                     </span>
                   </div>
                 </ListGroup.Item>
-                {/* <div className='line'></div> */}
 
                 <ListGroup.Item
                   className="listItem"
-                // onClick={() => setActiveLink(2)}
+                  onClick={() => {
+                    console.log(editCampaignData)
+                    if (editCampaignData.editCampaignData) {
+                      setActiveLink(2)
+                    }
+                  }}
                 >
                   <div
                     className={`text-decoration-none d-flex iconMainDiv ${activeLink === 2 ? '' : ''
@@ -301,11 +314,10 @@ const SideBarCreateCampaign = (editCampaignData) => {
                     </span>
                   </div>
                 </ListGroup.Item>
-                {/* <div className='line'></div> */}
 
                 <ListGroup.Item
                   className="listItem"
-                //  onClick={() => setActiveLink(3)}
+                  onClick={() => editCampaignData.editCampaignData ? setActiveLink(3) : null}
                 >
                   <div
                     className={`text-decoration-none d-flex iconMainDiv ${activeLink === 3 ? '' : ''
@@ -342,7 +354,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   fundraiser: '',
                   date: editCampaignData.editCampaignData.endDate,
                   campaignTitle: editCampaignData.editCampaignData.title,
-                  address: editCampaignData.editCampaignData.address,
+                  // address: editCampaignData.editCampaignData.address,
                   categories: editCampaignData.editCampaignData.categoryId.id,
                   amount: editCampaignData.editCampaignData.amount,
                   editorValue: editCampaignData.editCampaignData.description ? editCampaignData.editCampaignData.description : "",
@@ -353,7 +365,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
                     fundraiser: '',
                     date: null,
                     campaignTitle: '',
-                    address: '',
+                    // address: '',
                     categories: '',
                     amount: null,
                     editorValue: '',

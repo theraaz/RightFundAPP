@@ -405,7 +405,7 @@ const Form3 = ({ id, setActiveLink }) => {
                 value={title}
                 onChange={event => setTitle(event.target.value)}
               />
-              <div className="formsDiv">
+              <div className="packageForm">
                 <Select
                   labelId="demo-customized-select-label"
                   className="selectClass"

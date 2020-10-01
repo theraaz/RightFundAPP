@@ -184,7 +184,7 @@ const Form1 = ({
               </Col>
               <Col sm={9}>
                 <Row>
-                  <div className="formsDiv">
+                  <div className="campaignGoal">
                     <Col sm={2} className="pl-0 pr-0 selection-col-div">
                       <Select
                         labelId="demo-customized-select-label"
@@ -251,9 +251,9 @@ const Form1 = ({
           <Form.Group
             controlId="address"
             bssize="large"
-            style={{ position: 'relative' }}
+            className='address'
           >
-            <Form.Control
+            {/* <Form.Control
               type="text"
               isInvalid={errors.address}
               value={values.address}
@@ -261,8 +261,12 @@ const Form1 = ({
               placeholder="Address"
               className="controlForm"
               onChange={event => setFieldValue('address', event.target.value)}
-            />
-            {/* <Address setFieldValue={setFieldValue}/> */}
+            /> */}
+
+            <H5 className="label-field" className='locationLabel'>
+              Add a location
+                </H5>
+            <Address setFieldValue={setFieldValue} values={values} errors={errors} />
             {errors.address && <Errors id="feedback">{errors.address}</Errors>}
           </Form.Group>
 

@@ -9,14 +9,22 @@ import React, { memo } from 'react';
 // import styled from 'styled-components';
 
 
-import { ListGroup, Row, Col, Card } from 'react-bootstrap';
-import { NavLink } from 'react-router-dom';
+import { ListGroup, Row, Col, Card, Button } from 'react-bootstrap';
+import { NavLink, withRouter } from 'react-router-dom';
 import Header from '../Header/Loadable';
 import '../../containers/HomePage/dashboard.scss';
 import Footer from '../Footer/Loadable';
 
+import { Link } from 'react-router-dom';
 
-function CampaignTabs({ children }) {
+import './campaignTabs.scss';
+
+function CampaignTabs({ children, ...props }) {
+  console.log('tabs', children)
+
+  // const params = useParams()
+  console.log('props', props)
+
   return (
     <div>
       <Header title="Dasboard" />
@@ -145,7 +153,7 @@ function CampaignTabs({ children }) {
 
                 <ListGroup.Item className="listItem">
                   <NavLink
-                    to="/donations"
+                    to={`/donations/${props.match.params.id}`}
                     className="text-decoration-none listItem"
                     activeClassName="active"
                   >
@@ -240,7 +248,50 @@ function CampaignTabs({ children }) {
             </Card>
           </Col>
           <Col>
-            {children}
+
+            <Card className="dataCard shadow mb-5 bg-white">
+              <Card.Header style={{ background: 'transparent', borderBottom: 'none' }}>
+                <Card.Title className="campaignUpdates">
+                  <div style={{ width: '30%' }}>
+                    <span style={{ marginTop: '8px' }}>{children.props.editCampaignData ? children.props.editCampaignData.title : ''}</span>
+                    <ul className="campign-Status">
+                      <li className="raised">
+
+                        <span className="content">$5,900</span>
+                        <span className="title">Target</span>
+                      </li>
+                      <li className="pledged">
+                        <span className="content">
+                          {children.props.editCampaignData ? children.props.editCampaignData.amountSymbolId.symbol : ''} {children.props.editCampaignData ? children.props.editCampaignData.amount : ''}
+                        </span>
+                        <span className="title">Raised</span>
+
+                      </li>
+                      <li className="donators">
+                        <span className="content">29</span>
+                        <span className="title">Donators</span>
+
+                      </li>
+                    </ul>
+                  </div>
+
+                  <div className="campaignUpdatesHeader d-flex flex-column flex-sm-row">
+                    <Link to="/">
+                      <Button className="campaignViewBtn">View Campaign</Button>{' '}
+                    </Link>
+
+                    <Link to={`/editCampaign/${children.props.editCampaignData ? children.props.editCampaignData.id : ''}`}>
+                      <Button className='editCampaign'>Edit Campaign</Button>{' '}
+                    </Link>
+                  </div>
+                </Card.Title>
+              </Card.Header>
+
+              <Card.Body>
+                {children}
+              </Card.Body>
+            </Card>
+
           </Col>
         </Row>
 
@@ -252,4 +303,4 @@ function CampaignTabs({ children }) {
 
 CampaignTabs.propTypes = {};
 
-export default memo(CampaignTabs);
+export default withRouter(memo(CampaignTabs));

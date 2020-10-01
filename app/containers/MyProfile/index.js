@@ -19,6 +19,7 @@ import {
   Button,
   Spinner,
   InputGroup,
+  FormGroup
 } from 'react-bootstrap';
 import Layout from '../../components/Layout/index';
 
@@ -26,6 +27,7 @@ import { Heading, Chip, Wrapper, Errors } from './myProfile';
 import './myProfile.scss';
 
 import { useSnackbar } from 'notistack';
+import Address from '../../components/Address/Loadable';
 
 export function MyProfile() {
   const token = localStorage.getItem('token');
@@ -78,35 +80,72 @@ export function MyProfile() {
 
 
   function handleSubmit(event) {
+    console.log(event)
     setLoading(true);
-    const requestOptions = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-      body: JSON.stringify({
-        firstName: event.firstName,
-        lastName: event.lastName,
-        password,
-      }),
-    };
+    if (changePassword) {
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: token,
+        },
+        body: JSON.stringify({
+          firstName: event.firstName,
+          lastName: event.lastName,
+          oldPassword: event.oldPassword,
+          newPassword: event.newPassword,
+          confirmPassword: event.confirmPassword
+        }),
+      };
 
-    fetch(`${process.env.baseURL}/account`, requestOptions)
-      .then(response => response.json())
-      .then(user => {
-        setLoading(false);
+      fetch(`${process.env.baseURL}/account`, requestOptions)
+        .then(response => response.json())
+        .then(user => {
+          setLoading(false);
 
-        if (user.statusCode == 200) {
-          handleClickVariant('success', user.response.message);
-          console.log(user);
-        } else {
-          handleClickVariant('error', user.response.message);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+          if (user.statusCode == 200) {
+            handleClickVariant('success', user.response.message);
+            console.log(user);
+          } else {
+            handleClickVariant('error', user.response.message);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+    } else {
+      const requestOptions = {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          authorization: token,
+        },
+        body: JSON.stringify({
+          firstName: event.firstName,
+          lastName: event.lastName,
+
+        }),
+      };
+
+      fetch(`${process.env.baseURL}/account`, requestOptions)
+        .then(response => response.json())
+        .then(user => {
+          setLoading(false);
+
+          if (user.statusCode == 200) {
+            handleClickVariant('success', user.response.message);
+            console.log(user);
+          } else {
+            handleClickVariant('error', user.response.message);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+
+
   }
 
   const validate = (
@@ -258,6 +297,21 @@ export function MyProfile() {
                     </InputGroup>
                   </Col>
                 </Row>
+
+                <FormGroup
+                  controlId="address"
+                  bssize="large"
+                  className='address'
+                >
+
+                  <div className="label-field" className='locationLabel'>
+                    Add a location
+                </div>
+                  <Address setFieldValue={props.setFieldValue} values={props.values} errors={props.errors} />
+                  {/* {errors.address && <Errors id="feedback">{errors.address}</Errors>} */}
+                </FormGroup>
+
+
                 <Wrapper>
                   {changePassword ? (
                     <Heading>Change Password</Heading>

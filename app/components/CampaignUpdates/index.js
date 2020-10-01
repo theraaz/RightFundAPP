@@ -16,7 +16,6 @@ import {
 
 import './campaignUpdates.scss';
 
-import { Link } from 'react-router-dom';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
 import TinyMCE from 'react-tinymce';
@@ -111,42 +110,45 @@ const CampaignUpdates = ({ editCampaignData }) => {
 
   return (
     <div>
-      <Card className="dataCard shadow mb-5 bg-white">
-        <Card.Header style={{ background: 'transparent' }}>
-          <Card.Title className="campaignHeader">
-            <div style={{ width: '30%'}}>
+      {/* <Card className="dataCard shadow mb-5 bg-white">
+        <Card.Header style={{ background: 'transparent', borderBottom: 'none' }}>
+          <Card.Title className="campaignUpdates">
+            <div style={{ width: '30%' }}>
               <span style={{ marginTop: '8px' }}>{editCampaignData ? editCampaignData.title : ''}</span>
               <ul className="campign-Status">
                 <li className="raised">
-                  <span className="title">Raised</span>
+
                   <span className="content">$5,900</span>
+                  <span className="title">Target</span>
                 </li>
                 <li className="pledged">
-                  <span className="title">Pledged</span>
                   <span className="content">
                     {editCampaignData ? editCampaignData.amountSymbolId.symbol : ''} {editCampaignData ? editCampaignData.amount : ''}
                   </span>
+                  <span className="title">Raised</span>
+
                 </li>
                 <li className="donators">
-                  <span className="title">Donators</span>
                   <span className="content">29</span>
+                  <span className="title">Donators</span>
+
                 </li>
               </ul>
             </div>
 
-            <div className="campaignHeader1 d-flex flex-column flex-sm-row">
+            <div className="campaignUpdatesHeader d-flex flex-column flex-sm-row">
               <Link to="/">
                 <Button className="campaignViewBtn">View Campaign</Button>{' '}
               </Link>
 
               <Link to={`/editCampaign/${editCampaignData ? editCampaignData.id : ''}`}>
-                <Button className="campaignBtn">Edit Campaign</Button>{' '}
+                <Button className='editCampaign'>Edit Campaign</Button>{' '}
               </Link>
             </div>
           </Card.Title>
         </Card.Header>
 
-        <Card.Body>
+        <Card.Body> */}
           <Container>
             <TinyMCE
               placeholder="Updates"
@@ -209,7 +211,7 @@ const CampaignUpdates = ({ editCampaignData }) => {
             />
             <div className="addUpdate">
               <Button className="updateBtn" onClick={addUpdates}>
-                {loading == false && <div>Add Update</div>}
+                {loading == false && <div>Update Status</div>}
                 {loading && <Spinner animation="border" size="sm" />}{' '}
               </Button>{' '}
             </div>
@@ -217,7 +219,7 @@ const CampaignUpdates = ({ editCampaignData }) => {
 
           {
             allUpdateStatus.map(data => (
-              <Timeline>
+              <Timeline key={data.id}>
                 <TimelineItem className='timelineItem'>
                   <TimelineSeparator>
                     <TimelineDot variant="outlined" />
@@ -226,17 +228,17 @@ const CampaignUpdates = ({ editCampaignData }) => {
                   <TimelineContent className='timelineContent'>
                     <h3>{editCampaignData.title}</h3>
                     <Card.Text
-                      className="descriptionCampaign"
+                      className="descriptionCampaignUpdates"
                       dangerouslySetInnerHTML={{ __html: data.description }}
                     />
                   </TimelineContent>
                 </TimelineItem>
               </Timeline>
             ))}
-
+{/* 
         </Card.Body>
 
-      </Card>
+      </Card> */}
     </div>
   );
 }

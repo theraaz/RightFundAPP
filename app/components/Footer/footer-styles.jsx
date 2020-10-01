@@ -8,7 +8,7 @@ export const Wrapper = styled.section`
   display: flex;
   flex-flow: column;
   background: #f7faff;
-  position: fixed;
+  // position: fixed;
   bottom: 0;
 `;
 

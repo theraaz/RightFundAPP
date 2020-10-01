@@ -87,7 +87,7 @@ const MyCampaigns = ({ setActiveCard }) => {
             <Row>
               {campaign.map(data => (
                 <Col key={data.id} xs={12} sm={6} md={4}>
-                  <Card className="campaign-card" onClick={() => setActiveCard(1)}>
+                  <Card className="campaign-card" >
                     <Link className='anchorTag' to={`addCampaignUpdates/${data.id}`}>
                       <div
                         className="give-card__media"

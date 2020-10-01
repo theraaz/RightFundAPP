@@ -40,6 +40,11 @@
       }
 
       .dropItem {
+        padding: 5px 10px 5px 15px;
+        
+        span{
+          margin-left: 10px;
+        }
         &:hover {
           color: #f15a24;
         }
