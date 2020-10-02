@@ -35,7 +35,7 @@ export function MyProfile() {
   const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
-  const [password, setPassword] = React.useState('');
+  const [userAdress, setUserAddress] = React.useState('');
   const [loading, setLoading] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [changePassword, setChangePassword] = React.useState(false);
@@ -59,6 +59,8 @@ export function MyProfile() {
           setFirstName(user.response.data.res.firstName);
           setLastName(user.response.data.res.lastName);
           setEmail(user.response.data.res.email);
+          setUserAddress(user.response.data.address);
+          setPhone(user.response.data.res.email)
         } else {
           setMessage('Something went missing, Please try again');
         }
@@ -82,6 +84,13 @@ export function MyProfile() {
   function handleSubmit(event) {
     console.log(event)
     setLoading(true);
+    let address = {
+      line1: event.line1,
+      line2: event.line2,
+      city: event.city,
+      state: event.state,
+      country: event.country,
+    }
     if (changePassword) {
       const requestOptions = {
         method: 'PUT',
@@ -94,7 +103,8 @@ export function MyProfile() {
           lastName: event.lastName,
           oldPassword: event.oldPassword,
           newPassword: event.newPassword,
-          confirmPassword: event.confirmPassword
+          confirmPassword: event.confirmPassword,
+          address: address
         }),
       };
 
@@ -210,10 +220,15 @@ export function MyProfile() {
             firstName: firstName,
             lastName: lastName,
             email: email,
-            phone: '',
+            phone: phone,
             oldPassword: '',
             newPassword: '',
-            confirmPassword: ''
+            confirmPassword: '',
+            line1: userAdress ? JSON.parse(userAdress).line1 : '',
+            line2: userAdress ? JSON.parse(userAdress).line2 : '',
+            city: userAdress ? JSON.parse(userAdress).city : '',
+            state: userAdress ? JSON.parse(userAdress).state : '',
+            country: userAdress ? JSON.parse(userAdress).country : '',
           }}
             enableReinitialize
             validate={validate}
@@ -429,7 +444,7 @@ export function MyProfile() {
 
         </Card.Body>
       </Card>
-    </Layout>
+    </Layout >
   );
 }
 

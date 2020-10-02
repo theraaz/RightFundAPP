@@ -198,14 +198,16 @@ export function LoginPage(props) {
                   <Link className="forgetPassLabel" to="/forgetPassword">
                     Forget Password
                   </Link>
-                  {/* <Form.Label className="forgetPassLabel" onClick={() => nextPath('/forgetPassword')}>Forget Password</Form.Label> */}
                 </Col>
               </Form.Row>
-              {/* <div className="signupBtn">
-                <Link className="forgetPassLabel" to="/signup">Register yourself</Link>
-              </div> */}
+              <Form.Row>
+                <Col controlid="terms">
+                  <Form.Check className="remberMeLabel" label="Terms & conditions" />
+                </Col>
+              
+              </Form.Row>
             </Form.Group>
-            {/* disabled={!validateForm()} */}
+
             <Button block bssize="large" type="submit" className="submitBtn">
               {' '}
               {loading == false && <div>Login</div>}

@@ -291,6 +291,12 @@ export function Singup(props) {
                   </div>
                 </Col>{' '}
               </Form.Row>
+              <Form.Row>
+                <Col controlid="terms">
+                  <Form.Check className="remberMeLabel" label="Terms & conditions" />
+                </Col>
+
+              </Form.Row>
             </Form.Group>
 
             {asCharity ? (

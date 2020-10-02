@@ -164,7 +164,7 @@ const Form2 = ({
           <div
             style={{ margin: '5px 0px 20px auto' }}
           >
-            <div className="campaignBtns">
+            <div className="campaignBtnsForm2">
               <Button
                 className="editCampaignBtn"
                 onClick={() => setActiveLink(0)}

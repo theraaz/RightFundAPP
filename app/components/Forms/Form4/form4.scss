@@ -27,14 +27,15 @@
       }
     }
   }
-  .campaignBtns {
-    justify-content: space-between;
-    display: flex;
-    width: 50%;
+  .campaignBtnsForm4 {
+    text-align: end;
+    
+
     .viewCampaignBtn {
       background-color: #f15a24;
       border-color: #f2f2f2;
-      width: 100%;
+      width: 120px;
+      height: 40px;
       margin-left: 5px;
       font-size: 11px;
 
@@ -42,7 +43,7 @@
         color: white;
       }
       &:focus {
-        box-shadow: none;
+        box-shadow: none !important;
       }
       &:active {
         background: white;
@@ -59,15 +60,16 @@
     .editCampaignBtn {
       background-color: gray;
       border-color: #f2f2f2;
+      width: 120px;
+      height: 40px;
       margin-left: 10px;
       font-size: 11px;
-      width: 100%;
 
       &:hover {
         opacity: 0.8;
       }
       &:focus {
-        box-shadow: none;
+        box-shadow: none !important;
       }
       &:active {
         background: white;

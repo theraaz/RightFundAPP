@@ -451,7 +451,7 @@ const Form3 = ({ id, setActiveLink }) => {
           <div
            style={{ margin: '10px 0px 20px auto' }}
           >
-            <div className="campaignBtns">
+            <div className="campaignBtnsForm3">
               <Button
                 className="editCampaignBtn"
                 onClick={() => setActiveLink(1)}

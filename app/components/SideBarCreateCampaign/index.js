@@ -103,7 +103,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
           body: JSON.stringify({
             title: event.campaignTitle,
             amount: event.amount,
-            address: event.address,
+            address: JSON.stringify(address),
             endDate: event.date,
             categoryId: event.categories,
             amountSymbolId: event.currencySymbol,
@@ -136,7 +136,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
           body: JSON.stringify({
             title: event.campaignTitle,
             amount: event.amount,
-            address: address,
+            address: JSON.stringify(address),
             endDate: event.date,
             categoryId: event.categories,
             amountSymbolId: event.currencySymbol,
@@ -175,13 +175,13 @@ const SideBarCreateCampaign = (editCampaignData) => {
         errors.campaignTitle = 'Required';
       } else if (values.campaignTitle.length < 3) {
         errors.campaignTitle = 'Enter campaign title';
-      } 
+      }
       // else if (!values.address) {
       //   errors.address = 'Required';
       // } else if (values.address.length < 3) {
       //   errors.address = 'Enter address';
       // }
-       else if (!values.date) {
+      else if (!values.date) {
         errors.date = 'Enter date';
       } else if (!values.categories) {
         errors.categories = 'Required';
@@ -359,7 +359,13 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   amount: editCampaignData.editCampaignData.amount,
                   editorValue: editCampaignData.editCampaignData.description ? editCampaignData.editCampaignData.description : "",
                   zakatEligible: editCampaignData.editCampaignData.zakatEligible,
-                  base64: editCampaignData.editCampaignData.titleImage
+                  base64: editCampaignData.editCampaignData.titleImage,
+                  line1: JSON.parse(editCampaignData.editCampaignData.address).line1,
+                  line2: JSON.parse(editCampaignData.editCampaignData.address).line2,
+                  city: JSON.parse(editCampaignData.editCampaignData.address).city,
+                  state: JSON.parse(editCampaignData.editCampaignData.address).state,
+                  country: JSON.parse(editCampaignData.editCampaignData.address).country,
+
                 } : {
                     currencySymbol: 1,
                     fundraiser: '',

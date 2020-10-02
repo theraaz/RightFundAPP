@@ -186,20 +186,22 @@
     }
   }
 
-  .campaignBtns {
-    width: 160px;
-    height: 40px;
+  .campaignBtnsForm1 {
+    // width: 160px;
+    // height: 40px;
 
     .viewCampaignBtn {
       background-color: #f15a25;
-      width: 98%;
+      border-color: #f15a25;
+      // width: 98%;
       font-size: 13px;
 
       &:focus {
         box-shadow: none !important;
       }
       &:active {
-        background: white;
+      border-color: #f15a25;
+      background: white;
         color: black;
       }
       &:hover {

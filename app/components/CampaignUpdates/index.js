@@ -110,45 +110,7 @@ const CampaignUpdates = ({ editCampaignData }) => {
 
   return (
     <div>
-      {/* <Card className="dataCard shadow mb-5 bg-white">
-        <Card.Header style={{ background: 'transparent', borderBottom: 'none' }}>
-          <Card.Title className="campaignUpdates">
-            <div style={{ width: '30%' }}>
-              <span style={{ marginTop: '8px' }}>{editCampaignData ? editCampaignData.title : ''}</span>
-              <ul className="campign-Status">
-                <li className="raised">
-
-                  <span className="content">$5,900</span>
-                  <span className="title">Target</span>
-                </li>
-                <li className="pledged">
-                  <span className="content">
-                    {editCampaignData ? editCampaignData.amountSymbolId.symbol : ''} {editCampaignData ? editCampaignData.amount : ''}
-                  </span>
-                  <span className="title">Raised</span>
-
-                </li>
-                <li className="donators">
-                  <span className="content">29</span>
-                  <span className="title">Donators</span>
-
-                </li>
-              </ul>
-            </div>
-
-            <div className="campaignUpdatesHeader d-flex flex-column flex-sm-row">
-              <Link to="/">
-                <Button className="campaignViewBtn">View Campaign</Button>{' '}
-              </Link>
-
-              <Link to={`/editCampaign/${editCampaignData ? editCampaignData.id : ''}`}>
-                <Button className='editCampaign'>Edit Campaign</Button>{' '}
-              </Link>
-            </div>
-          </Card.Title>
-        </Card.Header>
-
-        <Card.Body> */}
+     
           <Container>
             <TinyMCE
               placeholder="Updates"
@@ -235,10 +197,7 @@ const CampaignUpdates = ({ editCampaignData }) => {
                 </TimelineItem>
               </Timeline>
             ))}
-{/* 
-        </Card.Body>
 
-      </Card> */}
     </div>
   );
 }

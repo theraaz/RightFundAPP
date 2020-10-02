@@ -163,14 +163,15 @@
   }
 
  
-  .campaignBtns {
+  .campaignBtnsForm2 {
     justify-content: space-between;
     display: flex;
-    width: 50%;
+    
+    height: 40px;
     .viewCampaignBtn {
       background-color: #f15a24;
       border-color: #f2f2f2;
-      width: 100%;
+      // width: 100%;
       font-size: 11px;
       &:focus {
         box-shadow: none;
@@ -186,10 +187,11 @@
     }
     .editCampaignBtn {
       background-color: gray;
+      width: 120px;
       border-color: #f2f2f2;
       margin-left: 5px;
       font-size: 11px;
-      width: 100%;
+      // width: 100%;
 
       &:hover {
         opacity: 0.8;

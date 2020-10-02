@@ -31,15 +31,20 @@ function Form4() {
         </div>
       </div>
 
-
       <div style={{ margin: '10px 0px 20px auto' }}>
-        <div className='campaignBtns'>
+        <div className='campaignBtnsForm4'>
 
           <Button className="editCampaignBtn" onClick={() => setActiveLink(0)} >Preview</Button>
-          <Button type="submit" className="viewCampaignBtn" onClick={() => setActiveLink(2)} >
-            <Link to="/">Publish</Link></Button>
+          {/* <Button type="submit" className="viewCampaignBtn" onClick={() => setActiveLink(2)} > */}
+          <Link  to="/">
+            <Button type="submit" className="viewCampaignBtn" onClick={() => setActiveLink(2)} >Publish
+            </Button>
+          </Link>
+
+          {/* </Button> */}
         </div>
       </div>
+
     </div>
   </div>;
 }

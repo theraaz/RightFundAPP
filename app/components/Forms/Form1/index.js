@@ -361,7 +361,7 @@ const Form1 = ({
           </p>
 
           <div style={{ margin: '0px 0px 20px auto' }}>
-            <div className="campaignBtns">
+            <div className="campaignBtnsForm1">
               {/* <Button className="editCampaignBtn" >Preview</Button> */}
               <Button type="submit" className="viewCampaignBtn">
                 {' '}

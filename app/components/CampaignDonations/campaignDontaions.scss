@@ -1,0 +1,23 @@
+.tableMain {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 4px;
+
+  .table1 {
+    text-align: center;
+
+    .tableHeader {
+      color: #f15a24;
+      font-size: 16px;
+    }
+  }
+
+  .tableRow {
+    margin: 0 !important;
+    background-color: #f0f0f0;
+
+    .DonationHeading {
+      padding: 15px 10px 10px;
+      // margin: 0;
+    }
+  }
+}
