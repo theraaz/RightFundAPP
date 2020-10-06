@@ -22,7 +22,7 @@ const Form2 = ({
   loading,
 }) => {
   const [btnSelected, setBtnSelected] = React.useState(false);
-
+  const [youtubeId, setYoutubeId] = React.useState('');
   const handleEditorChange = event => {
     setFieldValue('editorValue', event.target.getContent());
   };
@@ -30,6 +30,18 @@ const Form2 = ({
   const handleImage = event => {
     setFieldValue('base64', null);
   };
+
+  const setVideo = event => {
+    console.log('dsfs')
+    setFieldValue('video', event.target.value);
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = event.target.value.match(regExp);
+
+    if (match && match[2].length == 11) {
+      console.log(match[2])
+      setYoutubeId(match[2]);
+    }
+  }
 
   return (
     <div>
@@ -89,8 +101,8 @@ const Form2 = ({
                   <Button
                     style={{ width: '41%' }}
                     className={`${btnSelected
-                        ? 'toggle-unselectedBtn'
-                        : 'toggle-selectedBtn'
+                      ? 'toggle-unselectedBtn'
+                      : 'toggle-selectedBtn'
                       } `}
                     onClick={() => setBtnSelected(false)}
                   >
@@ -100,8 +112,8 @@ const Form2 = ({
                   <Button
                     style={{ width: '50%' }}
                     className={`${btnSelected
-                        ? 'toggle-selectedBtn'
-                        : 'toggle-unselectedBtn'
+                      ? 'toggle-selectedBtn'
+                      : 'toggle-unselectedBtn'
                       }`}
                     onClick={() => setBtnSelected(true)}
                   >
@@ -109,9 +121,25 @@ const Form2 = ({
                     UK Gift Aid
                   </Button>
                 </div>
-                {/* <label class="switch"><input type="checkbox" id="togBtn" /><div class="slider round"></div></label> */}
+
+
               </Col>
             </Form.Row>
+          </Form.Group>
+          <Form.Control
+            type="text"
+            isInvalid={errors.video}
+            value={values.video}
+            name="video"
+            placeholder="Video Link"
+            className="controlForm"
+            onChange={setVideo}
+          />
+
+          <iframe width="100%" style={{ marginTop: '10px' }} height="315" src={`//www.youtube.com/embed/${youtubeId}`} frameborder="0" allowfullscreen></iframe>
+
+          <Form.Group>
+
           </Form.Group>
           <Form.Group>
             <div style={{ position: 'relative' }}>
@@ -186,7 +214,7 @@ const Form2 = ({
           {/* <button onClick={doStuffWhenFileChanges} >Hello</button> */}
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

@@ -41,8 +41,8 @@
 
       .dropItem {
         padding: 5px 10px 5px 15px;
-        
-        span{
+
+        span {
           margin-left: 10px;
         }
         &:hover {
@@ -69,13 +69,7 @@
   height: 175px;
   width: 100%;
   background: #f15a24;
+  // position: relative;
 }
 
-// .logout {
-//   color: #f15a24;
 
-//   &:hover {
-//     color: #f15a24;
-//     text-decoration: none;
-//   }
-// }

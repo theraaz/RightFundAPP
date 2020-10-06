@@ -20,7 +20,6 @@ import {
 import './campaignDontaions.scss';
 
 function CampaignDonations(editCampaignData) {
-  console.log('sdds', editCampaignData);
 
   const [campaignsDonation, setCampaignsDonation] = useState([]);
 
@@ -97,7 +96,7 @@ function CampaignDonations(editCampaignData) {
           <input className='searchBarInput' placeholder='Search here' onChange={filterData} />
         </div>
       </Row>
-      <Table responsive className='table1' >
+      <Table responsive striped  size="md" className='table1' >
 
         <thead className='tableHeader'>
           <tr>

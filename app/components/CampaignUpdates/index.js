@@ -118,7 +118,7 @@ const CampaignUpdates = ({ editCampaignData }) => {
 
               config={{
                 plugins: 'image code',
-                toolbar: 'undo redo | link image | code',
+                toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | link image | code',
                 /* enable title field in the Image dialog*/
                 image_title: true,
                 /* enable automatic uploads of images represented by blob or data URIs*/

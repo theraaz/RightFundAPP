@@ -10,7 +10,7 @@ import Form3 from '../Forms/Form3/Loadable';
 import Form4 from '../Forms/Form4/index';
 
 const SideBarCreateCampaign = (editCampaignData) => {
-  const [activeLink, setActiveLink] = useState(1);
+  const [activeLink, setActiveLink] = useState(0);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [campaignId, setCampaignId] = useState('');
   const [loading, setLoading] = useState(false);
@@ -50,6 +50,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
             zakatEligible: event.zakatEligible,
             description: event.editorValue,
             titleImage: result,
+            video: event.video
           }),
         };
 
@@ -354,12 +355,13 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   fundraiser: '',
                   date: editCampaignData.editCampaignData.endDate,
                   campaignTitle: editCampaignData.editCampaignData.title,
-                  // address: editCampaignData.editCampaignData.address,
+                  address: editCampaignData.editCampaignData.address,
                   categories: editCampaignData.editCampaignData.categoryId.id,
                   amount: editCampaignData.editCampaignData.amount,
                   editorValue: editCampaignData.editCampaignData.description ? editCampaignData.editCampaignData.description : "",
                   zakatEligible: editCampaignData.editCampaignData.zakatEligible,
                   base64: editCampaignData.editCampaignData.titleImage,
+                  video: editCampaignData.editCampaignData.video,
                   line1: JSON.parse(editCampaignData.editCampaignData.address).line1,
                   line2: JSON.parse(editCampaignData.editCampaignData.address).line2,
                   city: JSON.parse(editCampaignData.editCampaignData.address).city,
@@ -377,6 +379,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
                     editorValue: '',
                     zakatEligible: false,
                     image: [],
+                    video: ''
                   }}
                 enableReinitialize
                 validate={validate}

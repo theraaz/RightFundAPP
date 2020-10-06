@@ -32,6 +32,7 @@ function Layout({ children }) {
   const [activeCampaign, setActiveCampaign] = React.useState(0);
   const [giftAid, setGiftAid] = React.useState(0);
   const [totalRaised, setTotalRaised] = React.useState(0);
+  const [userAdress, setUserAddress] = React.useState('');
 
 
 
@@ -50,6 +51,7 @@ function Layout({ children }) {
         if (user.statusCode == 200) {
           setFirstName(user.response.data.res.firstName);
           setLastName(user.response.data.res.lastName);
+          setUserAddress(JSON.parse(user.response.data.res.address));
           setEmail(user.response.data.res.email);
         } else {
           setMessage('Something went missing, Please try again');
@@ -105,7 +107,7 @@ function Layout({ children }) {
                       </Title>
                       <p className="card-text">{email}</p>
                     </div>
-                    <p>765 Folsan Ave, Suite 600 San Francisco, CADGE 94017</p>
+                    <p>{userAdress.line1}, {userAdress.line2}, {userAdress.city}, {userAdress.state}, {userAdress.country}</p>
                   </div>
                 </Col>
               </Row>

@@ -7,6 +7,7 @@
 import React, { memo, useState } from 'react';
 import { Image, Dropdown } from 'react-bootstrap';
 import './header.scss';
+import { withRouter } from 'react-router-dom';
 
 import { Title, Heading, Description } from './styled';
 const logo = require('../../images/logo.png');
@@ -14,7 +15,7 @@ const profile = require('../../images/placeholder.png');
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // import IconButton from '@material-ui/icons/IconButton';
 
-const Header = ({ children, title, firstName, lastName }) => {
+const Header = ({ children, title, firstName, lastName, ...props }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = event => {
@@ -31,11 +32,15 @@ const Header = ({ children, title, firstName, lastName }) => {
   }
 
 
+  function goToDashboard() {
+    props.history.push('/');
+  }
+
 
   return (
     <div className="shadow">
       <div className="header">
-        <div className="img">
+        <div className="img" onClick={goToDashboard} >
           <Image src={logo} fluid />
         </div>
         <div className="profile">
@@ -134,6 +139,48 @@ const Header = ({ children, title, firstName, lastName }) => {
         <div className="container">
           <Heading>{title}</Heading>
           <Description>Welcome to Right Funds</Description>
+
+          {/* <div className='backButtons'>
+          <div >
+            <svg version="1.1" id="Capa_1" x="0px" y="0px" width="15" height="15" viewBox="0 0 268.833 268.833" >
+              <g>
+                <path d="M256.333,121.916H42.679l58.659-58.661c4.882-4.882,4.882-12.796,0-17.678c-4.883-4.881-12.797-4.881-17.678,0l-79.998,80   c-4.883,4.882-4.883,12.796,0,17.678l80,80c2.439,2.439,5.64,3.661,8.839,3.661s6.397-1.222,8.839-3.661   c4.882-4.882,4.882-12.796,0-17.678l-58.661-58.661h213.654c6.903,0,12.5-5.598,12.5-12.5   C268.833,127.513,263.236,121.916,256.333,121.916z" />
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+            </svg>
+            <span>Back</span></div>
+
+        </div> */}
+
           {children}
         </div>
       </div>
@@ -143,4 +190,4 @@ const Header = ({ children, title, firstName, lastName }) => {
 
 Header.propTypes = {};
 
-export default memo(Header);
+export default withRouter(memo(Header));

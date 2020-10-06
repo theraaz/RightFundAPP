@@ -20,15 +20,17 @@ import { Link } from 'react-router-dom';
 import './campaignTabs.scss';
 
 function CampaignTabs({ children, ...props }) {
-  console.log('tabs', children)
 
   // const params = useParams()
-  console.log('props', props)
 
   function backFunction() {
-    console.log('props', props)
     props.history.goBack();
+  }
 
+  function totalRaised(data) {
+    let totalAmount;
+    totalAmount = data.reduce(function (acc, val) { return acc + val['amount']; }, 0)
+    return (data[0].amountSymbolId.symbol + ' ' + totalAmount);
   }
 
   return (
@@ -303,18 +305,20 @@ function CampaignTabs({ children, ...props }) {
                     <ul className="campign-Status">
                       <li className="raised">
 
-                        <span className="content">$5,900</span>
+                        <span className="content">{children.props.editCampaignData ? children.props.editCampaignData.amountSymbolId.symbol : ''} {children.props.editCampaignData ? children.props.editCampaignData.amount : ''}</span>
                         <span className="title">Target</span>
                       </li>
                       <li className="pledged">
                         <span className="content">
-                          {children.props.editCampaignData ? children.props.editCampaignData.amountSymbolId.symbol : ''} {children.props.editCampaignData ? children.props.editCampaignData.amount : ''}
+                          {children.props.editCampaignData ? totalRaised(children.props.editCampaignData.donations) : ''}
                         </span>
                         <span className="title">Raised</span>
 
                       </li>
                       <li className="donators">
-                        <span className="content">29</span>
+                        <span className="content">
+                          {children.props.editCampaignData ? children.props.editCampaignData.donations.length : ''}
+                        </span>
                         <span className="title">Donators</span>
 
                       </li>
@@ -322,7 +326,7 @@ function CampaignTabs({ children, ...props }) {
                   </div>
 
                   <div className="campaignUpdatesHeader d-flex flex-column flex-sm-row">
-                    <Link to="/">
+                    <Link to={`/campaignView/${children.props.editCampaignData ? children.props.editCampaignData.id : ''}`}>
                       <Button className="campaignViewBtn">View Campaign</Button>{' '}
                     </Link>
 

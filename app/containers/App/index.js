@@ -11,13 +11,13 @@ import EditCampaign from 'containers/EditCampaign/Loadable';
 import ResetPassword from 'containers/Resetpassword/Loadable';
 import AccountVerify from 'containers/AccountVerify/index';
 import CampaignUpdatesContainer from 'containers/CampaignUpdatesContainer/index';
+import CampaignViewContainer from 'containers/CampaignViewContainer/index';
 import DonationsContainer from 'containers/DonationsContainer/index';
 
 
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
-import MyCampaigns from '../../components/MyCampaigns/Loadable';
 import AuthRoute from '../../components/AuthRoutes';
 import LoginRoute from '../../components/routes';
 export default function App() {
@@ -37,6 +37,7 @@ export default function App() {
         <AuthRoute exact path="/editCampaign/:id" component={EditCampaign} />
         <LoginRoute exact path="/resetPassword" component={ResetPassword} />
         <LoginRoute exact path="/accountVerify" component={AccountVerify} />
+        <AuthRoute exact path="/campaignView/:id" component={CampaignViewContainer} />
         {/* <LoginRoute exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} /> */}
         <Route component={NotFoundPage} />
       </Switch>

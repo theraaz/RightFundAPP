@@ -55,12 +55,11 @@ export function MyProfile() {
       .then(user => {
         setLoading(false);
         if (user.statusCode == 200) {
-          console.log(user.response.data.res);
           setFirstName(user.response.data.res.firstName);
           setLastName(user.response.data.res.lastName);
           setEmail(user.response.data.res.email);
-          setUserAddress(user.response.data.address);
-          setPhone(user.response.data.res.email)
+          setUserAddress(user.response.data.res.address);
+          setPhone(user.response.data.res.phoneNumber)
         } else {
           setMessage('Something went missing, Please try again');
         }
@@ -104,7 +103,7 @@ export function MyProfile() {
           oldPassword: event.oldPassword,
           newPassword: event.newPassword,
           confirmPassword: event.confirmPassword,
-          address: address
+          address: JSON.stringify(address)
         }),
       };
 
@@ -134,6 +133,7 @@ export function MyProfile() {
         body: JSON.stringify({
           firstName: event.firstName,
           lastName: event.lastName,
+          address: JSON.stringify(address)
 
         }),
       };
@@ -237,7 +237,8 @@ export function MyProfile() {
             onSubmit={handleSubmit}
           >
             {props => (
-              <form onSubmit={props.handleSubmit}>
+
+              < form onSubmit={props.handleSubmit}>
                 <Heading>Basic Info</Heading>
                 <Row>
                   <Col md={6}>

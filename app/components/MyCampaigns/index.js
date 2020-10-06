@@ -16,6 +16,7 @@ import {
   Button,
   Container,
   ProgressBar,
+  Badge
 } from 'react-bootstrap';
 import '../../containers/HomePage/dashboard.scss';
 import { Link } from 'react-router-dom';
@@ -44,6 +45,15 @@ const MyCampaigns = ({ setActiveCard }) => {
         console.log(error);
       });
   }, []);
+
+
+
+  function totalRaised(data) {
+    let totalAmount;
+    totalAmount = data.reduce(function (acc, val) { return acc + val['amount']; }, 0)
+    console.log(totalAmount)
+    return ((data.length > 0 ? data[0].amountSymbolId.symbol : '') + ' ' + totalAmount);
+  }
 
   return (
     <div>
@@ -89,6 +99,8 @@ const MyCampaigns = ({ setActiveCard }) => {
                 <Col key={data.id} xs={12} sm={6} md={4}>
                   <Card className="campaign-card" >
                     <Link className='anchorTag' to={`addCampaignUpdates/${data.id}`}>
+
+                      <Badge className='badgeCampaign'>{data.statusId.name}</Badge>{' '}
                       <div
                         className="give-card__media"
                         style={{ maxWidth: '230px', height: '130px' }}
@@ -121,7 +133,7 @@ const MyCampaigns = ({ setActiveCard }) => {
                             />
                           </div>
                           <span className="author-name">
-                            {data.account.firstName}
+                            {/* {data.account.firstName} */}
                           </span>
                         </Card.Title>
                         <h3 className="give-card__title">{data.title}</h3>
@@ -138,25 +150,29 @@ const MyCampaigns = ({ setActiveCard }) => {
                         />
                         <ul className="campign-info">
                           <li className="raised">
-                            <span className="title">Raised</span>
-                            <span className="content">$5,900</span>
+                            <span className="title">Target</span>
+                            <span className="content">{data.amountSymbolId.symbol} {data.amount}</span>
                           </li>
                           <li className="pledged">
-                            <span className="title">Pledged</span>
+                            <span className="title">Raised</span>
                             <span className="content">
-                              {data.amountSymbolId.symbol} {data.amount}
+                              {totalRaised(data.donations)}
                             </span>
                           </li>
                           <li className="donators">
                             <span className="title">Donators</span>
-                            <span className="content">29</span>
+                            <span className="content">{data.donations.length}</span>
                           </li>
                         </ul>
                         <div className="campaignBtns">
-                          <Button className="viewCampaignBtn">
-                            View Campaign
-                        </Button>
-                          {/* <Button className="editCampaignBtn" >Edit Campaign</Button> */}
+
+                          <Link to={`/campaignView/${data.id}`}>
+                            <Button className="viewCampaignBtn">
+                              View Campaign
+                        </Button>{' '}
+                          </Link>
+
+
                           <Link to={`/editCampaign/${data.id}`}>
                             <Button className="editCampaignBtn">
                               Edit Campaign
