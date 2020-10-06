@@ -121,7 +121,7 @@ const MyCampaigns = ({ setActiveCard }) => {
                             />
                           </div>
                           <span className="author-name">
-                            {data.accountId.firstName}
+                            {data.account.firstName}
                           </span>
                         </Card.Title>
                         <h3 className="give-card__title">{data.title}</h3>

@@ -10,7 +10,7 @@ import Form3 from '../Forms/Form3/Loadable';
 import Form4 from '../Forms/Form4/index';
 
 const SideBarCreateCampaign = (editCampaignData) => {
-  const [activeLink, setActiveLink] = useState(0);
+  const [activeLink, setActiveLink] = useState(1);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [campaignId, setCampaignId] = useState('');
   const [loading, setLoading] = useState(false);

@@ -28,6 +28,10 @@ function Layout({ children }) {
   const [firstName, setFirstName] = React.useState('');
   const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState('');
+  const [totalCampaign, setTotalCampaign] = React.useState(0);
+  const [activeCampaign, setActiveCampaign] = React.useState(0);
+  const [giftAid, setGiftAid] = React.useState(0);
+  const [totalRaised, setTotalRaised] = React.useState(0);
 
 
 
@@ -47,6 +51,26 @@ function Layout({ children }) {
           setFirstName(user.response.data.res.firstName);
           setLastName(user.response.data.res.lastName);
           setEmail(user.response.data.res.email);
+        } else {
+          setMessage('Something went missing, Please try again');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+
+    //Account Details
+
+    fetch(`${process.env.baseURL}/accountDetails`, requestOptions)
+      .then(response => response.json())
+      .then(user => {
+        if (user.statusCode == 200) {
+          setTotalCampaign(user.response.data.totalCampaigns);
+          setActiveCampaign(user.response.data.totalLive);
+          setGiftAid(user.response.data.giftAid);
+          setTotalRaised(user.response.data.totalRaised);
+
         } else {
           setMessage('Something went missing, Please try again');
         }
@@ -93,21 +117,21 @@ function Layout({ children }) {
                 <div className="compaignData">
                   <Row>
                     <Col className="table-col1 tableRight">
-                      <Heading>43</Heading>
+                      <Heading>{totalCampaign}</Heading>
                       <Description>Total Campaign Created</Description>
                     </Col>
                     <Col className="table-col1">
-                      <Heading>71</Heading>
+                      <Heading>{activeCampaign}</Heading>
                       <Description>Active Campaign</Description>
                     </Col>
                   </Row>
                   <Row>
                     <Col className="table-col tableRight">
-                      <Heading className="mt-4">123</Heading>
+                      <Heading className="mt-4">{giftAid}</Heading>
                       <Description>Gift Aids</Description>
                     </Col>
                     <Col className="table-col">
-                      <Heading className="mt-4">$ 128</Heading>
+                      <Heading className="mt-4">$ {totalRaised}</Heading>
                       <Description>Total Raised</Description>
                     </Col>
                   </Row>

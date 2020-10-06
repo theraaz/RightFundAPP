@@ -11,13 +11,49 @@
     }
   }
 
+  .tableBody {
+    color: #9c9c9c;
+    font-family: Ubuntu, sans-serif;
+    font-size: 15px;
+
+    .tableAmount {
+      color: black;
+      font-weight: 600;
+    }
+  }
+
+  .table thead th {
+    border-bottom: none !important;
+  }
   .tableRow {
     margin: 0 !important;
     background-color: #f0f0f0;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px 10px;
 
     .DonationHeading {
-      padding: 15px 10px 10px;
-      // margin: 0;
+      // padding: 15px 20px 10px;
+      font-size: 18px;
+      margin-top: 5px;
+      font-size: 18px;
+    }
+
+    .searchBar {
+      background-color: white;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      padding: 0px 10px;
+      margin-bottom: 1px;
+      .searchBarInput {
+        border-radius: 4px;
+        border: none;
+        padding: 1px 10px;
+
+        &:focus {
+          outline: 0;
+        }
+      }
     }
   }
 }

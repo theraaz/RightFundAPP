@@ -25,17 +25,63 @@ function CampaignTabs({ children, ...props }) {
   // const params = useParams()
   console.log('props', props)
 
+  function backFunction() {
+    console.log('props', props)
+    props.history.goBack();
+
+  }
+
   return (
     <div>
       <Header title="Dasboard" />
-      <div className="container mt-n5" style={{ minHeight: '700px' }}>
+      <div className="container" style={{ minHeight: '700px', marginTop: '-5rem' }}>
+        <div className='backButtonMain'>
+          <div onClick={backFunction}>
+            <svg version="1.1" id="Capa_1" x="0px" y="0px" width="15" height="15" viewBox="0 0 268.833 268.833" >
+              <g>
+                <path d="M256.333,121.916H42.679l58.659-58.661c4.882-4.882,4.882-12.796,0-17.678c-4.883-4.881-12.797-4.881-17.678,0l-79.998,80   c-4.883,4.882-4.883,12.796,0,17.678l80,80c2.439,2.439,5.64,3.661,8.839,3.661s6.397-1.222,8.839-3.661   c4.882-4.882,4.882-12.796,0-17.678l-58.661-58.661h213.654c6.903,0,12.5-5.598,12.5-12.5   C268.833,127.513,263.236,121.916,256.333,121.916z" />
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+              <g>
+              </g>
+            </svg>
+            <span>Back</span></div>
+
+        </div>
         <Row style={{ marginTop: 15, marginBottom: 15 }}>
           <Col sm={12} md={3}>
             <Card className="shadow mb-5 bg-white sideNav dataCard">
               <ListGroup variant="flush">
                 <ListGroup.Item className="listItem">
                   <NavLink
-                    to="/addCampaignUpdates"
+                    to={`/addCampaignUpdates/${props.match.params.id}`}
                     className="text-decoration-none listItem"
                     activeClassName="active"
                   >
@@ -297,7 +343,7 @@ function CampaignTabs({ children, ...props }) {
 
       </div>
       <Footer />
-    </div>
+    </div >
   );
 }
 

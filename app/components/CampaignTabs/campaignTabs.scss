@@ -44,10 +44,48 @@
   }
 }
 
+.backButtonMain {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+
+  div {
+    margin-left: auto;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    span {
+      margin-left: 10px;
+    }
+  }
+}
 .campaignUpdates {
   display: flex;
   padding-bottom: 10px;
   justify-content: space-between;
   flex-direction: row;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.campign-Status {
+  list-style: none;
+  margin: 0;
+  padding: 12px 0 0;
+  border-top: none;
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+
+  .title {
+    font-size: 13px;
+    display: block;
+    color: #c1bfbf;
+  }
+  .content {
+    color: #f15a24;
+    font-size: 14px;
+    font-weight: 700;
+  }
 }
