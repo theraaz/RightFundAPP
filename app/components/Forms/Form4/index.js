@@ -10,10 +10,34 @@ import React, { memo } from 'react';
 import { CustomHeading, CustomHeadingNum, H4 } from '../form.styles';
 import './form4.scss';
 import { Row, Col, Card, Dropdown, Button, Container, Input, Form } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 
-function Form4() {
+function Form4({ id, ...props }) {
+  const token = localStorage.getItem('token');
+
+  function publishCampaign() {
+    const requestOptions = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: token,
+      }, body: JSON.stringify({
+        statusId: 7,
+      }),
+    };
+
+    fetch(`${process.env.baseURL}/campaign/${id}`, requestOptions)
+      .then(response => response.json())
+      .then(user => {
+        console.log(user.response.data);
+        props.history.push('/');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+  }
   return <div>
     <div className='main-form1'>
       <div className='main-heading'>
@@ -33,15 +57,16 @@ function Form4() {
 
       <div style={{ margin: '10px 0px 20px auto' }}>
         <div className='campaignBtnsForm4'>
+          <Link to={`/campaignView/${id}`}>
+            <Button className="editCampaignBtn" >Preview</Button>
+          </Link>
 
-          <Button className="editCampaignBtn" onClick={() => setActiveLink(0)} >Preview</Button>
-          {/* <Button type="submit" className="viewCampaignBtn" onClick={() => setActiveLink(2)} > */}
-          <Link  to="/">
-            <Button type="submit" className="viewCampaignBtn" onClick={() => setActiveLink(2)} >Publish
+          <Link to="/">
+            <Button className="viewCampaignBtn" onClick={publishCampaign} >Publish
             </Button>
           </Link>
 
-          {/* </Button> */}
+
         </div>
       </div>
 
@@ -51,4 +76,4 @@ function Form4() {
 
 Form4.propTypes = {};
 
-export default memo(Form4);
+export default withRouter(memo(Form4));

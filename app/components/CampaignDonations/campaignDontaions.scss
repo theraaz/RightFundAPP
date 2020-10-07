@@ -57,3 +57,41 @@
     }
   }
 }
+
+.paginatorDonationdiv {
+  padding: 10px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .paginatorPerSize {
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-right: 5px;
+    }
+
+    .paginatorPerPage {
+      width: 65px;
+      text-align: center;
+      display: flex;
+      font-size: 13px;
+
+      .paginatorPerPageOption {
+        background-color: #fefefe !important;
+        &:hover {
+          background-color: #f15a24 !important;
+        }
+      }
+    }
+  }
+
+  .paginationDonationColor {
+    & .Mui-selected {
+      background-color: #f15a24;
+      border-color: #f15a24;
+      color: white;
+    }
+  }
+}

@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
@@ -21,17 +21,35 @@ import './campaignTabs.scss';
 
 function CampaignTabs({ children, ...props }) {
 
-  // const params = useParams()
+  const token = localStorage.getItem('token');
+  const [campaignData, setCampaignData] = React.useState();
+  useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: token,
+      }
+
+    };
+
+    fetch(`${process.env.baseURL}/campaignBasicDetails/${props.match.params.id}`, requestOptions)
+      .then(response => response.json())
+      .then(user => {
+        console.log(user.response.data);
+        setCampaignData(user.response.data)
+
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
 
   function backFunction() {
     props.history.goBack();
   }
 
-  function totalRaised(data) {
-    let totalAmount;
-    totalAmount = data.reduce(function (acc, val) { return acc + val['amount']; }, 0)
-    return (data[0].amountSymbolId.symbol + ' ' + totalAmount);
-  }
+
 
   return (
     <div>
@@ -301,23 +319,23 @@ function CampaignTabs({ children, ...props }) {
               <Card.Header style={{ background: 'transparent', borderBottom: 'none' }}>
                 <Card.Title className="campaignUpdates">
                   <div style={{ width: '30%' }}>
-                    <span style={{ marginTop: '8px' }}>{children.props.editCampaignData ? children.props.editCampaignData.title : ''}</span>
+                    <span style={{ marginTop: '8px' }}>{campaignData ? campaignData.campaignTitle : ''}</span>
                     <ul className="campign-Status">
                       <li className="raised">
 
-                        <span className="content">{children.props.editCampaignData ? children.props.editCampaignData.amountSymbolId.symbol : ''} {children.props.editCampaignData ? children.props.editCampaignData.amount : ''}</span>
+                        <span className="content">{campaignData ? campaignData.campaignAmountSymbol.symbol : ''} {campaignData ? campaignData.campaignTarget : ''}</span>
                         <span className="title">Target</span>
                       </li>
                       <li className="pledged">
                         <span className="content">
-                          {children.props.editCampaignData ? totalRaised(children.props.editCampaignData.donations) : ''}
+                          {campaignData ? campaignData.campaignAmountSymbol.symbol : ''} {campaignData ? campaignData.totalDonations : ''}
                         </span>
                         <span className="title">Raised</span>
 
                       </li>
                       <li className="donators">
                         <span className="content">
-                          {children.props.editCampaignData ? children.props.editCampaignData.donations.length : ''}
+                          {campaignData ? campaignData.totalDonors : ''}
                         </span>
                         <span className="title">Donators</span>
 
@@ -326,11 +344,11 @@ function CampaignTabs({ children, ...props }) {
                   </div>
 
                   <div className="campaignUpdatesHeader d-flex flex-column flex-sm-row">
-                    <Link to={`/campaignView/${children.props.editCampaignData ? children.props.editCampaignData.id : ''}`}>
+                    <Link to={`/campaignView/${props.match.params.id}`}>
                       <Button className="campaignViewBtn">View Campaign</Button>{' '}
                     </Link>
 
-                    <Link to={`/editCampaign/${children.props.editCampaignData ? children.props.editCampaignData.id : ''}`}>
+                    <Link to={`/editCampaign/${props.match.params.id}`}>
                       <Button className='editCampaign'>Edit Campaign</Button>{' '}
                     </Link>
                   </div>

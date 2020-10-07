@@ -31,7 +31,7 @@ export function DonationsContainer(props) {
     )
       .then(response => response.json())
       .then(user => {
-        console.log(user.response.data.res);
+        console.log(user);
         setEditCampaignData(user.response.data.res);
       })
       .catch(error => {

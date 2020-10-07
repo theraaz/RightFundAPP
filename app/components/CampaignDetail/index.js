@@ -18,7 +18,10 @@ import {
 
 import './campaignDetail.scss';
 
-function CampaignDetail({ campaignData, ...props }) {
+function CampaignDetail({ ...props }) {
+  const token = localStorage.getItem('token');
+  const [campaignData, setCampaignData] = useState();
+  // const [campaignDetails, setCampaignDetails] = React.useState();
 
   const [campaignDetail, setCampaignDetail] = useState();
   function backFunction() {
@@ -30,16 +33,48 @@ function CampaignDetail({ campaignData, ...props }) {
 
 
   useEffect(() => {
-    if (campaignData) {
-      setCampaignDetail(campaignData);
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: token,
+      },
+    };
 
-    }
+    fetch(
+      `${process.env.baseURL}/campaign/${props.match.params.id}`,
+      requestOptions,
+    )
+      .then(response => response.json())
+      .then(user => {
+        console.log(user.response.data.res);
+        setCampaignDetail(user.response.data.res);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    fetch(`${process.env.baseURL}/campaignBasicDetails/${props.match.params.id}`, requestOptions)
+      .then(response => response.json())
+      .then(user => {
+        setCampaignData(user.response.data)
+
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }, [
-    campaignData
   ]);
 
+  function progressBarVal() {
+    if (campaignData) {
 
-  console.log(campaignData)
+      let pb = Math.floor(campaignData.totalDonations / campaignData.campaignTarget * 100);
+      return pb;
+    }
+  }
+
+  console.log('cam', campaignData);
   return (
     <div>
       <div className="container" style={{ minHeight: '700px', marginTop: '-5rem' }}>
@@ -95,10 +130,10 @@ function CampaignDetail({ campaignData, ...props }) {
                     <div
                       className="give-card__media"
                     >
-                      {campaignData.titleImage ? (
+                      {campaignDetail.titleImage ? (
                         <img
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                          src={campaignData.titleImage}
+                          src={campaignDetail.titleImage}
                           alt=""
                         />
                       ) : (
@@ -116,7 +151,7 @@ function CampaignDetail({ campaignData, ...props }) {
                   <Col xs={12} sm={6} md={6}>
                     <Card.Body className='cardBody'>
                       <h3 className="campaign__title">
-                        {campaignData.title}
+                        {campaignDetail.title}
                       </h3>
                       <Card.Title className="d-flex align-items-center author_Campaign-details">
                         <div className="author-photo">
@@ -129,7 +164,7 @@ function CampaignDetail({ campaignData, ...props }) {
                           />
                         </div>
                         <span className="author-name">
-                          {campaignData.account ? campaignData.account.firstName : ''}
+                          {/* {campaignData.account ? campaignData.account.firstName : ''} */}
                         </span>
                       </Card.Title>
 
@@ -137,34 +172,40 @@ function CampaignDetail({ campaignData, ...props }) {
                         <Card.Text
                           className="descriptionCampaign"
                         >
-                          {campaignData.address ? JSON.parse(campaignData.address).line1 : ''}, 
-                          {campaignData.address ? JSON.parse(campaignData.address).line2 : ''}, 
-                          {campaignData.address ? JSON.parse(campaignData.address).city : ''}, 
-                          {campaignData.address ? JSON.parse(campaignData.address).State : ''}, 
-                          {campaignData.address ? JSON.parse(campaignData.address).country : ''}
+                          {campaignDetail.address ? JSON.parse(campaignDetail.address).line1 : ''},
+                          {campaignDetail.address ? JSON.parse(campaignDetail.address).line2 : ''},
+                          {campaignDetail.address ? JSON.parse(campaignDetail.address).city : ''},
+                          {campaignDetail.address ? JSON.parse(campaignDetail.address).state : ''},
+                          {campaignDetail.address ? JSON.parse(campaignDetail.address).country : ''}
 
                         </Card.Text>
                       </div>
                       <ul className="campign-info">
                         <li className="raised">
                           <span className="title">Target</span>
-                          <span className="content">{campaignData.amountSymbolId ? campaignData.amountSymbolId.symbol : ''} {campaignData.amount}</span>
+                          <span className="content">
+                            {campaignData ? campaignData.campaignAmountSymbol.symbol : ''}
+                            {campaignData ? campaignData.campaignTarget : ''}
+                          </span>
                         </li>
                         <li className="pledged">
                           <span className="title">Raised</span>
                           <span className="content">
-                            555
-                         </span>
+                            {campaignData ? campaignData.campaignAmountSymbol.symbol : ''}
+                            {campaignData ? campaignData.totalDonations : ''}
+                          </span>
                         </li>
                         <li className="donators">
                           <span className="title">Donators</span>
-                          <span className="content">{campaignData.donations ? campaignData.donations.length : ''}</span>
+                          <span className="content">
+                            {campaignData ? campaignData.totalDonors : ''}
+                          </span>
                         </li>
                       </ul>
                       <div className="skillbar">
-                        <ProgressBar animated now={100} />
+                        <ProgressBar animated now={progressBarVal} />
                         <div className="count">
-                          <span>100%</span>
+                          <span>{progressBarVal > 100 ? '100' : progressBarVal}%</span>
                         </div>
                       </div>
 
@@ -177,7 +218,7 @@ function CampaignDetail({ campaignData, ...props }) {
                   <Col>
                     <Card.Text
                       className="descriptionCampaign"
-                      dangerouslySetInnerHTML={{ __html: campaignData.description }}
+                      dangerouslySetInnerHTML={{ __html: campaignDetail.description }}
                     />
                   </Col>
                 </Row>

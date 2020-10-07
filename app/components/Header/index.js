@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import { Image, Dropdown } from 'react-bootstrap';
 import './header.scss';
 import { withRouter } from 'react-router-dom';
@@ -15,8 +15,45 @@ const profile = require('../../images/placeholder.png');
 // import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 // import IconButton from '@material-ui/icons/IconButton';
 
-const Header = ({ children, title, firstName, lastName, ...props }) => {
+const Header = ({ children, title, ...props }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const token = localStorage.getItem('token');
+
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [userAdress, setUserAddress] = React.useState('');
+
+
+
+  useEffect(() => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: token,
+      },
+    };
+
+    fetch(`${process.env.baseURL}/account`, requestOptions)
+      .then(response => response.json())
+      .then(user => {
+        if (user.statusCode == 200) {
+          setFirstName(user.response.data.res.firstName);
+          setLastName(user.response.data.res.lastName);
+          setUserAddress(JSON.parse(user.response.data.res.address));
+          setEmail(user.response.data.res.email);
+        } else {
+          setMessage('Something went missing, Please try again');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+
+  }, []);
+
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget);

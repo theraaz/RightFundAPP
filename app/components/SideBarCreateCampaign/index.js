@@ -414,7 +414,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
                       <Form3 setActiveLink={setActiveLink} id={editCampaignData.editCampaignData ? editCampaignData.editCampaignData.id : campaignId} />
                     )}
                     {activeLink === 3 && (
-                      <Form4 setActiveLink={setActiveLink} />
+                      <Form4 setActiveLink={setActiveLink} id={editCampaignData.editCampaignData ? editCampaignData.editCampaignData.id : campaignId} />
                     )}
                   </form>
                 )}

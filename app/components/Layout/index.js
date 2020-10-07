@@ -22,6 +22,9 @@ import '../../containers/HomePage/dashboard.scss';
 import Header from '../Header/Loadable';
 import Footer from '../Footer/Loadable';
 
+
+const profileImg = require('../../images/placeholder.png');
+
 function Layout({ children }) {
   const token = localStorage.getItem('token');
 
@@ -95,7 +98,7 @@ function Layout({ children }) {
                 <Col xs={12} sm={5} md={5}>
                   <div className="card-header card-img border-0">
                     <div className="sub-card-img">
-                      <Image src="//placehold.it/200" alt="" />
+                      <Image src={profileImg} alt="" />
                     </div>
                   </div>
                 </Col>

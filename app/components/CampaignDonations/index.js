@@ -13,20 +13,28 @@ import {
   Popover,
   OverlayTrigger,
   Table,
-  Row
+  Row,
+  Form,
+
 } from 'react-bootstrap';
+import Pagination from '@material-ui/lab/Pagination';
+
+import { withRouter } from 'react-router-dom';
 
 
 import './campaignDontaions.scss';
 
-function CampaignDonations(editCampaignData) {
+function CampaignDonations({ editCampaignData, ...props }) {
+  const token = localStorage.getItem('token');
 
+  const [pageSize, setPageSize] = React.useState(10);
+  const [pageNumber, setPageNumber] = React.useState(1);
+  const [totalPages, setTotalPages] = React.useState(0);
   const [campaignsDonation, setCampaignsDonation] = useState([]);
 
   function formatDate(createdAt) {
     const d = new Date(createdAt)
     let month = d.getMonth() + 1;
-    console.log(d.getDate() + '-' + month + '-' + d.getUTCFullYear());
     return (d.getDate() + '-' + month + '-' + d.getUTCFullYear());
   }
 
@@ -38,18 +46,49 @@ function CampaignDonations(editCampaignData) {
   }
 
   const filterData = (event) => {
-    const filter = event.target.value !== '' ? editCampaignData.editCampaignData.donations.filter(cd => cd.accountId.firstName.includes(event.target.value)) : editCampaignData.editCampaignData.donations
-    setCampaignsDonation(filter);
+    // const filter = event.target.value !== '' ? editCampaignData.editCampaignData.donations.filter(cd => cd.accountId.firstName.includes(event.target.value)) : editCampaignData.editCampaignData.donations
+    // setCampaignsDonation(filter);
+  }
+
+  function pageChange(event) {
+    console.log(event)
+  }
+
+  function getDonations() {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: token,
+      },
+    };
+
+    fetch(
+      `${process.env.baseURL}/donation/campaign/${props.match.params.id}?perPage=${pageSize}&pageNo=${pageNumber}`,
+      requestOptions,
+    )
+      .then(response => response.json())
+      .then(user => {
+        console.log(user.response.data);
+        setTotalPages(Math.ceil(user.response.data.totalDonations / pageSize));
+        setCampaignsDonation(user.response.data.res);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   useEffect(() => {
-    if (editCampaignData.editCampaignData) {
-      setCampaignsDonation(editCampaignData.editCampaignData.donations);
-
-    }
+    getDonations();
   }, [
-    editCampaignData
+
   ]);
+
+  const PerPage = event => {
+    setPageSize(event.target.value);
+    console.log(event.target.value);
+    getDonations();
+  }
 
   return <div>
     <div className='tableMain'>
@@ -96,7 +135,7 @@ function CampaignDonations(editCampaignData) {
           <input className='searchBarInput' placeholder='Search here' onChange={filterData} />
         </div>
       </Row>
-      <Table responsive striped  size="md" className='table1' >
+      <Table responsive striped size="md" className='table1' >
 
         <thead className='tableHeader'>
           <tr>
@@ -109,7 +148,7 @@ function CampaignDonations(editCampaignData) {
           </tr>
         </thead>
         <tbody className='tableBody'>
-          {editCampaignData.editCampaignData ?
+          {campaignsDonation ?
             campaignsDonation.map(data => (
               <tr>
                 <td>{data.accountId.firstName}</td>
@@ -140,9 +179,27 @@ function CampaignDonations(editCampaignData) {
         </tbody>
       </Table>
     </div>
+    <div className="paginatorDonationdiv">
+      <div className="paginatorPerSize">
+        <span >
+          Per Page
+            </span>
+        <Form.Control
+          as="select"
+          className='paginatorPerPage'
+          onChange={PerPage}
+        >
+          <option className='paginatorPerPageOption' value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </Form.Control>
+      </div>
+
+      <Pagination count={totalPages} classes={{ ul: 'paginationDonationColor' }} onChangePage={(e, page) => pageChange(page)}  variant="outlined" shape="rounded" />
+    </div>
   </div >;
 }
 
 CampaignDonations.propTypes = {};
 
-export default memo(CampaignDonations);
+export default withRouter(memo(CampaignDonations));

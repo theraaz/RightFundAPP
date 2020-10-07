@@ -17,28 +17,28 @@ export function CampaignUpdatesContainer(props) {
   const [editCampaignData, setEditCampaignData] = useState();
   const token = localStorage.getItem('token');
 
-  useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
+  // useEffect(() => {
+  //   const requestOptions = {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       authorization: token,
+  //     },
+  //   };
 
-    fetch(
-      `${process.env.baseURL}/campaign/${props.match.params.id}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(user => {
-        console.log(user.response.data.res);
-        setEditCampaignData(user.response.data.res);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
+  //   fetch(
+  //     `${process.env.baseURL}/campaign/${props.match.params.id}`,
+  //     requestOptions,
+  //   )
+  //     .then(response => response.json())
+  //     .then(user => {
+  //       console.log(user.response.data.res);
+  //       setEditCampaignData(user.response.data.res);
+  //     })
+  //     .catch(error => {
+  //       console.log(error);
+  //     });
+  // }, []);
 
   console.log('id', props.match.params.id);
 
@@ -54,7 +54,7 @@ export function CampaignUpdatesContainer(props) {
 
       <CampaignTabs>
 
-        <CampaignUpdates editCampaignData={editCampaignData} />
+        <CampaignUpdates />
 
       </CampaignTabs>
     </div>
