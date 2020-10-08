@@ -21,6 +21,20 @@ import { stubFalse } from 'lodash';
 import Layout from '../../components/AuthLayout';
 import reducer from './reducer';
 import makeSelectSingup from './selectors';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+
+const CustomCheckbox = withStyles({
+  root: {
+    color: '#f15a24',
+    '&$checked': {
+      color: '#f15a24',
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
+
 
 export function Singup(props) {
   useInjectReducer({ key: 'singup', reducer });
@@ -276,11 +290,17 @@ export function Singup(props) {
             <Form.Group controlId="asCharity">
               <Form.Row>
                 <Col>
-                  <Form.Check
+                  {/* <Form.Check
                     type="checkbox"
                     className="remberMeLabel"
                     label="Signup as a charity"
                     onChange={e => setAsCharity(e.target.checked)}
+                  /> */}
+                  <FormControlLabel
+                    control={<CustomCheckbox
+                      onChange={e => setAsCharity(e.target.checked)}
+                    />}
+                    label="Signup as a charity"
                   />
                 </Col>
                 <Col>
@@ -293,7 +313,12 @@ export function Singup(props) {
               </Form.Row>
               <Form.Row>
                 <Col controlid="terms">
-                  <Form.Check className="remberMeLabel" label="Terms & conditions" />
+                  {/* <Form.Check className="remberMeLabel" label="Terms & conditions" /> */}
+                  <FormControlLabel
+                    control={<CustomCheckbox
+                    />}
+                    label="Terms & conditions"
+                  />
                 </Col>
 
               </Form.Row>

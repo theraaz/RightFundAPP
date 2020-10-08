@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectReducer } from 'utils/injectReducer';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import './login.scss';
 
@@ -23,6 +24,18 @@ import { SnackbarProvider, useSnackbar } from 'notistack';
 import Layout from '../../components/AuthLayout';
 import reducer from './reducer';
 import makeSelectLoginPage from './selectors';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+const CustomCheckbox = withStyles({
+  root: {
+    color: '#f15a24',
+    '&$checked': {
+      color: '#f15a24',
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
 
 export function LoginPage(props) {
   useInjectReducer({ key: 'loginPage', reducer });
@@ -192,7 +205,11 @@ export function LoginPage(props) {
             <Form.Group>
               <Form.Row>
                 <Col controlid="remeberme">
-                  <Form.Check className="remberMeLabel" label="Remember me" />
+                  <FormControlLabel
+                    control={<CustomCheckbox
+                    />}
+                    label="Remember me"
+                  />
                 </Col>
                 <Col className="forgetPass">
                   <Link className="forgetPassLabel" to="/forgetPassword">
@@ -202,9 +219,14 @@ export function LoginPage(props) {
               </Form.Row>
               <Form.Row>
                 <Col controlid="terms">
-                  <Form.Check className="remberMeLabel" label="Terms & conditions" />
+                  <FormControlLabel
+                    classes={{ label: 'loginCheckbox' }}
+                    control={<CustomCheckbox
+                    />}
+                    label="Terms & conditions"
+                  />
                 </Col>
-              
+
               </Form.Row>
             </Form.Group>
 

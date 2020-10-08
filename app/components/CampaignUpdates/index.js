@@ -37,6 +37,7 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [allUpdateStatus, setAllUpdateStatus] = useState([]);
   const [title, setTitle] = useState('');
+  const [loadingSpinner, setLoadingSpinner] = useState(false);
 
   const handleEditorChange = event => {
     setEditorVal(event.target.getContent());
@@ -54,7 +55,7 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
 
 
   function getUpdates() {
-
+    setLoadingSpinner(true);
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -65,6 +66,7 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
     fetch(`${process.env.baseURL}/campaignStatus/campaign/${props.match.params.id}`, requestOptions)
       .then(response => response.json())
       .then(user => {
+        setLoadingSpinner(false);
         setAllUpdateStatus(user.response.data.res);
         console.log(user.response.data.res);
       })
@@ -76,6 +78,7 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
   useEffect(() => {
 
     getUpdates();
+
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -208,6 +211,11 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
         </div>
       </Container>
 
+      {loadingSpinner && <Spinner style={{
+        color: '#f15a24', position: 'relative',
+        left: '50%'
+      }} animation="border" size="lg" />}{' '}
+      
       {
         allUpdateStatus.map(data => (
           <Timeline key={data.id}>

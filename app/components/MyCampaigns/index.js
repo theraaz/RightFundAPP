@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useCallback } from 'react';
 import { Helmet } from 'react-helmet';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
@@ -29,7 +29,7 @@ const profileImg = require('../../images/placeholder.png');
 const MyCampaigns = ({ setActiveCard }) => {
   const token = localStorage.getItem('token');
   const [campaign, setCampaign] = React.useState([]);
-  const [pageSize, setPageSize] = React.useState(10);
+  const [pageSize, setPageSize] = React.useState(6);
   const [pageNumber, setPageNumber] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(0);
   const [campaignSort, setCampaignSort] = React.useState(null);
@@ -38,11 +38,24 @@ const MyCampaigns = ({ setActiveCard }) => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  useEffect(() => {
-    getCampaigns();
+  const handleChangePage = useCallback((event, value) => {
+    setPageNumber(value);
   }, []);
 
-  function getSortCampaigns() {
+
+  useEffect(() => {
+    getSortCampaigns(pageSize,
+      pageNumber,
+      campaignSort);
+  }, [
+    pageSize,
+    pageNumber,
+    campaignSort
+  ]);
+
+  function getSortCampaigns(pages,
+    pageNo,
+    campaignSortBy) {
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -52,7 +65,7 @@ const MyCampaigns = ({ setActiveCard }) => {
 
     };
 
-    fetch(`${process.env.baseURL}/campaign?perPage=${pageSize}&pageNo=${pageNumber}&sortBy=${campaignSort}`, requestOptions)
+    fetch(`${process.env.baseURL}/campaign?perPage=${pages}&pageNo=${pageNo}${campaignSortBy ? `&sortBy=${campaignSortBy}` : ''}`, requestOptions)
       .then(response => response.json())
       .then(user => {
         console.log(user.response.data);
@@ -67,7 +80,7 @@ const MyCampaigns = ({ setActiveCard }) => {
 
   function dropdownValueSet(dropdownValue) {
     setCampaignSort(dropdownValue);
-    getSortCampaigns();
+    // getSortCampaigns();
 
   }
 
@@ -86,7 +99,6 @@ const MyCampaigns = ({ setActiveCard }) => {
       .then(user => {
         console.log(user.response.data);
         setTotalPages(Math.ceil(user.response.data.totalCount / pageSize));
-        console.log(Math.ceil(user.response.data.totalCount / pageSize));
         setCampaign(user.response.data.res);
       })
       .catch(error => {
@@ -117,7 +129,9 @@ const MyCampaigns = ({ setActiveCard }) => {
       .then(user => {
         console.log(user);
         if (campaignSort) {
-          getSortCampaigns()
+          getSortCampaigns(pageSize,
+            pageNumber,
+            campaignSort)
         } else {
           getCampaigns()
         }
@@ -211,16 +225,16 @@ const MyCampaigns = ({ setActiveCard }) => {
                     </div>
 
                     {/* <DefaultModal /> */}
-                    <Modal show={show} onHide={handleClose} animation={true}>
-                      <Modal.Header closeButton>
+                    <Modal show={show} onHide={handleClose} animation={true} >
+                      <Modal.Header closeButton >
                         <Modal.Title>Delete Campaign</Modal.Title>
                       </Modal.Header>
-                      <Modal.Body>Are you sure?</Modal.Body>
+                      <Modal.Body>Are you sure you want to delete your campaign? If you delete you will permanently lose your campaign.</Modal.Body>
                       <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
+                        <Button className='modalBtnNo' onClick={handleClose}>
                           No
                           </Button>
-                        <Button variant="primary" onClick={() => deleteCampaign(data.id)}>
+                        <Button className='modalBtnYes' onClick={() => deleteCampaign(data.id)}>
                           Yes
                         </Button>
                       </Modal.Footer>
@@ -256,7 +270,7 @@ const MyCampaigns = ({ setActiveCard }) => {
                             />
                           </div>
                           <span className="author-name">
-                            {/* {data.account.firstName} */}
+                            {data.account.firstName}
                           </span>
                         </Card.Title>
                         <h3 className="give-card__title">{data.title}</h3>
@@ -321,13 +335,13 @@ const MyCampaigns = ({ setActiveCard }) => {
               className='paginatorPerPage'
               onChange={PerPage}
             >
-              <option className='paginatorPerPageOption' value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
+              <option className='paginatorPerPageOption' value="10">6</option>
+              <option value="15">10</option>
+              <option value="20">15</option>
             </Form.Control>
           </div>
 
-          <Pagination count={totalPages} classes={{ ul: 'paginationColor' }} variant="outlined" shape="rounded" />
+          <Pagination count={totalPages} classes={{ ul: 'paginationColor' }} onChange={handleChangePage} variant="outlined" shape="rounded" />
         </div>
       </Card>
     </div>

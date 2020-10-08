@@ -79,6 +79,55 @@
   }
 }
 
+.modalBtnYes {
+  background-color: #f15a24;
+  border-color: #f2f2f2;
+  margin-left: 5px;
+  min-width: 120px;
+  &:focus {
+    box-shadow: none !important;
+    background: white;
+    color: black;
+    border-color: #f2f2f2;
+  }
+  &:active {
+    background: white;
+    color: black;
+    border-color: #f2f2f2;
+  }
+
+  &:hover {
+    opacity: 0.8;
+    background-color: #f15a24;
+    border-color: #f15a24;
+  }
+}
+
+.modalBtnNo {
+  min-width: 120px;
+  background: white;
+  color: black;
+  border-color: #f2f2f2;
+
+  &:focus {
+    box-shadow: none !important;
+    background: white;
+    color: black;
+    border-color: #f2f2f2;
+  }
+  &:active {
+    background: white !important;
+    color: black;
+    border-color: #f2f2f2;
+  }
+  &:hover {
+    opacity: 0.8;
+    background: white !important;
+    color: black;
+    border-color: #f2f2f2;
+  }
+}
+
 .sideNav {
   height: 28rem;
   @include respond-to(handhelds) {

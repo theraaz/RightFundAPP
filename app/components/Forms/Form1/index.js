@@ -26,7 +26,7 @@ import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardDatePicker,
+  DatePicker
 } from '@material-ui/pickers';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -48,6 +48,8 @@ const GreenRadio = withStyles({
   },
   checked: {},
 })(props => <Radio color="default" {...props} />);
+
+
 
 const BootstrapInput = withStyles(theme => ({
   root: {
@@ -93,6 +95,7 @@ const Form1 = ({
   const [categories, setCategories] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('a');
   const token = localStorage.getItem('token');
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const handleRadioChange = event => {
     setFieldValue('fundraiser', event.target.value);
@@ -272,7 +275,7 @@ const Form1 = ({
 
           <Form.Group bssize="large" style={{ position: 'relative' }}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
+              <DatePicker
                 fullWidth
                 className="datePicker"
                 id="date-picker-dialog"
@@ -284,9 +287,7 @@ const Form1 = ({
                 placeholder="Campaign end date"
                 value={values.date}
                 onChange={handleDateChange}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
+
               />
             </MuiPickersUtilsProvider>
             {errors.date && <Errors id="feedback">{errors.date}</Errors>}

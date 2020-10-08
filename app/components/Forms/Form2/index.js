@@ -11,6 +11,19 @@ import { H5, H4 } from '../form.styles';
 
 import DropZone from '../../DropZone/index';
 import './form2.scss';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+const CustomCheckbox = withStyles({
+  root: {
+    color: '#f15a24',
+    '&$checked': {
+      color: '#f15a24',
+    },
+  },
+  checked: {},
+})((props) => <Checkbox color="default" {...props} />);
 
 const Form2 = ({
   setFieldValue,
@@ -32,7 +45,6 @@ const Form2 = ({
   };
 
   const setVideo = event => {
-    console.log('dsfs')
     setFieldValue('video', event.target.value);
     var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
     var match = event.target.value.match(regExp);
@@ -76,7 +88,7 @@ const Form2 = ({
             </div>
             <Form.Row>
               <Col>
-                <Form.Check
+                {/* <Form.Check
                   type="checkbox"
                   className="remberMeLabel"
                   label="Yes, this campaign is zakat eligible."
@@ -85,12 +97,23 @@ const Form2 = ({
                   onChange={e =>
                     setFieldValue('zakatEligible', e.target.checked)
                   }
+                /> */}
+
+
+                <FormControlLabel
+                  control={<CustomCheckbox
+
+                    value={values.zakatEligible}
+                    checked={values.zakatEligible}
+                    onChange={e =>
+                      setFieldValue('zakatEligible', e.target.checked)} />}
+                  label="Yes, this campaign is zakat eligible."
                 />
               </Col>
             </Form.Row>
           </Form.Group>
 
-          <Form.Group controlId="zakatEligible" className="formGroupMain">
+          <Form.Group style={{ marginTop: '10px' }} className="formGroupMain">
             <div>
               <H5>Gift Aid</H5>
             </div>

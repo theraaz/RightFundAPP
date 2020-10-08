@@ -110,7 +110,14 @@ function Layout({ children }) {
                       </Title>
                       <p className="card-text">{email}</p>
                     </div>
-                    <p>{userAdress.line1}, {userAdress.line2}, {userAdress.city}, {userAdress.state}, {userAdress.country}</p>
+                    <p>
+
+                      {userAdress.line1 & userAdress.line1 != '' ? `${userAdress.line1}, ` : null}
+                      {userAdress.line2 && userAdress.line2 != '' ? `${userAdress.line2}, ` : null}
+                      {userAdress.city && userAdress.city != '' ? `${userAdress.city}, ` : null}
+                      {userAdress.state && userAdress.state != '' ? `${userAdress.state}, ` : null}
+                      {userAdress.country && userAdress.country != '' ? `${userAdress.country}` : null}
+                    </p>
                   </div>
                 </Col>
               </Row>
@@ -136,7 +143,7 @@ function Layout({ children }) {
                       <Description>Gift Aids</Description>
                     </Col>
                     <Col className="table-col">
-                      <Heading className="mt-4">$ {totalRaised}</Heading>
+                      <Heading className="mt-4">£ {totalRaised}</Heading>
                       <Description>Total Raised</Description>
                     </Col>
                   </Row>

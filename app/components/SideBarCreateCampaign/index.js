@@ -191,11 +191,11 @@ const SideBarCreateCampaign = (editCampaignData) => {
       }
     }
     if (activeLink === 1) {
-      if (!values.editorValue) {
-        errors.editorValue = 'Required';
-      } else if (values.editorValue < 5) {
-        errors.editorValue = 'Enter Description';
-      }
+      // if (!values.editorValue) {
+      //   errors.editorValue = 'Required';
+      // } else if (values.editorValue < 5) {
+      //   errors.editorValue = 'Enter Description';
+      // }
     }
     // if (!values.email) {
     //   errors.email = 'Required';
@@ -362,11 +362,11 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   zakatEligible: editCampaignData.editCampaignData.zakatEligible,
                   base64: editCampaignData.editCampaignData.titleImage,
                   video: editCampaignData.editCampaignData.video,
-                  line1: JSON.parse(editCampaignData.editCampaignData.address).line1,
-                  line2: JSON.parse(editCampaignData.editCampaignData.address).line2,
-                  city: JSON.parse(editCampaignData.editCampaignData.address).city,
-                  state: JSON.parse(editCampaignData.editCampaignData.address).state,
-                  country: JSON.parse(editCampaignData.editCampaignData.address).country,
+                  line1: editCampaignData.editCampaignData.address != '' ? JSON.parse(editCampaignData.editCampaignData.address).line1 ? JSON.parse(editCampaignData.editCampaignData.address).line1 : '' : '',
+                  line2: editCampaignData.editCampaignData.address != '' ? JSON.parse(editCampaignData.editCampaignData.address).line2 ? JSON.parse(editCampaignData.editCampaignData.address).line2 : '' : '',
+                  city: editCampaignData.editCampaignData.address != '' ? JSON.parse(editCampaignData.editCampaignData.address).city ? JSON.parse(editCampaignData.editCampaignData.address).city : '' : '',
+                  state: editCampaignData.editCampaignData.address != '' ? JSON.parse(editCampaignData.editCampaignData.address).state ? JSON.parse(editCampaignData.editCampaignData.address).state : '' : '',
+                  country: editCampaignData.editCampaignData.address != '' ? JSON.parse(editCampaignData.editCampaignData.address).country ? JSON.parse(editCampaignData.editCampaignData.address).country : '' : '',
 
                 } : {
                     currencySymbol: 1,

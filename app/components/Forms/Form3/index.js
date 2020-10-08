@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useEffect } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { Row, Col, Card, Button, Spinner } from 'react-bootstrap';
@@ -17,6 +17,9 @@ import { SnackbarProvider, useSnackbar } from 'notistack';
 
 import Menu from '@material-ui/core/Menu';
 import { CustomHeading, CustomHeadingNum, H4 } from '../form.styles';
+
+
+
 
 const BootstrapInput = withStyles(theme => ({
   root: {
@@ -87,6 +90,8 @@ const Form3 = ({ id, setActiveLink }) => {
       anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
     });
   };
+
+
 
   useEffect(() => {
     setLoading(true);
@@ -224,6 +229,8 @@ const Form3 = ({ id, setActiveLink }) => {
     setSelectedCurrency(packageData.amountSymbolId.id);
     handleClose();
     setPackageId(packageData.id);
+    var elmnt = document.getElementById("myRef");
+    elmnt.scrollIntoView();
   }
 
   function deletePackage() {
@@ -283,75 +290,75 @@ const Form3 = ({ id, setActiveLink }) => {
                 <Spinner animation="border" />
               </div>
             ) : (
-              packages.map(data => (
-                <Col key={data.id} sm={6} style={{ marginBottom: '30px' }}>
-                  <Card className="defined-payments">
-                    <div className="card-heading-inner">
-                      <CustomHeading>{data.title}</CustomHeading>
-                      <CustomHeadingNum>
-                        {data.amountSymbolId.symbol} {data.amount}
-                      </CustomHeadingNum>
-                    </div>
-                    <span className="menuIcon" onClick={handleClick(data)}>
-                      <svg
-                        version="1.1"
-                        id="Capa_1"
-                        width="15px"
-                        y="0px"
-                        viewBox="0 0 512 512"
-                      >
-                        <g>
+                packages.map(data => (
+                  <Col key={data.id} sm={6} style={{ marginBottom: '30px' }}>
+                    <Card className="defined-payments">
+                      <div className="card-heading-inner">
+                        <CustomHeading>{data.title}</CustomHeading>
+                        <CustomHeadingNum>
+                          {data.amountSymbolId.symbol} {data.amount}
+                        </CustomHeadingNum>
+                      </div>
+                      <span className="menuIcon" onClick={handleClick(data)}>
+                        <svg
+                          version="1.1"
+                          id="Capa_1"
+                          width="15px"
+                          y="0px"
+                          viewBox="0 0 512 512"
+                        >
                           <g>
                             <g>
-                              <circle cx="256" cy="256" r="64" />
-                              <circle cx="256" cy="448" r="64" />
-                              <circle cx="256" cy="64" r="64" />
+                              <g>
+                                <circle cx="256" cy="256" r="64" />
+                                <circle cx="256" cy="448" r="64" />
+                                <circle cx="256" cy="64" r="64" />
+                              </g>
                             </g>
                           </g>
-                        </g>
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                        <g />
-                      </svg>
-                    </span>
-                    <Menu
-                      id="simple-menu"
-                      anchorEl={anchorEl}
-                      keepMounted
-                      open={Boolean(anchorEl)}
-                      onClose={handleClose}
-                      getContentAnchorEl={null}
-                      anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'center',
-                      }}
-                      transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'center',
-                      }}
-                    >
-                      <MenuItem onClick={edit}>Edit</MenuItem>
-                      <MenuItem onClick={deletePackage}>Delete</MenuItem>
-                    </Menu>
-                    <div style={{ textAlign: 'initial' }}>
-                      <p>{data.description}</p>
-                    </div>
-                  </Card>
-                </Col>
-              ))
-            )}
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                          <g />
+                        </svg>
+                      </span>
+                      <Menu
+                        id="simple-menu"
+                        anchorEl={anchorEl}
+                        keepMounted
+                        open={Boolean(anchorEl)}
+                        onClose={handleClose}
+                        getContentAnchorEl={null}
+                        anchorOrigin={{
+                          vertical: 'bottom',
+                          horizontal: 'center',
+                        }}
+                        transformOrigin={{
+                          vertical: 'top',
+                          horizontal: 'center',
+                        }}
+                      >
+                        <MenuItem onClick={edit}>Edit</MenuItem>
+                        <MenuItem onClick={deletePackage}>Delete</MenuItem>
+                      </Menu>
+                      <div style={{ textAlign: 'initial' }}>
+                        <p>{data.description}</p>
+                      </div>
+                    </Card>
+                  </Col>
+                ))
+              )}
           </Row>
           <div>
             <Button
@@ -391,7 +398,7 @@ const Form3 = ({ id, setActiveLink }) => {
           </div>
 
           {showEnterPackaje && (
-            <div className="campaign-description">
+            <div className="campaign-description" id='myRef' >
               <div className="headingPackage">
                 <H4 style={{ textAlign: 'initial', padding: '0px 15px' }}>
                   Add Package
@@ -449,7 +456,7 @@ const Form3 = ({ id, setActiveLink }) => {
             </div>
           )}
           <div
-           style={{ margin: '10px 0px 20px auto' }}
+            style={{ margin: '10px 0px 20px auto' }}
           >
             <div className="campaignBtnsForm3">
               <Button

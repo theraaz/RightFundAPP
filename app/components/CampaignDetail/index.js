@@ -13,23 +13,33 @@ import {
   ProgressBar,
   Container,
   Row,
-  Col
+  Col,
+  Image
 } from 'react-bootstrap';
 
 import './campaignDetail.scss';
 
+const profileImg = require('../../images/placeholder.png');
 function CampaignDetail({ ...props }) {
   const token = localStorage.getItem('token');
   const [campaignData, setCampaignData] = useState();
-  // const [campaignDetails, setCampaignDetails] = React.useState();
-
+  const [youtubeId, setYoutubeId] = React.useState('');
   const [campaignDetail, setCampaignDetail] = useState();
+
   function backFunction() {
-    console.log('props', props)
     props.history.goBack();
 
   }
 
+  function setVideo(videoURL) {
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = videoURL.match(regExp);
+
+    if (match && match[2].length == 11) {
+      console.log(match[2])
+      setYoutubeId(match[2]);
+    }
+  }
 
 
   useEffect(() => {
@@ -40,29 +50,33 @@ function CampaignDetail({ ...props }) {
         authorization: token,
       },
     };
-
-    fetch(
-      `${process.env.baseURL}/campaign/${props.match.params.id}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(user => {
-        console.log(user.response.data.res);
-        setCampaignDetail(user.response.data.res);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
     fetch(`${process.env.baseURL}/campaignBasicDetails/${props.match.params.id}`, requestOptions)
       .then(response => response.json())
       .then(user => {
         setCampaignData(user.response.data)
-
+        fetch(
+          `${process.env.baseURL}/campaign/${props.match.params.id}`,
+          requestOptions,
+        )
+          .then(response => response.json())
+          .then(user => {
+            console.log(user.response.data.res);
+            setCampaignDetail(user.response.data.res);
+            if (user.response.data.res.video) {
+              setVideo(user.response.data.res.video);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
       })
       .catch(error => {
         console.log(error);
       });
+
+
+
+
   }, [
   ]);
 
@@ -74,7 +88,7 @@ function CampaignDetail({ ...props }) {
     }
   }
 
-  console.log('cam', campaignData);
+
   return (
     <div>
       <div className="container" style={{ minHeight: '700px', marginTop: '-5rem' }}>
@@ -128,21 +142,21 @@ function CampaignDetail({ ...props }) {
                 <Row>
                   <Col xs={12} sm={6} md={6}>
                     <div
-                      className="give-card__media"
+                      className="campaignDetail__media"
                     >
-                      {campaignDetail.titleImage ? (
-                        <img
-                          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                          src={campaignDetail.titleImage}
-                          alt=""
-                        />
-                      ) : (
+                      {campaignDetail.video ? <iframe width="100%" style={{ marginTop: '10px' }} height="315" src={`//www.youtube.com/embed/${youtubeId}`} frameborder="0" allowfullscreen></iframe>
+                        :
+                        (campaignDetail.titleImage ? (
                           <img
-                            style={{ width: '100%', height: '100%' }}
-                            src={"require('../../images/placeholder.png')"}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            src={campaignDetail.titleImage}
                             alt=""
                           />
-                        )}
+                        ) : (
+                            <Image style={{ width: '100%', height: '100%' }} src={profileImg} alt="" />
+                          ))
+                      }
+
                     </div>
 
 
@@ -163,22 +177,37 @@ function CampaignDetail({ ...props }) {
                             width="96"
                           />
                         </div>
+
                         <span className="author-name">
-                          {/* {campaignData.account ? campaignData.account.firstName : ''} */}
+                          {campaignDetail.account ? campaignDetail.account.firstName : ''}
                         </span>
+
+
+
                       </Card.Title>
+
+                      <Card.Text>
+                        <div className="author-email-cv">
+                          {campaignDetail.account ? campaignDetail.account.email : ''}
+                        </div>
+                      </Card.Text>
 
                       <div>
                         <Card.Text
                           className="descriptionCampaign"
                         >
-                          {campaignDetail.address ? JSON.parse(campaignDetail.address).line1 : ''},
-                          {campaignDetail.address ? JSON.parse(campaignDetail.address).line2 : ''},
-                          {campaignDetail.address ? JSON.parse(campaignDetail.address).city : ''},
-                          {campaignDetail.address ? JSON.parse(campaignDetail.address).state : ''},
-                          {campaignDetail.address ? JSON.parse(campaignDetail.address).country : ''}
+                          {campaignDetail.address && JSON.parse(campaignDetail.address).line1 != '' ? `${JSON.parse(campaignDetail.address).line1}, ` : ''}
+                          {campaignDetail.address && JSON.parse(campaignDetail.address).line2 != '' ? `${JSON.parse(campaignDetail.address).line2}, ` : ''}
+                          {campaignDetail.address && JSON.parse(campaignDetail.address).city != '' ? `${JSON.parse(campaignDetail.address).city}, ` : ''}
+                          {campaignDetail.address && JSON.parse(campaignDetail.address).state != '' ? `${JSON.parse(campaignDetail.address).state}, ` : ''}
+                          {campaignDetail.address && JSON.parse(campaignDetail.address).country != '' ? `${JSON.parse(campaignDetail.address).country}` : ''}
 
                         </Card.Text>
+
+                        <Card.Text
+                          className="descriptionCampaign"
+                          dangerouslySetInnerHTML={{ __html: campaignDetail.description }}
+                        />
                       </div>
                       <ul className="campign-info">
                         <li className="raised">
@@ -203,9 +232,9 @@ function CampaignDetail({ ...props }) {
                         </li>
                       </ul>
                       <div className="skillbar">
-                        <ProgressBar animated now={progressBarVal} />
+                        <ProgressBar animated now={progressBarVal()} />
                         <div className="count">
-                          <span>{progressBarVal > 100 ? '100' : progressBarVal}%</span>
+                          <span>{progressBarVal() > 100 ? '100' : progressBarVal()}%</span>
                         </div>
                       </div>
 
@@ -216,10 +245,15 @@ function CampaignDetail({ ...props }) {
                 </Row>
                 <Row>
                   <Col>
-                    <Card.Text
-                      className="descriptionCampaign"
-                      dangerouslySetInnerHTML={{ __html: campaignDetail.description }}
-                    />
+                    <div className='descriptionCampaignDetail'>
+                      <Card.Title>
+                        Description
+                    </Card.Title>
+                      <Card.Text
+                        className="detailedDescrtiption"
+                        dangerouslySetInnerHTML={{ __html: campaignDetail.description }}
+                      />
+                    </div>
                   </Col>
                 </Row>
               </Card>
