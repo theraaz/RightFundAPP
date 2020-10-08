@@ -79,9 +79,12 @@ const MyCampaigns = ({ setActiveCard }) => {
   }
 
   function dropdownValueSet(dropdownValue) {
-    setCampaignSort(dropdownValue);
-    // getSortCampaigns();
-
+    setPageNumber(1);
+    if (dropdownValue === 1) {
+      setCampaignSort(null);
+    } else {
+      setCampaignSort(dropdownValue);
+    }
   }
 
   function getCampaigns() {
@@ -127,7 +130,7 @@ const MyCampaigns = ({ setActiveCard }) => {
     fetch(`${process.env.baseURL}/campaign/${campaignId}`, requestOptions)
       .then(response => response.json())
       .then(user => {
-        console.log(user);
+        setPageNumber(1)
         if (campaignSort) {
           getSortCampaigns(pageSize,
             pageNumber,
@@ -147,6 +150,9 @@ const MyCampaigns = ({ setActiveCard }) => {
   }
 
   function getDropdownVal() {
+    if (campaignSort === 1) {
+      return 'All';
+    }
     if (campaignSort === 7) {
       return 'Live';
     }
@@ -192,6 +198,9 @@ const MyCampaigns = ({ setActiveCard }) => {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => dropdownValueSet(1)} className="dropItem">
+                    All
+                  </Dropdown.Item>
                   <Dropdown.Item onClick={() => dropdownValueSet(7)} className="dropItem">
                     Live
                   </Dropdown.Item>

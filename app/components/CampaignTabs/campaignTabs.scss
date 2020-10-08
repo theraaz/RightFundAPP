@@ -8,18 +8,21 @@
     color: black;
     border-color: #f2f2f2;
     &:focus {
-      background-color: #f15a24 !important;
-      border-color: #f15a24;
+      background: white;
+      color: black;
+      border-color: #f2f2f2;
       box-shadow: none !important;
       opacity: 0.8;
     }
     &:hover {
-      background-color: #f15a24 !important;
-      border-color: #f15a24 !important;
+      background: white;
+      color: black;
+      border-color: #f2f2f2;
     }
     &:active {
-      background-color: #f15a24 !important;
-      border-color: #f15a24 !important;
+      background: white !important;
+      color: black;
+      border-color: #f2f2f2 !important;
     }
   }
 

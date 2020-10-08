@@ -38,8 +38,48 @@ const SideBarCreateCampaign = (editCampaignData) => {
     const token = localStorage.getItem('token');
     setLoading(true);
     if (activeLink === 1) {
+      if (selectedFiles[0] != undefined || event.base64 != null) {
+        getBase64(event.base64 ? event.base64 : false, selectedFiles[0], result => {
+          const requestOptions = {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              authorization: token,
+            },
+            body: JSON.stringify({
+              zakatEligible: event.zakatEligible,
+              description: event.editorValue,
+              titleImage: result,
+              video: event.video
+            }),
+          };
 
-      getBase64(event.base64 ? event.base64 : false, selectedFiles[0], result => {
+          if (editCampaignData.editCampaignData != undefined) {
+            fetch(`${process.env.baseURL}/campaign/${editCampaignData.editCampaignData.id}`, requestOptions)
+              .then(response => response.json())
+              .then(res => {
+                setLoading(false);
+                console.log(res)
+                setActiveLink(2);
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+          else {
+            fetch(`${process.env.baseURL}/campaign/${campaignId}`, requestOptions)
+              .then(response => response.json())
+              .then(() => {
+                setLoading(false);
+                setActiveLink(2);
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+
+        });
+      } else {
         const requestOptions = {
           method: 'PUT',
           headers: {
@@ -49,7 +89,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
           body: JSON.stringify({
             zakatEligible: event.zakatEligible,
             description: event.editorValue,
-            titleImage: result,
+            titleImage: '',
             video: event.video
           }),
         };
@@ -77,14 +117,13 @@ const SideBarCreateCampaign = (editCampaignData) => {
               console.log(error);
             });
         }
+      }
 
-      });
     } else if (activeLink === 2) {
       setLoading(false);
       setActiveLink(3);
     } else if (activeLink === 3) {
       setLoading(false);
-      // setActiveLink(3)
       console.log('reached');
     } else {
       let address = {

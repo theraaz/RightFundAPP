@@ -27,6 +27,15 @@
     text-align: center;
     margin: 10px 10px;
     background: transparent;
+    position: relative;
+
+    .editIcon {
+      position: absolute;
+      top: 32px;
+      color: #f15a24;
+      left: 184px;
+      cursor: pointer;
+    }
 
     .sub-card-img {
       width: 178px;

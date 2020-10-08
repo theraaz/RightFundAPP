@@ -240,7 +240,7 @@ function CampaignTabs({ children, ...props }) {
                   </NavLink>
                 </ListGroup.Item>
 
-
+                {/* 
                 <ListGroup.Item className="listItem">
                   <NavLink
                     to="/team"
@@ -309,7 +309,7 @@ function CampaignTabs({ children, ...props }) {
 
                     <span>Teams</span>
                   </NavLink>
-                </ListGroup.Item>
+                </ListGroup.Item>*/}
               </ListGroup>
             </Card>
           </Col>

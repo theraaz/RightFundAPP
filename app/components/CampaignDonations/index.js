@@ -58,6 +58,7 @@ function CampaignDonations({ editCampaignData, ...props }) {
 
 
   const handleChangePage = useCallback((event, value) => {
+
     setPageNumber(value);
   }, []);
 
@@ -97,6 +98,7 @@ function CampaignDonations({ editCampaignData, ...props }) {
   ]);
 
   const PerPage = event => {
+    setPageNumber(1);
     setPageSize(event.target.value);
     console.log(event.target.value);
     // getDonations();
@@ -105,7 +107,7 @@ function CampaignDonations({ editCampaignData, ...props }) {
   return <div>
     <Container>
 
-    {loadingSpinner && <Spinner style={{
+      {loadingSpinner && <Spinner style={{
         color: '#f15a24', position: 'relative',
         left: '50%'
       }} animation="border" size="lg" />}{' '}
