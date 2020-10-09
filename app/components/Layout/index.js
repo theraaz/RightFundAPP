@@ -11,7 +11,6 @@ import { Row, Col, Card, Image } from 'react-bootstrap';
 
 import MainTabs from '../MainTabs/Loadable';
 
-
 import {
   Title,
   Description,
@@ -20,7 +19,6 @@ import {
 import '../../containers/HomePage/dashboard.scss';
 import Header from '../Header/Loadable';
 import Footer from '../Footer/Loadable';
-
 
 const profileImg = require('../../images/placeholder.png');
 
@@ -80,8 +78,7 @@ function Layout({ children }) {
         console.log(error);
       });
 
-
-    //Account Details
+    // Account Details
 
     fetch(`${process.env.baseURL}/accountDetails`, requestOptions)
       .then(response => response.json())
@@ -91,7 +88,6 @@ function Layout({ children }) {
           setActiveCampaign(user.response.data.totalLive);
           setGiftAid(user.response.data.giftAid);
           setTotalRaised(user.response.data.totalRaised);
-
         } else {
           // setMessage('Something went missing, Please try again');
         }
@@ -105,9 +101,7 @@ function Layout({ children }) {
     <div>
       <Header title="Dasboard" firstName={firstName} lastName={lastName} />
       <div className="container mt-n5" style={{ minHeight: '700px' }}>
-
         <Row>
-
           <Col xs={12} sm={12} md={7}>
             <div className="card card-header-main  shadow bg-white rounded">
               <Row>
@@ -184,14 +178,15 @@ function Layout({ children }) {
                       <p className="card-text">{phone}</p>
                       <p className="card-text">{email}</p>
                     </div>
-                    <p>
-
-                      {userAdress.line1 & userAdress.line1 != '' ? `${userAdress.line1}, ` : null}
-                      {userAdress.line2 && userAdress.line2 != '' ? `${userAdress.line2}, ` : null}
-                      {userAdress.city && userAdress.city != '' ? `${userAdress.city}, ` : null}
-                      {userAdress.state && userAdress.state != '' ? `${userAdress.state}, ` : null}
-                      {userAdress.country && userAdress.country != '' ? `${userAdress.country}` : null}
-                    </p>
+                    {userAdress && (
+                      <p>
+                        {userAdress.line1 !== '' ? `${userAdress.line1}, ` : ''}
+                        {userAdress.line2 !== '' ? `${userAdress.line2}, ` : ''}
+                        {userAdress.city !== '' ? `${userAdress.city}, ` : ''}
+                        {userAdress.state !== '' ? `${userAdress.state}, ` : ''}
+                        {userAdress.country !== '' ? userAdress.country : ''}
+                      </p>
+                    )}
                   </div>
                 </Col>
               </Row>
@@ -233,9 +228,7 @@ function Layout({ children }) {
               <MainTabs />
             </Card>
           </Col>
-          <Col>
-            {children}
-          </Col>
+          <Col>{children}</Col>
         </Row>
       </div>
       <Footer />
