@@ -38,6 +38,7 @@ function Form4({ id, ...props }) {
       });
 
   }
+  console.log(props)
   return <div>
     <div className='main-form1'>
       <div className='main-heading'>
@@ -60,11 +61,14 @@ function Form4({ id, ...props }) {
           <Link to={`/campaignView/${id}`}>
             <Button className="editCampaignBtn" >Preview</Button>
           </Link>
-
-          <Link to="/">
-            <Button className="viewCampaignBtn" onClick={publishCampaign} >Publish
+          {props.match.params.id ? <Link to="/">
+            <Button className="viewCampaignBtn" >Update
             </Button>
-          </Link>
+          </Link> : <Link to="/">
+              <Button className="viewCampaignBtn" onClick={publishCampaign} >Publish
+            </Button>
+            </Link>}
+
 
 
         </div>

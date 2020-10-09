@@ -29,22 +29,33 @@
     background: transparent;
     position: relative;
 
-    .editIcon {
+    .editIconDiv {
+      background-color: #f15a24;
       position: absolute;
-      top: 32px;
-      color: #f15a24;
-      left: 184px;
+      padding: 4px;
+      border-radius: 50%;
+      border: 5px solid white;
+      right: 29px;
+      top: 24px;
       cursor: pointer;
+
+      .editIcon {
+        color: white;
+      }
     }
 
     .sub-card-img {
       width: 178px;
+      height: 178px;
+      border: 3px solid #adadad;
+      border-radius: 50%;
+      overflow: hidden;
     }
 
     img {
-      border-radius: 94px;
       width: 100%;
-      border: 2px solid #adadad;
+      object-fit: contain;
+      height: 100%;
     }
   }
 
@@ -428,7 +439,8 @@
   top: 5px;
   color: #fff;
   cursor: pointer;
-  background: #fb4d4d;
+  background: #f15a24;
+  // background: #fb4d4d;
   text-align: center;
   border-radius: 100%;
   width: 30px;
@@ -470,5 +482,32 @@
       border-color: #f15a24;
       color: white;
     }
+  }
+}
+
+.menuSetting {
+  box-shadow: none !important;
+  transform-origin: 0px 26px;
+
+  border-radius: 6px;
+}
+
+.menuList {
+  &:focus {
+    opacity: 0.8;
+  }
+  &:hover {
+    color: #f15a25;
+    opacity: 1;
+  }
+}
+
+.editLink {
+  color: black !important;
+  text-decoration: none !important;
+
+  &:hover {
+    color: #f15a25 !important;
+    text-decoration: none !important;
   }
 }

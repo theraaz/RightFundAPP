@@ -256,15 +256,6 @@ const Form1 = ({
             bssize="large"
             className='address'
           >
-            {/* <Form.Control
-              type="text"
-              isInvalid={errors.address}
-              value={values.address}
-              name="address"
-              placeholder="Address"
-              className="controlForm"
-              onChange={event => setFieldValue('address', event.target.value)}
-            /> */}
 
             <H5 className="label-field" className='locationLabel'>
               Add a location
@@ -302,7 +293,6 @@ const Form1 = ({
               name="categories"
               id="demo-customized-select"
               placeholder="Categories"
-              // isInvalid={errors.categories}
               value={values.categories || -1}
               onChange={handleChangeCategories}
               input={<BootstrapInput />}
@@ -363,7 +353,6 @@ const Form1 = ({
 
           <div style={{ margin: '0px 0px 20px auto' }}>
             <div className="campaignBtnsForm1">
-              {/* <Button className="editCampaignBtn" >Preview</Button> */}
               <Button type="submit" className="viewCampaignBtn">
                 {' '}
                 {loading == false && <div> Save and Continue</div>}

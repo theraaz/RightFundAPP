@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable react/prop-types */
 /**
  *
  * CampaignTabs
@@ -8,19 +10,16 @@ import React, { memo, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 
-
 import { ListGroup, Row, Col, Card, Button } from 'react-bootstrap';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink, withRouter, Link } from 'react-router-dom';
 import Header from '../Header/Loadable';
 import '../../containers/HomePage/dashboard.scss';
 import Footer from '../Footer/Loadable';
 
-import { Link } from 'react-router-dom';
-
 import './campaignTabs.scss';
 
+// eslint-disable-next-line react/prop-types
 function CampaignTabs({ children, ...props }) {
-
   const token = localStorage.getItem('token');
   const [campaignData, setCampaignData] = React.useState();
   useEffect(() => {
@@ -29,71 +28,73 @@ function CampaignTabs({ children, ...props }) {
       headers: {
         'Content-Type': 'application/json',
         authorization: token,
-      }
-
+      },
     };
 
-    fetch(`${process.env.baseURL}/campaignBasicDetails/${props.match.params.id}`, requestOptions)
+    fetch(
+      `${process.env.baseURL}/campaignBasicDetails/${props.match.params.id}`,
+      requestOptions,
+    )
       .then(response => response.json())
       .then(user => {
-        console.log(user.response.data);
-        setCampaignData(user.response.data)
-
+        setCampaignData(user.response.data);
       })
       .catch(error => {
-        console.log(error);
+        console.error(error);
       });
   }, []);
 
   function backFunction() {
+    // eslint-disable-next-line react/prop-types
     props.history.goBack();
   }
-
-
 
   return (
     <div>
       <Header title="Dasboard" />
-      <div className="container" style={{ minHeight: '700px', marginTop: '-5rem' }}>
-        <div className='backButtonMain'>
-          <div onClick={backFunction}>
-            <svg version="1.1" id="Capa_1" x="0px" y="0px" width="15" height="15" viewBox="0 0 268.833 268.833" >
+      <div
+        className="container"
+        style={{ minHeight: '700px', marginTop: '-5rem' }}
+      >
+        <div className="backButtonMain">
+          <div
+            onClick={() => {
+              backFunction();
+            }}
+            aria-hidden
+            tabIndex="-1"
+            role="button"
+          >
+            <svg
+              version="1.1"
+              id="Capa_1"
+              x="0px"
+              y="0px"
+              width="15"
+              height="15"
+              viewBox="0 0 268.833 268.833"
+            >
               <g>
                 <path d="M256.333,121.916H42.679l58.659-58.661c4.882-4.882,4.882-12.796,0-17.678c-4.883-4.881-12.797-4.881-17.678,0l-79.998,80   c-4.883,4.882-4.883,12.796,0,17.678l80,80c2.439,2.439,5.64,3.661,8.839,3.661s6.397-1.222,8.839-3.661   c4.882-4.882,4.882-12.796,0-17.678l-58.661-58.661h213.654c6.903,0,12.5-5.598,12.5-12.5   C268.833,127.513,263.236,121.916,256.333,121.916z" />
               </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
+              <g />
+              <g />
+              <g />
+              <g />
+              <g />
+              <g />
+              <g />
+              <g />
+              <g />
+              <g />
+              <g />
+              <g />
+              <g />
+              <g />
+              <g />
             </svg>
-            <span>Back</span></div>
-
+            <span>Back</span>
+          </div>
         </div>
         <Row style={{ marginTop: 15, marginBottom: 15 }}>
           <Col sm={12} md={3}>
@@ -216,7 +217,6 @@ function CampaignTabs({ children, ...props }) {
                   </NavLink>
                 </ListGroup.Item>
 
-
                 <ListGroup.Item className="listItem">
                   <NavLink
                     to={`/donations/${props.match.params.id}`}
@@ -309,36 +309,44 @@ function CampaignTabs({ children, ...props }) {
 
                     <span>Teams</span>
                   </NavLink>
-                </ListGroup.Item>*/}
+                </ListGroup.Item> */}
               </ListGroup>
             </Card>
           </Col>
           <Col>
-
             <Card className="dataCard shadow mb-5 bg-white">
-              <Card.Header style={{ background: 'transparent', borderBottom: 'none' }}>
+              <Card.Header
+                style={{ background: 'transparent', borderBottom: 'none' }}
+              >
                 <Card.Title className="campaignUpdates">
                   <div style={{ width: '30%' }}>
-                    <span style={{ marginTop: '8px' }}>{campaignData ? campaignData.campaignTitle : ''}</span>
+                    <span style={{ marginTop: '8px' }}>
+                      {campaignData ? campaignData.campaignTitle : ''}
+                    </span>
                     <ul className="campign-Status">
                       <li className="raised">
-
-                        <span className="content">{campaignData ? campaignData.campaignAmountSymbol.symbol : ''} {campaignData ? campaignData.campaignTarget : ''}</span>
+                        <span className="content">
+                          {campaignData
+                            ? campaignData.campaignAmountSymbol.symbol
+                            : ''}{' '}
+                          {campaignData ? campaignData.campaignTarget : ''}
+                        </span>
                         <span className="title">Target</span>
                       </li>
                       <li className="pledged">
                         <span className="content">
-                          {campaignData ? campaignData.campaignAmountSymbol.symbol : ''} {campaignData ? campaignData.totalDonations : ''}
+                          {campaignData
+                            ? campaignData.campaignAmountSymbol.symbol
+                            : ''}{' '}
+                          {campaignData ? campaignData.totalDonations : ''}
                         </span>
                         <span className="title">Raised</span>
-
                       </li>
                       <li className="donators">
                         <span className="content">
                           {campaignData ? campaignData.totalDonors : ''}
                         </span>
                         <span className="title">Donators</span>
-
                       </li>
                     </ul>
                   </div>
@@ -349,23 +357,19 @@ function CampaignTabs({ children, ...props }) {
                     </Link>
 
                     <Link to={`/editCampaign/${props.match.params.id}`}>
-                      <Button className='editCampaign'>Edit Campaign</Button>{' '}
+                      <Button className="editCampaign">Edit Campaign</Button>{' '}
                     </Link>
                   </div>
                 </Card.Title>
               </Card.Header>
 
-              <Card.Body>
-                {children}
-              </Card.Body>
+              <Card.Body>{children}</Card.Body>
             </Card>
-
           </Col>
         </Row>
-
       </div>
       <Footer />
-    </div >
+    </div>
   );
 }
 

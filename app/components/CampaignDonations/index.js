@@ -163,7 +163,6 @@ function CampaignDonations({ editCampaignData, ...props }) {
               <tr>
                 <th >Donner Name</th>
                 <th >Email</th>
-                <th >Address</th>
                 <th >Gift Aid Enabled</th>
                 <th >Date</th>
                 <th >Amount</th>
@@ -175,7 +174,7 @@ function CampaignDonations({ editCampaignData, ...props }) {
                 <tr>
                   <td>{data.accountId.firstName}</td>
                   <td>{data.accountId.email}</td>
-                  <td>{data.accountId.address}</td>
+                  
                   <td>{data.giftAid ? "Yes" : "No"}</td>
                   <OverlayTrigger
                     key='bottom'

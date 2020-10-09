@@ -12,8 +12,7 @@ import { withRouter } from 'react-router-dom';
 import { Title, Heading, Description } from './styled';
 const logo = require('../../images/logo.png');
 const profile = require('../../images/placeholder.png');
-// import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-// import IconButton from '@material-ui/icons/IconButton';
+
 
 const Header = ({ children, title, ...props }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -55,19 +54,10 @@ const Header = ({ children, title, ...props }) => {
   }, []);
 
 
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   function logout() {
     console.log('fdfd');
     localStorage.removeItem('token');
   }
-
 
   function goToDashboard() {
     props.history.push('/');

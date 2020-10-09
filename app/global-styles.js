@@ -48,6 +48,11 @@ const GlobalStyle = createGlobalStyle`
   .MuiButton-textPrimary{
     color: #f15a24 !important;
   }
+
+  body:not(.modal-open){
+    padding-right: 0px !important;
+    overflow: auto !important;
+  }
 `;
 
 export default GlobalStyle;
