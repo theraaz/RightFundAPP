@@ -21,11 +21,11 @@ import { Button, Form, Col, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Layout from '../../components/AuthLayout';
 import reducer from './reducer';
 import makeSelectLoginPage from './selectors';
-import Checkbox from '@material-ui/core/Checkbox';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { login } from '../../utils/crud/auth.crud';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
 

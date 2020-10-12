@@ -54,20 +54,20 @@ export function MyProfile({ updateUser }) {
 
   function handleSubmit(values) {
     setLoading(true);
-    let address = {
+    const address = {
       line1: values.line1,
       line2: values.line2,
       city: values.city,
       state: values.state,
       country: values.country,
     };
-    let data = {
+    const data = {
       firstName: values.firstName,
       lastName: values.lastName,
       phoneNumber: values.phoneNumber,
       address: JSON.stringify(address),
     };
-    let changePasswordData = changePassword
+    const changePasswordData = changePassword
       ? {
           oldPassword: values.oldPassword,
           newPassword: values.newPassword,
@@ -197,7 +197,7 @@ export function MyProfile({ updateUser }) {
                       <CustomTextInputFormik
                         name="email"
                         placeholder="Email"
-                        disabled={true}
+                        disabled
                       />
                     </FormGroup>
                   </Col>
