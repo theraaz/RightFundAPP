@@ -29,6 +29,7 @@ function Layout({ children }) {
   const [lastName, setLastName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [phone, setPhone] = React.useState('');
+  const [userImage, setImage] = React.useState('');
   const [totalCampaign, setTotalCampaign] = React.useState(0);
   const [activeCampaign, setActiveCampaign] = React.useState(0);
   const [giftAid, setGiftAid] = React.useState(0);
@@ -45,8 +46,30 @@ function Layout({ children }) {
       current.file = file;
       reader.onload = (e) => {
         current.src = e.target.result;
-        console.log(e.target.result)
+        const requestOptions = {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            authorization: token,
+          },
+          body: JSON.stringify({
+            image: current.src
+          }),
+        };
+
+        fetch(`${process.env.baseURL}/account`, requestOptions)
+          .then(response => response.json())
+          .then(user => {
+
+            if (user.statusCode == 200) {
+              console.log(user);
+            }
+          })
+          .catch(error => {
+            console.log(error);
+          });
       }
+
       reader.readAsDataURL(file);
     }
   };
@@ -65,11 +88,13 @@ function Layout({ children }) {
       .then(response => response.json())
       .then(user => {
         if (user.statusCode == 200) {
+          console.log(user.response.data.res, 'layout')
           setFirstName(user.response.data.res.firstName);
           setLastName(user.response.data.res.lastName);
           setPhone(user.response.data.res.phoneNumber)
           setUserAddress(JSON.parse(user.response.data.res.address));
           setEmail(user.response.data.res.email);
+          setImage(user.response.data.res.image)
         } else {
           // setMessage('Something went missing, Please try again');
         }
@@ -164,7 +189,7 @@ function Layout({ children }) {
                     <div className="sub-card-img">
                       {/* <input type="file" accept="image/*" hidden onChange={handleImageUpload} multiple="false" /> */}
 
-                      <Image ref={uploadedImage} src={profileImg} alt="" />
+                      <Image ref={uploadedImage} src={userImage ? userImage : profileImg} alt="" />
 
                     </div>
                   </div>

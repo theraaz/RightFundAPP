@@ -64,7 +64,7 @@ function CampaignDonations({ editCampaignData, ...props }) {
 
 
   function getDonations(pages, pageNo) {
-    setLoadingSpinner(true);
+
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -91,6 +91,7 @@ function CampaignDonations({ editCampaignData, ...props }) {
   }
 
   useEffect(() => {
+    setLoadingSpinner(true);
     getDonations(pageSize, pageNumber);
   }, [
     pageSize,
@@ -174,7 +175,7 @@ function CampaignDonations({ editCampaignData, ...props }) {
                 <tr>
                   <td>{data.accountId.firstName}</td>
                   <td>{data.accountId.email}</td>
-                  
+
                   <td>{data.giftAid ? "Yes" : "No"}</td>
                   <OverlayTrigger
                     key='bottom'

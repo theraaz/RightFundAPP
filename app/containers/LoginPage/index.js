@@ -88,15 +88,13 @@ export function LoginPage(props) {
         .then(response => response.json())
         .then(user => {
           setLoading(false);
-          console.log(user);
-          if (user.statusCode == 200) {
+          console.log(user.response.data.res.statusId.name);
+          // if (user.statusCode == 200) {
             handleClickVariant('success', user.response.message);
             localStorage.setItem('token', user.response.data.token);
             resetField();
             props.history.push('/');
-          } else {
-            handleClickVariant('error', user.response.message);
-          }
+          // }
         })
         .catch(error => {
           console.log(error);
