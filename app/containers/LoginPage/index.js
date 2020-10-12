@@ -79,27 +79,31 @@ export function LoginPage(props) {
     setValidated(true);
     if (validateForm()) {
       setLoading(true);
-      const requestOptions = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      };
+   
       login(email, password)
         .then(({ data, status }) => {
-          console.log('res', data.response?.data?.token);
+          console.log('res', data.response?.data);
           console.log('status', status);
           setLoading(false);
           if (status === 200) {
             handleClickVariant('success', data.response.message);
-            props.login({
-              token: data.response?.data?.token,
-              user: data.response?.data?.res,
-            });
-            localStorage.setItem('token', data.response.data.token);
-            resetField();
-            props.history.push('/');
+
+            // resetField();
+            // props.history.push('/');
+            if (data.response?.data.res.statusId.name === "NOTACTIVE") {
+              props.login({
+                user: data.response?.data?.res,
+              });
+              props.history.push('/accountVerification');
+            } else {
+
+              props.login({
+                token: data.response?.data?.token,
+                user: data.response?.data?.res,
+              });
+              localStorage.setItem('token', data.response.data.token);
+              props.history.push('/');
+            }
           } else {
             handleClickVariant('error', data.response.message);
           }

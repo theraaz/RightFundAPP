@@ -26,11 +26,6 @@ const profileImg = require('../../images/placeholder.png');
 function Layout({ children }) {
   const token = localStorage.getItem('token');
 
-  const [firstName, setFirstName] = React.useState('');
-  const [lastName, setLastName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [phone, setPhone] = React.useState('');
-  const [userImage, setImage] = React.useState('');
 
   const { user } = useSelector(
     ({ auth }) => ({
@@ -88,25 +83,6 @@ function Layout({ children }) {
         authorization: token,
       },
     };
-
-    fetch(`${process.env.baseURL}/account`, requestOptions)
-      .then(response => response.json())
-      .then(user => {
-        if (user.statusCode == 200) {
-          console.log(user.response.data.res, 'layout')
-          setFirstName(user.response.data.res.firstName);
-          setLastName(user.response.data.res.lastName);
-          setPhone(user.response.data.res.phoneNumber)
-          setUserAddress(JSON.parse(user.response.data.res.address));
-          setEmail(user.response.data.res.email);
-          setImage(user.response.data.res.image)
-        } else {
-          // setMessage('Something went missing, Please try again');
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
 
     // Account Details
 
@@ -205,7 +181,7 @@ function Layout({ children }) {
                       <Title>
                         {user?.firstName} {user?.lastName}
                       </Title>
-                      <p className="card-text">{user?.phone}</p>
+                      <p className="card-text">{user?.phoneNumber}</p>
                       <p className="card-text">{user?.email}</p>
                     </div>
                     {userAddress && (
