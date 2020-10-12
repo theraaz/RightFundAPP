@@ -9,6 +9,7 @@ const CustomTextInputFormik = ({
   as = 'input',
   rows = '1',
   className = '',
+  disabled = false,
 }) => (
   <Field name={name}>
     {({ field, form: { touched, errors } }) => (
@@ -22,6 +23,7 @@ const CustomTextInputFormik = ({
           as={as}
           className={className}
           rows={rows}
+          disabled={disabled}
         />
         <ErrorMessage name={field.name} render={FormErrorMessage} />
       </>

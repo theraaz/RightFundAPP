@@ -6,7 +6,7 @@
 
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, shallowEqual, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
 import { Formik } from 'formik';
@@ -18,8 +18,7 @@ import {
   FormControl,
   Button,
   Spinner,
-  InputGroup,
-  FormGroup
+  FormGroup,
 } from 'react-bootstrap';
 import Layout from '../../components/Layout/index';
 
@@ -28,46 +27,21 @@ import './myProfile.scss';
 
 import { useSnackbar } from 'notistack';
 import Address from '../../components/Address/Loadable';
+import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik';
+import { updateProfile } from '../../utils/crud/auth.crud';
+import { authActions } from '../../utils/action-creators/auth.action.creator';
 
-export function MyProfile() {
+export function MyProfile({ updateUser }) {
   const token = localStorage.getItem('token');
-  const [firstName, setFirstName] = React.useState('');
-  const [lastName, setLastName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [phone, setPhone] = React.useState('');
-  const [userAdress, setUserAddress] = React.useState('');
+  const { user } = useSelector(
+    ({ auth }) => ({
+      user: auth.user,
+    }),
+    shallowEqual,
+  );
   const [loading, setLoading] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [changePassword, setChangePassword] = React.useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
-
-    fetch(`${process.env.baseURL}/account`, requestOptions)
-      .then(response => response.json())
-      .then(user => {
-        setLoading(false);
-        if (user.statusCode == 200) {
-          setFirstName(user.response.data.res.firstName);
-          setLastName(user.response.data.res.lastName);
-          setEmail(user.response.data.res.email);
-          setUserAddress(user.response.data.res.address);
-          setPhone(user.response.data.res.phoneNumber)
-        } else {
-          setMessage('Something went missing, Please try again');
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
 
   const handleClickVariant = (variant, message) => {
     console.log(variant);
@@ -78,84 +52,46 @@ export function MyProfile() {
     });
   };
 
-
-
-  function handleSubmit(event) {
-    console.log(event)
+  function handleSubmit(values) {
     setLoading(true);
     let address = {
-      line1: event.line1,
-      line2: event.line2,
-      city: event.city,
-      state: event.state,
-      country: event.country,
-    }
-    if (changePassword) {
-      const requestOptions = {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: token,
-        },
-        body: JSON.stringify({
-          firstName: event.firstName,
-          lastName: event.lastName,
-          oldPassword: event.oldPassword,
-          newPassword: event.newPassword,
-          confirmPassword: event.confirmPassword,
-          address: JSON.stringify(address)
-        }),
-      };
+      line1: values.line1,
+      line2: values.line2,
+      city: values.city,
+      state: values.state,
+      country: values.country,
+    };
+    let data = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      phoneNumber: values.phoneNumber,
+      address: JSON.stringify(address),
+    };
+    let changePasswordData = changePassword
+      ? {
+          oldPassword: values.oldPassword,
+          newPassword: values.newPassword,
+          confirmPassword: values.confirmPassword,
+        }
+      : {};
+    updateProfile({
+      ...data,
+      ...changePasswordData,
+    })
+      .then(res => {
+        setLoading(false);
 
-      fetch(`${process.env.baseURL}/account`, requestOptions)
-        .then(response => response.json())
-        .then(user => {
-          setLoading(false);
-
-          if (user.statusCode == 200) {
-            handleClickVariant('success', user.response.message);
-            console.log(user);
-          } else {
-            handleClickVariant('error', user.response.message);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-
-    } else {
-      const requestOptions = {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: token,
-        },
-        body: JSON.stringify({
-          firstName: event.firstName,
-          lastName: event.lastName,
-          address: JSON.stringify(address)
-
-        }),
-      };
-
-      fetch(`${process.env.baseURL}/account`, requestOptions)
-        .then(response => response.json())
-        .then(user => {
-          setLoading(false);
-
-          if (user.statusCode == 200) {
-            handleClickVariant('success', user.response.message);
-            console.log(user);
-          } else {
-            handleClickVariant('error', user.response.message);
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }
-
-
+        if (res.status === 200) {
+          handleClickVariant('success', res.data.response.message);
+          updateUser(data);
+          console.log(res.data);
+        } else {
+          handleClickVariant('error', res.data.response.message);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   const validate = (
@@ -163,8 +99,8 @@ export function MyProfile() {
     props /* only available when using withFormik */,
   ) => {
     const errors = {};
-    console.log(values)
-    if (!values.firstName) {
+    console.log(values);
+    if (values.firstName?.trim() === '') {
       errors.firstName = 'Required';
     } else if (values.firstName < 3) {
       errors.firstName = 'Enter valid name';
@@ -183,11 +119,9 @@ export function MyProfile() {
         errors.confirmPassword = 'Required';
       } else if (values.confirmPassword.length < 3) {
         errors.confirmPassword = 'Enter valid password';
-      }
-      else if (values.newPassword != values.confirmPassword) {
+      } else if (values.newPassword != values.confirmPassword) {
         errors.confirmPassword = 'Enter valid password';
-      }
-      else if (!values.oldPassword) {
+      } else if (!values.oldPassword) {
         errors.oldPassword = 'Required';
       } else if (values.oldPassword.length < 3) {
         errors.oldPassword = 'Enter valid password';
@@ -195,8 +129,7 @@ export function MyProfile() {
     }
     return errors;
   };
-
-
+  const userAddress = JSON.parse(user?.address);
   return (
     <Layout>
       <Helmet>
@@ -216,124 +149,89 @@ export function MyProfile() {
             padding: '1.25rem 20px 1.25rem 20px',
           }}
         >
-          <Formik initialValues={{
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            phone: phone,
-            oldPassword: '',
-            newPassword: '',
-            confirmPassword: '',
-            line1: userAdress ? JSON.parse(userAdress).line1 : '',
-            line2: userAdress ? JSON.parse(userAdress).line2 : '',
-            city: userAdress ? JSON.parse(userAdress).city : '',
-            state: userAdress ? JSON.parse(userAdress).state : '',
-            country: userAdress ? JSON.parse(userAdress).country : '',
-          }}
-            enableReinitialize
+          <Formik
+            initialValues={{
+              firstName: user.firstName || '',
+              lastName: user.lastName || '',
+              email: user.email || '',
+              phoneNumber: user.phoneNumber || '',
+              oldPassword: '',
+              newPassword: '',
+              confirmPassword: '',
+              line1: userAddress ? userAddress.line1 || '' : '',
+              line2: userAddress ? userAddress.line2 || '' : '',
+              city: userAddress ? userAddress.city || '' : '',
+              state: userAddress ? userAddress.state || '' : '',
+              country: userAddress ? userAddress.country || '' : '',
+            }}
             validate={validate}
-            validateOnChange={false}
-            validateOnBlur={false}
             onSubmit={handleSubmit}
           >
-            {props => (
-
-              < form onSubmit={props.handleSubmit}>
+            {({ values, handleSubmit, errors, setFieldValue }) => (
+              <form onSubmit={handleSubmit}>
                 <Heading>Basic Info</Heading>
                 <Row>
                   <Col md={6}>
-                    <label htmlFor="basic-url">First Name</label>
-                    <InputGroup className="mb-3">
-                      <FormControl
-                        id="basic-url"
-                        value={props.values.firstName}
-                        type="text"
+                    <label>First Name</label>
+                    <FormGroup className="mb-3">
+                      <CustomTextInputFormik
                         name="firstName"
-                        isInvalid={props.errors.firstName}
-                        onChange={event => props.setFieldValue('firstName', event.target.value)}
-                        aria-describedby="basic-addon3"
+                        placeholder="First Name"
                       />
-                      {props.errors.firstName && (
-                        <Errors id="feedback">{props.errors.firstName}</Errors>
-                      )}
-                    </InputGroup>
+                    </FormGroup>
                   </Col>
                   <Col md={6}>
                     <label htmlFor="basic-url">Last Name</label>
-                    <InputGroup className="mb-3">
-                      <FormControl
-                        id="basic-url"
-                        value={props.values.lastName}
+                    <FormGroup className="mb-3">
+                      <CustomTextInputFormik
                         name="lastName"
-                        onChange={event => props.setFieldValue('lastName', event.target.value)}
-                        type="text"
-                        isInvalid={props.errors.lastName}
-                        aria-describedby="basic-addon3"
+                        placeholder="Last Name"
                       />
-                      {props.errors.lastName && (
-                        <Errors id="feedback">{props.errors.lastName}</Errors>
-                      )}
-                    </InputGroup>
+                    </FormGroup>
                   </Col>
                 </Row>
                 <Row>
                   <Col md={6}>
                     <label htmlFor="basic-url">Email</label>
-                    <InputGroup className="mb-3">
-                      <FormControl
-                        id="basic-url"
-                        value={props.values.email}
-                        disabled
+                    <FormGroup className="mb-3">
+                      <CustomTextInputFormik
                         name="email"
-                        isInvalid={props.errors.email}
-                        onChange={event => props.setFieldValue('email', event.target.value)}
-                        type="email"
-                        aria-describedby="basic-addon3"
+                        placeholder="Email"
+                        disabled={true}
                       />
-                      {props.errors.email && (
-                        <Errors id="feedback">{props.errors.email}</Errors>
-                      )}
-                    </InputGroup>
+                    </FormGroup>
                   </Col>
                   <Col md={6}>
                     <label htmlFor="basic-url">Phone Number</label>
-                    <InputGroup className="mb-3">
-                      <FormControl
-                        id="basic-url"
-                        value={props.values.phone}
-                        type="text"
-                        name="phone"
-                        isInvalid={props.errors.phone}
-                        onChange={event => props.setFieldValue('phone', event.target.value)}
-
+                    <FormGroup className="mb-3">
+                      <CustomTextInputFormik
+                        name="phoneNumber"
+                        placeholder="Phone Number"
                       />
-                      {props.errors.phone && (
-                        <Errors id="feedback">{props.errors.phone}</Errors>
-                      )}
-                    </InputGroup>
+                    </FormGroup>
                   </Col>
                 </Row>
 
                 <FormGroup
                   controlId="address"
                   bssize="large"
-                  className='address'
+                  className="address"
                 >
-
-                  <div className="label-field" className='locationLabel'>
-                    Add a location
-                </div>
-                  <Address setFieldValue={props.setFieldValue} values={props.values} errors={props.errors} />
+                  <div className="locationLabel">Add a location</div>
+                  <Address
+                    setFieldValue={setFieldValue}
+                    values={values}
+                    errors={errors}
+                  />
                   {/* {errors.address && <Errors id="feedback">{errors.address}</Errors>} */}
                 </FormGroup>
-
 
                 <Wrapper>
                   {changePassword ? (
                     <Heading>Change Password</Heading>
                   ) : (
-                      <Heading>Security</Heading>
-                    )}
+                    <Heading>Security</Heading>
+                  )}
 
                   <Chip onClick={() => setChangePassword(!changePassword)}>
                     <svg
@@ -354,7 +252,7 @@ export function MyProfile() {
                     <Row>
                       <Col md={6}>
                         <label htmlFor="basic-url"> Password</label>
-                        <InputGroup className="mb-3">
+                        <FormGroup className="mb-3">
                           <FormControl
                             id="basic-url"
                             disabled
@@ -362,106 +260,72 @@ export function MyProfile() {
                             type="password"
                             aria-describedby="basic-addon3"
                           />
-                        </InputGroup>
+                        </FormGroup>
                       </Col>
                     </Row>
                   ) : (
-                      ''
-                    )}
+                    ''
+                  )}
                 </div>
                 {changePassword ? (
                   <div>
                     <Row>
                       <Col md={6}>
                         <label htmlFor="basic-url">New Password</label>
-                        <InputGroup className="mb-3">
-                          <FormControl
-                            id="basic-url"
-                            value={props.values.newPassword}
+                        <FormGroup className="mb-3">
+                          <CustomTextInputFormik
                             name="newPassword"
-                            onChange={event => props.setFieldValue('newPassword', event.target.value)}
+                            placeholder="New Password"
                             type="password"
-                            isInvalid={props.errors.newPassword}
-                            aria-describedby="basic-addon3"
                           />
-                          {props.errors.newPassword && (
-                            <Errors id="feedback">{props.errors.newPassword}</Errors>
-                          )}
-                        </InputGroup>
+                        </FormGroup>
                       </Col>
 
                       <Col md={6}>
                         <label htmlFor="basic-url">Confirm Password</label>
-                        <InputGroup className="mb-3">
-                          <FormControl
-                            id="basic-url"
-                            value={props.values.confirmPassword}
+                        <FormGroup className="mb-3">
+                          <CustomTextInputFormik
                             name="confirmPassword"
-                            isInvalid={props.errors.confirmPassword}
-                            onChange={event => props.setFieldValue('confirmPassword', event.target.value)}
+                            placeholder="Confirm Password"
                             type="password"
-                            aria-describedby="basic-addon3"
                           />
-                          {props.errors.confirmPassword && (
-                            <Errors id="feedback">{props.errors.confirmPassword}</Errors>
-                          )}
-                        </InputGroup>
+                        </FormGroup>
                       </Col>
                     </Row>
                     <Row>
                       <Col md={6}>
                         <label htmlFor="basic-url">Old Password</label>
-                        <InputGroup className="mb-3">
-                          <FormControl
-                            id="basic-url"
-                            value={props.values.oldPassword}
+                        <FormGroup className="mb-3">
+                          <CustomTextInputFormik
                             name="oldPassword"
-                            isInvalid={props.errors.oldPassword}
-                            onChange={event => props.setFieldValue('oldPassword', event.target.value)}
+                            placeholder="Old Password"
                             type="password"
-                            aria-describedby="basic-addon3"
                           />
-                          {props.errors.oldPassword && (
-                            <Errors id="feedback">{props.errors.oldPassword}</Errors>
-                          )}
-                        </InputGroup>
+                        </FormGroup>
                       </Col>
                     </Row>
                   </div>
                 ) : (
-                    ''
-                  )}
+                  ''
+                )}
                 <div style={{ textAlign: 'end' }}>
-                  <Button type="submit" className="updateProfileBtn" >
-                    {loading == false && <div>Update Profile</div>}
+                  <Button type="submit" className="updateProfileBtn">
+                    {!loading && <div>Update Profile</div>}
                     {loading && <Spinner animation="border" size="sm" />}
                   </Button>
                 </div>
               </form>
             )}
           </Formik>
-
-
-
         </Card.Body>
       </Card>
-    </Layout >
+    </Layout>
   );
-}
-
-MyProfile.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
 }
 
 const withConnect = connect(
   null,
-  mapDispatchToProps,
+  authActions,
 );
 
 export default compose(

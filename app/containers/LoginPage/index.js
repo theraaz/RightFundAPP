@@ -26,6 +26,8 @@ import reducer from './reducer';
 import makeSelectLoginPage from './selectors';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { login } from '../../utils/crud/auth.crud';
+import { authActions } from '../../utils/action-creators/auth.action.creator';
 
 const CustomCheckbox = withStyles({
   root: {
@@ -35,7 +37,7 @@ const CustomCheckbox = withStyles({
     },
   },
   checked: {},
-})((props) => <Checkbox color="default" {...props} />);
+})(props => <Checkbox color="default" {...props} />);
 
 export function LoginPage(props) {
   useInjectReducer({ key: 'loginPage', reducer });
@@ -59,7 +61,6 @@ export function LoginPage(props) {
   }
 
   const handleClickVariant = (variant, message) => {
-    console.log(variant);
     // variant could be success, error, warning, info, or default
     enqueueSnackbar(message, {
       variant,
@@ -68,6 +69,7 @@ export function LoginPage(props) {
   };
 
   function handleSubmit(event) {
+    event.preventDefault();
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -84,26 +86,45 @@ export function LoginPage(props) {
         },
         body: JSON.stringify({ email, password }),
       };
-      fetch(`${process.env.baseURL}/signin`, requestOptions)
-        .then(response => response.json())
-        .then(user => {
+      login(email, password)
+        .then(({ data, status }) => {
+          console.log('res', data.response?.data?.token);
+          console.log('status', status);
           setLoading(false);
-          console.log(user);
-          if (user.statusCode == 200) {
-            handleClickVariant('success', user.response.message);
-            localStorage.setItem('token', user.response.data.token);
+          if (status === 200) {
+            handleClickVariant('success', data.response.message);
+            props.login({
+              token: data.response?.data?.token,
+              user: data.response?.data?.res,
+            });
+            localStorage.setItem('token', data.response.data.token);
             resetField();
             props.history.push('/');
           } else {
-            handleClickVariant('error', user.response.message);
+            handleClickVariant('error', data.response.message);
           }
         })
         .catch(error => {
           console.log(error);
         });
+      // fetch(`${process.env.baseURL}/signin`, requestOptions)
+      //   .then(response => response.json())
+      //   .then(user => {
+      //     setLoading(false);
+      //     console.log(user);
+      //     if (user.statusCode == 200) {
+      //       handleClickVariant('success', user.response.message);
+      //       localStorage.setItem('token', user.response.data.token);
+      //       resetField();
+      //       props.history.push('/');
+      //     } else {
+      //       handleClickVariant('error', user.response.message);
+      //     }
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //   });
     }
-
-    event.preventDefault();
   }
 
   const onChange = useCallback(e => {
@@ -206,8 +227,7 @@ export function LoginPage(props) {
               <Form.Row>
                 <Col controlid="remeberme">
                   <FormControlLabel
-                    control={<CustomCheckbox
-                    />}
+                    control={<CustomCheckbox />}
                     label="Remember me"
                   />
                 </Col>
@@ -221,12 +241,10 @@ export function LoginPage(props) {
                 <Col controlid="terms">
                   <FormControlLabel
                     classes={{ label: 'loginCheckbox' }}
-                    control={<CustomCheckbox
-                    />}
+                    control={<CustomCheckbox />}
                     label="Terms & conditions"
                   />
                 </Col>
-
               </Form.Row>
             </Form.Group>
 
@@ -251,19 +269,9 @@ LoginPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = createStructuredSelector({
-  loginPage: makeSelectLoginPage(),
-});
-
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
-
 const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
+  null,
+  authActions,
 );
 
 export default compose(
