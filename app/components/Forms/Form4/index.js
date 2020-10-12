@@ -7,15 +7,15 @@
 import React, { memo } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { CustomHeading, CustomHeadingNum, H4 } from '../form.styles';
+import { H4 } from '../form.styles';
 import './form4.scss';
-import { Row, Col, Card, Dropdown, Button, Container, Input, Form } from 'react-bootstrap';
+import { Button, } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 
 
-function Form4({ id, ...props }) {
+function Form4({ id, statusId, ...props }) {
   const token = localStorage.getItem('token');
-
+  console.log(statusId);
   function publishCampaign() {
     const requestOptions = {
       method: 'PUT',
@@ -27,7 +27,8 @@ function Form4({ id, ...props }) {
       }),
     };
 
-    fetch(`${process.env.baseURL}/campaign/${id}`, requestOptions)
+
+    fetch(`${process.env.baseURL}/campaign/status/${id}`, requestOptions)
       .then(response => response.json())
       .then(user => {
         console.log(user.response.data);
@@ -61,12 +62,15 @@ function Form4({ id, ...props }) {
           <Link to={`/campaignView/${id}`}>
             <Button className="editCampaignBtn" >Preview</Button>
           </Link>
-          {props.match.params.id ? <Link to="/">
+          {statusId != 6 ? <Link to="/">
             <Button className="viewCampaignBtn" >Update
             </Button>
           </Link> : <Link to="/">
-              <Button className="viewCampaignBtn" onClick={publishCampaign} >Publish
-            </Button>
+
+              <Button className="viewCampaignBtn" onClick={publishCampaign}> Publish
+
+              </Button>
+
             </Link>}
 
 

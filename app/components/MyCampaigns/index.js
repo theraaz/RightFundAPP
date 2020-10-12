@@ -128,30 +128,25 @@ const MyCampaigns = () => {
   }
 
   function closeCampaign() {
-    console.log(currentCampaignData)
-    // const requestOptions = {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     authorization: token,
-    //   }, body: JSON.stringify({
-    //     statusId: 7,
-    //   }),
-    // };
+    const requestOptions = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        authorization: token,
+      }, body: JSON.stringify({
+        statusId: 8,
+      }),
+    };
 
-    // fetch(`${process.env.baseURL}/campaign/${id}`, requestOptions)
-    //   .then(response => response.json())
-    //   .then(user => {
-    //     setPageNumber(1);
-    //     if (campaignSort) {
-    //       getSortCampaigns(pageSize, pageNumber, campaignSort);
-    //     } else {
-    //       getCampaigns();
-    //     }
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
+    fetch(`${process.env.baseURL}/campaign/status/${currentCampaignData}`, requestOptions)
+      .then(response => response.json())
+      .then(() => {
+        setPageNumber(1);
+        getSortCampaigns(pageSize, pageNumber, campaignSort);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
 
   function totalRaised(data) {

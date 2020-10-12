@@ -13,6 +13,8 @@ import AccountVerify from 'containers/AccountVerify/index';
 import CampaignUpdatesContainer from 'containers/CampaignUpdatesContainer/index';
 import CampaignViewContainer from 'containers/CampaignViewContainer/index';
 import DonationsContainer from 'containers/DonationsContainer/index';
+import AccountVerification from 'containers/AccountVerification/index';
+import AllDonations from 'containers/AllDonations/index';
 
 
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -36,8 +38,10 @@ export default function App() {
         <AuthRoute exact path="/donations/:id" component={DonationsContainer} />
         <AuthRoute exact path="/editCampaign/:id" component={EditCampaign} />
         <LoginRoute exact path="/resetPassword" component={ResetPassword} />
+        <LoginRoute exact path="/accountVerification" component={AccountVerification} />
         <LoginRoute exact path="/accountVerify" component={AccountVerify} />
         <AuthRoute exact path="/campaignView/:id" component={CampaignViewContainer} />
+        <AuthRoute exact path="/donations" component={AllDonations} />
         {/* <LoginRoute exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} /> */}
         <Route component={NotFoundPage} />
       </Switch>

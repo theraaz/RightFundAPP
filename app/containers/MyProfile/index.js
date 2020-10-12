@@ -129,7 +129,7 @@ export function MyProfile({ updateUser }) {
     }
     return errors;
   };
-  const userAddress = JSON.parse(user?.address);
+  const userAddress = user ? JSON.parse(user?.address) : '';
   return (
     <Layout>
       <Helmet>

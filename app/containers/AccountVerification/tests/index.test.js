@@ -1,6 +1,6 @@
 /**
  *
- * Tests for VerifiedAccount
+ * Tests for AccountVerification
  *
  * @see https://github.com/react-boilerplate/react-boilerplate/tree/master/docs/testing
  *
@@ -10,12 +10,13 @@ import React from 'react';
 import { render } from 'react-testing-library';
 // import 'jest-dom/extend-expect'; // add some helpful assertions
 
-import VerifiedAccount from '../index';
+import { AccountVerification } from '../index';
 
-describe('<VerifiedAccount />', () => {
+describe('<AccountVerification />', () => {
   it('Expect to not log errors in console', () => {
     const spy = jest.spyOn(global.console, 'error');
-    render(<VerifiedAccount />);
+    const dispatch = jest.fn();
+    render(<AccountVerification dispatch={dispatch} />);
     expect(spy).not.toHaveBeenCalled();
   });
 
@@ -31,7 +32,7 @@ describe('<VerifiedAccount />', () => {
   it.skip('Should render and match the snapshot', () => {
     const {
       container: { firstChild },
-    } = render(<VerifiedAccount />);
+    } = render(<AccountVerification />);
     expect(firstChild).toMatchSnapshot();
   });
 });

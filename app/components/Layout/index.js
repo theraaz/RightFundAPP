@@ -31,6 +31,12 @@ function Layout({ children }) {
     }),
     shallowEqual,
   );
+
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+  const [userImage, setImage] = React.useState('');
   const [totalCampaign, setTotalCampaign] = React.useState(0);
   const [activeCampaign, setActiveCampaign] = React.useState(0);
   const [giftAid, setGiftAid] = React.useState(0);
@@ -78,7 +84,7 @@ function Layout({ children }) {
       });
   }, []);
 
-  const userAddress = JSON.parse(user?.address);
+  const userAddress = user ? JSON.parse(user?.address) : '';
   return (
     <div>
       <Header
@@ -144,7 +150,7 @@ function Layout({ children }) {
 
                       <Image
                         ref={uploadedImage}
-                        src={user.image || profileImg}
+                        src={user?.image || profileImg}
                         alt=""
                       />
                     </div>
