@@ -25,6 +25,7 @@ import makeSelectSingup from './selectors';
 import reducer from './reducer';
 import Layout from '../../components/AuthLayout';
 import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik';
+import CustomSelectFormik from '../../components/inputs/CustomSelectFormik';
 
 const CustomCheckbox = withStyles({
   root: {
@@ -108,6 +109,7 @@ export function Singup(props) {
       },
       body: JSON.stringify({
         ...values,
+        position: values.position ? parseInt(values.position, 10) : undefined,
         role: 1,
       }),
     };
@@ -157,6 +159,7 @@ export function Singup(props) {
               errors,
             }) => (
               <form onSubmit={handleSubmit}>
+                {console.log(values)}
                 <Form.Group
                   controlId="fname"
                   bssize="large"
@@ -317,12 +320,18 @@ export function Singup(props) {
                         name="charityName"
                       />
                     </Form.Group>
-                    <Form.Group controlId="registrationNumber" bssize="large">
+                    <Form.Group controlId="regNo" bssize="large">
                       <CustomTextInputFormik
                         placeholder="Registration Number"
                         name="regNo"
                         type="number"
                       />
+                    </Form.Group>
+                    <Form.Group controlId="regNo" bssize="large">
+                      <CustomSelectFormik name="position">
+                        <option value={1}>Trustee</option>
+                        <option value={2}>Employee</option>
+                      </CustomSelectFormik>
                     </Form.Group>
                   </div>
                 )}
