@@ -45,7 +45,7 @@ const Header = ({ children, title, ...props }) => {
         <div className="profile">
           <Dropdown className="dropper">
             <Dropdown.Toggle id="dropdown-basic" className="dropBtn">
-              {user.firstName} {user.lastName}
+              {user?.firstName} {user?.lastName}
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
@@ -129,7 +129,7 @@ const Header = ({ children, title, ...props }) => {
 
           <div className="profileImg">
             <Image
-              src={user.image || profile}
+              src={user?.image || profile}
               style={{ borderRadius: '50px' }}
               fluid
             />

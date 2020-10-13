@@ -29,14 +29,14 @@ import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
+import axios from 'axios';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
 import configureStore from './configureStore';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
 import { setupAxios } from './utils/axiosSetup';
-import axios from 'axios';
-import { PersistGate } from 'redux-persist/integration/react';
-import { persistStore } from 'redux-persist';
 // Create redux store with history
 const initialState = {};
 const store = configureStore(initialState, history);

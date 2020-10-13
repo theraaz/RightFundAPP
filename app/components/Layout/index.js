@@ -7,7 +7,7 @@
 import React, { memo, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Row, Col, Card, Image } from 'react-bootstrap';
+import { Row, Col, Card, Image, Spinner } from 'react-bootstrap';
 
 import MainTabs from '../MainTabs/Loadable';
 
@@ -19,14 +19,15 @@ import {
 import '../../containers/HomePage/dashboard.scss';
 import Header from '../Header/Loadable';
 import Footer from '../Footer/Loadable';
-import { shallowEqual, useSelector } from 'react-redux';
+import { connect, shallowEqual, useSelector } from 'react-redux';
+import { updateProfile } from '../../utils/crud/auth.crud';
+import { authActions } from '../../utils/action-creators/auth.action.creator';
+import { useSnackbar } from 'notistack';
 
 const profileImg = require('../../images/placeholder.png');
 
-function Layout({ children }) {
+function Layout({ children, updateUser }) {
   const token = localStorage.getItem('token');
-
-
   const { user } = useSelector(
     ({ auth }) => ({
       user: auth.user,
@@ -37,40 +38,50 @@ function Layout({ children }) {
   const [activeCampaign, setActiveCampaign] = React.useState(0);
   const [giftAid, setGiftAid] = React.useState(0);
   const [totalRaised, setTotalRaised] = React.useState(0);
+  const [loading, setLoading] = React.useState(false);
   const uploadedImage = React.useRef(null);
-
+  const { enqueueSnackbar } = useSnackbar();
+  const handleClickVariant = (variant, message) => {
+    console.log(variant);
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
+    });
+  };
   const handleImageUpload = e => {
     const [file] = e.target.files;
     if (file) {
       const reader = new FileReader();
       const { current } = uploadedImage;
       current.file = file;
+
+      setLoading(true);
       reader.onload = e => {
-        current.src = e.target.result;
-        const requestOptions = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            authorization: token,
-          },
-          body: JSON.stringify({
-            image: current.src
-          }),
-        };
-
-        fetch(`${process.env.baseURL}/account`, requestOptions)
-          .then(response => response.json())
-          .then(user => {
-
-            if (user.statusCode == 200) {
+        updateProfile({
+          image: current.src,
+        })
+          .then(res => {
+            setLoading(false);
+            if (res.status === 200) {
               console.log(user);
+              current.src = e.target.result;
+              updateUser({
+                image: current.src,
+              });
+              handleClickVariant(
+                'success',
+                'Profile Image Updated Successfully',
+              );
+            } else {
+              handleClickVariant('error', res.data.response.message);
             }
           })
           .catch(error => {
-            console.log(error);
+            setLoading(false);
+            handleClickVariant('error', 'Could not Update Profile Image');
           });
-      }
-
+      };
       reader.readAsDataURL(file);
     }
   };
@@ -164,8 +175,26 @@ function Layout({ children }) {
                       }}
                     />
 
-                    <div className="sub-card-img">
+                    <div className="sub-card-img position-relative">
                       {/* <input type="file" accept="image/*" hidden onChange={handleImageUpload} multiple="false" /> */}
+                      {loading && (
+                        <div
+                          className="d-flex align-items-center justify-content-center position-absolute"
+                          style={{
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            background: 'rgba(255,255,255,0.7)',
+                            zIndex: 0,
+                          }}
+                        >
+                          <Spinner
+                            animation="border"
+                            style={{ color: '#fafafa' }}
+                          />
+                        </div>
+                      )}
 
                       <Image
                         ref={uploadedImage}
@@ -250,4 +279,7 @@ function Layout({ children }) {
 
 Layout.propTypes = {};
 
-export default memo(Layout);
+export default connect(
+  null,
+  authActions,
+)(memo(Layout));

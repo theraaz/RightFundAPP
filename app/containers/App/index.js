@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import MyProfile from 'containers/MyProfile/index';
+import CharityProfile from 'containers/CharityProfile/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import Signup from 'containers/Singup/Loadable';
 import forgetPass from 'containers/ForgetPassword/Loadable';
@@ -36,19 +37,28 @@ export default function App() {
       <Switch>
         <AuthRoute exact path="/" component={HomePage} />
         <AuthRoute exact path="/profile" component={MyProfile} />
+        <AuthRoute exact path="/charity-profile" component={CharityProfile} />
         {/* {!localStorage.getItem('token') && <Route path="/login" component={LoginPage} exact />} */}
         <LoginRoute exact path="/login" component={LoginPage} />
         <LoginRoute exact path="/signup" component={Signup} />
         <LoginRoute exact path="/forgetPassword" component={forgetPass} />
         <AuthRoute exact path="/createCampaign" component={CreateCampaign} />
-        <AuthRoute exact path="/addCampaignUpdates/:id" component={CampaignUpdatesContainer} />
+        <AuthRoute
+          exact
+          path="/addCampaignUpdates/:id"
+          component={CampaignUpdatesContainer}
+        />
         <AuthRoute exact path="/donations/:id" component={DonationsContainer} />
         <AuthRoute exact path="/editCampaign/:id" component={EditCampaign} />
         <LoginRoute exact path="/resetPassword" component={ResetPassword} />
         {user?.statusId ? <LoginRoute exact path="/accountVerification" component={AccountVerification} /> : null}
 
         <LoginRoute exact path="/accountVerify" component={AccountVerify} />
-        <AuthRoute exact path="/campaignView/:id" component={CampaignViewContainer} />
+        <AuthRoute
+          exact
+          path="/campaignView/:id"
+          component={CampaignViewContainer}
+        />
         <AuthRoute exact path="/donations" component={AllDonations} />
         {/* <LoginRoute exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} /> */}
         <Route component={NotFoundPage} />
