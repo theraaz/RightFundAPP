@@ -51,13 +51,7 @@ export default function App() {
         <AuthRoute exact path="/donations/:id" component={DonationsContainer} />
         <AuthRoute exact path="/editCampaign/:id" component={EditCampaign} />
         <LoginRoute exact path="/resetPassword" component={ResetPassword} />
-        {user?.statusId ? (
-          <LoginRoute
-            exact
-            path="/accountVerification"
-            component={AccountVerification}
-          />
-        ) : null}
+        {user?.statusId ? <LoginRoute exact path="/accountVerification" component={AccountVerification} /> : null}
 
         <LoginRoute exact path="/accountVerify" component={AccountVerify} />
         <AuthRoute
