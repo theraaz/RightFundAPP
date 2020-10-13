@@ -17,6 +17,8 @@ import DonationsContainer from 'containers/DonationsContainer/index';
 import AccountVerification from 'containers/AccountVerification/index';
 import AllDonations from 'containers/AllDonations/index';
 
+import { shallowEqual, useSelector } from 'react-redux';
+
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 import GlobalStyle from '../../global-styles';
@@ -24,6 +26,12 @@ import AuthRoute from '../../components/AuthRoutes';
 import LoginRoute from '../../components/routes';
 export default function App() {
   // localStorage.getItem('token')
+  const { user } = useSelector(
+    ({ auth }) => ({
+      user: auth.user,
+    }),
+    shallowEqual,
+  );
   return (
     <div>
       <Switch>
@@ -43,11 +51,8 @@ export default function App() {
         <AuthRoute exact path="/donations/:id" component={DonationsContainer} />
         <AuthRoute exact path="/editCampaign/:id" component={EditCampaign} />
         <LoginRoute exact path="/resetPassword" component={ResetPassword} />
-        <LoginRoute
-          exact
-          path="/accountVerification"
-          component={AccountVerification}
-        />
+        {user?.statusId ? <LoginRoute exact path="/accountVerification" component={AccountVerification} /> : null}
+
         <LoginRoute exact path="/accountVerify" component={AccountVerify} />
         <AuthRoute
           exact

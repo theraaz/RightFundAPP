@@ -51,7 +51,7 @@ export function AllDonations() {
   }
 
   const filterData = (event) => {
-    const filter = event.target.value !== '' ? fiterVal.filter(cd => cd.accountId.firstName.includes(event.target.value)) : campaignsDonation
+    const filter = event.target.value !== '' ? fiterVal.filter(cd => cd.DonarName.includes(event.target.value)) : campaignsDonation
     setCampaignsDonation(filter);
   }
 
@@ -77,14 +77,14 @@ export function AllDonations() {
     };
 
     fetch(
-      `${process.env.baseURL}/donation/campaign/${8}?perPage=${pages}&pageNo=${pageNo}`,
+      `${process.env.baseURL}/donation?perPage=${pages}&pageNo=${pageNo}`,
       requestOptions,
     )
       .then(response => response.json())
       .then(user => {
         console.log(user.response.data);
         setLoadingSpinner(false);
-        setTotalPages(Math.ceil(user.response.data.totalDonations / pageSize));
+        setTotalPages(Math.ceil(user.response.data.total / pageSize));
         setCampaignsDonation(user.response.data.res);
         setFilterVal(user.response.data.res)
       })
@@ -181,9 +181,9 @@ export function AllDonations() {
 
                 {campaignsDonation.map(data => (
                   <tr key={data.id}>
-                    <td>{data.accountId.firstName}</td>
-                    <td>{data.accountId.firstName}</td>
-                    <td>{data.accountId.email}</td>
+                    <td>{data.campaignName}</td>
+                    <td>{data.DonarName}</td>
+                    <td>{data.DonarEmail}</td>
 
                     <td>{data.giftAid ? "Yes" : "No"}</td>
                     <OverlayTrigger
@@ -193,16 +193,18 @@ export function AllDonations() {
 
                         <Popover id="popover-basic">
                           <Popover.Content style={{ color: '#f15a24', textAlign: 'center' }}>
-                            <div>{formatHHMM(data.createdAt)}</div>
-                            <div>{data.computedDateCreatedAt}</div>
+                            <div>{formatHHMM(data.donationDate)}</div>
+                            {/* <div>{data.computedDateCreatedAt}</div> */}
                           </Popover.Content>
 
                         </Popover>
                       }
                     >
-                      <td>{formatDate(data.createdAt)}</td>
+                      <td>{formatDate(data.donationDate)}</td>
                     </OverlayTrigger>
-                    <td className='tableAmount'>{data.amountSymbolId.symbol} {data.amount}</td>
+                    <td className='tableAmount'>
+                      {data.donationSymbol}{' '}
+                      {data.donationAmount}</td>
                   </tr>
                 ))
 

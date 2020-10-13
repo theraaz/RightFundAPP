@@ -28,6 +28,8 @@ const profileImg = require('../../images/placeholder.png');
 
 function Layout({ children, updateUser }) {
   const token = localStorage.getItem('token');
+
+
   const { user } = useSelector(
     ({ auth }) => ({
       user: auth.user,
@@ -210,7 +212,7 @@ function Layout({ children, updateUser }) {
                       <Title>
                         {user?.firstName} {user?.lastName}
                       </Title>
-                      <p className="card-text">{user?.phone}</p>
+                      <p className="card-text">{user?.phoneNumber}</p>
                       <p className="card-text">{user?.email}</p>
                     </div>
                     {userAddress && (

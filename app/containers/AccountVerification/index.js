@@ -13,8 +13,25 @@ import { compose } from 'redux';
 import Layout from '../../components/AuthLayout/Loadable';
 import { Button, Form } from 'react-bootstrap';
 import '../AccountVerify/accountvVerify.scss';
-
+import { shallowEqual, useSelector } from 'react-redux';
+import { resendVerifyLink } from '../../utils/crud/auth.crud';
 export function AccountVerification() {
+  const { user } = useSelector(
+    ({ auth }) => ({
+      user: auth.user,
+    }),
+    shallowEqual,
+  );
+
+  console.log(user);
+  function resendEmail() {
+    resendVerifyLink({ email: user.email })
+      .then(({ data, status }) => {
+        console.log(data);
+      }
+      )
+  }
+
   return (
     <div>
       <Helmet>
@@ -26,9 +43,9 @@ export function AccountVerification() {
         <div style={{ textAlign: 'center' }}>
           <p className='message'> Your account is not verified. Please verified it</p>
 
-          <div className='authBtns'>
+          <div>
             <Form>
-              <Form.Group>
+              <Form.Group style={{ position: 'relative' }}>
                 <div className="formsDiv">
                   <svg
                     id="Capa_1"
@@ -58,13 +75,13 @@ export function AccountVerification() {
                   className="form-input"
                   placeholder="Email"
                   type="email"
-                  value={email}
+                  value={user.email}
                   onChange={event => setEmail(event.target.value)}
                 />
 
               </Form.Group>
             </Form>
-            <Button className="campaignBtn">Resend Email</Button>{' '}
+            <Button className="resendEmailBtn" onClick={resendEmail}>Resend Email</Button>{' '}
           </div>
         </div>
       </Layout>
