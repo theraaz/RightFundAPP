@@ -306,7 +306,6 @@ const MainTabs = ({ setActiveCard }) => {
             to="/profile"
             className="text-decoration-none listItem"
             activeClassName="active"
-            onClick={() => setActiveCard(0)}
           >
             <div className="iconImage">
               <svg

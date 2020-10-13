@@ -9,8 +9,22 @@ import axios from 'axios';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import './Dropzone.scss';
+import DocumentIcon from '../svg-icons/DocumentIcon';
 
-const DropZone = ({ selectedFiles, setSelectedFiles }) => {
+const DropZone = ({
+  selectedFiles,
+  setSelectedFiles,
+  multiple = false,
+  accept = [
+    'image/jpeg',
+    'image/jpg',
+    'image/png',
+    'image/gif',
+    'image/x-icon',
+  ],
+  label = 'Choose an image from your computer.',
+  isDocument = false,
+}) => {
   const fileInputRef = useRef();
   const modalImageRef = useRef();
   const modalRef = useRef();
@@ -75,6 +89,7 @@ const DropZone = ({ selectedFiles, setSelectedFiles }) => {
         setSelectedFiles(prevArray => [...prevArray, files[i]]);
         openImageModal(files[0]);
         setImageFile(files[0]);
+        setUnsupportedFiles([]);
       } else {
         files[i].invalid = true;
         setSelectedFiles(prevArray => [...prevArray, files[i]]);
@@ -85,14 +100,14 @@ const DropZone = ({ selectedFiles, setSelectedFiles }) => {
   };
 
   const validateFile = file => {
-    const validTypes = [
-      'image/jpeg',
-      'image/jpg',
-      'image/png',
-      'image/gif',
-      'image/x-icon',
-    ];
-    if (validTypes.indexOf(file.type) === -1) {
+    // const validTypes = [
+    //   'image/jpeg',
+    //   'image/jpg',
+    //   'image/png',
+    //   'image/gif',
+    //   'image/x-icon',
+    // ];
+    if (accept.indexOf(file.type) === -1) {
       return false;
     }
 
@@ -185,11 +200,7 @@ const DropZone = ({ selectedFiles, setSelectedFiles }) => {
     <>
       <div>
         {/* {unsupportedFiles.length === 0 && validFiles.length ? <button className="file-upload-btn" onClick={() => uploadFiles()}>Upload Files</button> : ''} */}
-        {unsupportedFiles.length ? (
-          <p>Please remove all unsupported files.</p>
-        ) : (
-          ''
-        )}
+
         <div
           className="drop-container"
           onDragOver={dragOver}
@@ -200,47 +211,52 @@ const DropZone = ({ selectedFiles, setSelectedFiles }) => {
         >
           <div className="drop-message">
             <div className="upload-icon">
-              <svg
-                version="1.1"
-                id="Capa_1"
-                x="0px"
-                y="0px"
-                viewBox="0 0 512 512"
-              >
-                <g>
+              {isDocument ? (
+                <DocumentIcon />
+              ) : (
+                <svg
+                  version="1.1"
+                  id="Capa_1"
+                  x="0px"
+                  y="0px"
+                  viewBox="0 0 512 512"
+                >
                   <g>
-                    <path d="M492,327c11.046,0,20-8.954,20-20V177c0-44.112-35.888-80-80-80h-30.361c-8.565,0-16.174-5.447-18.934-13.556l-6.051-17.777C368.374,41.343,345.548,25,319.854,25H192.083c-25.196,0-47.875,15.923-56.432,39.621l-6.923,19.172C125.875,91.692,118.316,97,109.917,97H80c-44.112,0-80,35.888-80,80v230c0,44.112,35.888,80,80,80h352c44.112,0,80-35.888,80-80c0-11.046-8.954-20-20-20c-11.046,0-20,8.954-20,20c0,22.056-17.944,40-40,40H80c-22.056,0-40-17.944-40-40V177c0-22.056,17.944-40,40-40h29.917c25.196,0,47.875-15.923,56.432-39.621l6.923-19.172C176.125,70.308,183.684,65,192.083,65h127.771c8.565,0,16.173,5.448,18.934,13.556l6.051,17.777c8.279,24.324,31.105,40.667,56.8,40.667H432c22.056,0,40,17.944,40,40v130C472,318.046,480.954,327,492,327z" />
+                    <g>
+                      <path d="M492,327c11.046,0,20-8.954,20-20V177c0-44.112-35.888-80-80-80h-30.361c-8.565,0-16.174-5.447-18.934-13.556l-6.051-17.777C368.374,41.343,345.548,25,319.854,25H192.083c-25.196,0-47.875,15.923-56.432,39.621l-6.923,19.172C125.875,91.692,118.316,97,109.917,97H80c-44.112,0-80,35.888-80,80v230c0,44.112,35.888,80,80,80h352c44.112,0,80-35.888,80-80c0-11.046-8.954-20-20-20c-11.046,0-20,8.954-20,20c0,22.056-17.944,40-40,40H80c-22.056,0-40-17.944-40-40V177c0-22.056,17.944-40,40-40h29.917c25.196,0,47.875-15.923,56.432-39.621l6.923-19.172C176.125,70.308,183.684,65,192.083,65h127.771c8.565,0,16.173,5.448,18.934,13.556l6.051,17.777c8.279,24.324,31.105,40.667,56.8,40.667H432c22.056,0,40,17.944,40,40v130C472,318.046,480.954,327,492,327z" />
+                    </g>
                   </g>
-                </g>
-                <g>
                   <g>
-                    <path d="M257,157c-68.925,0-125,56.075-125,125s56.075,125,125,125s125-56.075,125-125S325.925,157,257,157z M257,367c-46.869,0-85-38.131-85-85s38.131-85,85-85s85,38.131,85,85C342,328.869,303.869,367,257,367z" />
+                    <g>
+                      <path d="M257,157c-68.925,0-125,56.075-125,125s56.075,125,125,125s125-56.075,125-125S325.925,157,257,157z M257,367c-46.869,0-85-38.131-85-85s38.131-85,85-85s85,38.131,85,85C342,328.869,303.869,367,257,367z" />
+                    </g>
                   </g>
-                </g>
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-              </svg>
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                  <g />
+                </svg>
+              )}
             </div>
-            Choose an image from your computer.
+            {label}
           </div>
           <input
             ref={fileInputRef}
             className="file-input"
             type="file"
-            multiple
+            accept={accept}
+            multiple={multiple}
             onChange={filesSelected}
           />
         </div>
@@ -293,7 +309,19 @@ const DropZone = ({ selectedFiles, setSelectedFiles }) => {
             <g />
           </svg>
         </span>
-        <div className="modal-image" ref={modalImageRef} />
+        {isDocument ? (
+          <div
+            className="d-flex align-items-center justify-content-center h-100"
+            style={{ backgroundColor: '#f0f0f0' }}
+            ref={modalImageRef}
+          >
+            <div className="drop-message upload-icon">
+              <DocumentIcon />
+            </div>
+          </div>
+        ) : (
+          <div className="modal-image" ref={modalImageRef} />
+        )}
       </div>
 
       <div className="upload-modal" ref={uploadModalRef}>
@@ -332,6 +360,7 @@ const DropZone = ({ selectedFiles, setSelectedFiles }) => {
           </div>
         </div>
       </div>
+      {unsupportedFiles.length ? <p>File is not supported.</p> : ''}
     </>
   );
 };

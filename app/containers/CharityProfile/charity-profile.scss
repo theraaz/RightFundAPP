@@ -1,0 +1,55 @@
+.selectClass {
+  border: 1px solid #ced4da;
+  border-radius: .25rem;
+
+  div {
+    &:focus {
+      box-shadow: none;
+      border-color: transparent;
+      border-radius: 0;
+      background-color: transparent;
+    }
+  }
+}
+.base64ImageHandling {
+  width: 100%;
+  position: relative;
+  height: 200px;
+  background-color: #f0f0f0;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .base64Img {
+    max-width: 100%;
+    //padding: 20px;
+    max-height: 100%;
+  }
+  .closeIcon {
+    width: 20px;
+    position: absolute;
+    color: red;
+    right: 5px;
+    top: 5px;
+  }
+}
+.updateCharityBtn {
+  background-color: #f15a24;
+  border-color: #f15a24;
+  font-size: 14px;
+  &:hover {
+    background-color: #f15a24;
+    border-color: #f15a24;
+    opacity: 0.8;
+  }
+  &:focus {
+    box-shadow: none !important;
+    border-color: #f15a24 !important;
+    background-color: #f15a24 !important;
+  }
+  &:active {
+    background-color: #f15a24 !important;
+    border-color: #f15a24;
+    color: black;
+  }
+}

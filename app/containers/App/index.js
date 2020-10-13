@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
-import MyProfile from 'containers/MyProfile/index';
+import MyProfile from 'containers/MyProfile/Loadable';
 import CharityProfile from 'containers/CharityProfile/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import Signup from 'containers/Singup/Loadable';
@@ -51,7 +51,13 @@ export default function App() {
         <AuthRoute exact path="/donations/:id" component={DonationsContainer} />
         <AuthRoute exact path="/editCampaign/:id" component={EditCampaign} />
         <LoginRoute exact path="/resetPassword" component={ResetPassword} />
-        {user?.statusId ? <LoginRoute exact path="/accountVerification" component={AccountVerification} /> : null}
+        {user?.statusId ? (
+          <LoginRoute
+            exact
+            path="/accountVerification"
+            component={AccountVerification}
+          />
+        ) : null}
 
         <LoginRoute exact path="/accountVerify" component={AccountVerify} />
         <AuthRoute

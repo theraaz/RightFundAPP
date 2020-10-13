@@ -7,7 +7,7 @@
 import React, { memo, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Row, Col, Card, Image, Spinner } from 'react-bootstrap';
+import { Row, Col, Card, Image, Spinner, Alert, Button } from 'react-bootstrap';
 
 import MainTabs from '../MainTabs/Loadable';
 
@@ -23,15 +23,18 @@ import { connect, shallowEqual, useSelector } from 'react-redux';
 import { updateProfile } from '../../utils/crud/auth.crud';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
 import { useSnackbar } from 'notistack';
+import { withRouter } from 'react-router-dom';
+import { isCharityProfileCompleted } from '../../utils/helper';
 
 const profileImg = require('../../images/placeholder.png');
 
-function Layout({ children, updateUser }) {
+function Layout({ children, updateUser, ...props }) {
   const token = localStorage.getItem('token');
 
-  const { user } = useSelector(
-    ({ auth }) => ({
+  const { user, myCharityProfile } = useSelector(
+    ({ auth, charity }) => ({
       user: auth.user,
+      myCharityProfile: charity.myCharityProfile,
     }),
     shallowEqual,
   );
@@ -265,6 +268,24 @@ function Layout({ children, updateUser }) {
         </Row>
 
         <Row style={{ marginTop: 15, marginBottom: 15 }}>
+          {isCharityProfileCompleted(myCharityProfile) && (
+            <Col xs={12}>
+              <Alert show={true} variant="warning" onClose={() => {}}>
+                <div className="d-flex justify-content-between align-items-center">
+                  <span>Please Complete Your Charity Profile!</span>
+                  <Button
+                    onClick={() => props.history.push('/charity-profile')}
+                    // variant="outline-warning"
+                    className="btn btn-warning"
+                    style={{ color: '#856404' }}
+                  >
+                    Complete Now!
+                  </Button>
+                </div>
+              </Alert>
+            </Col>
+          )}
+
           <Col sm={12} md={3}>
             <Card className="shadow mb-5 bg-white sideNav dataCard">
               <MainTabs />
@@ -280,7 +301,9 @@ function Layout({ children, updateUser }) {
 
 Layout.propTypes = {};
 
-export default connect(
-  null,
-  authActions,
-)(memo(Layout));
+export default withRouter(
+  connect(
+    null,
+    authActions,
+  )(memo(Layout)),
+);

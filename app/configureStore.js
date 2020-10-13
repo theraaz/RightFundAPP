@@ -5,7 +5,7 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
-import createReducer from './reducers';
+import createReducer, { rootSaga } from './reducers';
 
 export default function configureStore(initialState = {}, history) {
   let composeEnhancers = compose;
@@ -44,6 +44,7 @@ export default function configureStore(initialState = {}, history) {
 
   // Extensions
   store.runSaga = sagaMiddleware.run;
+  sagaMiddleware.run(rootSaga);
   store.injectedReducers = {}; // Reducer registry
   store.injectedSagas = {}; // Saga registry
 

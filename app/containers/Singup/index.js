@@ -12,7 +12,7 @@ import { compose } from 'redux';
 
 import { useInjectReducer } from 'utils/injectReducer';
 
-import { Button, Form, Col, Spinner } from 'react-bootstrap';
+import { Button, Form, Col, Spinner, Dropdown } from 'react-bootstrap';
 import './signup.scss';
 import { Helmet } from 'react-helmet';
 import { useSnackbar } from 'notistack';
@@ -26,6 +26,9 @@ import reducer from './reducer';
 import Layout from '../../components/AuthLayout';
 import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik';
 import CustomSelectFormik from '../../components/inputs/CustomSelectFormik';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import BootstrapInput from '../../components/inputs/BootstrapInput';
 
 const CustomCheckbox = withStyles({
   root: {
@@ -102,6 +105,7 @@ export function Singup(props) {
   };
 
   const onSubmit = (values, { resetForm }) => {
+    console.log('values', values);
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -109,7 +113,7 @@ export function Singup(props) {
       },
       body: JSON.stringify({
         ...values,
-        position: values.position ? parseInt(values.position, 10) : undefined,
+        position: values.isCharity ? values.position : undefined,
         role: 1,
       }),
     };
@@ -145,6 +149,7 @@ export function Singup(props) {
               isCharity: false,
               charityName: '',
               regNo: '',
+              position: 'trustee',
             }}
             validate={validateForm}
             onSubmit={onSubmit}
@@ -327,11 +332,19 @@ export function Singup(props) {
                         type="number"
                       />
                     </Form.Group>
-                    <Form.Group controlId="regNo" bssize="large">
-                      <CustomSelectFormik name="position">
-                        <option value={1}>Trustee</option>
-                        <option value={2}>Employee</option>
-                      </CustomSelectFormik>
+                    <Form.Group controlId="position" bssize="large">
+                      <Select
+                        fullWidth
+                        className="selectClass"
+                        value={values.position}
+                        onChange={event =>
+                          setFieldValue('position', event.target.value)
+                        }
+                        input={<BootstrapInput />}
+                      >
+                        <MenuItem value={'trustee'}>Trustee</MenuItem>
+                        <MenuItem value={'employee'}>Employee</MenuItem>
+                      </Select>
                     </Form.Group>
                   </div>
                 )}

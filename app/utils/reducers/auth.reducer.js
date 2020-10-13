@@ -1,7 +1,10 @@
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { authActionTypes } from '../actions/auth.actions';
-
+import { takeLatest, put, select } from 'redux-saga/effects';
+import { getCharities } from '../crud/charity.crud';
+import { charityActionTypes } from '../actions/charity.actions';
+import { charityActions } from '../action-creators/charity.action.creator';
 const initialAuthState = {
   user: undefined,
   authToken: undefined,
@@ -39,4 +42,20 @@ export const reducer = persistReducer(
   },
 );
 
-export function* saga() {}
+export function* saga() {
+  yield takeLatest(authActionTypes.Login, function* loadUser() {
+    try {
+      const { auth } = yield select();
+      if (auth.user.isCharity) {
+        const { data } = yield getCharities();
+        yield put(
+          charityActions.addMyCharityProfile(
+            data.response?.data?.res?.charityId || null,
+          ),
+        );
+      }
+    } catch (e) {
+      console.log('e', e.message);
+    }
+  });
+}

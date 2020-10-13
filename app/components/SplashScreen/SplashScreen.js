@@ -4,7 +4,7 @@ import './splash-screen.scss';
 const SplashScreen = () => {
   return (
     <div id="splash-screen" className="splash-screen">
-      <img src={logo} alt="logo" width="120" />
+      <img src={logo} alt="logo" width="160" />
       <svg className="spinner" viewBox="0 0 50 50">
         <circle
           className="path"
