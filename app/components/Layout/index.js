@@ -29,7 +29,6 @@ const profileImg = require('../../images/placeholder.png');
 function Layout({ children, updateUser }) {
   const token = localStorage.getItem('token');
 
-
   const { user } = useSelector(
     ({ auth }) => ({
       user: auth.user,

@@ -6,14 +6,14 @@
 
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import { connect, shallowEqual, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
 
-import Layout from '../../components/AuthLayout/Loadable';
 import { Button, Form } from 'react-bootstrap';
+import Layout from '../../components/AuthLayout/Loadable';
 import '../AccountVerify/accountvVerify.scss';
-import { shallowEqual, useSelector } from 'react-redux';
+
 import { resendVerifyLink } from '../../utils/crud/auth.crud';
 export function AccountVerification() {
   const { user } = useSelector(
@@ -25,11 +25,9 @@ export function AccountVerification() {
 
   console.log(user);
   function resendEmail() {
-    resendVerifyLink({ email: user.email })
-      .then(({ data, status }) => {
-        console.log(data);
-      }
-      )
+    resendVerifyLink({ email: user.email }).then(({ data, status }) => {
+      console.log(data);
+    });
   }
 
   return (
@@ -39,9 +37,12 @@ export function AccountVerification() {
         <meta name="description" content="Description of AccountVerify" />
       </Helmet>
 
-      <Layout title={'Verification'} description={'Account verification'} >
+      <Layout title="Verification" description="Account verification">
         <div style={{ textAlign: 'center' }}>
-          <p className='message'> Your account is not verified. Please verified it</p>
+          <p className="message">
+            {' '}
+            Your account is not verified. Please verified it
+          </p>
 
           <div>
             <Form>
@@ -78,10 +79,11 @@ export function AccountVerification() {
                   value={user.email}
                   onChange={event => setEmail(event.target.value)}
                 />
-
               </Form.Group>
             </Form>
-            <Button className="resendEmailBtn" onClick={resendEmail}>Resend Email</Button>{' '}
+            <Button className="resendEmailBtn" onClick={resendEmail}>
+              Resend Email
+            </Button>{' '}
           </div>
         </div>
       </Layout>

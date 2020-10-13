@@ -79,7 +79,7 @@ export function LoginPage(props) {
     setValidated(true);
     if (validateForm()) {
       setLoading(true);
-   
+
       login(email, password)
         .then(({ data, status }) => {
           console.log('res', data.response?.data);
@@ -90,13 +90,12 @@ export function LoginPage(props) {
 
             // resetField();
             // props.history.push('/');
-            if (data.response?.data.res.statusId.name === "NOTACTIVE") {
+            if (data.response?.data.res.statusId.name === 'NOTACTIVE') {
               props.login({
                 user: data.response?.data?.res,
               });
               props.history.push('/accountVerification');
             } else {
-
               props.login({
                 token: data.response?.data?.token,
                 user: data.response?.data?.res,
