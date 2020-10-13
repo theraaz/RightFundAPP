@@ -416,7 +416,7 @@
       border-color: #f2f2f2;
       // margin-left: 5px;
       font-size: 11px;
-      width: 100%;
+      width: 95px;
 
       &:hover {
         opacity: 0.8;
@@ -448,7 +448,7 @@
 }
 
 .paginatordiv {
-  padding: 10px 30px;
+  padding: 10px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -502,12 +502,21 @@
   }
 }
 
-.editLink {
-  color: black !important;
-  text-decoration: none !important;
+.give-card__media {
+  max-width: 230px;
+  height: 130px;
 
-  &:hover {
-    color: #f15a25 !important;
-    text-decoration: none !important;
+  @include respond-to(handhelds) {
+    // css code here
+    max-width: 100%;
   }
 }
+// .editLink {
+//   color: black !important;
+//   text-decoration: none !important;
+
+//   &:hover {
+//     color: #f15a25 !important;
+//     text-decoration: none !important;
+//   }
+// }

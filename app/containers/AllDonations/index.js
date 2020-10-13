@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
-import Header from '../../components/Header/Loadable';
+import Layout from '../../components/Layout/index';
 import Footer from '../../components/Footer/Loadable';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
@@ -36,6 +36,8 @@ export function AllDonations() {
   const [campaignsDonation, setCampaignsDonation] = useState([]);
   const [fiterVal, setFilterVal] = useState([]);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
+  const [totalDonations, setTotalDonations] = useState();
+
 
   function formatDate(createdAt) {
     const d = new Date(createdAt)
@@ -84,6 +86,7 @@ export function AllDonations() {
       .then(user => {
         console.log(user.response.data);
         setLoadingSpinner(false);
+        setTotalDonations(user.response.data.total);
         setTotalPages(Math.ceil(user.response.data.total / pageSize));
         setCampaignsDonation(user.response.data.res);
         setFilterVal(user.response.data.res)
@@ -112,61 +115,62 @@ export function AllDonations() {
       <title>All Donations</title>
       <meta name="description" content="Description of All Donations" />
     </Helmet>
-    <Header title="Donations" />
-    <Container style={{ marginTop: '-3rem' }}>
+    <Layout>
+      <Container style={{ minHeight: '57vh' }}>
 
-      {loadingSpinner && <Spinner style={{
-        color: '#f15a24', position: 'relative',
-        left: '50%'
-      }} animation="border" size="lg" />}{' '}
-      {!loadingSpinner && <>
-        <div className='tableMain' style={{ backgroundColor: 'white' }} >
-          <Row className='tableRow'>
-            <h5 className='DonationHeading'>Donations</h5>
-            <div className='searchBar'>
-              <svg version="1.1" id="Capa_1" width='15' height='15' viewBox="0 0 512.005 512.005">
-                <g>
+        {loadingSpinner && <Spinner style={{
+          color: '#f15a24', position: 'absolute',
+          left: '50%',
+          top: '55%'
+        }} animation="border" size="lg" />}{' '}
+        {!loadingSpinner && campaignsDonation && totalDonations === 0 ? <h3>There is no Donations for all campaigns</h3> : <>
+          <div className='tableMain' style={{ backgroundColor: 'white' }} >
+            <Row className='tableRow'>
+              <h5 className='DonationHeading'>Donations</h5>
+              <div className='searchBar'>
+                <svg version="1.1" id="Capa_1" width='15' height='15' viewBox="0 0 512.005 512.005">
                   <g>
-                    <path d="M508.885,493.784L353.109,338.008c32.341-35.925,52.224-83.285,52.224-135.339c0-111.744-90.923-202.667-202.667-202.667    S0,90.925,0,202.669s90.923,202.667,202.667,202.667c52.053,0,99.413-19.883,135.339-52.245l155.776,155.776    c2.091,2.091,4.821,3.136,7.552,3.136c2.731,0,5.461-1.045,7.552-3.115C513.045,504.707,513.045,497.965,508.885,493.784z     M202.667,384.003c-99.989,0-181.333-81.344-181.333-181.333S102.677,21.336,202.667,21.336S384,102.68,384,202.669    S302.656,384.003,202.667,384.003z" />
+                    <g>
+                      <path d="M508.885,493.784L353.109,338.008c32.341-35.925,52.224-83.285,52.224-135.339c0-111.744-90.923-202.667-202.667-202.667    S0,90.925,0,202.669s90.923,202.667,202.667,202.667c52.053,0,99.413-19.883,135.339-52.245l155.776,155.776    c2.091,2.091,4.821,3.136,7.552,3.136c2.731,0,5.461-1.045,7.552-3.115C513.045,504.707,513.045,497.965,508.885,493.784z     M202.667,384.003c-99.989,0-181.333-81.344-181.333-181.333S102.677,21.336,202.667,21.336S384,102.68,384,202.669    S302.656,384.003,202.667,384.003z" />
+                    </g>
                   </g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-                <g>
-                </g>
-              </svg>
-              <input className='searchBarInput' placeholder='Search here' onChange={filterData} />
-            </div>
-          </Row>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                  <g>
+                  </g>
+                </svg>
+                <input className='searchBarInput' placeholder='Search here' onChange={filterData} />
+              </div>
+            </Row>
 
-          <Table responsive striped size="md" className='table1' >
-            {campaignsDonation ? <>
+            <Table responsive striped size="md" className='table1' >
+
               <thead className='tableHeader'>
                 <tr>
                   <th >Campaign Name</th>
@@ -210,32 +214,32 @@ export function AllDonations() {
 
                 }
               </tbody>
-            </> : ''}
-          </Table>
 
-        </div>
-        <div className="paginatorDonationdiv">
-          <div className="paginatorPerSize">
-            <span >
-              Per Page
-            </span>
-            <Form.Control
-              as="select"
-              className='paginatorPerPage'
-              onChange={PerPage}
-            >
-              <option className='paginatorPerPageOption' value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-            </Form.Control>
+            </Table>
+
           </div>
+          <div className="paginatorDonationdiv">
+            <div className="paginatorPerSize">
+              <span >
+                Per Page
+            </span>
+              <Form.Control
+                as="select"
+                className='paginatorPerPage'
+                onChange={PerPage}
+              >
+                <option className='paginatorPerPageOption' value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+              </Form.Control>
+            </div>
 
-          <Pagination count={totalPages} classes={{ ul: 'paginationDonationColor' }} onChange={handleChangePage} variant="outlined" shape="rounded" />
-        </div>
-      </>
-      }
-    </Container>
-    <Footer />
+            <Pagination count={totalPages} classes={{ ul: 'paginationDonationColor' }} onChange={handleChangePage} variant="outlined" shape="rounded" />
+          </div>
+        </>
+        }
+      </Container>
+    </Layout>
   </div >;
 
 }

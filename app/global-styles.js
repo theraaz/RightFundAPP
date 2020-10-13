@@ -53,6 +53,11 @@ const GlobalStyle = createGlobalStyle`
     padding-right: 0px !important;
     overflow: auto !important;
   }
+
+  modal-content {
+    opacity: 1;
+    z-index: 999999;
+  }
 `;
 
 export default GlobalStyle;
