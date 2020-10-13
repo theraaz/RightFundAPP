@@ -1,7 +1,7 @@
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
-import { authActionTypes } from '../actions/auth.actions';
 import { takeLatest, put, select } from 'redux-saga/effects';
+import { authActionTypes } from '../actions/auth.actions';
 import { getCharities } from '../crud/charity.crud';
 import { charityActionTypes } from '../actions/charity.actions';
 import { charityActions } from '../action-creators/charity.action.creator';

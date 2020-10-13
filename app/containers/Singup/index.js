@@ -21,13 +21,13 @@ import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withStyles } from '@material-ui/core/styles';
 import { Formik } from 'formik';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
 import makeSelectSingup from './selectors';
 import reducer from './reducer';
 import Layout from '../../components/AuthLayout';
 import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik';
 import CustomSelectFormik from '../../components/inputs/CustomSelectFormik';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import BootstrapInput from '../../components/inputs/BootstrapInput';
 
 const CustomCheckbox = withStyles({
@@ -342,8 +342,8 @@ export function Singup(props) {
                         }
                         input={<BootstrapInput />}
                       >
-                        <MenuItem value={'trustee'}>Trustee</MenuItem>
-                        <MenuItem value={'employee'}>Employee</MenuItem>
+                        <MenuItem value="trustee">Trustee</MenuItem>
+                        <MenuItem value="employee">Employee</MenuItem>
                       </Select>
                     </Form.Group>
                   </div>

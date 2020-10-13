@@ -10,8 +10,8 @@ import React, { memo } from 'react';
 
 import { ListGroup } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import CharityProfileIcon from '../svg-icons/CharityProfileIcon';
 import { shallowEqual, useSelector } from 'react-redux';
+import CharityProfileIcon from '../svg-icons/CharityProfileIcon';
 
 const MainTabs = ({ setActiveCard }) => {
   const { user } = useSelector(

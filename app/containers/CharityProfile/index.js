@@ -8,15 +8,15 @@ import React from 'react';
 import { connect, shallowEqual, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
-import Layout from '../../components/Layout';
 import { Button, Card, Col, FormGroup, Row, Spinner } from 'react-bootstrap';
 import { Formik } from 'formik';
-import { Heading } from '../MyProfile/myProfile';
-import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik';
 import { useSnackbar } from 'notistack';
-import BootstrapInput from '../../components/inputs/BootstrapInput';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import { Heading } from '../MyProfile/myProfile';
+import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik';
+import BootstrapInput from '../../components/inputs/BootstrapInput';
+import Layout from '../../components/Layout';
 import './charity-profile.scss';
 import DropZone from '../../components/DropZone';
 import { updateCharity } from '../../utils/crud/charity.crud';
@@ -133,25 +133,21 @@ export function CharityProfile({ updateMyCharityProfile }) {
     }
     return details;
   };
-  const isUrl = text => {
-    return (
-      text.match(
-        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gm,
-      ) ||
-      text.match(
-        /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gm,
-      )
+  const isUrl = text =>
+    text.match(
+      /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gm,
+    ) ||
+    text.match(
+      /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gm,
     );
-  };
 
-  const getBase64 = file => {
-    return new Promise((resolve, reject) => {
+  const getBase64 = file =>
+    new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
       reader.onerror = error => reject(error);
     });
-  };
   return (
     <Layout>
       <Helmet>
@@ -228,8 +224,8 @@ export function CharityProfile({ updateMyCharityProfile }) {
                         }
                         input={<BootstrapInput />}
                       >
-                        <MenuItem value={'trustee'}>Trustee</MenuItem>
-                        <MenuItem value={'employee'}>Employee</MenuItem>
+                        <MenuItem value="trustee">Trustee</MenuItem>
+                        <MenuItem value="employee">Employee</MenuItem>
                       </Select>
                     </FormGroup>
                   </Col>
@@ -431,8 +427,8 @@ export function CharityProfile({ updateMyCharityProfile }) {
                             'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
                             'application/pdf',
                           ]}
-                          label={'Choose a document from your computer.'}
-                          isDocument={true}
+                          label="Choose a document from your computer."
+                          isDocument
                         />
                       )}
                     </div>

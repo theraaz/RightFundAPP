@@ -270,7 +270,7 @@ function Layout({ children, updateUser, ...props }) {
         <Row style={{ marginTop: 15, marginBottom: 15 }}>
           {isCharityProfileCompleted(myCharityProfile) && (
             <Col xs={12}>
-              <Alert show={true} variant="warning" onClose={() => {}}>
+              <Alert show variant="warning" onClose={() => {}}>
                 <div className="d-flex justify-content-between align-items-center">
                   <span>Please Complete Your Charity Profile!</span>
                   <Button
