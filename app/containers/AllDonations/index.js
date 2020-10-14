@@ -9,8 +9,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
-import Layout from '../../components/Layout/index';
-import Footer from '../../components/Footer/Loadable';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import {
@@ -25,6 +23,8 @@ import {
 import Pagination from '@material-ui/lab/Pagination';
 
 import { withRouter } from 'react-router-dom';
+import Footer from '../../components/Footer/Loadable';
+import Layout from '../../components/Layout/index';
 import Header from '../../components/Header/Loadable';
 import '../../components/CampaignDonations/campaignDontaions.scss';
 
