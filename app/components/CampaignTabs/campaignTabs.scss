@@ -1,7 +1,14 @@
+@import 'App/styles/mixin.scss';
+
 .campaignUpdatesHeader {
   justify-content: center;
   text-align: center;
   margin: auto 0;
+
+  @include respond-to(handhelds) {
+    // css code here
+    margin-top: 15px;
+  }
 
   .campaignViewBtn {
     background: white;
@@ -30,6 +37,11 @@
     margin-left: 5px;
     background: #f15a24;
     border-color: #f15a24;
+
+    @include respond-to(handhelds-landscape) {
+      // css code here
+      margin-top: 15px;
+    }
     &:focus {
       background-color: #f15a24 !important;
       border-color: #f15a24;
@@ -67,10 +79,10 @@
   }
 }
 .campaignUpdates {
-  display: flex;
+  // display: flex;
   padding-bottom: 10px;
   justify-content: space-between;
-  flex-direction: row;
+  // flex-direction: row;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
 }
 
@@ -81,7 +93,11 @@
   border-top: none;
   text-align: center;
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
+
+  li {
+    margin: 0 15px 0 0px;
+  }
 
   .title {
     font-size: 13px;

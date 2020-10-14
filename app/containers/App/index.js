@@ -17,6 +17,9 @@ import DonationsContainer from 'containers/DonationsContainer/index';
 import AccountVerification from 'containers/AccountVerification/index';
 import AllDonations from 'containers/AllDonations/index';
 
+
+import BankDetails from 'containers/BankDetails/Loadable';
+
 import { shallowEqual, useSelector } from 'react-redux';
 
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
@@ -66,6 +69,7 @@ export default function App() {
           component={CampaignViewContainer}
         />
         <AuthRoute exact path="/donations" component={AllDonations} />
+        <AuthRoute exact path="/bankDetails" component={BankDetails} />
         {/* <LoginRoute exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} /> */}
         <Route component={NotFoundPage} />
       </Switch>

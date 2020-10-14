@@ -4,9 +4,9 @@ import React, { memo, useState } from 'react';
 import { Row, Col, ListGroup, Container } from 'react-bootstrap/';
 import './sideCampaign.scss';
 import { Formik } from 'formik';
-import Form1 from '../Forms/Form1/Loadable';
-import Form2 from '../Forms/Form2/Loadable';
-import Form3 from '../Forms/Form3/Loadable';
+import Form1 from '../Forms/Form1/index';
+import Form2 from '../Forms/Form2/index';
+import Form3 from '../Forms/Form3/index';
 import Form4 from '../Forms/Form4/index';
 
 const SideBarCreateCampaign = (editCampaignData) => {
@@ -15,7 +15,6 @@ const SideBarCreateCampaign = (editCampaignData) => {
   const [campaignId, setCampaignId] = useState('');
   const [loading, setLoading] = useState(false);
 
-  console.log(editCampaignData.editCampaignData);
 
   const getBase64 = (base64, file, cb) => {
     if (base64) {
@@ -34,11 +33,11 @@ const SideBarCreateCampaign = (editCampaignData) => {
   };
 
   function handleSubmit(event) {
-    console.log(event)
+    console.log('event', event)
     const token = localStorage.getItem('token');
     setLoading(true);
     if (activeLink === 1) {
-      if (selectedFiles[0] != undefined || event.base64 != null) {
+      if (selectedFiles[0] != undefined || event.base64 != "") {
         getBase64(event.base64 ? event.base64 : false, selectedFiles[0], result => {
           const requestOptions = {
             method: 'PUT',
@@ -59,7 +58,6 @@ const SideBarCreateCampaign = (editCampaignData) => {
               .then(response => response.json())
               .then(res => {
                 setLoading(false);
-                console.log(res)
                 setActiveLink(2);
               })
               .catch(error => {
@@ -99,7 +97,6 @@ const SideBarCreateCampaign = (editCampaignData) => {
             .then(response => response.json())
             .then(res => {
               setLoading(false);
-              console.log(res)
               setActiveLink(2);
             })
             .catch(error => {
@@ -124,7 +121,6 @@ const SideBarCreateCampaign = (editCampaignData) => {
       setActiveLink(3);
     } else if (activeLink === 3) {
       setLoading(false);
-      console.log('reached');
     } else {
       let address = {
         line1: event.line1,
@@ -147,16 +143,13 @@ const SideBarCreateCampaign = (editCampaignData) => {
             endDate: event.date,
             categoryId: event.categories,
             amountSymbolId: event.currencySymbol,
+            titleImage: event.base64 ? event.base64 : '',
           }),
         };
-        console.log(editCampaignData.editCampaignData)
-
         fetch(`${process.env.baseURL}/campaign/${editCampaignData.editCampaignData.id}`, requestOptions)
           .then(response => response.json())
           .then(res => {
             setLoading(false);
-            // setCampaignId(res.response.data.id);
-            console.log(res);
             setActiveLink(1);
           })
           .catch(error => {
@@ -180,6 +173,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
             endDate: event.date,
             categoryId: event.categories,
             amountSymbolId: event.currencySymbol,
+            
           }),
         };
 
@@ -188,7 +182,6 @@ const SideBarCreateCampaign = (editCampaignData) => {
           .then(res => {
             setLoading(false);
             setCampaignId(res.response.data.id);
-            console.log(res);
             setActiveLink(1);
           })
           .catch(error => {
@@ -197,14 +190,12 @@ const SideBarCreateCampaign = (editCampaignData) => {
       }
 
     }
-    console.log(event);
   }
 
   const validate = (
     values,
     props /* only available when using withFormik */,
   ) => {
-    console.log(values);
     const errors = {};
     if (activeLink === 0) {
       if (!values.amount) {
@@ -261,7 +252,6 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   className="listItem"
                   onClick={() => editCampaignData.editCampaignData ? setActiveLink(0) : null}
                 >
-                  {console.log(activeLink)}
                   <div
                     className={`text-decoration-none d-flex iconMainDiv ${activeLink === 0 ? '' : ''
                       }`}
@@ -323,7 +313,6 @@ const SideBarCreateCampaign = (editCampaignData) => {
                 <ListGroup.Item
                   className="listItem"
                   onClick={() => {
-                    console.log(editCampaignData)
                     if (editCampaignData.editCampaignData) {
                       setActiveLink(2)
                     }

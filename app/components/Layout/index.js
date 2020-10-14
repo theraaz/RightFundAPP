@@ -128,7 +128,7 @@ function Layout({ children, updateUser, ...props }) {
       />
       <div className="container mt-n5" style={{ minHeight: '700px' }}>
         <Row>
-          <Col xs={12} sm={12} md={7}>
+          <Col xs={12} sm={12} lg={12} xl={7}>
             <div className="card card-header-main  shadow bg-white rounded">
               <Row>
                 <Col xs={12} sm={5} md={5}>

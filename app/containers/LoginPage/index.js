@@ -10,7 +10,6 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectReducer } from 'utils/injectReducer';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import './login.scss';
 
@@ -21,7 +20,6 @@ import { Button, Form, Col, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { SnackbarProvider, useSnackbar } from 'notistack';
-import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Layout from '../../components/AuthLayout';
 import reducer from './reducer';
@@ -29,16 +27,7 @@ import makeSelectLoginPage from './selectors';
 import { login } from '../../utils/crud/auth.crud';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
 
-const CustomCheckbox = withStyles({
-  root: {
-    color: '#f15a24',
-    '&$checked': {
-      color: '#f15a24',
-    },
-  },
-  checked: {},
-})(props => <Checkbox color="default" {...props} />);
-
+import CustomCheckbox from '../../components/inputs/customCheckbox';
 export function LoginPage(props) {
   useInjectReducer({ key: 'loginPage', reducer });
 
@@ -47,6 +36,7 @@ export function LoginPage(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remeberme, setRemeberMe] = useState(false);
+  const [termsConditon, setTermsCondition] = useState(false);
   const [validated, setValidated] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -87,10 +77,7 @@ export function LoginPage(props) {
           setLoading(false);
           if (status === 200) {
             handleClickVariant('success', data.response.message);
-
-            // resetField();
-            // props.history.push('/');
-            if (data.response?.data.res.statusId.name === 'NOTACTIVE') {
+            if (data.response?.data.res.statusId.name === "NOTACTIVE") {
               props.login({
                 user: data.response?.data?.res,
               });
@@ -110,23 +97,7 @@ export function LoginPage(props) {
         .catch(error => {
           console.log(error);
         });
-      // fetch(`${process.env.baseURL}/signin`, requestOptions)
-      //   .then(response => response.json())
-      //   .then(user => {
-      //     setLoading(false);
-      //     console.log(user);
-      //     if (user.statusCode == 200) {
-      //       handleClickVariant('success', user.response.message);
-      //       localStorage.setItem('token', user.response.data.token);
-      //       resetField();
-      //       props.history.push('/');
-      //     } else {
-      //       handleClickVariant('error', user.response.message);
-      //     }
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //   });
+
     }
   }
 
@@ -230,7 +201,7 @@ export function LoginPage(props) {
               <Form.Row>
                 <Col controlid="remeberme">
                   <FormControlLabel
-                    control={<CustomCheckbox />}
+                    control={<CustomCheckbox  />}
                     label="Remember me"
                   />
                 </Col>
@@ -240,15 +211,7 @@ export function LoginPage(props) {
                   </Link>
                 </Col>
               </Form.Row>
-              <Form.Row>
-                <Col controlid="terms">
-                  <FormControlLabel
-                    classes={{ label: 'loginCheckbox' }}
-                    control={<CustomCheckbox />}
-                    label="Terms & conditions"
-                  />
-                </Col>
-              </Form.Row>
+       
             </Form.Group>
 
             <Button block bssize="large" type="submit" className="submitBtn">

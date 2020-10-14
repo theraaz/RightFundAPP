@@ -20,6 +20,7 @@ const MainTabs = ({ setActiveCard }) => {
     }),
     shallowEqual,
   );
+  
   return (
     <div>
       <ListGroup variant="flush">
@@ -227,7 +228,7 @@ const MainTabs = ({ setActiveCard }) => {
 
         <ListGroup.Item className="listItem">
           <NavLink
-            to="/myCards"
+            to="/bankDetails"
             className="text-decoration-none listItem"
             activeClassName="active"
           >
@@ -297,7 +298,7 @@ const MainTabs = ({ setActiveCard }) => {
                 <g />
               </svg>{' '}
             </div>
-            My Cards
+            Bank Details
           </NavLink>
         </ListGroup.Item>
 

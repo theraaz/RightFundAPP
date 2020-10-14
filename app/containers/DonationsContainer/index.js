@@ -10,34 +10,9 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
 import CampaignTabs from '../../components/CampaignTabs/Loadable';
-import CampaignDonations from '../../components/CampaignDonations/Loadable';
+import CampaignDonations from '../../components/CampaignDonations/index';
 
 export function DonationsContainer(props) {
-  const [editCampaignData, setEditCampaignData] = useState();
-  const token = localStorage.getItem('token');
-
-  useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
-
-    fetch(
-      `${process.env.baseURL}/campaign/${props.match.params.id}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(user => {
-        console.log(user);
-        setEditCampaignData(user.response.data.res);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
 
   console.log('id', props.match.params.id);
   return (
@@ -48,7 +23,7 @@ export function DonationsContainer(props) {
       </Helmet>
       <CampaignTabs>
 
-        <CampaignDonations editCampaignData={editCampaignData} />
+        <CampaignDonations />
 
       </CampaignTabs>
     </div>
