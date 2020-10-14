@@ -1,3 +1,5 @@
+import { authActions } from './action-creators/auth.action.creator';
+
 export function setupAxios(axios, store) {
   axios.interceptors.request.use(
     config => {
@@ -13,14 +15,14 @@ export function setupAxios(axios, store) {
     },
     err => Promise.reject(err),
   );
-  // axios.interceptors.response.use(
-  //   response => response,
-  //   error => {
-  //     if (401 === error.response.status) {
-  //       store.dispatch(auth.actions.showSessionExpired());
-  //       return Promise.reject(error);
-  //     }
-  //     return Promise.reject(error);
-  //   }
-  // );
+  axios.interceptors.response.use(
+    response => response,
+    error => {
+      if (error.response.data?.response?.name === 'TokenExpiredError') {
+        store.dispatch(authActions.showSessionExpired());
+        return Promise.reject(error);
+      }
+      return Promise.reject(error);
+    },
+  );
 }

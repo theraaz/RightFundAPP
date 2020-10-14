@@ -25,6 +25,7 @@ import { authActions } from '../../utils/action-creators/auth.action.creator';
 import { useSnackbar } from 'notistack';
 import { withRouter } from 'react-router-dom';
 import { isCharityProfileCompleted } from '../../utils/helper';
+import SessionExpired from '../SessionExpired';
 
 const profileImg = require('../../images/placeholder.png');
 
@@ -294,6 +295,7 @@ function Layout({ children, updateUser, ...props }) {
           <Col>{children}</Col>
         </Row>
       </div>
+      <SessionExpired />
       <Footer />
     </div>
   );
