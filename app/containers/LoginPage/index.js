@@ -7,7 +7,6 @@
 import React, { memo, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 import { useInjectReducer } from 'utils/injectReducer';
 
@@ -19,11 +18,10 @@ import { Button, Form, Col, Spinner } from 'react-bootstrap';
 
 import { Link } from 'react-router-dom';
 
-import { SnackbarProvider, useSnackbar } from 'notistack';
+import { useSnackbar } from 'notistack';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Layout from '../../components/AuthLayout';
 import reducer from './reducer';
-import makeSelectLoginPage from './selectors';
 import { login } from '../../utils/crud/auth.crud';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
 
@@ -201,7 +199,7 @@ export function LoginPage(props) {
               <Form.Row>
                 <Col controlid="remeberme">
                   <FormControlLabel
-                    control={<CustomCheckbox  />}
+                    control={<CustomCheckbox />}
                     label="Remember me"
                   />
                 </Col>
@@ -211,7 +209,7 @@ export function LoginPage(props) {
                   </Link>
                 </Col>
               </Form.Row>
-       
+
             </Form.Group>
 
             <Button block bssize="large" type="submit" className="submitBtn">

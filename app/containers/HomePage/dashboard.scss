@@ -511,12 +511,7 @@
     max-width: 100%;
   }
 }
-// .editLink {
-//   color: black !important;
-//   text-decoration: none !important;
 
-//   &:hover {
-//     color: #f15a25 !important;
-//     text-decoration: none !important;
-//   }
-// }
+.popup-modal {
+  z-index: 9999 !important;
+}

@@ -88,6 +88,8 @@ function CampaignDetail({ ...props }) {
     }
   }
 
+  const campaignAddress = campaignDetail?.address ? JSON.parse(campaignDetail?.address) : '';
+  console.log(campaignAddress);
 
   return (
     <div>
@@ -196,12 +198,23 @@ function CampaignDetail({ ...props }) {
                         <Card.Text
                           className="descriptionCampaign"
                         >
-                          {campaignDetail.address && JSON.parse(campaignDetail.address).line1 != '' ? `${JSON.parse(campaignDetail.address).line1}, ` : ''}
-                          {campaignDetail.address && JSON.parse(campaignDetail.address).line2 != '' ? `${JSON.parse(campaignDetail.address).line2}, ` : ''}
-                          {campaignDetail.address && JSON.parse(campaignDetail.address).city != '' ? `${JSON.parse(campaignDetail.address).city}, ` : ''}
-                          {campaignDetail.address && JSON.parse(campaignDetail.address).state != '' ? `${JSON.parse(campaignDetail.address).state}, ` : ''}
-                          {campaignDetail.address && JSON.parse(campaignDetail.address).country != '' ? `${JSON.parse(campaignDetail.address).country}` : ''}
-
+                          {
+                            campaignAddress && (
+                              <p>
+                                {campaignAddress.line1 && campaignAddress.line1 !== ''
+                                  ? `${campaignAddress.line1}, `
+                                  : ''}
+                                {campaignAddress.line2 && campaignAddress.line2 !== ''
+                                  ? `${campaignAddress.line2}, `
+                                  : ''}
+                                {campaignAddress.city && campaignAddress.city !== '' ? `${campaignAddress.city}, ` : ''}
+                                {campaignAddress.state && campaignAddress.state !== ''
+                                  ? `${campaignAddress.state}, `
+                                  : ''}
+                                {campaignAddress.country && campaignAddress.country !== '' ? campaignAddress.country : ''}
+                              </p>
+                            )
+                          }
                         </Card.Text>
 
                         <Card.Text

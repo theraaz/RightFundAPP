@@ -263,7 +263,7 @@ const Form3 = ({ id, setActiveLink }) => {
 
   return (
     <div>
-      <div className="main-form1">
+      <div className="main-form3">
         <div className="main-heading">
           <H4>Campaign Packages</H4>
           <p>
@@ -456,7 +456,8 @@ const Form3 = ({ id, setActiveLink }) => {
             </div>
           )}
           <div
-            style={{ margin: '10px 0px 20px auto' }}
+
+            className="campaignsBtnForm3Div"
           >
             <div className="campaignBtnsForm3">
               <Button

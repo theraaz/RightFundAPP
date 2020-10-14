@@ -136,7 +136,7 @@ export function AllDonations() {
               <div className="tableMain" style={{ backgroundColor: 'white' }}>
                 <Row className="tableRow">
                   <h5 className="DonationHeading">Donations</h5>
-                  <div className="searchBar">
+                  {/* <div className="searchBar">
                     <svg
                       version="1.1"
                       id="Capa_1"
@@ -170,7 +170,7 @@ export function AllDonations() {
                       placeholder="Search here"
                       onChange={filterData}
                     />
-                  </div>
+                  </div> */}
                 </Row>
 
                 <Table responsive striped size="md" className="table1">

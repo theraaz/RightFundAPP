@@ -173,7 +173,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
             endDate: event.date,
             categoryId: event.categories,
             amountSymbolId: event.currencySymbol,
-            
+
           }),
         };
 
@@ -407,7 +407,8 @@ const SideBarCreateCampaign = (editCampaignData) => {
                     editorValue: '',
                     zakatEligible: false,
                     image: [],
-                    video: ''
+                    video: '',
+                    base64: ''
                   }}
                 enableReinitialize
                 validate={validate}

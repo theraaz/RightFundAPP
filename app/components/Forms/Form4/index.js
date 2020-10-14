@@ -15,7 +15,7 @@ import { Link, withRouter } from 'react-router-dom';
 
 function Form4({ id, statusId, ...props }) {
   const token = localStorage.getItem('token');
-  console.log(statusId);
+
   function publishCampaign() {
     const requestOptions = {
       method: 'PUT',
@@ -39,9 +39,9 @@ function Form4({ id, statusId, ...props }) {
       });
 
   }
-  console.log(props)
+  console.log('statusId', statusId)
   return <div>
-    <div className='main-form1'>
+    <div className='main-form4'>
       <div className='main-heading'>
         <H4>
           Campaign Status
@@ -57,17 +57,21 @@ function Form4({ id, statusId, ...props }) {
         </div>
       </div>
 
-      <div style={{ margin: '10px 0px 20px auto' }}>
+      <div   className="campaignsBtnForm4Div">
         <div className='campaignBtnsForm4'>
           <Link to={`/campaignView/${id}`}>
             <Button className="editCampaignBtn" >Preview</Button>
           </Link>
-          {statusId != 6 ? <Link to="/">
+          {/* {statusId != 6 ? <Link to="/">
             <Button className="viewCampaignBtn" >Update
             </Button>
           </Link> :
             <Button className="viewCampaignBtn" onClick={publishCampaign}> Publish </Button>
-          }
+          } */}
+          {statusId != "" && statusId != 6 ? <Link to="/">
+            <Button className="viewCampaignBtn" >Update
+            </Button>
+          </Link> : <Button className="viewCampaignBtn" onClick={publishCampaign}> Publish </Button>}
 
 
 

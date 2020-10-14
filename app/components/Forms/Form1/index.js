@@ -208,7 +208,7 @@ const Form1 = ({
 
                     <Col sm={10} className="p-0">
                       <Form.Control
-                        className="form-input inputForm"
+                        className="inputForm"
                         placeholder="Enter amount here"
                         type="number"
                         isInvalid={errors.amount}
