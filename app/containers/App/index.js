@@ -17,7 +17,6 @@ import DonationsContainer from 'containers/DonationsContainer/index';
 import AccountVerification from 'containers/AccountVerification/index';
 import AllDonations from 'containers/AllDonations/index';
 
-
 import BankDetails from 'containers/BankDetails/Loadable';
 
 import { shallowEqual, useSelector } from 'react-redux';
@@ -41,6 +40,7 @@ export default function App() {
         <AuthRoute exact path="/" component={HomePage} />
         <AuthRoute exact path="/profile" component={MyProfile} />
         <AuthRoute exact path="/charity-profile" component={CharityProfile} />
+        <AuthRoute exact path="/teamsMembers" component={CharityProfile} />
         {/* {!localStorage.getItem('token') && <Route path="/login" component={LoginPage} exact />} */}
         <LoginRoute exact path="/login" component={LoginPage} />
         <LoginRoute exact path="/signup" component={Signup} />

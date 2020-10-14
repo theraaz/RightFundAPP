@@ -8,114 +8,56 @@ import Form1 from '../Forms/Form1/index';
 import Form2 from '../Forms/Form2/index';
 import Form3 from '../Forms/Form3/index';
 import Form4 from '../Forms/Form4/index';
+import { createCampaign, updateCampaign } from '../../utils/crud/campain.crud';
+import { shallowEqual, useSelector } from 'react-redux';
 
-const SideBarCreateCampaign = (editCampaignData) => {
+const SideBarCreateCampaign = editCampaignData => {
   const [activeLink, setActiveLink] = useState(0);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [campaignId, setCampaignId] = useState('');
   const [loading, setLoading] = useState(false);
-
-
-  const getBase64 = (base64, file, cb) => {
-    if (base64) {
-      cb(base64);
-    } else {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = function () {
-        cb(reader.result);
-      };
-      reader.onerror = function (error) {
-        console.log('Error: ', error);
-      };
-    }
-
+  const { myCharityProfile, user } = useSelector(
+    ({ charity, auth }) => ({
+      myCharityProfile: charity.myCharityProfile,
+      user: auth.user,
+    }),
+    shallowEqual,
+  );
+  const getBase64 = (base64, file) => {
+    return new Promise((resolve, reject) => {
+      if (base64) {
+        resolve(base64);
+      } else {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      }
+    });
   };
 
-  function handleSubmit(event) {
-    console.log('event', event)
-    const token = localStorage.getItem('token');
+  const onSubmit = async values => {
+    console.log('values', values);
     setLoading(true);
     if (activeLink === 1) {
-      if (selectedFiles[0] != undefined || event.base64 != "") {
-        getBase64(event.base64 ? event.base64 : false, selectedFiles[0], result => {
-          const requestOptions = {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-              authorization: token,
-            },
-            body: JSON.stringify({
-              zakatEligible: event.zakatEligible,
-              description: event.editorValue,
-              titleImage: result,
-              video: event.video
-            }),
-          };
-
-          if (editCampaignData.editCampaignData != undefined) {
-            fetch(`${process.env.baseURL}/campaign/${editCampaignData.editCampaignData.id}`, requestOptions)
-              .then(response => response.json())
-              .then(res => {
-                setLoading(false);
-                setActiveLink(2);
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          }
-          else {
-            fetch(`${process.env.baseURL}/campaign/${campaignId}`, requestOptions)
-              .then(response => response.json())
-              .then(() => {
-                setLoading(false);
-                setActiveLink(2);
-              })
-              .catch(error => {
-                console.log(error);
-              });
-          }
-
-        });
-      } else {
-        const requestOptions = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            authorization: token,
-          },
-          body: JSON.stringify({
-            zakatEligible: event.zakatEligible,
-            description: event.editorValue,
-            titleImage: '',
-            video: event.video
-          }),
-        };
-
-        if (editCampaignData.editCampaignData != undefined) {
-          fetch(`${process.env.baseURL}/campaign/${editCampaignData.editCampaignData.id}`, requestOptions)
-            .then(response => response.json())
-            .then(res => {
-              setLoading(false);
-              setActiveLink(2);
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
-        else {
-          fetch(`${process.env.baseURL}/campaign/${campaignId}`, requestOptions)
-            .then(response => response.json())
-            .then(() => {
-              setLoading(false);
-              setActiveLink(2);
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        }
+      let titleImage = '';
+      if (selectedFiles[0] !== undefined || values.base64 !== '') {
+        titleImage = await getBase64(values.base64 || false, selectedFiles[0]);
       }
-
+      const data = {
+        zakatEligible: values.zakatEligible,
+        description: values.editorValue,
+        titleImage: titleImage,
+        video: values.video,
+      };
+      updateCampaign(data, editCampaignData?.editCampaignData?.id || campaignId)
+        .then(res => {
+          setLoading(false);
+          setActiveLink(2);
+        })
+        .catch(error => {
+          console.log(error);
+        });
     } else if (activeLink === 2) {
       setLoading(false);
       setActiveLink(3);
@@ -123,74 +65,44 @@ const SideBarCreateCampaign = (editCampaignData) => {
       setLoading(false);
     } else {
       let address = {
-        line1: event.line1,
-        line2: event.line2,
-        city: event.city,
-        state: event.state,
-        country: event.country,
-      }
-      if (editCampaignData.editCampaignData != undefined) {
-        const requestOptions = {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-            authorization: token,
-          },
-          body: JSON.stringify({
-            title: event.campaignTitle,
-            amount: event.amount,
-            address: JSON.stringify(address),
-            endDate: event.date,
-            categoryId: event.categories,
-            amountSymbolId: event.currencySymbol,
-            titleImage: event.base64 ? event.base64 : '',
-          }),
-        };
-        fetch(`${process.env.baseURL}/campaign/${editCampaignData.editCampaignData.id}`, requestOptions)
-          .then(response => response.json())
-          .then(res => {
-            setLoading(false);
-            setActiveLink(1);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-
-
-
-      } else {
-
-        const requestOptions = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            authorization: token,
-          },
-          body: JSON.stringify({
-            title: event.campaignTitle,
-            amount: event.amount,
-            address: JSON.stringify(address),
-            endDate: event.date,
-            categoryId: event.categories,
-            amountSymbolId: event.currencySymbol,
-            
-          }),
-        };
-
-        fetch(`${process.env.baseURL}/campaign`, requestOptions)
-          .then(response => response.json())
-          .then(res => {
-            setLoading(false);
-            setCampaignId(res.response.data.id);
-            setActiveLink(1);
-          })
-          .catch(error => {
-            console.log(error);
-          });
-      }
-
+        line1: values.line1,
+        line2: values.line2,
+        city: values.city,
+        state: values.state,
+        country: values.country,
+      };
+      const data = {
+        title: values.campaignTitle,
+        amount: values.amount,
+        address: JSON.stringify(address),
+        endDate: values.date,
+        categoryId: values.categories,
+        charityId:
+          user.isCharity && values.fundraiser === 'charity'
+            ? myCharityProfile.id
+            : undefined,
+        amountSymbolId: values.currencySymbol,
+      };
+      const editData = editCampaignData?.editCampaignData
+        ? {
+            titleImage: values.base64 || '',
+          }
+        : {};
+      const call = editCampaignData.editCampaignData
+        ? updateCampaign
+        : createCampaign;
+      call({ ...data, ...editData }, editCampaignData?.editCampaignData?.id)
+        .then(({ data }) => {
+          setLoading(false);
+          setCampaignId(data?.response?.data?.id || '');
+          setActiveLink(prevState => prevState + 1);
+        })
+        .catch(err => {
+          setLoading(false);
+          console.log(err);
+        });
     }
-  }
+  };
 
   const validate = (
     values,
@@ -238,9 +150,19 @@ const SideBarCreateCampaign = (editCampaignData) => {
     return errors;
   };
 
+  const address =
+    editCampaignData?.editCampaignData?.address &&
+    editCampaignData.editCampaignData.address !== ''
+      ? JSON.parse(editCampaignData.editCampaignData.address)
+      : {};
   return (
     <div>
-      <Container className="mt-n5" style={activeLink === 1 ? { minHeight: '900px' } : { minHeight: '700px' }}>
+      <Container
+        className="mt-n5"
+        style={
+          activeLink === 1 ? { minHeight: '900px' } : { minHeight: '700px' }
+        }
+      >
         <Row className="main">
           <div className="main-box shadow">
             <Col md={3} sm={12} className="firstCol p-0">
@@ -250,19 +172,24 @@ const SideBarCreateCampaign = (editCampaignData) => {
               >
                 <ListGroup.Item
                   className="listItem"
-                  onClick={() => editCampaignData.editCampaignData ? setActiveLink(0) : null}
+                  onClick={() =>
+                    editCampaignData.editCampaignData ? setActiveLink(0) : null
+                  }
                 >
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 0 ? '' : ''
-                      }`}
+                    className={`text-decoration-none d-flex iconMainDiv ${
+                      activeLink === 0 ? '' : ''
+                    }`}
                   >
                     <div
-                      className={`${activeLink === 0 ? 'iconImageActive' : 'iconImage'
-                        }`}
+                      className={`${
+                        activeLink === 0 ? 'iconImageActive' : 'iconImage'
+                      }`}
                     >
                       <span
-                        className={`${activeLink === 0 ? 'tagNumberActive' : 'tagNumber'
-                          }`}
+                        className={`${
+                          activeLink === 0 ? 'tagNumberActive' : 'tagNumber'
+                        }`}
                       >
                         {' '}
                         01
@@ -270,10 +197,11 @@ const SideBarCreateCampaign = (editCampaignData) => {
                     </div>
 
                     <span
-                      className={`${activeLink === 0
-                        ? 'sidebartitleListActive'
-                        : 'sidebartitleList'
-                        }`}
+                      className={`${
+                        activeLink === 0
+                          ? 'sidebartitleListActive'
+                          : 'sidebartitleList'
+                      }`}
                     >
                       Campaign Information
                     </span>
@@ -282,28 +210,34 @@ const SideBarCreateCampaign = (editCampaignData) => {
 
                 <ListGroup.Item
                   className="listItem"
-                  onClick={() => editCampaignData.editCampaignData ? setActiveLink(1) : null}
+                  onClick={() =>
+                    editCampaignData.editCampaignData ? setActiveLink(1) : null
+                  }
                 >
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 1 ? '' : ''
-                      }`}
+                    className={`text-decoration-none d-flex iconMainDiv ${
+                      activeLink === 1 ? '' : ''
+                    }`}
                   >
                     <div
-                      className={`${activeLink === 1 ? 'iconImageActive' : 'iconImage'
-                        }`}
+                      className={`${
+                        activeLink === 1 ? 'iconImageActive' : 'iconImage'
+                      }`}
                     >
                       <span
-                        className={`${activeLink === 1 ? 'tagNumberActive' : 'tagNumber'
-                          }`}
+                        className={`${
+                          activeLink === 1 ? 'tagNumberActive' : 'tagNumber'
+                        }`}
                       >
                         02
                       </span>
                     </div>
                     <span
-                      className={`${activeLink === 1
-                        ? 'sidebartitleListActive'
-                        : 'sidebartitleList'
-                        }`}
+                      className={`${
+                        activeLink === 1
+                          ? 'sidebartitleListActive'
+                          : 'sidebartitleList'
+                      }`}
                     >
                       Tell your story
                     </span>
@@ -314,30 +248,34 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   className="listItem"
                   onClick={() => {
                     if (editCampaignData.editCampaignData) {
-                      setActiveLink(2)
+                      setActiveLink(2);
                     }
                   }}
                 >
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 2 ? '' : ''
-                      }`}
+                    className={`text-decoration-none d-flex iconMainDiv ${
+                      activeLink === 2 ? '' : ''
+                    }`}
                   >
                     <div
-                      className={`${activeLink === 2 ? 'iconImageActive' : 'iconImage'
-                        }`}
+                      className={`${
+                        activeLink === 2 ? 'iconImageActive' : 'iconImage'
+                      }`}
                     >
                       <span
-                        className={`${activeLink === 2 ? 'tagNumberActive' : 'tagNumber'
-                          }`}
+                        className={`${
+                          activeLink === 2 ? 'tagNumberActive' : 'tagNumber'
+                        }`}
                       >
                         03
                       </span>
                     </div>
                     <span
-                      className={`${activeLink === 2
-                        ? 'sidebartitleListActive'
-                        : 'sidebartitleList'
-                        }`}
+                      className={`${
+                        activeLink === 2
+                          ? 'sidebartitleListActive'
+                          : 'sidebartitleList'
+                      }`}
                     >
                       Campaign Packages
                     </span>
@@ -346,28 +284,34 @@ const SideBarCreateCampaign = (editCampaignData) => {
 
                 <ListGroup.Item
                   className="listItem"
-                  onClick={() => editCampaignData.editCampaignData ? setActiveLink(3) : null}
+                  onClick={() =>
+                    editCampaignData.editCampaignData ? setActiveLink(3) : null
+                  }
                 >
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 3 ? '' : ''
-                      }`}
+                    className={`text-decoration-none d-flex iconMainDiv ${
+                      activeLink === 3 ? '' : ''
+                    }`}
                   >
                     <div
-                      className={`${activeLink === 3 ? 'iconImageActive' : 'iconImage'
-                        }`}
+                      className={`${
+                        activeLink === 3 ? 'iconImageActive' : 'iconImage'
+                      }`}
                     >
                       <span
-                        className={`${activeLink === 3 ? 'tagNumberActive' : 'tagNumber'
-                          }`}
+                        className={`${
+                          activeLink === 3 ? 'tagNumberActive' : 'tagNumber'
+                        }`}
                       >
                         04
                       </span>
                     </div>
                     <span
-                      className={`${activeLink === 3
-                        ? 'sidebartitleListActive'
-                        : 'sidebartitleList'
-                        }`}
+                      className={`${
+                        activeLink === 3
+                          ? 'sidebartitleListActive'
+                          : 'sidebartitleList'
+                      }`}
                     >
                       Campaign Status{' '}
                     </span>
@@ -378,81 +322,94 @@ const SideBarCreateCampaign = (editCampaignData) => {
             </Col>
             <Col md={9} sm={12} className="formsMain">
               <Formik
-                initialValues={editCampaignData.editCampaignData ? {
-                  currencySymbol: editCampaignData.editCampaignData.amountSymbolId.id,
-                  fundraiser: '',
-                  date: editCampaignData.editCampaignData.endDate,
-                  campaignTitle: editCampaignData.editCampaignData.title,
-                  address: editCampaignData.editCampaignData.address,
-                  categories: editCampaignData.editCampaignData.categoryId.id,
-                  amount: editCampaignData.editCampaignData.amount,
-                  editorValue: editCampaignData.editCampaignData.description ? editCampaignData.editCampaignData.description : "",
-                  zakatEligible: editCampaignData.editCampaignData.zakatEligible,
-                  base64: editCampaignData.editCampaignData.titleImage,
-                  video: editCampaignData.editCampaignData.video,
-                  line1: editCampaignData.editCampaignData.address != '' ? JSON.parse(editCampaignData.editCampaignData.address).line1 ? JSON.parse(editCampaignData.editCampaignData.address).line1 : '' : '',
-                  line2: editCampaignData.editCampaignData.address != '' ? JSON.parse(editCampaignData.editCampaignData.address).line2 ? JSON.parse(editCampaignData.editCampaignData.address).line2 : '' : '',
-                  city: editCampaignData.editCampaignData.address != '' ? JSON.parse(editCampaignData.editCampaignData.address).city ? JSON.parse(editCampaignData.editCampaignData.address).city : '' : '',
-                  state: editCampaignData.editCampaignData.address != '' ? JSON.parse(editCampaignData.editCampaignData.address).state ? JSON.parse(editCampaignData.editCampaignData.address).state : '' : '',
-                  country: editCampaignData.editCampaignData.address != '' ? JSON.parse(editCampaignData.editCampaignData.address).country ? JSON.parse(editCampaignData.editCampaignData.address).country : '' : '',
-
-                } : {
-                    currencySymbol: 1,
-                    fundraiser: '',
-                    date: null,
-                    campaignTitle: '',
-                    // address: '',
-                    categories: '',
-                    amount: null,
-                    editorValue: '',
-                    zakatEligible: false,
-                    image: [],
-                    video: ''
-                  }}
+                initialValues={{
+                  currencySymbol:
+                    editCampaignData?.editCampaignData?.amountSymbolId?.id || 1,
+                  fundraiser: editCampaignData?.editCampaignData?.charityId
+                    ? 'charity'
+                    : 'individual',
+                  date: editCampaignData?.editCampaignData?.endDate || null,
+                  campaignTitle:
+                    editCampaignData?.editCampaignData?.title || '',
+                  address: editCampaignData?.editCampaignData?.address || '',
+                  categories:
+                    editCampaignData?.editCampaignData?.categoryId?.id || '',
+                  amount: editCampaignData?.editCampaignData?.amount || null,
+                  editorValue: editCampaignData?.editCampaignData?.description
+                    ? editCampaignData.editCampaignData.description
+                    : '',
+                  zakatEligible:
+                    editCampaignData?.editCampaignData?.zakatEligible || false,
+                  base64: editCampaignData?.editCampaignData?.titleImage || '',
+                  video: editCampaignData?.editCampaignData?.video || '',
+                  line1: address?.line1 || '',
+                  line2: address?.line2 || '',
+                  city: address?.city || '',
+                  state: address?.state || '',
+                  country: address?.country || '',
+                }}
                 enableReinitialize
                 validate={validate}
                 validateOnChange={false}
                 validateOnBlur={false}
-                onSubmit={handleSubmit}
+                onSubmit={onSubmit}
               >
-                {props => (
-                  <form onSubmit={props.handleSubmit}>
+                {({ values, setFieldValue, errors, handleSubmit }) => (
+                  <form onSubmit={handleSubmit}>
                     {activeLink === 0 && (
                       <Form1
                         setActiveLink={setActiveLink}
-                        setFieldValue={props.setFieldValue}
-                        values={props.values}
-                        errors={props.errors}
+                        setFieldValue={setFieldValue}
+                        values={values}
+                        errors={errors}
                         loading={loading}
                       />
                     )}
                     {activeLink === 1 && (
                       <Form2
                         setActiveLink={setActiveLink}
-                        setFieldValue={props.setFieldValue}
-                        values={props.values}
-                        errors={props.errors}
+                        setFieldValue={setFieldValue}
+                        values={values}
+                        errors={errors}
                         selectedFiles={selectedFiles}
                         setSelectedFiles={setSelectedFiles}
                         loading={loading}
-
                       />
                     )}
                     {activeLink === 2 && (
-                      <Form3 setActiveLink={setActiveLink} id={editCampaignData.editCampaignData ? editCampaignData.editCampaignData.id : campaignId} />
+                      <Form3
+                        setActiveLink={setActiveLink}
+                        id={
+                          editCampaignData.editCampaignData
+                            ? editCampaignData.editCampaignData.id
+                            : campaignId
+                        }
+                      />
                     )}
                     {activeLink === 3 && (
-                      <Form4 setActiveLink={setActiveLink} id={editCampaignData.editCampaignData ? editCampaignData.editCampaignData.id : campaignId} statusId={editCampaignData.editCampaignData ? editCampaignData.editCampaignData.statusId?.id : ''} />
+                      <Form4
+                        setActiveLink={setActiveLink}
+                        id={
+                          editCampaignData.editCampaignData
+                            ? editCampaignData.editCampaignData.id
+                            : campaignId
+                        }
+                        statusId={
+                          editCampaignData.editCampaignData
+                            ? editCampaignData.editCampaignData.statusId?.id
+                            : ''
+                        }
+                        values={values}
+                      />
                     )}
                   </form>
                 )}
               </Formik>
-
             </Col>
           </div>
         </Row>
       </Container>
-    </div >
+    </div>
   );
 };
 
