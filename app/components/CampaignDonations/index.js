@@ -121,7 +121,7 @@ function CampaignDonations({ ...props }) {
             {campaignsDonation && campaignsDonation.length > 0 ? <>
               <Row className='tableRow'>
                 <h5 className='DonationHeading'>Donations</h5>
-                <div className='searchBar'>
+                {/* <div className='searchBar'>
                   <svg version="1.1" id="Capa_1" width='15' height='15' viewBox="0 0 512.005 512.005">
                     <g>
                       <g>
@@ -160,7 +160,7 @@ function CampaignDonations({ ...props }) {
                     </g>
                   </svg>
                   <input className='searchBarInput' placeholder='Search here' onChange={filterData} />
-                </div>
+                </div> */}
               </Row>
 
               <Table responsive striped size="md" className='table1' >

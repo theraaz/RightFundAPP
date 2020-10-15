@@ -113,11 +113,11 @@ const SideBarCreateCampaign = editCampaignData => {
       if (!values.amount) {
         errors.amount = 'Required';
       } else if (values.amount < 5) {
-        errors.amount = 'Enter amount';
+        errors.amount = 'Minimum will be 5 pound.';
       } else if (!values.campaignTitle) {
         errors.campaignTitle = 'Required';
       } else if (values.campaignTitle.length < 3) {
-        errors.campaignTitle = 'Enter campaign title';
+        errors.campaignTitle = 'Campaign title must be more then three letter.';
       }
       // else if (!values.address) {
       //   errors.address = 'Required';
@@ -125,20 +125,18 @@ const SideBarCreateCampaign = editCampaignData => {
       //   errors.address = 'Enter address';
       // }
       else if (!values.date) {
-        errors.date = 'Enter date';
+        errors.date = 'Select date';
       } else if (!values.categories) {
         errors.categories = 'Required';
-      } else if (values.categories.length < 3) {
-        errors.categories = 'Select Categories';
-      }
+      } 
     }
-    if (activeLink === 1) {
+    // if (activeLink === 1) {
       // if (!values.editorValue) {
       //   errors.editorValue = 'Required';
       // } else if (values.editorValue < 5) {
       //   errors.editorValue = 'Enter Description';
       // }
-    }
+    // }
     // if (!values.email) {
     //   errors.email = 'Required';
     // } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {

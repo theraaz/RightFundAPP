@@ -455,27 +455,25 @@ const Form3 = ({ id, setActiveLink }) => {
               </div>
             </div>
           )}
-          <div
-
-            className="campaignsBtnForm3Div"
-          >
-            <div className="campaignBtnsForm3">
-              <Button
-                className="editCampaignBtn"
-                onClick={() => setActiveLink(1)}
-              >
-                Back
+        </div>
+        <div className="campaignsBtnForm3Div">
+          <div className="campaignBtnsForm3">
+            <Button
+              className="editCampaignBtn"
+              onClick={() => setActiveLink(1)}
+            >
+              Back
               </Button>
-              <Button
-                type="submit"
-                className="viewCampaignBtn"
-                onClick={() => setActiveLink(3)}
-              >
-                Save and Continue
+            <Button
+              type="submit"
+              className="viewCampaignBtn"
+              onClick={() => setActiveLink(3)}
+            >
+              Save and Continue
               </Button>
-            </div>
           </div>
         </div>
+
       </div>
     </div>
   );
