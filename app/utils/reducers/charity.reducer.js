@@ -1,13 +1,13 @@
 import { persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { charityActionTypes } from '../actions/charity.actions';
-const initialAuthState = {
+const initialCharityState = {
   myCharityProfile: undefined,
 };
 
 export const reducer = persistReducer(
   { storage, key: 'charity', whitelist: ['myCharityProfile'] },
-  (state = initialAuthState, action) => {
+  (state = initialCharityState, action) => {
     switch (action.type) {
       case charityActionTypes.AddMyCharityProfile: {
         const { charity } = action.payload;
@@ -19,6 +19,9 @@ export const reducer = persistReducer(
         const { charity } = action.payload;
 
         return { myCharityProfile: { ...state.myCharityProfile, ...charity } };
+      }
+      case charityActionTypes.ResetCharityState: {
+        return initialCharityState;
       }
       default:
         return state;

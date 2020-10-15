@@ -75,7 +75,6 @@ export function CharityProfile({ updateMyCharityProfile }) {
       constitutionDoc: base64ConstitutionDoc || values.constitutionDoc || '',
       userPhotoId: base64UserPhotoId || values.userPhotoId || '',
     };
-    console.log('data', data);
     setLoading(true);
     updateCharity(data, myCharityProfile.id)
       .then(res => {
@@ -89,9 +88,13 @@ export function CharityProfile({ updateMyCharityProfile }) {
           showAlert('error', res.data.response.message);
         }
       })
-      .catch(err => {
+      .catch(error => {
         setLoading(false);
-        showAlert('error', 'Could not Update Charity!');
+        if (error?.response?.status === 413) {
+          showAlert('error', 'Document(s) size is too large!');
+        } else {
+          showAlert('error', 'Could not Update Charity!');
+        }
       });
   };
   const validate = (

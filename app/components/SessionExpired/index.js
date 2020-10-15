@@ -2,9 +2,12 @@ import React from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
-const SessionExpired = ({ logout, isSessionExpired }) => {
-  const onClickLogOut = () => {
+import { charityActions } from '../../utils/action-creators/charity.action.creator';
+const SessionExpired = ({ logout, isSessionExpired, resetCharityState }) => {
+  const onClickLogOut = event => {
+    event.preventDefault();
     logout();
+    resetCharityState();
     localStorage.removeItem('token');
   };
   return (
@@ -29,5 +32,5 @@ const mapStateToProps = ({ auth }) => ({
 });
 export default connect(
   mapStateToProps,
-  authActions,
+  { ...authActions, ...charityActions },
 )(SessionExpired);

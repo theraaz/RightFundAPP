@@ -9,4 +9,7 @@ export const charityActions = {
     type: charityActionTypes.UpdateMyCharityProfile,
     payload: { charity },
   }),
+  resetCharityState: () => ({
+    type: charityActionTypes.ResetCharityState,
+  }),
 };

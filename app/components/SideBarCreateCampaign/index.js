@@ -69,7 +69,11 @@ const SideBarCreateCampaign = editCampaignData => {
         .catch(error => {
           console.log(error.response);
           setLoading(false);
-          showAlert('error', 'Something Went Wrong!, try again!');
+          if (error?.response?.status === 413) {
+            showAlert('error', 'Image size is too large!');
+          } else {
+            showAlert('error', 'Something Went Wrong!, try again!');
+          }
         });
     } else if (activeLink === 2) {
       setLoading(false);
@@ -104,7 +108,10 @@ const SideBarCreateCampaign = editCampaignData => {
       const call = editCampaignData.editCampaignData
         ? updateCampaign
         : createCampaign;
-      call({ ...data, ...editData }, editCampaignData?.editCampaignData?.id)
+      call(
+        { ...data, ...editData },
+        editCampaignData?.editCampaignData?.id || campaignId,
+      )
         .then(({ data }) => {
           setLoading(false);
           setCampaignId(data?.response?.data?.id || '');
@@ -112,7 +119,11 @@ const SideBarCreateCampaign = editCampaignData => {
         })
         .catch(err => {
           setLoading(false);
-          showAlert('error', 'Something Went Wrong!, try again!');
+          if (error?.response?.status === 413) {
+            showAlert('error', 'Image size is too large!');
+          } else {
+            showAlert('error', 'Something Went Wrong!, try again!');
+          }
         });
     }
   };

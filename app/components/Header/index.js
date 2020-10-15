@@ -12,6 +12,7 @@ import { withRouter } from 'react-router-dom';
 import { Heading, Description } from './styled';
 import { connect, shallowEqual, useSelector } from 'react-redux';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
+import { charityActions } from '../../utils/action-creators/charity.action.creator';
 const logo = require('../../images/logo.png');
 const profile = require('../../images/placeholder.png');
 
@@ -23,8 +24,10 @@ const Header = ({ children, title, ...props }) => {
     shallowEqual,
   );
 
-  function logout() {
+  function logout(event) {
+    event.preventDefault();
     props.logout();
+    props.resetCharityState();
     localStorage.removeItem('token');
   }
 
@@ -194,6 +197,6 @@ Header.propTypes = {};
 export default withRouter(
   connect(
     null,
-    authActions,
+    { ...authActions, ...charityActions },
   )(memo(Header)),
 );
