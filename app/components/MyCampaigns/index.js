@@ -396,9 +396,7 @@ const MyCampaigns = ({ ...props }) => {
                             </span>
                           </MenuItem>
 
-                          {currentCampaignStatus === 8 ? (
-                            ''
-                          ) : (
+                          {currentCampaignStatus === 7 && (
                             <MenuItem
                               className="menuList"
                               onClick={() => {
