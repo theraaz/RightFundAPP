@@ -9,15 +9,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
-
+import Layout from '../../components/Layout';
 export function TeamsMembers() {
   return (
-    <div>
+    <Layout>
       <Helmet>
         <title>TeamsMembers</title>
         <meta name="description" content="Description of TeamsMembers" />
       </Helmet>
-    </div>
+    </Layout>
   );
 }
 

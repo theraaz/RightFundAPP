@@ -24,7 +24,7 @@ import { updateProfile } from '../../utils/crud/auth.crud';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
 import { useSnackbar } from 'notistack';
 import { withRouter } from 'react-router-dom';
-import { isCharityProfileCompleted } from '../../utils/helper';
+import { isCharityProfileInComplete } from '../../utils/helper';
 import SessionExpired from '../SessionExpired';
 
 const profileImg = require('../../images/placeholder.png');
@@ -269,7 +269,7 @@ function Layout({ children, updateUser, ...props }) {
         </Row>
 
         <Row style={{ marginTop: 15, marginBottom: 15 }}>
-          {isCharityProfileCompleted(myCharityProfile) && (
+          {isCharityProfileInComplete(myCharityProfile) && (
             <Col xs={12}>
               <Alert show variant="warning" onClose={() => {}}>
                 <div className="d-flex justify-content-between align-items-center">
