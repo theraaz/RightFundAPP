@@ -54,9 +54,8 @@ const GlobalStyle = createGlobalStyle`
     overflow: auto !important;
   }
 
-  modal-content {
-    opacity: 1;
-    z-index: 999999;
+  button:focus {
+    outline: none !important;
   }
 `;
 

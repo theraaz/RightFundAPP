@@ -46,13 +46,21 @@ const Form2 = ({
 
   const setVideo = event => {
     setFieldValue('video', event.target.value);
+
+  }
+
+
+  function getVideoId(video) {
+    let id = ''
     var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    var match = event.target.value.match(regExp);
+    var match = video.match(regExp);
 
     if (match && match[2].length == 11) {
       console.log(match[2])
-      setYoutubeId(match[2]);
+      id = match[2];
+      // setYoutubeId(match[2]);
     }
+    return id;
   }
 
   return (
@@ -159,7 +167,7 @@ const Form2 = ({
             onChange={setVideo}
           />
 
-          <iframe width="100%" style={{ marginTop: '10px' }} height="315" src={`//www.youtube.com/embed/${youtubeId}`} frameborder="0" allowfullscreen></iframe>
+          <iframe width="100%" style={{ marginTop: '10px' }} height="315" src={`//www.youtube.com/embed/${getVideoId(values.video)}`} frameborder="0" allowfullscreen></iframe>
 
           <Form.Group>
 

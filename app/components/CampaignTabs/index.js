@@ -49,6 +49,13 @@ function CampaignTabs({ children, ...props }) {
     props.history.goBack();
   }
 
+  function goTocampaignView() {
+    props.history.push(`/campaignView/${props.match.params.id}`);
+  }
+
+  function goToeditCampaign() {
+    props.history.push(`/editCampaign/${props.match.params.id}`);
+  }
   return (
     <div>
       <Header title="Dasboard" />
@@ -287,13 +294,13 @@ function CampaignTabs({ children, ...props }) {
 
                     <Col xs={12} sm={12} md={6} lg={6}>
                       <div className="campaignUpdatesHeader">
-                        <Link to={`/campaignView/${props.match.params.id}`}>
-                          <Button className="campaignViewBtn">View Campaign</Button>{' '}
-                        </Link>
 
-                        <Link to={`/editCampaign/${props.match.params.id}`}>
-                          <Button className="editCampaign">Edit Campaign</Button>{' '}
-                        </Link>
+                        <Button className="campaignViewBtn" onClick={goTocampaignView}>View Campaign</Button>{' '}
+
+
+
+                        <Button className="editCampaign" onClick={goToeditCampaign}>Edit Campaign</Button>{' '}
+
                       </div>
                     </Col>
                   </Row>

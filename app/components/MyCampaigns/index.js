@@ -28,6 +28,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { useSnackbar } from 'notistack';
+import { getCampaigns, deleteCampaigns, closeCampaignStatus } from '../../utils/crud/myCampaigns';
 
 const profileImg = require('../../images/placeholder.png');
 
@@ -42,6 +43,7 @@ const MyCampaigns = ({ ...props }) => {
   const [show, setShow] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [currentCampaignData, setCurrentCampaignData] = React.useState();
+  const [currentCampaignStatus, setCurrentCampaignStatus] = React.useState();
   const [totalCount, setTotalCount] = React.useState(1);
   const { enqueueSnackbar } = useSnackbar();
 
@@ -59,7 +61,8 @@ const MyCampaigns = ({ ...props }) => {
 
   const handleClickMenu = campaignId => event => {
     setAnchorEl(event.currentTarget);
-    setCurrentCampaignData(campaignId);
+    setCurrentCampaignData(campaignId.id);
+    setCurrentCampaignStatus(campaignId.statusId.id)
   };
 
   const handleCloseMenu = () => {
@@ -98,31 +101,20 @@ const MyCampaigns = ({ ...props }) => {
   }, [pageSize, pageNumber, campaignSort]);
 
   function getSortCampaigns(pages, pageNo, campaignSortBy) {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
 
-    fetch(
-      `${process.env.baseURL}/campaign?perPage=${pages}&pageNo=${pageNo}${
-        campaignSortBy ? `&sortBy=${campaignSortBy}` : ''
-      }`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(user => {
-        setLoading(false);
-        setTotalCount(user.response.data.totalCount);
-        setTotalPages(Math.ceil(user.response.data.totalCount / pageSize));
-        setCampaign(user.response.data.res);
+    getCampaigns(pages, pageNo, campaignSortBy ? campaignSortBy : '')
+      .then(({ data, status }) => {
+        console.log('Axio campaign', data);
+        setTotalCount(data.response.data.totalCount)
+        setTotalPages(Math.ceil(data.response.data.totalCount / pageSize));
+        setCampaign(data.response.data.res);
       })
       .catch(error => {
         setLoading(false);
         console.log(error);
       });
+
+
   }
 
   function dropdownValueSet(dropdownValue) {
@@ -134,51 +126,16 @@ const MyCampaigns = ({ ...props }) => {
     }
   }
 
-  function getCampaigns() {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
-
-    fetch(
-      `${
-        process.env.baseURL
-      }/campaign?perPage=${pageSize}&pageNo=${pageNumber}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(user => {
-        setTotalPages(Math.ceil(user.response.data.totalCount / pageSize));
-        setCampaign(user.response.data.res);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
-
   function closeCampaign() {
-    const requestOptions = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-      body: JSON.stringify({
-        statusId: 8,
-      }),
-    };
 
-    fetch(
-      `${process.env.baseURL}/campaign/status/${currentCampaignData}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(() => {
-        setPageNumber(1);
-        getSortCampaigns(pageSize, pageNumber, campaignSort);
+    closeCampaignStatus(currentCampaignData)
+      .then(({ data, status }) => {
+        console.log('close campaign', status, data);
+        if (status == 200) {
+          setPageNumber(1);
+          getSortCampaigns(pageSize, pageNumber, campaignSort);
+          handleClickVariant('success', 'Campaign successfully closed.');
+        }
       })
       .catch(error => {
         console.log(error);
@@ -195,32 +152,22 @@ const MyCampaigns = ({ ...props }) => {
     } ${totalAmount}`;
   }
 
-  function deleteCampaign(campaignId) {
+  function deleteCampaign() {
     setShow(false);
-    const requestOptions = {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
 
-    fetch(
-      `${process.env.baseURL}/campaign/${currentCampaignData}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(() => {
-        setPageNumber(1);
-        if (campaignSort) {
+    deleteCampaigns(currentCampaignData)
+      .then(({ data, status }) => {
+        console.log('del campaign', status, data);
+        if (status == 200) {
+          setPageNumber(1);
           getSortCampaigns(pageSize, pageNumber, campaignSort);
-        } else {
-          getCampaigns();
+          handleClickVariant('success', data.response.message);
         }
       })
       .catch(error => {
         console.log(error);
       });
+
   }
 
   const PerPage = event => {
@@ -238,7 +185,7 @@ const MyCampaigns = ({ ...props }) => {
       return 'Draft';
     }
     if (campaignSort === 8) {
-      return 'Close';
+      return 'Closed';
     }
   }
 
@@ -312,7 +259,7 @@ const MyCampaigns = ({ ...props }) => {
                     onClick={() => dropdownValueSet(8)}
                     className="dropItem"
                   >
-                    Close
+                    Closed
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
@@ -451,66 +398,58 @@ const MyCampaigns = ({ ...props }) => {
                             </span>
                           </MenuItem>
 
-                          <MenuItem
-                            className="menuList"
-                            onClick={() => {
-                              setAnchorEl(null);
-                              closeCampaign();
-                            }}
-                          >
+
+                        {currentCampaignStatus === 8 ? '' :
+                          <MenuItem className='menuList' onClick={() => {
+                            setAnchorEl(null);
+                            closeCampaign()
+                          }
+                          } >
                             <div>
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                height="18px"
-                                viewBox="0 -56 512 512"
-                                width="18px"
-                              >
-                                <path d="m432 400h-352c-44.113281 0-80-35.886719-80-80v-240c0-44.113281 35.886719-80 80-80h352c44.113281 0 80 35.886719 80 80v140c0 11.046875-8.953125 20-20 20s-20-8.953125-20-20v-140c0-22.054688-17.945312-40-40-40h-352c-22.054688 0-40 17.945312-40 40v240c0 22.054688 17.945312 40 40 40h352c22.054688 0 40-17.945312 40-40 0-11.046875 8.953125-20 20-20s20 8.953125 20 20c0 44.113281-35.886719 80-80 80zm-219.824219-168c-8.339843 0-15.625 5.332031-18.484375 13.160156-5.207031 14.257813-18.660156 24.449219-34.777344 24.828125-21.367187.507813-38.914062-16.730469-38.914062-37.988281v-63.285156c0-20.753906 16.339844-38.210938 37.085938-38.703125 16.765624-.398438 31.175781 10.125 36.609374 24.945312 2.847657 7.777344 10.121094 13.042969 18.40625 13.042969h1.03125c13.421876 0 22.914063-13.261719 18.441407-25.917969-10.789063-30.535156-40.082031-52.410156-74.34375-52.078125-42.484375.410156-77.230469 36.503906-77.230469 78.992188v62.011718c0 42.941407 34.289062 78.574219 77.230469 78.988282 34.238281.332031 63.515625-21.511719 74.320312-52.011719 4.492188-12.683594-5.03125-25.984375-18.488281-25.984375zm196 0c-8.339843 0-15.625 5.332031-18.484375 13.160156-5.207031 14.257813-18.660156 24.449219-34.777344 24.828125-21.367187.507813-38.914062-16.730469-38.914062-37.988281v-63.285156c0-20.753906 16.339844-38.210938 37.085938-38.703125 16.765624-.398438 31.175781 10.125 36.609374 24.945312 2.847657 7.777344 10.121094 13.042969 18.40625 13.042969h1.03125c13.421876 0 22.914063-13.261719 18.441407-25.917969-10.789063-30.535156-40.082031-52.410156-74.34375-52.078125-42.484375.410156-77.230469 36.503906-77.230469 78.992188v62.011718c0 42.941407 34.289062 78.574219 77.230469 78.988282 34.238281.332031 63.515625-21.511719 74.320312-52.011719 4.492188-12.683594-5.03125-25.984375-18.488281-25.984375zm0 0" />
-                              </svg>
+                              <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -56 512 512" width="18px"><path d="m432 400h-352c-44.113281 0-80-35.886719-80-80v-240c0-44.113281 35.886719-80 80-80h352c44.113281 0 80 35.886719 80 80v140c0 11.046875-8.953125 20-20 20s-20-8.953125-20-20v-140c0-22.054688-17.945312-40-40-40h-352c-22.054688 0-40 17.945312-40 40v240c0 22.054688 17.945312 40 40 40h352c22.054688 0 40-17.945312 40-40 0-11.046875 8.953125-20 20-20s20 8.953125 20 20c0 44.113281-35.886719 80-80 80zm-219.824219-168c-8.339843 0-15.625 5.332031-18.484375 13.160156-5.207031 14.257813-18.660156 24.449219-34.777344 24.828125-21.367187.507813-38.914062-16.730469-38.914062-37.988281v-63.285156c0-20.753906 16.339844-38.210938 37.085938-38.703125 16.765624-.398438 31.175781 10.125 36.609374 24.945312 2.847657 7.777344 10.121094 13.042969 18.40625 13.042969h1.03125c13.421876 0 22.914063-13.261719 18.441407-25.917969-10.789063-30.535156-40.082031-52.410156-74.34375-52.078125-42.484375.410156-77.230469 36.503906-77.230469 78.992188v62.011718c0 42.941407 34.289062 78.574219 77.230469 78.988282 34.238281.332031 63.515625-21.511719 74.320312-52.011719 4.492188-12.683594-5.03125-25.984375-18.488281-25.984375zm196 0c-8.339843 0-15.625 5.332031-18.484375 13.160156-5.207031 14.257813-18.660156 24.449219-34.777344 24.828125-21.367187.507813-38.914062-16.730469-38.914062-37.988281v-63.285156c0-20.753906 16.339844-38.210938 37.085938-38.703125 16.765624-.398438 31.175781 10.125 36.609374 24.945312 2.847657 7.777344 10.121094 13.042969 18.40625 13.042969h1.03125c13.421876 0 22.914063-13.261719 18.441407-25.917969-10.789063-30.535156-40.082031-52.410156-74.34375-52.078125-42.484375.410156-77.230469 36.503906-77.230469 78.992188v62.011718c0 42.941407 34.289062 78.574219 77.230469 78.988282 34.238281.332031 63.515625-21.511719 74.320312-52.011719 4.492188-12.683594-5.03125-25.984375-18.488281-25.984375zm0 0" /></svg>
                             </div>
-                            <span style={{ marginLeft: '10px' }}>
-                              Closed Campaign
-                            </span>
+                            <span style={{ marginLeft: '10px' }}>Close Campaign</span>
                           </MenuItem>
-                          <MenuItem className="menuList" onClick={handleShow}>
-                            <svg
-                              height="18px"
-                              viewBox="-40 0 427 427.00131"
-                              width="18px"
-                            >
-                              <path d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
-                              <path d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
-                              <path d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0" />
-                              <path d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
-                            </svg>
-                            <span style={{ marginLeft: '10px' }}>
-                              Delete Campaign
-                            </span>
-                          </MenuItem>
-                        </Menu>
-                        <Modal show={show} onHide={handleClose}>
-                          <Modal.Header closeButton>
-                            <Modal.Title>Delete Campaign</Modal.Title>
-                          </Modal.Header>
-                          <Modal.Body>
-                            Are you sure you want to delete your campaign? If
-                            you delete you will permanently lose your campaign.
-                          </Modal.Body>
-                          <Modal.Footer>
-                            <Button
-                              className="modalBtnNo"
-                              onClick={handleClose}
-                            >
-                              No
-                            </Button>
-                            <Button
-                              className="modalBtnYes"
-                              onClick={deleteCampaign}
-                            >
-                              Yes
-                            </Button>
-                          </Modal.Footer>
-                        </Modal>
+                        }
+                        <MenuItem
+                          className='menuList'
+                          onClick={handleShow}>
+                          <svg
+                            height="18px"
+                            viewBox="-40 0 427 427.00131"
+                            width="18px"
+                          >
+                            <path d="m232.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+                            <path d="m114.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+                            <path d="m28.398438 127.121094v246.378906c0 14.5625 5.339843 28.238281 14.667968 38.050781 9.285156 9.839844 22.207032 15.425781 35.730469 15.449219h189.203125c13.527344-.023438 26.449219-5.609375 35.730469-15.449219 9.328125-9.8125 14.667969-23.488281 14.667969-38.050781v-246.378906c18.542968-4.921875 30.558593-22.835938 28.078124-41.863282-2.484374-19.023437-18.691406-33.253906-37.878906-33.257812h-51.199218v-12.5c.058593-10.511719-4.097657-20.605469-11.539063-28.03125-7.441406-7.421875-17.550781-11.5546875-28.0625-11.46875h-88.796875c-10.511719-.0859375-20.621094 4.046875-28.0625 11.46875-7.441406 7.425781-11.597656 17.519531-11.539062 28.03125v12.5h-51.199219c-19.1875.003906-35.394531 14.234375-37.878907 33.257812-2.480468 19.027344 9.535157 36.941407 28.078126 41.863282zm239.601562 279.878906h-189.203125c-17.097656 0-30.398437-14.6875-30.398437-33.5v-245.5h250v245.5c0 18.8125-13.300782 33.5-30.398438 33.5zm-158.601562-367.5c-.066407-5.207031 1.980468-10.21875 5.675781-13.894531 3.691406-3.675781 8.714843-5.695313 13.925781-5.605469h88.796875c5.210937-.089844 10.234375 1.929688 13.925781 5.605469 3.695313 3.671875 5.742188 8.6875 5.675782 13.894531v12.5h-128zm-71.199219 32.5h270.398437c9.941406 0 18 8.058594 18 18s-8.058594 18-18 18h-270.398437c-9.941407 0-18-8.058594-18-18s8.058593-18 18-18zm0 0" />
+                            <path d="m173.398438 154.703125c-5.523438 0-10 4.476563-10 10v189c0 5.519531 4.476562 10 10 10 5.523437 0 10-4.480469 10-10v-189c0-5.523437-4.476563-10-10-10zm0 0" />
+                          </svg>
+                          <span style={{ marginLeft: '10px' }}>Delete Campaign</span>
+                        </MenuItem>
+
+                      </Menu>
+
+                      <Modal className='popup-modal' show={show} onHide={handleClose} >
+                        <Modal.Header closeButton>
+                          <Modal.Title>Delete Campaign</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          Are you sure you want to delete your campaign? If you
+                          delete you will permanently lose your campaign.
+                      </Modal.Body>
+                        <Modal.Footer>
+                          <Button className="modalBtnNo" onClick={handleClose}>
+                            No
+                        </Button>
+                          <Button
+                            className="modalBtnYes"
+                            onClick={deleteCampaign}>
+                            Yes
+                        </Button>
+                        </Modal.Footer>
+                      </Modal>
+
+                    
                         <div className="give-card__media">
                           {data.titleImage ? (
                             <img
@@ -601,37 +540,30 @@ const MyCampaigns = ({ ...props }) => {
                             >
                               Live View
                             </Button>{' '}
-                          </div>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
 
-                <div className="paginatordiv">
-                  <div className="paginatorPerSize">
-                    <span>Per Page</span>
-                    <Form.Control
-                      as="select"
-                      className="paginatorPerPage"
-                      onChange={PerPage}
-                    >
-                      <option className="paginatorPerPageOption" value="10">
-                        6
-                      </option>
-                      <option value="15">10</option>
-                      <option value="20">15</option>
-                    </Form.Control>
-                  </div>
+                        </div>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
 
-                  <Pagination
-                    count={totalPages}
-                    classes={{ ul: 'paginationColor' }}
-                    onChange={handleChangePage}
-                    variant="outlined"
-                    shape="rounded"
-                  />
+              <div className="paginatordiv">
+                <div className="paginatorPerSize">
+                  <span>Per Page</span>
+                  <Form.Control
+                    as="select"
+                    className="paginatorPerPage"
+                    onChange={PerPage}
+                  >
+                    <option className="paginatorPerPageOption" value="6">
+                      6
+                    </option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                  </Form.Control>
                 </div>
+              </div>
               </>
             )}
           </Container>

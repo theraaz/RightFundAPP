@@ -1,13 +1,13 @@
 @import 'App/styles/mixin.scss';
 
 .campaignUpdatesHeader {
-  justify-content: center;
-  text-align: center;
+  text-align: end;
   margin: auto 0;
 
   @include respond-to(handhelds) {
     // css code here
     margin-top: 15px;
+    // text-align: center;
   }
 
   .campaignViewBtn {

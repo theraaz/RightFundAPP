@@ -1,8 +1,10 @@
 @import 'App/styles/mixin.scss';
-.main-form1 {
+.main-form3 {
   text-align: center;
   margin: 30px 0 0 0;
-
+  min-height: 400px;
+  position: relative;
+  
   .main-heading {
     padding: 0 143px;
     margin-bottom: 30px;
@@ -170,44 +172,51 @@
     }
   }
 
-  .campaignBtnsForm3 {
-    justify-content: space-between;
-    display: flex;
-    height: 40px;
-    .viewCampaignBtn {
-      background-color: #f15a24;
-      border-color: #f2f2f2;
-      margin-left: 10px;
-      font-size: 11px;
-      &:focus {
-        box-shadow: none;
-      }
-      &:active {
-        background: white;
-        color: black;
-        border-color: #f2f2f2;
-      }
-      &:hover {
-        opacity: 0.8;
-      }
-    }
-    .editCampaignBtn {
-      background-color: #c2c2c2;
-      border-color: #c2c2c2;
-      
-      font-size: 11px;
-      width: 120px;
+  .campaignsBtnForm3Div {
+    margin: 10px 20px 20px 10px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
 
-      &:hover {
-        opacity: 0.8;
-      }
-      &:focus {
-        box-shadow: none;
-      }
-      &:active {
-        background: white;
-        color: black;
+    .campaignBtnsForm3 {
+      justify-content: space-between;
+      display: flex;
+      height: 40px;
+      .viewCampaignBtn {
+        background-color: #f15a24;
         border-color: #f2f2f2;
+        margin-left: 10px;
+        font-size: 11px;
+        &:focus {
+          box-shadow: none;
+        }
+        &:active {
+          background: white;
+          color: black;
+          border-color: #f2f2f2;
+        }
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+      .editCampaignBtn {
+        background-color: #c2c2c2;
+        border-color: #c2c2c2;
+
+        font-size: 11px;
+        width: 120px;
+
+        &:hover {
+          opacity: 0.8;
+        }
+        &:focus {
+          box-shadow: none;
+        }
+        &:active {
+          background: white;
+          color: black;
+          border-color: #f2f2f2;
+        }
       }
     }
   }
