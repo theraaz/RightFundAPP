@@ -84,6 +84,7 @@ const Form1 = ({
   children,
   setActiveLink,
   loading,
+  edit,
 }) => {
   const classes = useStyles();
   const { user } = useSelector(
@@ -323,6 +324,7 @@ const Form1 = ({
                 <div style={{ margin: '0 10px' }}>
                   <GreenRadio
                     checked={values.fundraiser === 'individual'}
+                    disabled={edit}
                     onChange={() => setFieldValue('fundraiser', 'individual')}
                   />
                   <span style={{ color: '#9d9d9d' }}>Individual</span>
@@ -330,6 +332,7 @@ const Form1 = ({
                 <div style={{ margin: '0 10px' }}>
                   <GreenRadio
                     checked={values.fundraiser === 'charity'}
+                    disabled={edit}
                     onChange={() => setFieldValue('fundraiser', 'charity')}
                   />
                   <span style={{ color: '#9d9d9d' }}>Charity</span>

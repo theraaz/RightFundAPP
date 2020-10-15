@@ -363,6 +363,7 @@ const SideBarCreateCampaign = editCampaignData => {
                         values={values}
                         errors={errors}
                         loading={loading}
+                        edit={editCampaignData?.editCampaignData}
                       />
                     )}
                     {activeLink === 1 && (

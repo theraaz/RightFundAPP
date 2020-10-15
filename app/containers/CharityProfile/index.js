@@ -389,6 +389,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                         <DropZone
                           selectedFiles={userPhotoId}
                           setSelectedFiles={setUserPhotoId}
+                          accept={['image/jpeg', 'image/jpg', 'image/png']}
                         />
                       )}
                     </div>

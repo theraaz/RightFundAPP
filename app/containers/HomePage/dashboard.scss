@@ -195,7 +195,7 @@
 }
 
 .descriptionCampaign {
-  min-height: 37px;
+  min-height: 20px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   margin: 0;
@@ -317,6 +317,11 @@
     font-weight: 600;
     letter-spacing: -1px;
     font-size: 18px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    margin: 0;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .skillbar {
