@@ -551,6 +551,13 @@ const MyCampaigns = ({ ...props }) => {
                       <option value="15">15</option>
                     </Form.Control>
                   </div>
+                  <Pagination
+                    count={totalPages}
+                    classes={{ ul: 'paginationColor' }}
+                    onChange={handleChangePage}
+                    variant="outlined"
+                    shape="rounded"
+                  />
                 </div>
               </>
             )}
