@@ -123,6 +123,7 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
           console.log('edit campaign', status, data);
           if (status == 200) {
             setLoading(false);
+            setEditStatus(false);
             handleClickVariant('success', data.response.message);
             tinymce.activeEditor.setContent('');
             getUpdates();
