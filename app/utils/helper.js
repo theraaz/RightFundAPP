@@ -1,4 +1,4 @@
-export const isCharityProfileCompleted = myCharityProfile => {
+export const isCharityProfileInComplete = myCharityProfile => {
   let bool = false;
   if (myCharityProfile) {
     if (!myCharityProfile?.name) {

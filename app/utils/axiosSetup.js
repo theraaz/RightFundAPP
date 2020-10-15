@@ -18,7 +18,7 @@ export function setupAxios(axios, store) {
   axios.interceptors.response.use(
     response => response,
     error => {
-      if (error.response.data?.response?.name === 'TokenExpiredError') {
+      if (error.response.data?.response?.data?.name === 'TokenExpiredError') {
         store.dispatch(authActions.showSessionExpired());
         return Promise.reject(error);
       }

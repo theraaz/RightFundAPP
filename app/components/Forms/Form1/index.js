@@ -24,10 +24,7 @@ import './form1.scss';
 
 import 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  DatePicker
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -38,6 +35,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Radio from '@material-ui/core/Radio';
 import { H5, H4, Errors } from '../form.styles';
 import Address from '../../Address/Loadable';
+import { shallowEqual, useSelector } from 'react-redux';
 
 const GreenRadio = withStyles({
   root: {
@@ -48,8 +46,6 @@ const GreenRadio = withStyles({
   },
   checked: {},
 })(props => <Radio color="default" {...props} />);
-
-
 
 const BootstrapInput = withStyles(theme => ({
   root: {
@@ -90,7 +86,12 @@ const Form1 = ({
   loading,
 }) => {
   const classes = useStyles();
-
+  const { user } = useSelector(
+    ({ auth }) => ({
+      user: auth.user,
+    }),
+    shallowEqual,
+  );
   const [currency, setCurrency] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('a');
@@ -251,16 +252,13 @@ const Form1 = ({
               <Errors id="feedback">{errors.campaignTitle}</Errors>
             )}
           </Form.Group>
-          <Form.Group
-            controlId="address"
-            bssize="large"
-            className='address'
-          >
-
-            <H5 className="label-field" className='locationLabel'>
-              Add a location
-                </H5>
-            <Address setFieldValue={setFieldValue} values={values} errors={errors} />
+          <Form.Group controlId="address" bssize="large" className="address">
+            <H5 className="locationLabel">Add a location</H5>
+            <Address
+              setFieldValue={setFieldValue}
+              values={values}
+              errors={errors}
+            />
             {errors.address && <Errors id="feedback">{errors.address}</Errors>}
           </Form.Group>
 
@@ -278,7 +276,6 @@ const Form1 = ({
                 placeholder="Campaign end date"
                 value={values.date}
                 onChange={handleDateChange}
-
               />
             </MuiPickersUtilsProvider>
             {errors.date && <Errors id="feedback">{errors.date}</Errors>}
@@ -315,36 +312,32 @@ const Form1 = ({
             )}
           </Form.Group>
 
-          <Form.Group
-            controlId="radio-button-demo"
-            bssize="large"
-            style={{ textAlign: 'initial' }}
-          >
-            <div>Fundraiser as:</div>
-            <div style={{ display: 'flex' }}>
-              <div style={{ margin: '0 10px' }}>
-                <GreenRadio
-                  checked={selectedValue === 'a'}
-                  onChange={() => setSelectedValue('a')}
-                  value="a"
-                  name="radio-button-demo"
-                  label="Individual"
-                  inputProps={{ 'aria-label': 'a' }}
-                />
-                <span style={{ color: '#9d9d9d' }}>Individual</span>
+          {user.isCharity && (
+            <Form.Group
+              controlId="radio-button-demo"
+              bssize="large"
+              style={{ textAlign: 'initial' }}
+            >
+              <div>Fundraiser as:</div>
+              <div style={{ display: 'flex' }}>
+                <div style={{ margin: '0 10px' }}>
+                  <GreenRadio
+                    checked={values.fundraiser === 'individual'}
+                    onChange={() => setFieldValue('fundraiser', 'individual')}
+                  />
+                  <span style={{ color: '#9d9d9d' }}>Individual</span>
+                </div>
+                <div style={{ margin: '0 10px' }}>
+                  <GreenRadio
+                    checked={values.fundraiser === 'charity'}
+                    onChange={() => setFieldValue('fundraiser', 'charity')}
+                  />
+                  <span style={{ color: '#9d9d9d' }}>Charity</span>
+                </div>
               </div>
-              <div style={{ margin: '0 10px' }}>
-                <GreenRadio
-                  checked={selectedValue === 'b'}
-                  onChange={() => setSelectedValue('b')}
-                  value={selectedValue}
-                  name="radio-button-demo"
-                  inputProps={{ 'aria-label': 'b' }}
-                />
-                <span style={{ color: '#9d9d9d' }}>Charity</span>
-              </div>
-            </div>
-          </Form.Group>
+            </Form.Group>
+          )}
+
           <p style={{ textAlign: 'initial', color: '#9c9c9c' }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
@@ -355,7 +348,7 @@ const Form1 = ({
             <div className="campaignBtnsForm1">
               <Button type="submit" className="viewCampaignBtn">
                 {' '}
-                {loading == false && <div> Save and Continue</div>}
+                {!loading && <div> Save and Continue</div>}
                 {loading && <Spinner animation="border" size="sm" />}{' '}
               </Button>
             </div>

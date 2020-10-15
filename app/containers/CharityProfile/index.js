@@ -22,6 +22,7 @@ import DropZone from '../../components/DropZone';
 import { updateCharity } from '../../utils/crud/charity.crud';
 import { charityActions } from '../../utils/action-creators/charity.action.creator';
 import DocumentIcon from '../../components/svg-icons/DocumentIcon';
+import { isCharityProfileInComplete } from '../../utils/helper';
 export function CharityProfile({ updateMyCharityProfile }) {
   const { myCharityProfile } = useSelector(
     ({ charity }) => ({
@@ -40,8 +41,9 @@ export function CharityProfile({ updateMyCharityProfile }) {
       anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
     });
   };
-
+  const isProfileCompleted = !isCharityProfileInComplete(myCharityProfile);
   const handleSubmit = async values => {
+    if (!isCharityProfileInComplete(myCharityProfile)) return;
     let base64UserPhotoId = '';
     let base64ConstitutionDoc = '';
     if (userPhotoId.length > 0) {
@@ -148,6 +150,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
       reader.onload = () => resolve(reader.result);
       reader.onerror = error => reject(error);
     });
+
   return (
     <Layout>
       <Helmet>
@@ -198,6 +201,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                       <CustomTextInputFormik
                         name="charityName"
                         placeholder="Charity Name"
+                        disabled={isProfileCompleted}
                       />
                     </FormGroup>
                   </Col>
@@ -207,6 +211,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                       <CustomTextInputFormik
                         name="regNo"
                         placeholder="Registration Number"
+                        disabled={isProfileCompleted}
                       />
                     </FormGroup>
                   </Col>
@@ -219,6 +224,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                         fullWidth
                         className="selectClass"
                         value={values.position}
+                        disabled={isProfileCompleted}
                         onChange={event =>
                           setFieldValue('position', event.target.value)
                         }
@@ -235,6 +241,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                       <CustomTextInputFormik
                         name="charityWeb"
                         placeholder="Website"
+                        disabled={isProfileCompleted}
                       />
                     </FormGroup>
                   </Col>
@@ -248,6 +255,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                       <CustomTextInputFormik
                         name="userFirstName"
                         placeholder="First Name"
+                        disabled={isProfileCompleted}
                       />
                     </FormGroup>
                   </Col>
@@ -257,6 +265,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                       <CustomTextInputFormik
                         name="userLastName"
                         placeholder="Last Name"
+                        disabled={isProfileCompleted}
                       />
                     </FormGroup>
                   </Col>
@@ -267,6 +276,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                         name="userEmail"
                         placeholder="Email"
                         type="email"
+                        disabled={isProfileCompleted}
                       />
                     </FormGroup>
                   </Col>
@@ -276,6 +286,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                       <CustomTextInputFormik
                         name="userPhoneNumber"
                         placeholder="Phone Number"
+                        disabled={isProfileCompleted}
                       />
                     </FormGroup>
                   </Col>
@@ -290,6 +301,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                           <CustomTextInputFormik
                             name="trusteeFirstName"
                             placeholder="First Name"
+                            disabled={isProfileCompleted}
                           />
                         </FormGroup>
                       </Col>
@@ -299,6 +311,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                           <CustomTextInputFormik
                             name="trusteeLastName"
                             placeholder="Last Name"
+                            disabled={isProfileCompleted}
                           />
                         </FormGroup>
                       </Col>
@@ -309,6 +322,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                             name="trusteeEmail"
                             placeholder="Email"
                             type="email"
+                            disabled={isProfileCompleted}
                           />
                         </FormGroup>
                       </Col>
@@ -318,6 +332,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                           <CustomTextInputFormik
                             name="trusteePhoneNumber"
                             placeholder="Phone Number"
+                            disabled={isProfileCompleted}
                           />
                         </FormGroup>
                       </Col>
@@ -331,39 +346,44 @@ export function CharityProfile({ updateMyCharityProfile }) {
                       {values.userPhotoId ? (
                         <div className="base64ImageHandling">
                           <img className="base64Img" src={values.userPhotoId} />
-                          <svg
-                            version="1.1"
-                            className="closeIcon"
+                          <button
+                            className="btn btn-icon btn-sm"
+                            disabled={isProfileCompleted}
                             onClick={() => setFieldValue('userPhotoId', null)}
-                            id="Capa_1"
-                            x="0px"
-                            y="0px"
-                            viewBox="0 0 496 496"
                           >
-                            <g>
+                            <svg
+                              version="1.1"
+                              className="closeIcon"
+                              id="Capa_1"
+                              x="0px"
+                              y="0px"
+                              viewBox="0 0 496 496"
+                            >
                               <g>
                                 <g>
-                                  <path d="M248,0C111.033,0,0,111.033,0,248s111.033,248,248,248s248-111.033,248-248C495.841,111.099,384.901,0.159,248,0z M248,480C119.87,480,16,376.13,16,248S119.87,16,248,16s232,103.87,232,232C479.859,376.072,376.072,479.859,248,480z" />
-                                  <path d="M361.136,134.864c-3.124-3.123-8.188-3.123-11.312,0L248,236.688L146.176,134.864c-3.069-3.178-8.134-3.266-11.312-0.197c-3.178,3.069-3.266,8.134-0.197,11.312c0.064,0.067,0.13,0.132,0.197,0.197L236.688,248L134.864,349.824c-3.178,3.07-3.266,8.134-0.196,11.312c3.07,3.178,8.134,3.266,11.312,0.196c0.067-0.064,0.132-0.13,0.196-0.196L248,259.312l101.824,101.824c3.178,3.07,8.242,2.982,11.312-0.196c2.995-3.1,2.995-8.016,0-11.116L259.312,248l101.824-101.824C364.259,143.052,364.259,137.988,361.136,134.864z" />
+                                  <g>
+                                    <path d="M248,0C111.033,0,0,111.033,0,248s111.033,248,248,248s248-111.033,248-248C495.841,111.099,384.901,0.159,248,0z M248,480C119.87,480,16,376.13,16,248S119.87,16,248,16s232,103.87,232,232C479.859,376.072,376.072,479.859,248,480z" />
+                                    <path d="M361.136,134.864c-3.124-3.123-8.188-3.123-11.312,0L248,236.688L146.176,134.864c-3.069-3.178-8.134-3.266-11.312-0.197c-3.178,3.069-3.266,8.134-0.197,11.312c0.064,0.067,0.13,0.132,0.197,0.197L236.688,248L134.864,349.824c-3.178,3.07-3.266,8.134-0.196,11.312c3.07,3.178,8.134,3.266,11.312,0.196c0.067-0.064,0.132-0.13,0.196-0.196L248,259.312l101.824,101.824c3.178,3.07,8.242,2.982,11.312-0.196c2.995-3.1,2.995-8.016,0-11.116L259.312,248l101.824-101.824C364.259,143.052,364.259,137.988,361.136,134.864z" />
+                                  </g>
                                 </g>
                               </g>
-                            </g>
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                          </svg>
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                            </svg>
+                          </button>
                         </div>
                       ) : (
                         <DropZone
@@ -381,42 +401,46 @@ export function CharityProfile({ updateMyCharityProfile }) {
                           <div style={{ color: '#c1c0c0', width: 50 }}>
                             <DocumentIcon />
                           </div>
-
-                          <svg
-                            version="1.1"
-                            className="closeIcon"
+                          <button
+                            className="btn btn-icon btn-sm"
+                            disabled={isProfileCompleted}
                             onClick={() =>
                               setFieldValue('constitutionDoc', null)
                             }
-                            id="Capa_1"
-                            x="0px"
-                            y="0px"
-                            viewBox="0 0 496 496"
                           >
-                            <g>
+                            <svg
+                              version="1.1"
+                              className="closeIcon"
+                              id="Capa_1"
+                              x="0px"
+                              y="0px"
+                              viewBox="0 0 496 496"
+                            >
                               <g>
                                 <g>
-                                  <path d="M248,0C111.033,0,0,111.033,0,248s111.033,248,248,248s248-111.033,248-248C495.841,111.099,384.901,0.159,248,0z M248,480C119.87,480,16,376.13,16,248S119.87,16,248,16s232,103.87,232,232C479.859,376.072,376.072,479.859,248,480z" />
-                                  <path d="M361.136,134.864c-3.124-3.123-8.188-3.123-11.312,0L248,236.688L146.176,134.864c-3.069-3.178-8.134-3.266-11.312-0.197c-3.178,3.069-3.266,8.134-0.197,11.312c0.064,0.067,0.13,0.132,0.197,0.197L236.688,248L134.864,349.824c-3.178,3.07-3.266,8.134-0.196,11.312c3.07,3.178,8.134,3.266,11.312,0.196c0.067-0.064,0.132-0.13,0.196-0.196L248,259.312l101.824,101.824c3.178,3.07,8.242,2.982,11.312-0.196c2.995-3.1,2.995-8.016,0-11.116L259.312,248l101.824-101.824C364.259,143.052,364.259,137.988,361.136,134.864z" />
+                                  <g>
+                                    <path d="M248,0C111.033,0,0,111.033,0,248s111.033,248,248,248s248-111.033,248-248C495.841,111.099,384.901,0.159,248,0z M248,480C119.87,480,16,376.13,16,248S119.87,16,248,16s232,103.87,232,232C479.859,376.072,376.072,479.859,248,480z" />
+                                    <path d="M361.136,134.864c-3.124-3.123-8.188-3.123-11.312,0L248,236.688L146.176,134.864c-3.069-3.178-8.134-3.266-11.312-0.197c-3.178,3.069-3.266,8.134-0.197,11.312c0.064,0.067,0.13,0.132,0.197,0.197L236.688,248L134.864,349.824c-3.178,3.07-3.266,8.134-0.196,11.312c3.07,3.178,8.134,3.266,11.312,0.196c0.067-0.064,0.132-0.13,0.196-0.196L248,259.312l101.824,101.824c3.178,3.07,8.242,2.982,11.312-0.196c2.995-3.1,2.995-8.016,0-11.116L259.312,248l101.824-101.824C364.259,143.052,364.259,137.988,361.136,134.864z" />
+                                  </g>
                                 </g>
                               </g>
-                            </g>
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                          </svg>
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                              <g />
+                            </svg>
+                          </button>
                         </div>
                       ) : (
                         <DropZone
@@ -435,7 +459,11 @@ export function CharityProfile({ updateMyCharityProfile }) {
                   </Col>
                 </Row>
                 <div className="text-right mt-4">
-                  <Button type="submit" className="updateCharityBtn">
+                  <Button
+                    type="submit"
+                    disabled={isProfileCompleted}
+                    className="updateCharityBtn"
+                  >
                     {!loading && <div>Save</div>}
                     {loading && <Spinner animation="border" size="sm" />}
                   </Button>

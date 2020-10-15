@@ -198,9 +198,13 @@
   min-height: 37px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
+  margin: 0;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-align: initial !important;
+  & p{
+    margin: 0;
+  }
 }
 .campaign-card {
   margin: 10px 0;
