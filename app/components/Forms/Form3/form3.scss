@@ -30,7 +30,6 @@
     flex-direction: column;
     padding: 0 120px;
     flex-grow: 1;
-    margin: 0 auto;
 
     @include respond-to(largeDesktop) {
       // css code here

@@ -45,6 +45,12 @@ function Form4({ id, statusId, values, ...props }) {
         console.log(error);
       });
   }
+
+  function goToPreviewPage() {
+    const url = `http://localhost:3000/campaignView/${id}`;
+    window.open(url, '_blank');
+  }
+
   const isDisabled =
     user.isCharity &&
     values.fundraiser === 'charity' &&
@@ -100,9 +106,9 @@ function Form4({ id, statusId, values, ...props }) {
 
         <div className='campaignsBtnForm4Div'>
           <div className="campaignBtnsForm4">
-            <Link to={`/campaignView/${id}`}>
-              <Button className="editCampaignBtn">Preview</Button>
-            </Link>
+
+            <Button onClick={goToPreviewPage} className="editCampaignBtn">Preview</Button>
+
             {statusId !== '' && statusId !== 6 ? (
               <Link to="/">
                 <Button className="viewCampaignBtn">Update</Button>

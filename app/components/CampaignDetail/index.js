@@ -26,6 +26,7 @@ function CampaignDetail({ ...props }) {
   const [youtubeId, setYoutubeId] = React.useState('');
   const [campaignDetail, setCampaignDetail] = useState();
 
+
   function backFunction() {
     props.history.goBack();
 
@@ -36,7 +37,7 @@ function CampaignDetail({ ...props }) {
     var match = videoURL.match(regExp);
 
     if (match && match[2].length == 11) {
-      console.log(match[2])
+
       setYoutubeId(match[2]);
     }
   }

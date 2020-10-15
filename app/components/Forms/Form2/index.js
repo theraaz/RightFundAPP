@@ -96,16 +96,7 @@ const Form2 = ({
             </div>
             <Form.Row>
               <Col>
-                {/* <Form.Check
-                  type="checkbox"
-                  className="remberMeLabel"
-                  label="Yes, this campaign is zakat eligible."
-                  value={values.zakatEligible}
-                  checked={values.zakatEligible}
-                  onChange={e =>
-                    setFieldValue('zakatEligible', e.target.checked)
-                  }
-                /> */}
+
 
 
                 <FormControlLabel
@@ -162,12 +153,13 @@ const Form2 = ({
             isInvalid={errors.video}
             value={values.video}
             name="video"
-            placeholder="Video Link"
+            placeholder="Video Link (Youtube only)"
             className="controlForm"
             onChange={setVideo}
           />
-
-          <iframe width="100%" style={{ marginTop: '10px' }} height="315" src={`//www.youtube.com/embed/${getVideoId(values.video)}`} frameborder="0" allowfullscreen></iframe>
+          {values.video != '' ?
+            <iframe width="100%" style={{ marginTop: '10px' }} height="315" src={`//www.youtube.com/embed/${getVideoId(values.video)}`} frameborder="0" allowfullscreen></iframe>
+            : ''}
 
           <Form.Group>
 
