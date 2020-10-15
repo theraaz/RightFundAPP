@@ -55,3 +55,10 @@ export const isCharityProfileInComplete = myCharityProfile => {
 
   return bool;
 };
+export function RemoveHTMLTags(html, limit) {
+  let regX = /(<([^>]+)>)/gi;
+  let converted = html?.replace(regX, '');
+  return limit && converted?.length > limit
+    ? converted?.substring(0, limit)
+    : converted;
+}

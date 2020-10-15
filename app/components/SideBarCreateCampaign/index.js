@@ -10,12 +10,14 @@ import Form3 from '../Forms/Form3/index';
 import Form4 from '../Forms/Form4/index';
 import { createCampaign, updateCampaign } from '../../utils/crud/campain.crud';
 import { shallowEqual, useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 
 const SideBarCreateCampaign = editCampaignData => {
   const [activeLink, setActiveLink] = useState(0);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [campaignId, setCampaignId] = useState('');
   const [loading, setLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const { myCharityProfile, user } = useSelector(
     ({ charity, auth }) => ({
       myCharityProfile: charity.myCharityProfile,
@@ -35,13 +37,22 @@ const SideBarCreateCampaign = editCampaignData => {
       }
     });
   };
-
+  const showAlert = (variant, message) => {
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
+    });
+  };
   const onSubmit = async values => {
     console.log('values', values);
     setLoading(true);
     if (activeLink === 1) {
       let titleImage = '';
-      if (selectedFiles[0] !== undefined || values.base64 !== '') {
+      if (
+        selectedFiles[0] !== undefined ||
+        (values.base64 && values.base64 !== '')
+      ) {
         titleImage = await getBase64(values.base64 || false, selectedFiles[0]);
       }
       const data = {
@@ -56,7 +67,9 @@ const SideBarCreateCampaign = editCampaignData => {
           setActiveLink(2);
         })
         .catch(error => {
-          console.log(error);
+          console.log(error.response);
+          setLoading(false);
+          showAlert('error', 'Something Went Wrong!, try again!');
         });
     } else if (activeLink === 2) {
       setLoading(false);
@@ -99,7 +112,7 @@ const SideBarCreateCampaign = editCampaignData => {
         })
         .catch(err => {
           setLoading(false);
-          console.log(err);
+          showAlert('error', 'Something Went Wrong!, try again!');
         });
     }
   };
@@ -128,14 +141,14 @@ const SideBarCreateCampaign = editCampaignData => {
         errors.date = 'Select date';
       } else if (!values.categories) {
         errors.categories = 'Required';
-      } 
+      }
     }
     // if (activeLink === 1) {
-      // if (!values.editorValue) {
-      //   errors.editorValue = 'Required';
-      // } else if (values.editorValue < 5) {
-      //   errors.editorValue = 'Enter Description';
-      // }
+    // if (!values.editorValue) {
+    //   errors.editorValue = 'Required';
+    // } else if (values.editorValue < 5) {
+    //   errors.editorValue = 'Enter Description';
+    // }
     // }
     // if (!values.email) {
     //   errors.email = 'Required';
