@@ -68,7 +68,7 @@ function Form4({ id, statusId, ...props }) {
           </Link> :
             <Button className="viewCampaignBtn" onClick={publishCampaign}> Publish </Button>
           } */}
-          {statusId != "" && statusId != 6 ? <Link to="/">
+          {statusId != "" && statusId !== 6 ? <Link to="/">
             <Button className="viewCampaignBtn" >Update
             </Button>
           </Link> : <Button className="viewCampaignBtn" onClick={publishCampaign}> Publish </Button>}

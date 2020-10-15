@@ -51,9 +51,9 @@ const Form2 = ({
 
 
   function getVideoId(video) {
-    let id = ''
+    let id = '';
     var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    var match = video.match(regExp);
+    var match = video ? video.match(regExp) : '';
 
     if (match && match[2].length == 11) {
       console.log(match[2])

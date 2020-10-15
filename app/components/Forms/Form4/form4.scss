@@ -1,19 +1,35 @@
+@import 'App/styles/mixin.scss';
+
 .main-form4 {
   text-align: center;
   margin: 30px 0 0 0;
   min-height: 400px;
   position: relative;
+  display: flex;
+  flex-direction: column;
 
   .main-heading {
     padding: 0 143px;
-    margin-bottom: 30px;
+
+    @include respond-to(largeDesktop) {
+      // css code here
+      padding: 0 75px;
+    }
+    @include respond-to(smallDesktop) {
+      // css code here
+      padding: 0 35px;
+    }
+    @include respond-to(handhelds) {
+      // css code here
+      padding: 0;
+    }
   }
   .success-icon {
     display: flex;
     /* flex-direction: column; */
     justify-content: center;
     align-items: center;
-    margin: 71px 0;
+    flex-grow: 1;
 
     .icon-main {
       width: 100px;
@@ -31,10 +47,21 @@
   }
 
   .campaignsBtnForm4Div {
-    margin: 10px 20px 20px 10px;
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    margin: 10px 0 20px;
+    padding: 0 140px;
+
+    @include respond-to(largeDesktop) {
+      // css code here
+      padding: 0 75px;
+    }
+    @include respond-to(smallDesktop) {
+      // css code here
+      padding: 0 35px;
+    }
+    @include respond-to(handhelds) {
+      // css code here
+      padding: 0;
+    }
 
     .campaignBtnsForm4 {
       text-align: end;

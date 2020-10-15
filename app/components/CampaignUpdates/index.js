@@ -28,21 +28,37 @@ import TimelineContent from '@material-ui/lab/TimelineContent';
 import TimelineDot from '@material-ui/lab/TimelineDot';
 import moment from 'moment';
 import { withRouter } from 'react-router-dom';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { deleteCampaignsUpdates, getCampaignsUpdates, campaignStatusUpdate, campaignAddStatus } from '../../utils/crud/campaignStatus.crud';
 
 
 const CampaignUpdates = ({ editCampaignData, ...props }) => {
   const [editorVal, setEditorVal] = useState('');
   const token = localStorage.getItem('token');
   const [loading, setLoading] = React.useState(false);
+  const [editStatus, setEditStatus] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [allUpdateStatus, setAllUpdateStatus] = useState([]);
   const [title, setTitle] = useState('');
   const [loadingSpinner, setLoadingSpinner] = useState(false);
+  const [updateDataId, setUpdateDataId] = React.useState();
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleEditorChange = event => {
     setEditorVal(event.target.getContent());
-
   };
+
+  const handleClick = data => event => {
+    setAnchorEl(event.currentTarget);
+
+    setUpdateDataId(data);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
 
   const handleClickVariant = (variant, message) => {
     console.log(variant);
@@ -56,23 +72,18 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
 
   function getUpdates() {
     setLoadingSpinner(true);
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
-    fetch(`${process.env.baseURL}/campaignStatus/campaign/${props.match.params.id}`, requestOptions)
-      .then(response => response.json())
-      .then(user => {
-        setLoadingSpinner(false);
-        setAllUpdateStatus(user.response.data.res);
-        console.log(user.response.data.res);
+    getCampaignsUpdates(props.match.params.id)
+      .then(({ data, status }) => {
+        if (status == 200) {
+          setLoadingSpinner(false);
+          setAllUpdateStatus(data.response.data.res);
+        }
       })
       .catch(error => {
+        setLoadingSpinner(false);
         console.log(error);
       });
+
   }
 
   useEffect(() => {
@@ -106,38 +117,66 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
 
   function addUpdates() {
     setLoading(true);
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      }, body: JSON.stringify({
-        description: editorVal,
-        campaignId: props.match.params.id,
-      }),
-    };
+    if (editStatus) {
+      campaignStatusUpdate(editorVal, updateDataId.id)
+        .then(({ data, status }) => {
+          console.log('edit campaign', status, data);
+          if (status == 200) {
+            setLoading(false);
+            handleClickVariant('success', data.response.message);
+            tinymce.activeEditor.setContent('');
+            getUpdates();
+          }
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log(error);
+        });
+    }
+    else {
+      campaignAddStatus(props.match.params.id, editorVal)
+        .then(({ data, status }) => {
+          console.log('add campaign', status, data);
+          if (status == 200) {
+            setLoading(false);
+            handleClickVariant('success', data.response.message);
+            tinymce.activeEditor.setContent('');
+            getUpdates();
+          }
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log(error);
+        });
+    }
 
-    fetch(
-      `${process.env.baseURL}/campaignStatus`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(user => {
-        setLoading(false);
-        if (user.statusCode == 200) {
-          handleClickVariant('success', user.response.message);
-          setEditorVal('');
+
+  }
+
+
+
+
+  function edit(data) {
+    handleClose();
+    setEditStatus(true);
+    tinymce.activeEditor.setContent(updateDataId.description);
+  }
+
+  function deleteupdateStatus() {
+    handleClose();
+    deleteCampaignsUpdates(updateDataId.id)
+      .then(({ data, status }) => {
+        console.log('del campaign', status, data);
+        if (status == 200) {
+          handleClickVariant('success', data.response.message);
           getUpdates();
-        } else {
-          handleClickVariant('error', user.response.message);
         }
-        console.log(user);
       })
       .catch(error => {
-        setLoading(false);
         console.log(error);
       });
   }
+
 
   return (
     <div>
@@ -146,7 +185,7 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
         <TinyMCE
           placeholder="Updates"
           className="editorTiny"
-
+          // content={updateData}
           config={{
             plugins: 'image code',
             toolbar: 'undo redo | bold italic | alignleft aligncenter alignright | link image | code',
@@ -199,8 +238,7 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
               input.click();
             },
           }}
-          name="editorValue"
-          value={editorVal}
+          // value={updateData}
           onChange={handleEditorChange}
         />
         <div className="addUpdate">
@@ -215,7 +253,7 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
         color: '#f15a24', position: 'relative',
         left: '50%'
       }} animation="border" size="lg" />}{' '}
-      
+
       {
         allUpdateStatus.map(data => (
           <Timeline key={data.id}>
@@ -229,8 +267,71 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
                   <h3>{title}</h3>
                   <span>
                     {moment(data.updatedAt).fromNow()}
+                    <span className="statusUpdatesIcon" onClick={handleClick(data)} >
+                      <svg width="18px" height="18px" version="1.1" id="Layer_1" viewBox="0 0 512 512">
+                        <g>
+                          <g>
+                            <g>
+                              <path d="M256,192c-35.292,0-64,28.708-64,64s28.708,64,64,64s64-28.708,64-64S291.292,192,256,192z M256,298.667     c-23.521,0-42.667-19.135-42.667-42.667s19.146-42.667,42.667-42.667s42.667,19.135,42.667,42.667S279.521,298.667,256,298.667z" />
+                              <path d="M256,384c-35.292,0-64,28.708-64,64c0,35.292,28.708,64,64,64s64-28.708,64-64C320,412.708,291.292,384,256,384z      M256,490.667c-23.521,0-42.667-19.135-42.667-42.667s19.146-42.667,42.667-42.667s42.667,19.135,42.667,42.667     S279.521,490.667,256,490.667z" />
+                              <path d="M256,128c35.292,0,64-28.708,64-64S291.292,0,256,0s-64,28.708-64,64S220.708,128,256,128z M256,21.333     c23.521,0,42.667,19.135,42.667,42.667S279.521,106.667,256,106.667S213.333,87.531,213.333,64S232.479,21.333,256,21.333z" />
+                            </g>
+                          </g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                        <g>
+                        </g>
+                      </svg>
+                    </span>
+
                   </span>
                 </div>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                  getContentAnchorEl={null}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                  }}
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'center',
+                  }}
+                >
+                  <MenuItem onClick={() => edit(data)}>Edit</MenuItem>
+                  <MenuItem onClick={deleteupdateStatus}>Delete</MenuItem>
+                </Menu>
                 <Card.Text
                   className="descriptionCampaignUpdates"
                   dangerouslySetInnerHTML={{ __html: data.description }}
