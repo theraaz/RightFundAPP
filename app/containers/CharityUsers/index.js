@@ -1,6 +1,6 @@
 /**
  *
- * TeamsMembers
+ * CharityUsers
  *
  */
 
@@ -30,11 +30,11 @@ import { Formik } from 'formik';
 import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik';
 import {
   createCharityUser,
-  getAllMyCharities,
+  getCharityUsers,
 } from '../../utils/crud/charity.crud';
 import { useSnackbar } from 'notistack';
 import { withRouter } from 'react-router-dom';
-export function TeamsMembers({ history }) {
+export function CharityUsers({ history, match }) {
   const { charity } = useSelector(
     ({ charity }) => ({
       charity: charity.myCharityProfile,
@@ -50,18 +50,23 @@ export function TeamsMembers({ history }) {
   const [totalPages, setTotalPages] = useState(0);
   const { enqueueSnackbar } = useSnackbar();
 
+  console.log(match);
   useEffect(() => {
-    setLoading(true);
-    getAllMyCharities({ pageNo, perPage })
-      .then(({ data }) => {
-        setLoading(false);
-        setMyCharities(data?.response?.data?.res || []);
-        setTotalPages(data?.response?.data?.count || 0);
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log(error.response);
-      });
+    if (!match?.params?.charityId) {
+      history.push('/team-members');
+    } else {
+      setLoading(true);
+      getCharityUsers({ pageNo, perPage, charityId: match?.params?.charityId })
+        .then(({ data }) => {
+          setLoading(false);
+          setMyCharities(data?.response?.data?.res || []);
+          setTotalPages(data?.response?.data?.count || 0);
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log(error.response);
+        });
+    }
   }, [pageNo, perPage]);
   const showAlert = (variant, message) => {
     // variant could be success, error, warning, info, or default
@@ -119,13 +124,13 @@ export function TeamsMembers({ history }) {
   return (
     <Layout>
       <Helmet>
-        <title>Team Members</title>
-        <meta name="description" content="Description of TeamsMembers" />
+        <title>Charity Users</title>
+        <meta name="description" content="List of All users in Charity" />
       </Helmet>
       <Card className="dataCard shadow mb-5 bg-white">
         <Card.Header style={{ background: 'transparent' }}>
           <Card.Title className="campaignHeader">
-            <span style={{ marginTop: '8px' }}>Team Members</span>
+            <span style={{ marginTop: '8px' }}>Charity Users</span>
 
             <div className="campaignHeader1 d-flex flex-column flex-sm-row">
               <Button onClick={openModal} className="campaignBtn">
@@ -140,7 +145,7 @@ export function TeamsMembers({ history }) {
             {loading ? (
               <LoadingComponent height={150} />
             ) : myCharities.length === 0 ? (
-              <EmptyComponent height={150} message="No Charities Found!" />
+              <EmptyComponent height={150} message="No Members Found!" />
             ) : (
               <div className="tableMain" style={{ backgroundColor: 'white' }}>
                 <Row className="tableRow">
@@ -254,7 +259,7 @@ export function TeamsMembers({ history }) {
   );
 }
 
-TeamsMembers.propTypes = {
+CharityUsers.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
@@ -273,4 +278,4 @@ export default compose(
   withConnect,
   withRouter,
   memo,
-)(TeamsMembers);
+)(CharityUsers);

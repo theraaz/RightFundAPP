@@ -5,6 +5,7 @@ import HomePage from 'containers/HomePage/Loadable';
 import MyProfile from 'containers/MyProfile/Loadable';
 import CharityProfile from 'containers/CharityProfile/Loadable';
 import TeamMembers from 'containers/TeamsMembers/Loadable';
+import CharityUsers from 'containers/CharityUsers/Loadable';
 import LoginPage from 'containers/LoginPage/Loadable';
 import Signup from 'containers/Singup/Loadable';
 import forgetPass from 'containers/ForgetPassword/Loadable';
@@ -41,7 +42,12 @@ export default function App() {
         <AuthRoute exact path="/" component={HomePage} />
         <AuthRoute exact path="/profile" component={MyProfile} />
         <AuthRoute exact path="/charity-profile" component={CharityProfile} />
-        <AuthRoute exact path="/teams" component={TeamMembers} />
+        <AuthRoute exact path="/team-members" component={TeamMembers} />
+        <AuthRoute
+          exact
+          path="/team-members/:charityId"
+          component={CharityUsers}
+        />
         {/* {!localStorage.getItem('token') && <Route path="/login" component={LoginPage} exact />} */}
         <LoginRoute exact path="/login" component={LoginPage} />
         <LoginRoute exact path="/signup" component={Signup} />

@@ -32,6 +32,8 @@ import {
   closeCampaignStatus,
 } from '../../utils/crud/myCampaigns';
 import { RemoveHTMLTags } from '../../utils/helper';
+import LoadingComponent from '../LoadingComponent';
+import EmptyComponent from '../EmptyComponent';
 
 const profileImg = require('../../images/placeholder.png');
 
@@ -272,19 +274,9 @@ const MyCampaigns = ({ ...props }) => {
         <Card.Body>
           <Container>
             {loading ? (
-              <div
-                className="d-flex align-items-center justify-content-center"
-                style={{ height: 200, color: '#f15a24' }}
-              >
-                <Spinner animation={'border'} />
-              </div>
+              <LoadingComponent />
             ) : campaign?.length === 0 ? (
-              <div
-                className="d-flex justify-content-center align-items-center"
-                style={{ height: 200, fontSize: 20 }}
-              >
-                No Campaign Found!
-              </div>
+              <EmptyComponent message={'No Campaign Found!'} />
             ) : (
               <>
                 <Row>
