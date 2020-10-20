@@ -19,7 +19,7 @@ import 'sanitize.css/sanitize.css';
 import { SnackbarProvider } from 'notistack';
 // Import root app
 import App from 'containers/App';
-
+// import './styles/main.scss';
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 

@@ -10,6 +10,15 @@
     .tableHeader {
       color: #f15a24;
       font-size: 14px;
+      tr{
+        background-color: #fff !important;
+      }
+    }
+    tr:nth-of-type(odd){
+      background-color: #f9f9f9;
+    }
+    tr:nth-of-type(even){
+      background-color: #fcfcfc;
     }
   }
 
@@ -29,7 +38,7 @@
   }
   .tableRow {
     margin: 0 !important;
-    background-color: #f0f0f0;
+    background-color: #fcfcfc;
     display: flex;
     justify-content: space-between;
     padding: 15px 20px 10px;
@@ -59,7 +68,12 @@
     }
   }
 }
-
+.table-row__hover{
+  &:hover{
+    cursor: pointer;
+    background-color: darken(#f9f9f9, 1%) !important;
+  }
+}
 .paginatorDonationdiv {
   padding: 10px 0;
   display: flex;
