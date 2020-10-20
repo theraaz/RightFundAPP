@@ -5,8 +5,9 @@
 }
 
 .card-header-main {
-  margin-bottom: 15px;
+  // margin-bottom: 15px;
   min-height: 223px;
+  height: 100%;
   /* text-align: center; */
   justify-content: center;
   .compaignData {
@@ -32,16 +33,22 @@
     .editIconDiv {
       background-color: #f15a24;
       position: absolute;
-      padding: 4px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       border: 5px solid white;
-      right: 29px;
-      top: 24px;
+      right: 0;
+      top: 15px;
+      padding: 4px;
       cursor: pointer;
       z-index: 1;
       .editIcon {
         color: white;
       }
+    }
+    .userImgMain {
+      display: flex;
+      flex-direction: column;
     }
 
     .sub-card-img {
@@ -72,10 +79,24 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-
+      padding-top: 10px;
       vertical-align: middle;
       position: relative;
     }
+
+    .card-text {
+      margin-bottom: 1.5px !important;
+    }
+  }
+
+  .bioText {
+    min-height: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    margin: 0;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-align: initial !important;
   }
 
   .table-col1 {
@@ -202,7 +223,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-align: initial !important;
-  & p{
+  & p {
     margin: 0;
   }
 }
@@ -512,7 +533,7 @@
 }
 
 .give-card__media {
-  max-width: 230px;
+  min-width: 230px;
   height: 130px;
 
   @include respond-to(handhelds) {

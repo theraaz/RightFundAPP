@@ -110,26 +110,6 @@ const Header = ({ children, title, ...props }) => {
             </Dropdown.Menu>
           </Dropdown>
 
-          {/* <Title style={{ margin: '7px 10px' }} onClick={handleClick}>
-            {firstName} {lastName}
-          </Title>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            getContentAnchorEl={null}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-            transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-          >
-            <MenuItem onClick={logout}>
-              <Link className="logout" to="/login">
-                Logout
-              </Link>
-            </MenuItem>
-          </Menu> */}
-
           <div className="profileImg">
             <Image
               src={user?.image || profile}
@@ -143,48 +123,6 @@ const Header = ({ children, title, ...props }) => {
         <div className="container">
           <Heading>{title}</Heading>
           <Description>Welcome to Right Funds</Description>
-
-          {/* <div className='backButtons'>
-          <div >
-            <svg version="1.1" id="Capa_1" x="0px" y="0px" width="15" height="15" viewBox="0 0 268.833 268.833" >
-              <g>
-                <path d="M256.333,121.916H42.679l58.659-58.661c4.882-4.882,4.882-12.796,0-17.678c-4.883-4.881-12.797-4.881-17.678,0l-79.998,80   c-4.883,4.882-4.883,12.796,0,17.678l80,80c2.439,2.439,5.64,3.661,8.839,3.661s6.397-1.222,8.839-3.661   c4.882-4.882,4.882-12.796,0-17.678l-58.661-58.661h213.654c6.903,0,12.5-5.598,12.5-12.5   C268.833,127.513,263.236,121.916,256.333,121.916z" />
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-              <g>
-              </g>
-            </svg>
-            <span>Back</span></div>
-
-        </div> */}
-
           {children}
         </div>
       </div>

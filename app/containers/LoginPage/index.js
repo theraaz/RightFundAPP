@@ -70,8 +70,6 @@ export function LoginPage(props) {
 
       login(email, password)
         .then(({ data, status }) => {
-          console.log('res', data.response?.data);
-          console.log('status', status);
           setLoading(false);
           if (status === 200) {
             handleClickVariant('success', data.response.message);
@@ -85,6 +83,7 @@ export function LoginPage(props) {
                 token: data.response?.data?.token,
                 user: data.response?.data?.res,
               });
+              console.log(data.response?.data?.res);
               localStorage.setItem('token', data.response.data.token);
               props.history.push('/');
             }

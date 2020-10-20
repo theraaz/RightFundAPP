@@ -129,11 +129,11 @@ export function AllDonations() {
           {!loadingSpinner && campaignsDonation && totalDonations === 0 ? (
             <h3>There is no Donations for all campaigns</h3>
           ) : (
-            <>
-              <div className="tableMain" style={{ backgroundColor: 'white' }}>
-                <Row className="tableRow">
-                  <h5 className="DonationHeading">Donations</h5>
-                  {/* <div className="searchBar">
+              <>
+                <div className="tableMain" style={{ backgroundColor: 'white' }}>
+                  <Row className="tableRow">
+                    <h5 className="DonationHeading">Donations</h5>
+                    {/* <div className="searchBar">
                       <svg
                         version="1.1"
                         id="Capa_1"
@@ -168,80 +168,80 @@ export function AllDonations() {
                         onChange={filterData}
                       />
                     </div> */}
-                </Row>
+                  </Row>
 
-                <Table responsive striped size="md" className="table1">
-                  <thead className="tableHeader">
-                    <tr>
-                      <th>Campaign Name</th>
-                      <th>Donner Name</th>
-                      <th>Email</th>
-                      <th>Gift Aid Enabled</th>
-                      <th>Date</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody className="tableBody">
-                    {campaignsDonation.map((data, i) => (
-                      <tr key={data.id || i}>
-                        <td>{data.campaignName}</td>
-                        <td>{data.DonarName}</td>
-                        <td>{data.DonarEmail}</td>
-
-                        <td>{data.giftAid ? 'Yes' : 'No'}</td>
-                        <OverlayTrigger
-                          key="bottom"
-                          placement="bottom"
-                          overlay={
-                            <Popover id="popover-basic">
-                              <Popover.Content
-                                style={{
-                                  color: '#f15a24',
-                                  textAlign: 'center',
-                                }}
-                              >
-                                <div>{formatHHMM(data.donationDate)}</div>
-                                {/* <div>{data.computedDateCreatedAt}</div> */}
-                              </Popover.Content>
-                            </Popover>
-                          }
-                        >
-                          <td>{formatDate(data.donationDate)}</td>
-                        </OverlayTrigger>
-                        <td className="tableAmount">
-                          {data.donationSymbol} {data.donationAmount}
-                        </td>
+                  <Table responsive="md" striped size="md" className="table1">
+                    <thead className="tableHeader">
+                      <tr>
+                        <th>Campaign Name</th>
+                        <th>Donner Name</th>
+                        <th>Email</th>
+                        <th>Gift Aid Enabled</th>
+                        <th>Date</th>
+                        <th>Amount</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </Table>
-              </div>
-              <div className="paginatorDonationdiv">
-                <div className="paginatorPerSize">
-                  <span>Per Page</span>
-                  <Form.Control
-                    as="select"
-                    className="paginatorPerPage"
-                    onChange={PerPage}
-                  >
-                    <option className="paginatorPerPageOption" value="10">
-                      10
-                    </option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                  </Form.Control>
-                </div>
+                    </thead>
+                    <tbody className="tableBody">
+                      {campaignsDonation.map((data, i) => (
+                        <tr key={data.id || i}>
+                          <td>{data.campaignName}</td>
+                          <td>{data.DonarName}</td>
+                          <td>{data.DonarEmail}</td>
 
-                <Pagination
-                  count={totalPages}
-                  classes={{ ul: 'paginationDonationColor' }}
-                  onChange={handleChangePage}
-                  variant="outlined"
-                  shape="rounded"
-                />
-              </div>
-            </>
-          )}
+                          <td>{data.giftAid ? 'Yes' : 'No'}</td>
+                          <OverlayTrigger
+                            key="bottom"
+                            placement="bottom"
+                            overlay={
+                              <Popover id="popover-basic">
+                                <Popover.Content
+                                  style={{
+                                    color: '#f15a24',
+                                    textAlign: 'center',
+                                  }}
+                                >
+                                  <div>{formatHHMM(data.donationDate)}</div>
+                                  {/* <div>{data.computedDateCreatedAt}</div> */}
+                                </Popover.Content>
+                              </Popover>
+                            }
+                          >
+                            <td>{formatDate(data.donationDate)}</td>
+                          </OverlayTrigger>
+                          <td className="tableAmount">
+                            {data.donationSymbol} {data.donationAmount}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+                <div className="paginatorDonationdiv">
+                  <div className="paginatorPerSize">
+                    <span>Per Page</span>
+                    <Form.Control
+                      as="select"
+                      className="paginatorPerPage"
+                      onChange={PerPage}
+                    >
+                      <option className="paginatorPerPageOption" value="10">
+                        10
+                    </option>
+                      <option value="15">15</option>
+                      <option value="20">20</option>
+                    </Form.Control>
+                  </div>
+
+                  <Pagination
+                    count={totalPages}
+                    classes={{ ul: 'paginationDonationColor' }}
+                    onChange={handleChangePage}
+                    variant="outlined"
+                    shape="rounded"
+                  />
+                </div>
+              </>
+            )}
         </Container>
       </Layout>
     </div>

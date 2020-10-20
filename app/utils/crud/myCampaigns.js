@@ -9,9 +9,10 @@ export function deleteCampaigns(campaignId) {
     return axios.delete(`${CAMPAIGN_URL}/${campaignId}`);
 }
 
-export function closeCampaignStatus(campaignId) {
+export function changeCampaignStatus(campaignId, statusId) {
+    console.log(statusId)
     return axios.put(`${CAMPAIGN_URL}/status/${campaignId}`,
-        { statusId: 8 }
+        { statusId: statusId }
 
     );
 }

@@ -1,9 +1,11 @@
 .tableMain {
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 4px;
+  overflow: auto;
 
   .table1 {
     text-align: center;
+    min-width: max-content;
 
     .tableHeader {
       color: #f15a24;
