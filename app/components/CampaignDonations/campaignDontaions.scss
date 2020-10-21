@@ -1,10 +1,10 @@
 .tableMain {
   border: 1px solid rgba(0, 0, 0, 0.125);
   border-radius: 4px;
-
+  overflow: auto;
   .table1 {
     text-align: center;
-
+    min-width: max-content;
     .tableHeader {
       color: #f15a24;
       font-size: 14px;
@@ -33,6 +33,7 @@
 
   .table thead th {
     border-bottom: none !important;
+    border-top: none !important;
   }
   .tableRow {
     margin: 0 !important;
@@ -40,7 +41,7 @@
     display: flex;
     justify-content: space-between;
     padding: 15px 20px 10px;
-
+    border-bottom: 1px solid #dee2e6 !important;
     .DonationHeading {
       // padding: 15px 20px 10px;
       font-size: 18px;
