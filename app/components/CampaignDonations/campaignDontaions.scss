@@ -20,6 +20,11 @@
     tr:nth-of-type(even){
       background-color: #fcfcfc;
     }
+    tr{
+      td{
+        vertical-align: middle;
+      }
+    }
   }
 
   .tableBody {

@@ -113,7 +113,7 @@ const Header = ({ children, title, ...props }) => {
           <div className="profileImg">
             <Image
               src={user?.image || profile}
-              style={{ borderRadius: '50px' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
               fluid
             />
           </div>

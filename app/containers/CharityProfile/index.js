@@ -97,10 +97,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
         }
       });
   };
-  const validate = (
-    values,
-    props /* only available when using withFormik */,
-  ) => {
+  const validate = values => {
     const errors = {};
     if (values.charityWeb && !isUrl(values.charityWeb)) {
       errors.charityWeb = 'Invalid!';
@@ -193,9 +190,8 @@ export function CharityProfile({ updateMyCharityProfile }) {
             validate={validate}
             onSubmit={handleSubmit}
           >
-            {({ values, handleSubmit, errors, setFieldValue }) => (
+            {({ values, handleSubmit, setFieldValue }) => (
               <form onSubmit={handleSubmit}>
-                {console.log('values', values)}
                 <Heading>Basic Info</Heading>
                 <Row>
                   <Col md={6}>
