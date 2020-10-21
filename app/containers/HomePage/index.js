@@ -3,8 +3,8 @@ import './dashboard.scss';
 import Layout from '../../components/Layout/index';
 import MyCampaigns from '../../components/MyCampaigns';
 
-export default function HomePage({ children }) {
-  const [campaignData, setCampaignData] = React.useState([]);
+export default function HomePage() {
+  const [setCampaignData] = React.useState([]);
 
   return (
     <Layout>

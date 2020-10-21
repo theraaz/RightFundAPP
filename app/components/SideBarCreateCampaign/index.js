@@ -1,18 +1,20 @@
 import React, { memo, useState } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { Row, Col, ListGroup, Container } from 'react-bootstrap/';
+import {
+  Row, Col, ListGroup, Container,
+} from 'react-bootstrap/';
 import './sideCampaign.scss';
 import { Formik } from 'formik';
+import { shallowEqual, useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 import Form1 from '../Forms/Form1/index';
 import Form2 from '../Forms/Form2/index';
 import Form3 from '../Forms/Form3/index';
 import Form4 from '../Forms/Form4/index';
 import { createCampaign, updateCampaign } from '../../utils/crud/campain.crud';
-import { shallowEqual, useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
 
-const SideBarCreateCampaign = editCampaignData => {
+const SideBarCreateCampaign = (editCampaignData) => {
   const [activeLink, setActiveLink] = useState(0);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [campaignId, setCampaignId] = useState('');
@@ -25,18 +27,16 @@ const SideBarCreateCampaign = editCampaignData => {
     }),
     shallowEqual,
   );
-  const getBase64 = (base64, file) => {
-    return new Promise((resolve, reject) => {
-      if (base64) {
-        resolve(base64);
-      } else {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      }
-    });
-  };
+  const getBase64 = (base64, file) => new Promise((resolve, reject) => {
+    if (base64) {
+      resolve(base64);
+    } else {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    }
+  });
   const showAlert = (variant, message) => {
     // variant could be success, error, warning, info, or default
     enqueueSnackbar(message, {
@@ -44,30 +44,28 @@ const SideBarCreateCampaign = editCampaignData => {
       anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
     });
   };
-  const onSubmit = async values => {
-    console.log('values', values);
+  const onSubmit = async (values) => {
     setLoading(true);
     if (activeLink === 1) {
       let titleImage = '';
       if (
-        selectedFiles[0] !== undefined ||
-        (values.base64 && values.base64 !== '')
+        selectedFiles[0] !== undefined
+        || (values.base64 && values.base64 !== '')
       ) {
         titleImage = await getBase64(values.base64 || false, selectedFiles[0]);
       }
       const data = {
         zakatEligible: values.zakatEligible,
         description: values.editorValue,
-        titleImage: titleImage,
+        titleImage,
         video: values.video,
       };
       updateCampaign(data, editCampaignData?.editCampaignData?.id || campaignId)
-        .then(res => {
+        .then(() => {
           setLoading(false);
           setActiveLink(2);
         })
-        .catch(error => {
-          console.log(error.response);
+        .catch((error) => {
           setLoading(false);
           if (error?.response?.status === 413) {
             showAlert('error', 'Image size is too large!');
@@ -81,14 +79,14 @@ const SideBarCreateCampaign = editCampaignData => {
     } else if (activeLink === 3) {
       setLoading(false);
     } else {
-      let address = {
+      const address = {
         line1: values.line1,
         line2: values.line2,
         city: values.city,
         state: values.state,
         country: values.country,
       };
-      const data = {
+      const newData = {
         title: values.campaignTitle,
         amount: values.amount,
         address: JSON.stringify(address),
@@ -102,14 +100,14 @@ const SideBarCreateCampaign = editCampaignData => {
       };
       const editData = editCampaignData?.editCampaignData
         ? {
-            titleImage: values.base64 || '',
-          }
+          titleImage: values.base64 || '',
+        }
         : {};
       const call = editCampaignData.editCampaignData
         ? updateCampaign
         : createCampaign;
       call(
-        { ...data, ...editData },
+        { ...newData, ...editData },
         editCampaignData?.editCampaignData?.id || campaignId,
       )
         .then(({ data }) => {
@@ -117,7 +115,7 @@ const SideBarCreateCampaign = editCampaignData => {
           setCampaignId(data?.response?.data?.id || '');
           setActiveLink(prevState => prevState + 1);
         })
-        .catch(err => {
+        .catch((error) => {
           setLoading(false);
           if (error?.response?.status === 413) {
             showAlert('error', 'Image size is too large!');
@@ -130,7 +128,6 @@ const SideBarCreateCampaign = editCampaignData => {
 
   const validate = (
     values,
-    props /* only available when using withFormik */,
   ) => {
     const errors = {};
     if (activeLink === 0) {
@@ -142,13 +139,7 @@ const SideBarCreateCampaign = editCampaignData => {
         errors.campaignTitle = 'Required';
       } else if (values.campaignTitle.length < 3) {
         errors.campaignTitle = 'Campaign title must be more then three letter.';
-      }
-      // else if (!values.address) {
-      //   errors.address = 'Required';
-      // } else if (values.address.length < 3) {
-      //   errors.address = 'Enter address';
-      // }
-      else if (!values.date) {
+      } else if (!values.date) {
         errors.date = 'Select date';
       } else if (!values.categories) {
         errors.categories = 'Required';
@@ -172,11 +163,10 @@ const SideBarCreateCampaign = editCampaignData => {
     return errors;
   };
 
-  const address =
-    editCampaignData?.editCampaignData?.address &&
-    editCampaignData.editCampaignData.address !== ''
-      ? JSON.parse(editCampaignData.editCampaignData.address)
-      : {};
+  const address = editCampaignData?.editCampaignData?.address
+    && editCampaignData.editCampaignData.address !== ''
+    ? JSON.parse(editCampaignData.editCampaignData.address)
+    : {};
   return (
     <div>
       <Container
@@ -194,8 +184,7 @@ const SideBarCreateCampaign = editCampaignData => {
               >
                 <ListGroup.Item
                   className="listItem"
-                  onClick={() =>
-                    editCampaignData.editCampaignData ? setActiveLink(0) : null
+                  onClick={() => editCampaignData.editCampaignData ? setActiveLink(0) : null
                   }
                 >
                   <div
@@ -232,8 +221,7 @@ const SideBarCreateCampaign = editCampaignData => {
 
                 <ListGroup.Item
                   className="listItem"
-                  onClick={() =>
-                    editCampaignData.editCampaignData ? setActiveLink(1) : null
+                  onClick={() => editCampaignData.editCampaignData ? setActiveLink(1) : null
                   }
                 >
                   <div
@@ -306,8 +294,7 @@ const SideBarCreateCampaign = editCampaignData => {
 
                 <ListGroup.Item
                   className="listItem"
-                  onClick={() =>
-                    editCampaignData.editCampaignData ? setActiveLink(3) : null
+                  onClick={() => editCampaignData.editCampaignData ? setActiveLink(3) : null
                   }
                 >
                   <div
@@ -335,7 +322,8 @@ const SideBarCreateCampaign = editCampaignData => {
                           : 'sidebartitleList'
                       }`}
                     >
-                      Campaign Status{' '}
+                      Campaign Status
+                      {' '}
                     </span>
                   </div>
                 </ListGroup.Item>
@@ -376,7 +364,9 @@ const SideBarCreateCampaign = editCampaignData => {
                 validateOnBlur={false}
                 onSubmit={onSubmit}
               >
-                {({ values, setFieldValue, errors, handleSubmit }) => (
+                {({
+                  values, setFieldValue, errors, handleSubmit,
+                }) => (
                   <form onSubmit={handleSubmit}>
                     {activeLink === 0 && (
                       <Form1

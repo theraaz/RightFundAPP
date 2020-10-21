@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /**
  *
  * Form4
@@ -7,14 +8,13 @@
 import React, { memo } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { H4 } from '../form.styles';
 import './form4.scss';
 import { Alert, Button } from 'react-bootstrap';
 import { Link, withRouter } from 'react-router-dom';
 import { shallowEqual, useSelector } from 'react-redux';
-
+import { H4 } from '../form.styles';
+import { changeCampaignStatus } from '../../../utils/crud/myCampaigns';
 function Form4({ id, statusId, values, ...props }) {
-  const token = localStorage.getItem('token');
   const { myCharityProfile, user } = useSelector(
     ({ charity, auth }) => ({
       myCharityProfile: charity.myCharityProfile,
@@ -22,26 +22,13 @@ function Form4({ id, statusId, values, ...props }) {
     }),
     shallowEqual,
   );
-  console.log(statusId);
   function publishCampaign() {
-    const requestOptions = {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-      body: JSON.stringify({
-        statusId: 7,
-      }),
-    };
-
-    fetch(`${process.env.baseURL}/campaign/status/${id}`, requestOptions)
-      .then(response => response.json())
-      .then(user => {
-        console.log(user.response.data);
+    changeCampaignStatus(id, 7)
+      .then(() => {
         props.history.push('/');
       })
       .catch(error => {
+        // eslint-disable-next-line no-console
         console.log(error);
       });
   }
@@ -58,7 +45,7 @@ function Form4({ id, statusId, values, ...props }) {
   return (
     <div>
       <div className="main-form4">
-        <Alert show={isDisabled} variant="warning" onClose={() => { }}>
+        <Alert show={isDisabled} variant="warning" onClose={() => {}}>
           Sorry your charity is not active yet, you cannot publish campaign now
         </Alert>
 
@@ -104,25 +91,26 @@ function Form4({ id, statusId, values, ...props }) {
           </div>
         </div>
 
-        <div className='campaignsBtnForm4Div'>
+        <div className="campaignsBtnForm4Div">
           <div className="campaignBtnsForm4">
-
-            <Button onClick={goToPreviewPage} className="editCampaignBtn">Preview</Button>
+            <Button onClick={goToPreviewPage} className="editCampaignBtn">
+              Preview
+            </Button>
 
             {statusId !== '' && statusId !== 6 ? (
               <Link to="/">
                 <Button className="viewCampaignBtn">Update</Button>
               </Link>
             ) : (
-                <Button
-                  disabled={isDisabled}
-                  className="viewCampaignBtn"
-                  onClick={publishCampaign}
-                >
-                  {' '}
+              <Button
+                disabled={isDisabled}
+                className="viewCampaignBtn"
+                onClick={publishCampaign}
+              >
+                {' '}
                 Publish{' '}
-                </Button>
-              )}
+              </Button>
+            )}
           </div>
         </div>
       </div>
