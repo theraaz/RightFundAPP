@@ -234,7 +234,7 @@ export function CharityUsers({ history, match }) {
               <Modal.Body>
                 <Row>
                   <Col xs="2">
-                    <label>Email:</label>
+                    <label htmlFor="a">Email:</label>
                   </Col>
                   <Col xs="10">
                     <CustomTextInputFormik

@@ -1,55 +1,24 @@
-/**
- *
- * TeamsMembers
- *
- */
-
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { connect, shallowEqual, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
-import Layout from '../../components/Layout';
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  Row,
-  Spinner,
-  Table,
-  Modal,
-} from 'react-bootstrap';
-import '../../containers/HomePage/dashboard.scss';
+import { Card, Container, Form, Table } from 'react-bootstrap';
+import '../HomePage/dashboard.scss';
 import Pagination from '@material-ui/lab/Pagination';
 import '../../components/CampaignDonations/campaignDontaions.scss';
-import LoadingComponent from '../../components/LoadingComponent';
-import EmptyComponent from '../../components/EmptyComponent';
-import { Formik } from 'formik';
-import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik';
-import {
-  createCharityUser,
-  getAllMyCharities,
-} from '../../utils/crud/charity.crud';
-import { useSnackbar } from 'notistack';
 import { withRouter } from 'react-router-dom';
 import { Tooltip } from '@material-ui/core';
+import LoadingComponent from '../../components/LoadingComponent';
+import EmptyComponent from '../../components/EmptyComponent';
+import { getAllMyCharities } from '../../utils/crud/charity.crud';
+import Layout from '../../components/Layout';
 export function TeamsMembers({ history }) {
-  const { charity } = useSelector(
-    ({ charity }) => ({
-      charity: charity.myCharityProfile,
-    }),
-    shallowEqual,
-  );
   const [loading, setLoading] = useState(false);
-  const [loadingAddMember, setLoadingAddMember] = useState(false);
-  const [showModal, setShowModal] = useState(false);
   const [myCharities, setMyCharities] = useState([]);
   const [perPage, setPerPage] = useState(10);
   const [pageNo, setPageNo] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     setLoading(true);
@@ -59,64 +28,17 @@ export function TeamsMembers({ history }) {
         setMyCharities(data?.response?.data?.res || []);
         setTotalPages(data?.response?.data?.count || 0);
       })
-      .catch(error => {
+      .catch(() => {
         setLoading(false);
-        console.log(error.response);
       });
   }, [pageNo, perPage]);
-  const showAlert = (variant, message) => {
-    // variant could be success, error, warning, info, or default
-    enqueueSnackbar(message, {
-      variant,
-      anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
-    });
-  };
   const PerPage = event => {
     setPerPage(event.target.value);
   };
   const handleChangePage = useCallback((event, value) => {
     setPageNo(value);
   }, []);
-  const openModal = () => {
-    setShowModal(true);
-  };
-  const closeModal = () => {
-    setShowModal(false);
-  };
-  const validateAddMember = values => {
-    let errors = {};
-    if (values.email?.trim() === '') {
-      errors.email = 'Required!';
-    } else if (
-      !/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-        values.email,
-      )
-    ) {
-      errors.email = 'Invalid Email!';
-    }
-    return errors;
-  };
-  const onSubmit = values => {
-    setLoadingAddMember(true);
-    createCharityUser({ ...values, charityId: charity.id })
-      .then(({ data, status }) => {
-        setLoadingAddMember(false);
 
-        if (status === 200) {
-          showAlert('success', data.response.message);
-          console.log(data);
-        } else {
-          showAlert('error', data.response.message);
-        }
-      })
-      .catch(error => {
-        setLoadingAddMember(false);
-        showAlert(
-          'error',
-          error?.response?.data?.response?.message || 'Could not add Member!',
-        );
-      });
-  };
   return (
     <Layout>
       <Helmet>
@@ -138,10 +60,6 @@ export function TeamsMembers({ history }) {
               <EmptyComponent height={150} message="No Charities Found!" />
             ) : (
               <div className="tableMain" style={{ backgroundColor: 'white' }}>
-                {/*<Row className="tableRow">*/}
-                {/*  <h5 className="DonationHeading">My Charities</h5>*/}
-                {/*</Row>*/}
-
                 <Table responsive="md" size="md" className="table1">
                   <thead className="tableHeader">
                     <tr>
