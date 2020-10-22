@@ -83,7 +83,7 @@ export function ForgetPassword(props) {
 
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>ForgetPassword</title>
         <meta name="description" content="Description of ForgetPassword" />
@@ -124,7 +124,7 @@ export function ForgetPassword(props) {
           </Form>
         </div>
       </Layout>
-    </div>
+    </>
   );
 }
 

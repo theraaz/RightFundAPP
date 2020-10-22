@@ -12,17 +12,11 @@ import { Helmet } from 'react-helmet';
 import { Formik } from 'formik';
 
 import {
-  Row,
-  Col,
   Card,
-
 } from 'react-bootstrap';
 import Layout from '../../components/Layout/index';
 import { getBankDetails, addBankDetails, updateBankDetails, getBankDetailsByCharityId } from '../../utils/crud/bankDetail.crud';
 import { useSnackbar } from 'notistack';
-import LoadingComponent from '../../components/LoadingComponent';
-import { Heading, ToggleHeader } from '../MyProfile/myProfile';
-
 import CharityBankDetailForm from '../../components/CharityBankDetailForm/index';
 export function BankDetails() {
 
@@ -37,7 +31,7 @@ export function BankDetails() {
   const { enqueueSnackbar } = useSnackbar();
   const [banksAccounts, setBanksAccounts] = React.useState([]);
   const [charityAccountsID, setCharityAccountsID] = React.useState(null);
-  const [defaultKey, setDefaultKey] = React.useState("0");
+
 
   const handleClickVariant = (variant, message) => {
     // variant could be success, error, warning, info, or default
@@ -82,10 +76,11 @@ export function BankDetails() {
   }
 
   function bankDetails() {
-    // setLoading(true);
+    setLoading(true);
     setBanksAccounts([]);
     getBankDetails()
       .then(({ data }) => {
+        console.log(data)
         setLoading(false);
         setCharityAccountsID(null)
         setBanksAccounts(data.response.data.res);
@@ -97,6 +92,7 @@ export function BankDetails() {
   }
 
   function bankDetailsByCharity(id) {
+    setLoading(true);
     setBanksAccounts([]);
     getBankDetailsByCharityId(id)
       .then(({ data }) => {

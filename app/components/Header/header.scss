@@ -1,9 +1,19 @@
+@import 'App/styles/mixin.scss';
 .header {
   display: flex;
   justify-content: space-between;
   padding: 15px 40px;
   background: white;
-
+  @include respond-to(mobile) {
+    // css code here
+    padding: 15px;
+  }
+  @include respond-to(mobile-small) {
+    // css code here
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
   .img {
     max-width: 140px;
     cursor: pointer;
@@ -72,5 +82,3 @@
   background: #f15a24;
   // position: relative;
 }
-
-
