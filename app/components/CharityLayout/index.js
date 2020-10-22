@@ -1,7 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-shadow */
-/* eslint-disable no-param-reassign */
-/* eslint-disable react/prop-types */
 /**
  *
  * CharityLayout
@@ -9,9 +5,7 @@
  */
 
 import React, { useEffect } from 'react';
-// import PropTypes from 'prop-types';
-// import styled from 'styled-components';
-import { Row, Col, Card, Image, Spinner, Alert, Button } from 'react-bootstrap';
+import { Row, Col, Card, Image, Alert, Button } from 'react-bootstrap';
 import { connect, shallowEqual, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { withRouter } from 'react-router-dom';
@@ -26,17 +20,19 @@ import '../../containers/HomePage/dashboard.scss';
 import Header from '../Header/Loadable';
 import Footer from '../Footer/Loadable';
 
-import { updateProfile } from '../../utils/crud/auth.crud';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
 
 import { isCharityProfileInComplete } from '../../utils/helper';
 import SessionExpired from '../SessionExpired';
+import PencilIcon from '../svg-icons/PencilIcon';
+import { charityActions } from '../../utils/action-creators/charity.action.creator';
+import { updateCharity } from '../../utils/crud/charity.crud';
+import ProfileLoadingOverlay from '../ProfileLoadingOverlay';
+import { getAccountDetails } from '../../utils/crud/auth.crud';
 
 const profileImg = require('../../images/placeholder.png');
 
-function CharityLayout({ children, updateUser, ...props }) {
-  const token = localStorage.getItem('token');
-
+function CharityLayout({ children, updateMyCharityProfile, ...props }) {
   const { user, myCharityProfile } = useSelector(
     ({ auth, charity }) => ({
       user: auth.user,
@@ -67,21 +63,24 @@ function CharityLayout({ children, updateUser, ...props }) {
 
       setLoading(true);
       reader.onload = e => {
-        console.log('helll pic ', e.target.result);
-
-        updateProfile({
-          image: e.target.result,
-        })
+        updateCharity(
+          {
+            image: e.target.result,
+            userPhotoId: myCharityProfile.userPhotoId,
+            constitutionDoc: myCharityProfile.userPhotoId,
+          },
+          myCharityProfile.id,
+        )
           .then(res => {
             setLoading(false);
             if (res.status === 200) {
               current.src = e.target.result;
-              updateUser({
+              updateMyCharityProfile({
                 image: current.src,
               });
               handleClickVariant(
                 'success',
-                'Profile Image Updated Successfully',
+                'Charity Image Updated Successfully',
               );
             } else {
               handleClickVariant('error', res.data.response.message);
@@ -89,7 +88,7 @@ function CharityLayout({ children, updateUser, ...props }) {
           })
           .catch(() => {
             setLoading(false);
-            handleClickVariant('error', 'Could not Update Profile Image');
+            handleClickVariant('error', 'Could not Update Charity Image');
           });
       };
       reader.readAsDataURL(file);
@@ -97,24 +96,13 @@ function CharityLayout({ children, updateUser, ...props }) {
   };
 
   useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
-
-    // Account Details
-
-    fetch(`${process.env.baseURL}/accountDetails`, requestOptions)
-      .then(response => response.json())
-      .then(user => {
-        if (user.statusCode === 200) {
-          setTotalCampaign(user.response.data.totalCampaigns);
-          setActiveCampaign(user.response.data.totalLive);
-          setGiftAid(user.response.data.giftAid);
-          setTotalRaised(user.response.data.totalRaised);
+    getAccountDetails()
+      .then(({ data, status }) => {
+        if (status === 200) {
+          setTotalCampaign(data.response.data.totalCampaigns);
+          setActiveCampaign(data.response.data.totalLive);
+          setGiftAid(data.response.data.giftAid);
+          setTotalRaised(data.response.data.totalRaised);
         } else {
           // setMessage('Something went missing, Please try again');
         }
@@ -124,7 +112,6 @@ function CharityLayout({ children, updateUser, ...props }) {
       });
   }, []);
 
-  const userAddress = user ? JSON.parse(user?.address) : '';
   return (
     <div>
       <Header
@@ -153,62 +140,17 @@ function CharityLayout({ children, updateUser, ...props }) {
 
                     <div className="userImgMain position-relative">
                       <div className="sub-card-img">
-                        {loading && (
-                          <div
-                            className="d-flex align-items-center justify-content-center position-absolute"
-                            style={{
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
-                              background: 'rgba(255,255,255,0.7)',
-                              zIndex: 0,
-                            }}
-                          >
-                            <Spinner
-                              animation="border"
-                              style={{ color: '#fafafa' }}
-                            />
-                          </div>
-                        )}
+                        {loading && <ProfileLoadingOverlay />}
 
                         <Image
                           ref={uploadedImage}
-                          src={user?.image || profileImg}
+                          src={myCharityProfile?.image || profileImg}
                           alt=""
                         />
                       </div>
                       <label htmlFor="myInputImage">
                         <div className="editIconDiv">
-                          <svg
-                            className="editIcon"
-                            version="1.1"
-                            id="Capa_1"
-                            width="20px"
-                            height="20px"
-                            viewBox="0 0 512 512"
-                          >
-                            <g>
-                              <g>
-                                <path d="M481.996,30.006C462.647,10.656,436.922,0,409.559,0c-27.363,0-53.089,10.656-72.438,30.005L50.826,316.301    c-2.436,2.436-4.201,5.46-5.125,8.779L0.733,486.637c-1.939,6.968,0.034,14.441,5.163,19.542c3.8,3.78,8.892,5.821,14.106,5.821    c1.822,0,3.66-0.25,5.463-0.762l161.557-45.891c6.816-1.936,12.1-7.335,13.888-14.192c1.788-6.857-0.186-14.148-5.189-19.167    L93.869,329.827L331.184,92.511l88.258,88.258L237.768,361.948c-7.821,7.8-7.838,20.463-0.038,28.284    c7.799,7.822,20.464,7.838,28.284,0.039l215.98-215.392C501.344,155.53,512,129.805,512,102.442    C512,75.079,501.344,49.354,481.996,30.006z M143.395,436.158L48.827,463.02l26.485-95.152L143.395,436.158z M453.73,146.575    l-5.965,5.949l-88.296-88.297l5.938-5.938C377.2,46.495,392.88,40,409.559,40c16.679,0,32.358,6.495,44.152,18.29    C465.505,70.083,472,85.763,472,102.442C472,119.121,465.505,134.801,453.73,146.575z" />
-                              </g>
-                            </g>
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                            <g />
-                          </svg>
+                          <PencilIcon size="16px" />
                         </div>
                       </label>
                     </div>
@@ -217,34 +159,14 @@ function CharityLayout({ children, updateUser, ...props }) {
                 <Col xs={12} sm={7} md={7} className="titleCol">
                   <div className="card-block card-data px-2">
                     <div className="card-title">
-                      <Title>
-                        {user?.firstName} {user?.lastName}
-                      </Title>
-                      <p className="card-text">{user?.phoneNumber}</p>
-                      <p className="card-text">{user?.email}</p>
-                      <p className="card-text bioText">
-                        {user?.bio ? user.bio : ''}
+                      <Title>{myCharityProfile?.name}</Title>
+                      <p className="card-text">{myCharityProfile?.regNo}</p>
+                      <p className="card-text text-capitalize">
+                        {myCharityProfile?.position}
                       </p>
-
-                      {userAddress && (
-                        <p>
-                          {userAddress.line1 !== ''
-                            ? `${userAddress.line1}, `
-                            : ''}
-                          {userAddress.line2 !== ''
-                            ? `${userAddress.line2}, `
-                            : ''}
-                          {userAddress.city !== ''
-                            ? `${userAddress.city}, `
-                            : ''}
-                          {userAddress.state !== ''
-                            ? `${userAddress.state}, `
-                            : ''}
-                          {userAddress.country !== ''
-                            ? userAddress.country
-                            : ''}
-                        </p>
-                      )}
+                      <p className="card-text">
+                        {myCharityProfile?.charityWeb}
+                      </p>
                     </div>
                   </div>
                 </Col>
@@ -317,6 +239,6 @@ function CharityLayout({ children, updateUser, ...props }) {
 export default withRouter(
   connect(
     null,
-    authActions,
+    { ...authActions, ...charityActions },
   )(CharityLayout),
 );

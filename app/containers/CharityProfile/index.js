@@ -154,7 +154,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
   return (
     <CharityLayout>
       <Helmet>
-        <title>CharityProfileIcon</title>
+        <title>Charity Profile</title>
         <meta name="description" content="Description of CharityProfileIcon" />
       </Helmet>
       <Card className="dataCard shadow mb-5 bg-white">
