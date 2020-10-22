@@ -16,13 +16,13 @@ import Select from '@material-ui/core/Select';
 import { Heading } from '../MyProfile/myProfile';
 import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik';
 import BootstrapInput from '../../components/inputs/BootstrapInput';
-import Layout from '../../components/Layout';
 import './charity-profile.scss';
 import DropZone from '../../components/DropZone';
 import { updateCharity } from '../../utils/crud/charity.crud';
 import { charityActions } from '../../utils/action-creators/charity.action.creator';
 import DocumentIcon from '../../components/svg-icons/DocumentIcon';
 import { isCharityProfileInComplete } from '../../utils/helper';
+import CharityLayout from '../../components/CharityLayout';
 export function CharityProfile({ updateMyCharityProfile }) {
   const { myCharityProfile } = useSelector(
     ({ charity }) => ({
@@ -152,7 +152,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
     });
 
   return (
-    <Layout>
+    <CharityLayout>
       <Helmet>
         <title>CharityProfileIcon</title>
         <meta name="description" content="Description of CharityProfileIcon" />
@@ -473,7 +473,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
           </Formik>
         </Card.Body>
       </Card>
-    </Layout>
+    </CharityLayout>
   );
 }
 
