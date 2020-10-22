@@ -222,8 +222,8 @@ export function MyProfile({ updateUser }) {
                           name="bio"
                           placeholder="Enter Bio"
                           as="textarea"
-                          rows={5}
-                          maxlength="250"
+                          rows={4}
+                          maxLength="250"
                         />
                         <p className='bioLimit'>Limit {values.bio.length}/250  </p>
                       </FormGroup>

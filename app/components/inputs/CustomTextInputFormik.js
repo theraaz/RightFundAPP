@@ -9,7 +9,7 @@ const CustomTextInputFormik = ({
   type = 'text',
   as = 'input',
   rows = '1',
-  maxlength = "",
+  maxLength = "",
   className = '',
   disabled = false,
 }) => (
@@ -25,7 +25,7 @@ const CustomTextInputFormik = ({
             as={as}
             className={className}
             rows={rows}
-            maxlength={maxlength}
+            maxLength={maxLength}
             disabled={disabled}
           />
           <ErrorMessage name={field.name} render={FormErrorMessage} />

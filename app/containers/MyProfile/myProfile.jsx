@@ -35,3 +35,16 @@ export const Errors = styled.div`
   font-size: 12px;
   left: 6px;
 `;
+
+export const ToggleHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #f15a24;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  margin-bottom: 15px;
+`;
+
+export const collaspeToggleIcon = styled.span`
+  font-size: 25px;
+`;
