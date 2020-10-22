@@ -332,7 +332,7 @@ export function Singup(props) {
                         }
                         input={<BootstrapInput />}
                       >
-                        <MenuItem value="select">Select Position</MenuItem>
+                        <MenuItem value="select">Select Role</MenuItem>
                         <MenuItem value="trustee">Trustee</MenuItem>
                         <MenuItem value="employee">Employee</MenuItem>
                       </Select>

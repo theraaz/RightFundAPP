@@ -340,7 +340,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
                 )}
                 <Row>
                   <Col md={6}>
-                    <Heading>User Photo</Heading>
+                    <Heading>Photo ID</Heading>
                     <div style={{ position: 'relative' }} className="mt-3">
                       {values.userPhotoId ? (
                         <div className="base64ImageHandling">

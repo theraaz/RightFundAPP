@@ -33,19 +33,11 @@ export function LoginPage(props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [remeberme, setRemeberMe] = useState(false);
-  const [termsConditon, setTermsCondition] = useState(false);
   const [validated, setValidated] = useState(false);
   const [loading, setLoading] = useState(false);
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
-  }
-
-  function resetField() {
-    setEmail('');
-    setPassword('');
-    setRemeberMe(false);
   }
 
   const handleClickVariant = (variant, message) => {
@@ -73,7 +65,7 @@ export function LoginPage(props) {
           setLoading(false);
           if (status === 200) {
             handleClickVariant('success', data.response.message);
-            if (data.response?.data.res.statusId.name === "NOTACTIVE") {
+            if (data.response?.data.res.statusId.name === 'NOTACTIVE') {
               props.login({
                 user: data.response?.data?.res,
               });
@@ -83,7 +75,6 @@ export function LoginPage(props) {
                 token: data.response?.data?.token,
                 user: data.response?.data?.res,
               });
-              console.log(data.response?.data?.res);
               localStorage.setItem('token', data.response.data.token);
               props.history.push('/');
             }
@@ -94,7 +85,6 @@ export function LoginPage(props) {
         .catch(error => {
           console.log(error);
         });
-
     }
   }
 
@@ -208,7 +198,6 @@ export function LoginPage(props) {
                   </Link>
                 </Col>
               </Form.Row>
-
             </Form.Group>
 
             <Button block bssize="large" type="submit" className="submitBtn">
