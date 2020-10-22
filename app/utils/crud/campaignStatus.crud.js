@@ -14,7 +14,6 @@ export function campaignStatusUpdate(editorVal, statusId) {
         {
             description: editorVal,
         }
-
     );
 }
 

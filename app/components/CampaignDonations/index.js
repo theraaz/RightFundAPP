@@ -20,6 +20,7 @@ import {
 import Pagination from '@material-ui/lab/Pagination';
 
 import { withRouter } from 'react-router-dom';
+import EmptyComponent from '../EmptyComponent';
 
 
 import './campaignDontaions.scss';
@@ -115,7 +116,7 @@ function CampaignDonations({ ...props }) {
         left: '45%',
         top: '55%'
       }} animation="border" size="lg" />}{' '}
-      {campaignsDonation && totalDonations === 0 ? <h3>There is no Donations for this campaign</h3> :
+      {campaignsDonation && totalDonations === 0 ?  <EmptyComponent message={'There is no donations for this campaigns!'} /> :
         <div>
           <div className='tableMain'>
             {campaignsDonation && campaignsDonation.length > 0 ? <>

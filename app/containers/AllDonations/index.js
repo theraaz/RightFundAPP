@@ -24,6 +24,7 @@ import Pagination from '@material-ui/lab/Pagination';
 
 import Layout from '../../components/Layout/index';
 import '../../components/CampaignDonations/campaignDontaions.scss';
+import EmptyComponent from '../../components/EmptyComponent';
 
 export function AllDonations() {
   const token = localStorage.getItem('token');
@@ -126,14 +127,13 @@ export function AllDonations() {
               size="lg"
             />
           )}{' '}
-          {!loadingSpinner && campaignsDonation && totalDonations === 0 ? (
-            <h3>There is no Donations for all campaigns</h3>
-          ) : (
-              <>
-                <div className="tableMain" style={{ backgroundColor: 'white' }}>
-                  <Row className="tableRow">
-                    <h5 className="DonationHeading">Donations</h5>
-                    {/* <div className="searchBar">
+          {!loadingSpinner && campaignsDonation ? (
+
+            <>
+              <div className="tableMain" style={{ backgroundColor: 'white', boxShadow: '0px 0px 9px #eaeaea' }}>
+                <Row className="tableRow">
+                  <h5 className="DonationHeading">Donations</h5>
+                  {/* <div className="searchBar">
                       <svg
                         version="1.1"
                         id="Capa_1"
@@ -168,8 +168,8 @@ export function AllDonations() {
                         onChange={filterData}
                       />
                     </div> */}
-                  </Row>
-
+                </Row>
+                {totalDonations === 0 ? <EmptyComponent message={'There is no donations for all campaigns!'} /> :
                   <Table responsive="md" striped size="md" className="table1">
                     <thead className="tableHeader">
                       <tr>
@@ -215,33 +215,35 @@ export function AllDonations() {
                       ))}
                     </tbody>
                   </Table>
-                </div>
-                <div className="paginatorDonationdiv">
-                  <div className="paginatorPerSize">
-                    <span>Per Page</span>
-                    <Form.Control
-                      as="select"
-                      className="paginatorPerPage"
-                      onChange={PerPage}
-                    >
-                      <option className="paginatorPerPageOption" value="10">
-                        10
+                }
+              </div>
+              {totalDonations === 0 ? '' : <div className="paginatorDonationdiv">
+                <div className="paginatorPerSize">
+                  <span>Per Page</span>
+                  <Form.Control
+                    as="select"
+                    className="paginatorPerPage"
+                    onChange={PerPage}
+                  >
+                    <option className="paginatorPerPageOption" value="10">
+                      10
                     </option>
-                      <option value="15">15</option>
-                      <option value="20">20</option>
-                    </Form.Control>
-                  </div>
-
-                  <Pagination
-                    count={totalPages}
-                    classes={{ ul: 'paginationDonationColor' }}
-                    onChange={handleChangePage}
-                    variant="outlined"
-                    shape="rounded"
-                  />
+                    <option value="15">15</option>
+                    <option value="20">20</option>
+                  </Form.Control>
                 </div>
-              </>
-            )}
+
+                <Pagination
+                  count={totalPages}
+                  classes={{ ul: 'paginationDonationColor' }}
+                  onChange={handleChangePage}
+                  variant="outlined"
+                  shape="rounded"
+                />
+              </div>
+              }
+            </>
+          ) : ''}
         </Container>
       </Layout>
     </div>
