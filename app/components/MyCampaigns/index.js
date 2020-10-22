@@ -231,8 +231,8 @@ const MyCampaigns = ({ ...props }) => {
           <Card.Title className="campaignHeader">
             <span style={{ marginTop: '8px' }}>My Campaigns</span>
 
-            <div className="campaignHeader1 d-flex flex-column flex-sm-row">
-              <Dropdown>
+            <div className="campaignHeader1 d-flex  flex-sm-row">
+              <Dropdown className='dropDownMain'>
                 <Dropdown.Toggle id="dropdown-basic" className="dropBtn">
                   {campaignSort ? getDropdownVal() : 'Filter Campaign'}
                 </Dropdown.Toggle>
@@ -265,7 +265,7 @@ const MyCampaigns = ({ ...props }) => {
                 </Dropdown.Menu>
               </Dropdown>
 
-              <Link to="/createCampaign">
+              <Link to="/createCampaign" className='dropDownMain'>
                 <Button className="campaignBtn">New Campaign</Button>{' '}
               </Link>
             </div>

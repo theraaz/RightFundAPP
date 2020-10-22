@@ -31,7 +31,7 @@ export function AccountVerification() {
   }
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>Account Verify</title>
         <meta name="description" content="Description of AccountVerify" />
@@ -87,7 +87,7 @@ export function AccountVerification() {
           </div>
         </div>
       </Layout>
-    </div>
+    </>
   );
 }
 

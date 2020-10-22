@@ -252,18 +252,29 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    // @include respond-to(mobile) {
-    //   // css code here
-    //   flex-direction: column;
-    // }
+    @include respond-to(handhelds) {
+      // css code here
+      flex-direction: column;
+    }
+
     .campaignHeader1 {
       justify-content: space-between;
+      @include respond-to(handhelds) {
+        // css code here
+        margin-top: 10px;
+        justify-content: center;
+      }
+      @include respond-to(mobile-smallest) {
+        // css code here
+        flex-direction: column;
+      }
     }
     .dropBtn {
       min-width: 120px;
       background: white;
       color: black;
       border-color: #f2f2f2;
+
       &:focus {
         box-shadow: none !important;
       }
@@ -284,12 +295,37 @@
           background-color: #f15a24;
         }
       }
+
+      @include respond-to(mobile-small) {
+        // css code here
+        font-size: 12px;
+      }
+      @include respond-to(mobile-smallest) {
+        // css code here
+        width: 130px;
+      }
+    }
+
+    .dropDownMain {
+      @include respond-to(mobile-smallest) {
+        // css code here
+        text-align: center;
+        margin: 5px;
+      }
     }
 
     .campaignBtn {
       background-color: #f15a24;
       border-color: #f2f2f2;
       margin-left: 5px;
+      @include respond-to(mobile-small) {
+        // css code here
+        font-size: 12px;
+      }
+      @include respond-to(mobile-smallest) {
+        // css code here
+        width: 130px;
+      }
       &:focus {
         box-shadow: none !important;
       }
@@ -540,8 +576,17 @@
     // css code here
     max-width: 100%;
   }
+  @include respond-to(mobile-smallest) {
+    // css code here
+    min-width: 100%;
+    max-width: 100%;
+  }
 }
 
 .popup-modal {
   z-index: 9999 !important;
+}
+
+.charityAmountCard {
+  margin-bottom: 30px;
 }

@@ -13,8 +13,8 @@ const logo = require('../../images/logo.png');
 
 const AuthLayout = ({ children, title, description }) => {
   return (
-    <div className="main-div">
-      <div className="container">
+    <div className="main-div" style={{ height: '100%' }}>
+      <div className="container" style={{ height: '100%' }}>
 
         <Wrapper>
           <div className="main-container">
@@ -36,8 +36,13 @@ const AuthLayout = ({ children, title, description }) => {
                 </div>
 
                 <div className="col-6 pl-0 secondCol">
+                  <div className="secondColLogo">
+                    <Image src={logo} fluid />
+                  </div>
                   <div className={`${title === 'Signup' ? 'form-main-div-signup' : 'form-main-div'}`} >
+
                     <div className="heading">
+
                       <Title>{title}</Title>
                       <div className="bar"></div>
                     </div>

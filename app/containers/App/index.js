@@ -20,6 +20,7 @@ import AccountVerification from 'containers/AccountVerification/index';
 import AllDonations from 'containers/AllDonations/index';
 
 import BankDetails from 'containers/BankDetails/Loadable';
+import Withdrawals from 'containers/Withdrawals/Loadable';
 
 import { shallowEqual, useSelector } from 'react-redux';
 
@@ -37,7 +38,7 @@ export default function App() {
     shallowEqual,
   );
   return (
-    <div>
+    <>
       <Switch>
         <AuthRoute exact path="/" component={HomePage} />
         <AuthRoute exact path="/profile" component={MyProfile} />
@@ -77,11 +78,13 @@ export default function App() {
         />
         <AuthRoute exact path="/donations" component={AllDonations} />
         <AuthRoute exact path="/bankDetails" component={BankDetails} />
+        <AuthRoute exact path="/withdrawals" component={Withdrawals} />
+
         {/* <LoginRoute exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} /> */}
         <Route component={NotFoundPage} />
       </Switch>
 
       <GlobalStyle />
-    </div>
+    </>
   );
 }

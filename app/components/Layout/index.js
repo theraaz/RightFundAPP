@@ -135,11 +135,11 @@ function Layout({ children, updateUser, ...props }) {
         lastName={user?.lastName}
       />
       <div className="container mt-n5">
-        <Row style={{ marginBottom: '30px' }}>
-          <Col xs={12} sm={12} lg={7} xl={7}>
+        <Row>
+          <Col xs={12} sm={12} lg={7} xl={7} className="charityAmountCard">
             <div className="card card-header-main  shadow bg-white rounded">
               <Row>
-                <Col xs={12} sm={5} md={5}>
+                <Col xs={12} sm={5} md={5} >
                   <div className="card-header card-img border-0">
 
                     <input
@@ -251,7 +251,7 @@ function Layout({ children, updateUser, ...props }) {
               </Row>
             </div>
           </Col>
-          <Col xs={12} sm={12} lg={5} xl={5}>
+          <Col xs={12} sm={12} lg={5} xl={5} className="charityAmountCard">
             <Card className="card-header-main shadow  bg-white">
               <Card.Body className="complaints-data">
                 <div className="compaignData">

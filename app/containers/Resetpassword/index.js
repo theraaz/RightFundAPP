@@ -81,7 +81,7 @@ export function Resetpassword(props) {
   }
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>Reset Password</title>
         <meta name="description" content="Description of Resetpassword" />
@@ -133,7 +133,7 @@ export function Resetpassword(props) {
         </div>
       </Layout>
 
-    </div>
+    </>
   );
 }
 

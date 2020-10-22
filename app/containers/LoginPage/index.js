@@ -103,7 +103,7 @@ export function LoginPage(props) {
   }, []);
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>Login</title>
         <meta name="description" content="Please do login" />
@@ -224,7 +224,7 @@ export function LoginPage(props) {
           </div>
         </div>
       </Layout>
-    </div>
+    </>
   );
 }
 

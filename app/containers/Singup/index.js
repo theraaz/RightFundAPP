@@ -126,12 +126,12 @@ export function Singup(props) {
   };
 
   return (
-    <div>
+    <>
       <Helmet>
         <title>Register</title>
         <meta name="description" content="Please do login" />
       </Helmet>
-      <Layout title="Signup" description="Enter your detail below.">
+      <Layout title="Signup" description="Enter your detail below." >
         <div className="signup-form">
           <Formik
             initialValues={{
@@ -355,7 +355,7 @@ export function Singup(props) {
           </Formik>
         </div>
       </Layout>
-    </div>
+    </>
   );
 }
 

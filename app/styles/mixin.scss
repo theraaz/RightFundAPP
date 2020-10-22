@@ -4,40 +4,66 @@ $handheld: 768px;
 $handhelds-landscape: 1000px;
 $mobile: 640px;
 $mobile-landscape: 480px;
+$mobile-minimum: 333px;
 
 @mixin respond-to($media) {
   @if $media == largeDesktop {
-    @media only screen and (max-width: $large-desktop) { @content }
+    @media only screen and (max-width: $large-desktop) {
+      @content;
+    }
   }
   @if $media == smallDesktop {
-    @media only screen and (max-width: $small-desktop) { @content; }
+    @media only screen and (max-width: $small-desktop) {
+      @content;
+    }
   }
   @if $media == handhelds {
-    @media only screen and (max-width: $handheld) { @content; }
+    @media only screen and (max-width: $handheld) {
+      @content;
+    }
   }
   @if $media == handhelds-landscape {
-    @media only screen  and (min-device-width : $handheld)
-                        and (max-device-width : $handhelds-landscape)
-                        and (orientation : landscape){ @content; }
+    @media only screen and (min-device-width: $handheld) and (max-device-width: $handhelds-landscape) and (orientation: landscape) {
+      @content;
+    }
   }
   @if $media == mobile {
-    @media only screen and (max-width: $mobile) { @content; }
+    @media only screen and (max-width: $mobile) {
+      @content;
+    }
   }
   @if $media == mobile-portrait {
-    @media only screen  and (max-width: $mobile)
-                        and (orientation : portrait) { @content; }
+    @media only screen and (max-width: $mobile) and (orientation: portrait) {
+      @content;
+    }
   }
   @if $media == mobile-landscape {
-    @media only screen  and (min-width: 320px)
-                        and (max-width: $mobile-landscape)
-                        and (orientation : landscape) { @content; }
+    @media only screen and (min-width: 300px) and (max-width: $mobile-landscape) and (orientation: landscape) {
+      @content;
+    }
+  }
+
+  @if $media == mobile-small {
+    @media only screen and (max-width: $mobile-landscape) and (orientation: portrait) {
+      @content;
+    }
+  }
+
+  @if $media == mobile-smallest {
+    @media only screen and (min-width: 260px) and (max-width: $mobile-minimum) and (orientation: portrait) {
+      @content;
+    }
   }
 
   @if $media == retina {
-    @media (-webkit-min-device-pixel-ratio: 2) { @content; }
+    @media (-webkit-min-device-pixel-ratio: 2) {
+      @content;
+    }
   }
 
   @if $media == iphone5 {
-    @media only screen and (device-aspect-ratio: 40/71) { @content }
+    @media only screen and (device-aspect-ratio: 40/71) {
+      @content;
+    }
   }
 }
