@@ -4,18 +4,14 @@
  *
  */
 
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect, shallowEqual, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { compose } from 'redux';
-import { Button, Card, Col, FormGroup, Row, Spinner } from 'react-bootstrap';
+import { Accordion, Button, Card, Col, Row, Spinner } from 'react-bootstrap';
 import { Formik } from 'formik';
 import { useSnackbar } from 'notistack';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
 import { Heading } from '../MyProfile/myProfile';
-import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik';
-import BootstrapInput from '../../components/inputs/BootstrapInput';
 import './charity-profile.scss';
 import DropZone from '../../components/DropZone';
 import { updateCharity } from '../../utils/crud/charity.crud';
@@ -23,6 +19,9 @@ import { charityActions } from '../../utils/action-creators/charity.action.creat
 import DocumentIcon from '../../components/svg-icons/DocumentIcon';
 import { isCharityProfileInComplete } from '../../utils/helper';
 import CharityLayout from '../../components/CharityLayout';
+import CharityProfileBasicInfo from '../../components/CharityProfile/CharityProfileBasicInfo';
+import CharityProfileUserContactInfo from '../../components/CharityProfile/CharityProfileUserContactInfo';
+import CharityProfileTrusteeContactInfo from '../../components/CharityProfile/CharityProfileTrusteeContactInfo';
 export function CharityProfile({ updateMyCharityProfile }) {
   const { myCharityProfile } = useSelector(
     ({ charity }) => ({
@@ -31,6 +30,7 @@ export function CharityProfile({ updateMyCharityProfile }) {
     shallowEqual,
   );
   const [loading, setLoading] = React.useState(false);
+  const [selectedAccordion, setSelectedAccordion] = React.useState('0');
   const [userPhotoId, setUserPhotoId] = React.useState([]);
   const [constitutionDoc, setConstitutionDoc] = React.useState([]);
   const { enqueueSnackbar } = useSnackbar();
@@ -128,13 +128,6 @@ export function CharityProfile({ updateMyCharityProfile }) {
     }
     return details;
   };
-  const getTrusteeDetails = () => {
-    let details = {};
-    if (myCharityProfile.trusteeDetails) {
-      details = JSON.parse(myCharityProfile.trusteeDetails);
-    }
-    return details;
-  };
   const isUrl = text =>
     text.match(
       /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/gm,
@@ -151,6 +144,9 @@ export function CharityProfile({ updateMyCharityProfile }) {
       reader.onerror = error => reject(error);
     });
 
+  const onSelectAccordion = useCallback(selected => {
+    setSelectedAccordion(selected);
+  }, []);
   return (
     <CharityLayout>
       <Helmet>
@@ -179,10 +175,6 @@ export function CharityProfile({ updateMyCharityProfile }) {
               userLastName: getUserDetails()?.lastName || '',
               userEmail: getUserDetails()?.email || '',
               userPhoneNumber: getUserDetails()?.phoneNumber || '',
-              trusteeFirstName: getTrusteeDetails()?.firstName || '',
-              trusteeLastName: getTrusteeDetails()?.lastName || '',
-              trusteeEmail: getTrusteeDetails()?.email || '',
-              trusteePhoneNumber: getTrusteeDetails()?.phoneNumber || '',
               userPhotoId: myCharityProfile.userPhotoId,
               constitutionDoc: myCharityProfile.constitutionDoc,
             }}
@@ -192,152 +184,25 @@ export function CharityProfile({ updateMyCharityProfile }) {
           >
             {({ values, handleSubmit, setFieldValue }) => (
               <form onSubmit={handleSubmit}>
-                <Heading>Basic Info</Heading>
-                <Row>
-                  <Col md={6}>
-                    <label htmlFor="charityName">Charity Name</label>
-                    <FormGroup className="mb-3">
-                      <CustomTextInputFormik
-                        name="charityName"
-                        placeholder="Charity Name"
-                        disabled={isProfileCompleted}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <label htmlFor="regNo">Registration Number</label>
-                    <FormGroup className="mb-3">
-                      <CustomTextInputFormik
-                        name="regNo"
-                        placeholder="Registration Number"
-                        disabled={isProfileCompleted}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={6}>
-                    <label htmlFor="position">Position</label>
-                    <FormGroup className="mb-3">
-                      <Select
-                        fullWidth
-                        className="selectClass"
-                        value={values.position}
-                        disabled={isProfileCompleted}
-                        onChange={event =>
-                          setFieldValue('position', event.target.value)
-                        }
-                        input={<BootstrapInput />}
-                      >
-                        <MenuItem value="trustee">Trustee</MenuItem>
-                        <MenuItem value="employee">Employee</MenuItem>
-                      </Select>
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <label htmlFor="charityWeb">Website</label>
-                    <FormGroup className="mb-3">
-                      <CustomTextInputFormik
-                        name="charityWeb"
-                        placeholder="Website"
-                        disabled={isProfileCompleted}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
+                <Accordion defaultActiveKey="0" onSelect={onSelectAccordion}>
+                  <CharityProfileBasicInfo
+                    values={values}
+                    isProfileCompleted={isProfileCompleted}
+                    setFieldValue={setFieldValue}
+                    selectedAccordion={selectedAccordion}
+                  />
+                  <CharityProfileUserContactInfo
+                    isProfileCompleted={isProfileCompleted}
+                    selectedAccordion={selectedAccordion}
+                  />
+                  {values.position === 'trustee' && (
+                    <CharityProfileTrusteeContactInfo
+                      isProfileCompleted={isProfileCompleted}
+                      selectedAccordion={selectedAccordion}
+                    />
+                  )}
+                </Accordion>
 
-                <Heading>User Contact Info</Heading>
-                <Row>
-                  <Col md={6}>
-                    <label htmlFor="userFirstName">First Name</label>
-                    <FormGroup className="mb-3">
-                      <CustomTextInputFormik
-                        name="userFirstName"
-                        placeholder="First Name"
-                        disabled={isProfileCompleted}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <label htmlFor="userLastName">Last Name</label>
-                    <FormGroup className="mb-3">
-                      <CustomTextInputFormik
-                        name="userLastName"
-                        placeholder="Last Name"
-                        disabled={isProfileCompleted}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <label htmlFor="userEmail">Email</label>
-                    <FormGroup className="mb-3">
-                      <CustomTextInputFormik
-                        name="userEmail"
-                        placeholder="Email"
-                        type="email"
-                        disabled={isProfileCompleted}
-                      />
-                    </FormGroup>
-                  </Col>
-                  <Col md={6}>
-                    <label htmlFor="userPhoneNumber">Phone Number</label>
-                    <FormGroup className="mb-3">
-                      <CustomTextInputFormik
-                        name="userPhoneNumber"
-                        placeholder="Phone Number"
-                        disabled={isProfileCompleted}
-                      />
-                    </FormGroup>
-                  </Col>
-                </Row>
-                {values.position === 'trustee' && (
-                  <>
-                    <Heading>Trustee Contact Info</Heading>
-                    <Row>
-                      <Col md={6}>
-                        <label htmlFor="trusteeFirstName">First Name</label>
-                        <FormGroup className="mb-3">
-                          <CustomTextInputFormik
-                            name="trusteeFirstName"
-                            placeholder="First Name"
-                            disabled={isProfileCompleted}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={6}>
-                        <label htmlFor="trusteeLastName">Last Name</label>
-                        <FormGroup className="mb-3">
-                          <CustomTextInputFormik
-                            name="trusteeLastName"
-                            placeholder="Last Name"
-                            disabled={isProfileCompleted}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={6}>
-                        <label htmlFor="trusteeEmail">Email</label>
-                        <FormGroup className="mb-3">
-                          <CustomTextInputFormik
-                            name="trusteeEmail"
-                            placeholder="Email"
-                            type="email"
-                            disabled={isProfileCompleted}
-                          />
-                        </FormGroup>
-                      </Col>
-                      <Col md={6}>
-                        <label htmlFor="trusteePhoneNumber">Phone Number</label>
-                        <FormGroup className="mb-3">
-                          <CustomTextInputFormik
-                            name="trusteePhoneNumber"
-                            placeholder="Phone Number"
-                            disabled={isProfileCompleted}
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                  </>
-                )}
                 <Row>
                   <Col md={6}>
                     <Heading>Photo ID</Heading>

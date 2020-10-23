@@ -20,6 +20,44 @@ export const reducer = persistReducer(
 
         return { myCharityProfile: { ...state.myCharityProfile, ...charity } };
       }
+      case charityActionTypes.AddCharityTrustee: {
+        const { trustee } = action.payload;
+        const oldTrustees = state.myCharityProfile.trustees || [];
+        return {
+          myCharityProfile: {
+            ...state.myCharityProfile,
+            trustees: [...oldTrustees, trustee],
+          },
+        };
+      }
+      case charityActionTypes.UpdateCharityTrustee: {
+        const { trustee } = action.payload;
+        const updatedTrustees = state.myCharityProfile.trustees?.map(t => {
+          if (t.id === trustee.id) {
+            return trustee;
+          } else {
+            return t;
+          }
+        });
+        return {
+          myCharityProfile: {
+            ...state.myCharityProfile,
+            trustees: updatedTrustees,
+          },
+        };
+      }
+      case charityActionTypes.RemoveCharityTrustee: {
+        const { trusteeId } = action.payload;
+        const newTrustees = state.myCharityProfile.trustees?.filter(
+          trustee => trustee.id !== trusteeId,
+        );
+        return {
+          myCharityProfile: {
+            ...state.myCharityProfile,
+            trustees: newTrustees,
+          },
+        };
+      }
       case charityActionTypes.ResetCharityState: {
         return initialCharityState;
       }

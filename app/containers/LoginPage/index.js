@@ -83,7 +83,8 @@ export function LoginPage(props) {
           }
         })
         .catch(error => {
-          console.log(error);
+          setLoading(false);
+          handleClickVariant('error', error?.response?.data?.response?.message);
         });
     }
   }

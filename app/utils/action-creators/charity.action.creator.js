@@ -9,6 +9,18 @@ export const charityActions = {
     type: charityActionTypes.UpdateMyCharityProfile,
     payload: { charity },
   }),
+  addCharityTrustee: trustee => ({
+    type: charityActionTypes.AddCharityTrustee,
+    payload: { trustee },
+  }),
+  updateCharityTrustee: trustee => ({
+    type: charityActionTypes.UpdateCharityTrustee,
+    payload: { trustee },
+  }),
+  removeCharityTrustee: trusteeId => ({
+    type: charityActionTypes.RemoveCharityTrustee,
+    payload: { trusteeId },
+  }),
   resetCharityState: () => ({
     type: charityActionTypes.ResetCharityState,
   }),
