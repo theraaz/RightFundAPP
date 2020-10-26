@@ -28,7 +28,7 @@ import PencilIcon from '../svg-icons/PencilIcon';
 import { charityActions } from '../../utils/action-creators/charity.action.creator';
 import { updateCharity } from '../../utils/crud/charity.crud';
 import ProfileLoadingOverlay from '../ProfileLoadingOverlay';
-import { getAccountDetails } from '../../utils/crud/auth.crud';
+import { getCharityAccountDetails } from '../../utils/crud/auth.crud';
 
 const profileImg = require('../../images/placeholder.png');
 
@@ -96,7 +96,7 @@ function CharityLayout({ children, updateMyCharityProfile, ...props }) {
   };
 
   useEffect(() => {
-    getAccountDetails()
+    getCharityAccountDetails(myCharityProfile.id)
       .then(({ data, status }) => {
         if (status === 200) {
           setTotalCampaign(data.response.data.totalCampaigns);
