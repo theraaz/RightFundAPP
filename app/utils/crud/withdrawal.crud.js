@@ -7,3 +7,7 @@ export function createWithdrawal(data) {
 export function getWithdrawal() {
   return axios.get(WITHDRAWAL_URL);
 }
+
+export function getWithdrawalHistory(params) {
+  return axios.get(`${WITHDRAWAL_URL}History`, { params });
+}

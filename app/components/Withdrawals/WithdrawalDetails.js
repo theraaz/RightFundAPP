@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Heading } from '../../containers/MyProfile/myProfile';
 
@@ -10,7 +10,10 @@ import { shallowEqual, useSelector } from 'react-redux';
 import BankDetailsCard from './BankDetailsCard';
 import WithdrawalForm from './WithdrawalForm';
 import WithdrawalHistory from './WithdrawalHistory';
-import { getWithdrawal } from '../../utils/crud/withdrawal.crud';
+import {
+  getWithdrawal,
+  getWithdrawalHistory,
+} from '../../utils/crud/withdrawal.crud';
 
 const WithdrawalDetails = () => {
   const { myCharityProfile } = useSelector(
@@ -23,6 +26,18 @@ const WithdrawalDetails = () => {
   const [charityAccountDetails, setCharityAccountDetails] = useState(null);
   const [selectedAccount, setSelectedAccount] = useState(null);
   const [balance, setBalance] = useState(null);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+  const [withdrawalHistory, setWithdrawalHistory] = useState([]);
+
+  const [perPage, setPerPage] = useState(5);
+  const [pageNo, setPageNo] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const PerPage = useCallback(event => {
+    setPerPage(event.target.value);
+  }, []);
+  const handleChangePage = useCallback((event, value) => {
+    setPageNo(value);
+  }, []);
   useEffect(() => {
     getBalance();
     if (myCharityProfile?.id) {
@@ -43,6 +58,11 @@ const WithdrawalDetails = () => {
         console.log(err.response);
       });
   }, []);
+  useEffect(() => {
+    console.log('history');
+    setLoadingHistory(true);
+    getHistory({ pageNo, perPage });
+  }, [perPage, pageNo]);
   const selectAccount = type => event => {
     event.stopPropagation();
     if (type === 'Charity Account') {
@@ -51,12 +71,30 @@ const WithdrawalDetails = () => {
       setSelectedAccount(personalAccountDetails);
     }
   };
-  const getBalance = () => {
+  const getBalance = refresh => {
+    console.log('balance');
+    if (refresh) {
+      setLoadingHistory(true);
+      getHistory({ pageNo, perPage });
+    }
     getWithdrawal()
       .then(({ data }) => {
         setBalance(data?.response?.data);
       })
       .catch(err => {
+        console.log(err);
+      });
+  };
+  const getHistory = params => {
+    getWithdrawalHistory(params)
+      .then(({ data }) => {
+        console.log('data', data);
+        setLoadingHistory(false);
+        setWithdrawalHistory(data?.response?.data?.withdrawalHistory);
+        setTotalPages(data?.response?.data?.totalCount);
+      })
+      .catch(err => {
+        setLoadingHistory(false);
         console.log(err);
       });
   };
@@ -123,9 +161,17 @@ const WithdrawalDetails = () => {
         </Col>
       </Row>
       <hr />
-      <WithdrawalHistory />
+      <WithdrawalHistory
+        withdrawalHistory={withdrawalHistory}
+        pageNo={pageNo}
+        handleChangePage={handleChangePage}
+        totalPages={totalPages}
+        perPage={perPage}
+        PerPage={PerPage}
+        loading={loadingHistory}
+      />
     </div>
   );
 };
 
-export default WithdrawalDetails;
+export default React.memo(WithdrawalDetails);

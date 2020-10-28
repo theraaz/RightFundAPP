@@ -44,7 +44,7 @@ const WithdrawalForm = ({ selectedAccount, getBalance }) => {
         resetForm({});
         disableLoading();
         showAlert('success', data?.response?.message);
-        getBalance();
+        getBalance(true);
       })
       .catch(err => {
         disableLoading();
