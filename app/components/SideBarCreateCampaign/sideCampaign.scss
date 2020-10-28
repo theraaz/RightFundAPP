@@ -63,10 +63,16 @@
             border: 0;
           }
           &:hover {
-            color: #f15a24;
+            color: #f15a24 !important;
+            div > svg{
+              color: #f15a24 !important;
+            }
           }
           .active {
-            color: #f15a24;
+            color: #f15a24 !important;
+            div > svg{
+              color: #f15a24 !important;
+            }
           }
           .sidebartitleListActive {
             margin-top: 7px;

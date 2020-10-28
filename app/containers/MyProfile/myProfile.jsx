@@ -22,9 +22,19 @@ export const Heading = styled.h4`
   font-size: 16px;
   font-weight: 500;
   color: #f15a24;
-  border-bottom: solid;
+  // border-bottom: solid;
   width: fit-content;
   margin-top: 5px;
+  position: relative;
+  padding-bottom: 12px;
+  &:before {
+    content: '';
+    position: absolute;
+    height: 2px;
+    background-color: #f36b3b;
+    bottom: 0;
+    width: 75%;
+  }
 `;
 
 export const Errors = styled.div`

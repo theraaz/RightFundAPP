@@ -193,7 +193,7 @@ function CharityLayout({ children, updateMyCharityProfile, ...props }) {
                       <Description>Gift Aids</Description>
                     </Col>
                     <Col className="table-col">
-                      <Heading className="mt-4">£{totalRaised}</Heading>
+                      <Heading className="mt-4">£{totalRaised / 100}</Heading>
                       <Description>Total Raised</Description>
                     </Col>
                   </Row>

@@ -83,17 +83,10 @@ const CharityBankDetailForm = ({
                 </Col>
               </Row>
               <div style={{ textAlign: 'end', marginBottom: '15px' }}>
-                {banksAccounts?.length != 0 ? (
-                  <Button type="submit" className="updateProfileBtn">
-                    {!loading && <div>{buttonName}</div>}
-                    {loading && <Spinner animation="border" size="sm" />}
-                  </Button>
-                ) : (
-                  <Button type="submit" className="updateProfileBtn">
-                    {!loading && <div>{buttonName}</div>}
-                    {loading && <Spinner animation="border" size="sm" />}
-                  </Button>
-                )}
+                <Button type="submit" className="updateProfileBtn">
+                  {!loading && <div>{banksAccounts ? 'Save' : 'Add'}</div>}
+                  {loading && <Spinner animation="border" size="sm" />}
+                </Button>
               </div>
             </div>
           )}

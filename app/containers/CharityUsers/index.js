@@ -367,10 +367,10 @@ export function CharityUsers({ history, match }) {
         </Modal.Header>
         <Modal.Body>Are you sure you want to remove this user?</Modal.Body>
         <Modal.Footer>
-          <Button className="modalBtnNo" onClick={closeModal('removeMember')}>
+          <Button variant="light" onClick={closeModal('removeMember')}>
             Cancel
           </Button>
-          <Button className="modalBtnYes" onClick={deleteUser}>
+          <Button variant="danger" onClick={deleteUser}>
             Delete Now{' '}
             {loading.removeMember && <Spinner animation="border" size="sm" />}
           </Button>

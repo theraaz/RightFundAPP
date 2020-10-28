@@ -6,32 +6,26 @@
 
 import React, { memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { connect, shallowEqual, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Helmet } from 'react-helmet';
 import { Formik } from 'formik';
 
-import {
-  Card,
-} from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 import Layout from '../../components/Layout/index';
-import { getBankDetails, addBankDetails, updateBankDetails, getBankDetailsByCharityId } from '../../utils/crud/bankDetail.crud';
+import {
+  getBankDetails,
+  addBankDetails,
+  updateBankDetails,
+  getBankDetailsByCharityId,
+} from '../../utils/crud/bankDetail.crud';
 import { useSnackbar } from 'notistack';
 import CharityBankDetailForm from '../../components/CharityBankDetailForm/index';
 export function BankDetails() {
-
-  const { myCharityProfile } = useSelector(
-    ({ charity }) => ({
-      myCharityProfile: charity.myCharityProfile,
-    }),
-    shallowEqual,
-  );
-
   const [loading, setLoading] = React.useState(false);
   const { enqueueSnackbar } = useSnackbar();
-  const [banksAccounts, setBanksAccounts] = React.useState([]);
+  const [banksAccounts, setBanksAccounts] = React.useState(null);
   const [charityAccountsID, setCharityAccountsID] = React.useState(null);
-
 
   const handleClickVariant = (variant, message) => {
     // variant could be success, error, warning, info, or default
@@ -43,10 +37,20 @@ export function BankDetails() {
 
   function handleSubmit(values) {
     setLoading(true);
-    if (banksAccounts.length === 0) {
-      addBank(values.userName, values.sortCode, values.accountNumber, charityAccountsID);
+    if (!banksAccounts) {
+      addBank(
+        values.userName,
+        values.sortCode,
+        values.accountNumber.toString(),
+        charityAccountsID,
+      );
     } else {
-      updateBank(values.userName, values.sortCode, values.accountNumber, charityAccountsID);
+      updateBank(
+        values.userName,
+        values.sortCode,
+        values.accountNumber,
+        charityAccountsID,
+      );
     }
   }
 
@@ -57,65 +61,61 @@ export function BankDetails() {
         bankDetails();
         setLoading(false);
       })
-      .catch((error) => {
+      .catch(() => {
         setLoading(false);
       });
   }
 
+  console.log('banksAccounts', banksAccounts);
   function updateBank(userName, sortCode, accountNumber) {
     let id = banksAccounts.id;
     updateBankDetails(id, userName, sortCode, accountNumber)
       .then(({ data }) => {
         handleClickVariant('success', data.response.message);
         setLoading(false);
-        console.log(data)
+        console.log(data);
       })
-      .catch((error) => {
+      .catch(() => {
         setLoading(false);
       });
   }
 
   function bankDetails() {
     setLoading(true);
-    setBanksAccounts([]);
+    setBanksAccounts(null);
     getBankDetails()
       .then(({ data }) => {
-        console.log(data)
+        console.log(data);
         setLoading(false);
-        setCharityAccountsID(null)
-        setBanksAccounts(data.response.data.res);
+        setCharityAccountsID(null);
+        setBanksAccounts(data.response.data?.res);
       })
-      .catch((error) => {
+      .catch(error => {
         setLoading(false);
-        console.log(error)
+        console.log(error);
       });
   }
 
   function bankDetailsByCharity(id) {
     setLoading(true);
-    setBanksAccounts([]);
+    setBanksAccounts(null);
     getBankDetailsByCharityId(id)
       .then(({ data }) => {
         setLoading(false);
-        setCharityAccountsID(id)
+        setCharityAccountsID(id);
         setBanksAccounts(data.response.data.res[0]);
       })
-      .catch((error) => {
+      .catch(error => {
         setLoading(false);
-        console.log(error)
+        console.log(error);
       });
-
   }
 
   useEffect(() => {
     bankDetails();
   }, []);
 
-
-  const validate = (
-    values,
-    props /* only available when using withFormik */,
-  ) => {
+  const validate = values => {
     const errors = {};
     if (values.userName?.trim() === '') {
       errors.userName = 'Required';
@@ -132,11 +132,10 @@ export function BankDetails() {
     }
     //  else if (!values.confirmAccountNumber) {
     //   errors.confirmAccountNumber = 'Required';
-    // } 
+    // }
     // else if (values.confirmAccountNumber != values.accountNumber) {
     //   errors.confirmAccountNumber = 'Account number and confirm account number should be same ';
     // }
-
 
     return errors;
   };
@@ -148,14 +147,12 @@ export function BankDetails() {
         <meta name="description" content="Description of banks" />
       </Helmet>
       <Layout>
-
         <Card className="dataCard shadow mb-5 bg-white">
           <Card.Header style={{ background: 'transparent' }}>
             <Card.Title className="campaignHeader">
               <span style={{ marginTop: '8px' }}>Bank Details</span>
             </Card.Title>
           </Card.Header>
-
 
           {
             <Card.Body
@@ -168,33 +165,29 @@ export function BankDetails() {
                   userName: banksAccounts?.accountName || '',
                   sortCode: banksAccounts?.sortCode || '',
                   accountNumber: banksAccounts?.accountNo || '',
-
                 }}
                 enableReinitialize
                 validate={validate}
                 onSubmit={handleSubmit}
               >
-                {({
-                  values, handleSubmit, errors, setFieldValue,
-                }) => (
-                    <form onSubmit={handleSubmit}>
-                      <CharityBankDetailForm
-                        subHeading="Individual"
-                        setFieldValue={setFieldValue}
-                        values={values}
-                        errors={errors}
-                        loading={loading}
-                        banksAccounts={banksAccounts}
-                        bankDetailsByCharity={bankDetailsByCharity}
-                        bankDetails={bankDetails}
-                      />
-                    </form>
-                  )}
+                {({ values, handleSubmit, errors, setFieldValue }) => (
+                  <form onSubmit={handleSubmit}>
+                    <CharityBankDetailForm
+                      subHeading="Individual"
+                      setFieldValue={setFieldValue}
+                      values={values}
+                      errors={errors}
+                      loading={loading}
+                      banksAccounts={banksAccounts}
+                      bankDetailsByCharity={bankDetailsByCharity}
+                      bankDetails={bankDetails}
+                    />
+                  </form>
+                )}
               </Formik>
             </Card.Body>
           }
         </Card>
-
       </Layout>
     </div>
   );

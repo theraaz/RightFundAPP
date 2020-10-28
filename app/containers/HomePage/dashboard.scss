@@ -191,11 +191,21 @@
     font-size: 12px;
   }
 
+
   &:hover {
-    color: #f15a24;
+    color: #f15a24 !important;
+    div > svg{
+      color: #f15a24 !important;
+    }
   }
   .active {
-    color: #f15a24;
+    color: #f15a24 !important;
+    div > svg{
+      color: #f15a24 !important;
+    }
+  }
+  .iconImage{
+    color: rgba(0,0,0, 0.33);
   }
 }
 .line {
@@ -207,7 +217,7 @@
 
 .iconImage {
   width: 20px;
-  margin: 0 10px 0 0px;
+  margin-right: 20px;
 
   @include respond-to(smallDesktop) {
     // css code here

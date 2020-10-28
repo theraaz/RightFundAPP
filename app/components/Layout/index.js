@@ -120,7 +120,7 @@ function Layout({ children, updateUser, ...props }) {
           <Col xs={12} sm={12} lg={7} xl={7} className="charityAmountCard">
             <div className="card card-header-main  shadow bg-white rounded">
               <Row>
-                <Col xs={12} sm={5} md={5} >
+                <Col xs={12} sm={5} md={5}>
                   <div className="card-header card-img border-0">
                     <input
                       id="myInputImage"
@@ -209,7 +209,7 @@ function Layout({ children, updateUser, ...props }) {
                       <Description>Gift Aids</Description>
                     </Col>
                     <Col className="table-col">
-                      <Heading className="mt-4">£{totalRaised}</Heading>
+                      <Heading className="mt-4">£{totalRaised / 100}</Heading>
                       <Description>Total Raised</Description>
                     </Col>
                   </Row>
