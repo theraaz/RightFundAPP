@@ -229,7 +229,7 @@
 }
 .campaign-card {
   margin: 10px 0;
-  // min-height: 442px;
+  overflow: hidden;
   position: relative;
 
   .badgeCampaign {

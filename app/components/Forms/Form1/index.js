@@ -29,14 +29,13 @@ import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import NativeSelect from '@material-ui/core/NativeSelect';
 import InputBase from '@material-ui/core/InputBase';
 
 import Radio from '@material-ui/core/Radio';
+import { shallowEqual, useSelector } from 'react-redux';
 import { H5, H4, Errors } from '../form.styles';
 import Address from '../../Address/Loadable';
-import { shallowEqual, useSelector } from 'react-redux';
-
+import { getParentCampaigns } from '../../../utils/campaigns-utilities/getCampaignsUtilites';
 const GreenRadio = withStyles({
   root: {
     // color: green[400],
@@ -81,8 +80,6 @@ const Form1 = ({
   setFieldValue,
   values,
   errors,
-  children,
-  setActiveLink,
   loading,
   edit,
 }) => {
@@ -95,45 +92,53 @@ const Form1 = ({
   );
   const [currency, setCurrency] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
-  const [selectedValue, setSelectedValue] = React.useState('a');
+  const [parentCampaign, setParentCampaign] = React.useState([]);
   const token = localStorage.getItem('token');
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const handleRadioChange = event => {
+  const handleRadioChange = (event) => {
     setFieldValue('fundraiser', event.target.value);
   };
 
-  const handleDateChange = date => {
+  const handleAmountChange = (event) => {
+    const t = event.target.value;
+    event.target.value = (t.indexOf('.') >= 0) ? (t.substr(0, t.indexOf('.')) + t.substr(t.indexOf('.'), 3)) : t;
+    setFieldValue('amount', event.target.value);
+  };
+
+  const handleDateChange = (date) => {
     setFieldValue('date', date);
   };
 
-  const handleChangeCategories = event => {
+  const handleChangeCategories = (event) => {
     setFieldValue('categories', event.target.value);
   };
 
-  const handleChange = event => {
+  const handleSelectParentCampaign = (event) => {
+    setFieldValue('parentCampaign', event.target.value);
+  };
+
+  const handleChange = (event) => {
     console.log(event.target.value);
     setFieldValue('currencySymbol', event.target.value);
   };
 
-  const validate = (
-    values,
-    props /* only available when using withFormik */,
-  ) => {
-    const errors = {};
-
-    if (!values.email) {
-      errors.email = 'Required';
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)
-    ) {
-      errors.email = 'Invalid email address';
-    }
-
-    // ...
-
-    return errors;
+  const validate = function (e) {
+    const t = e.value;
+    e.value = (t.indexOf('.') >= 0) ? (t.substr(0, t.indexOf('.')) + t.substr(t.indexOf('.'), 3)) : t;
   };
+
+  function getAllParentCampaigns() {
+    getParentCampaigns()
+      .then(({ data, status }) => {
+        if (status == 200) {
+          setParentCampaign(data.response.data.parentCampaignsRes);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   useEffect(() => {
     const requestOptions = {
@@ -146,27 +151,27 @@ const Form1 = ({
 
     fetch(`${process.env.baseURL}/currency`, requestOptions)
       .then(response => response.json())
-      .then(user => {
+      .then((user) => {
         if (user.statusCode == 200) {
         } else {
           setMessage('Something went missing, Please try again');
         }
-        console.log(user.response.data.res);
         setCurrency(user.response.data.res);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
 
     fetch(`${process.env.baseURL}/category`, requestOptions)
       .then(response => response.json())
-      .then(user => {
-        console.log(user.response.data.res);
+      .then((user) => {
         setCategories(user.response.data.res);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
+
+    getAllParentCampaigns();
   }, []);
 
   return (
@@ -216,9 +221,7 @@ const Form1 = ({
                         isInvalid={errors.amount}
                         value={values.amount}
                         name="amount"
-                        onChange={event =>
-                          setFieldValue('amount', event.target.value)
-                        }
+                        onChange={handleAmountChange}
                       />
                     </Col>
                   </div>
@@ -245,8 +248,7 @@ const Form1 = ({
               name="campaignTitle"
               placeholder="Campaign Title"
               className="controlForm"
-              onChange={event =>
-                setFieldValue('campaignTitle', event.target.value)
+              onChange={event => setFieldValue('campaignTitle', event.target.value)
               }
             />
             {errors.campaignTitle && (
@@ -312,6 +314,39 @@ const Form1 = ({
               <Errors id="feedback">{errors.categories}</Errors>
             )}
           </Form.Group>
+          {console.log(values.parentCampaign)}
+
+          <Form.Group controlId="parentCampaign" bssize="large">
+            <Select
+              disabled={values.parentCampaign}
+              className="categoriesSelect"
+              labelId="demo-customized-select-label"
+              fullWidth
+              style={{ textAlign: 'initial' }}
+              name="parentCampaign"
+              id="demo-customized-select"
+              placeholder="Parent Campaign"
+              value={values.parentCampaign || -1}
+              onChange={handleSelectParentCampaign}
+              input={<BootstrapInput />}
+            >
+              <MenuItem value={-1} disabled>
+                <span style={{ color: '#9c9c9c' }}>Select Parent Campaign</span>
+              </MenuItem>
+              {parentCampaign.map(data => (
+                <MenuItem
+                  value={data.parentCampaignId.id || -1}
+                  name={data.parentCampaignId.title}
+                  key={data.parentCampaignId.id}
+                >
+                  {data.parentCampaignId.title}
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.parentCampaign && (
+              <Errors id="feedback">{errors.parentCampaign}</Errors>
+            )}
+          </Form.Group>
 
           {user.isCharity && (
             <Form.Group
@@ -352,7 +387,8 @@ const Form1 = ({
               <Button type="submit" className="viewCampaignBtn">
                 {' '}
                 {!loading && <div> Save and Continue</div>}
-                {loading && <Spinner animation="border" size="sm" />}{' '}
+                {loading && <Spinner animation="border" size="sm" />}
+                {' '}
               </Button>
             </div>
           </div>

@@ -18,15 +18,36 @@
   }
 }
 
-.author-email-cv {
+.icons {
+  margin-right: 5px;
 }
 
+
+
+.defined-paymentsViewCampaign {
+  padding: 10px;
+  background: #f6f6f6;
+  min-height: 150px;
+  margin: 10px 0px;
+  border: 1px solid #ededed;
+  overflow: hidden;
+
+  .card-heading-inner {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    margin-right: 11px;
+  }
+}
 .campaignDetailCard {
   border-radius: 6px;
   padding: 7px 12px;
 
   .cardBody {
     padding: 1.25rem 8px 0.25rem 8px !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 
     .author_Campaign-details {
       .author-photo {
