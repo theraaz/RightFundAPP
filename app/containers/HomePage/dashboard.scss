@@ -1,7 +1,7 @@
 @import 'App/styles/mixin.scss';
 
 .card-body {
-  padding: 1.25rem 8px 1.25rem 8px;
+  padding: 1.25rem 8px 1.25rem 8px !important;
 }
 
 .card-header-main {
@@ -23,7 +23,7 @@
     // height: 90%;
     // width: 215px;
     justify-content: center;
-    border-radius: 50;
+    border-radius: 50px;
     align-items: center;
     text-align: center;
     margin: 10px 10px;
@@ -191,11 +191,21 @@
     font-size: 12px;
   }
 
+
   &:hover {
-    color: #f15a24;
+    color: #f15a24 !important;
+    div > svg{
+      color: #f15a24 !important;
+    }
   }
   .active {
-    color: #f15a24;
+    color: #f15a24 !important;
+    div > svg{
+      color: #f15a24 !important;
+    }
+  }
+  .iconImage{
+    color: rgba(0,0,0, 0.33);
   }
 }
 .line {
@@ -207,7 +217,7 @@
 
 .iconImage {
   width: 20px;
-  margin: 0 10px 0 0px;
+  margin-right: 20px;
 
   @include respond-to(smallDesktop) {
     // css code here

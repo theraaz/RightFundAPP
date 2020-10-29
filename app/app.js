@@ -8,7 +8,6 @@
 // Needed for redux-saga es6 generator support
 import '@babel/polyfill';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -19,7 +18,7 @@ import 'sanitize.css/sanitize.css';
 import { SnackbarProvider } from 'notistack';
 // Import root app
 import App from 'containers/App';
-// import './styles/main.scss';
+import './styles/main.scss';
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 

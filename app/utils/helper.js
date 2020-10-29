@@ -28,18 +28,32 @@ export const isCharityProfileInComplete = myCharityProfile => {
       bool = true;
     }
     if (
-      !myCharityProfile?.trusteeDetails &&
+      !myCharityProfile?.trustees &&
       myCharityProfile.position === 'trustee'
     ) {
       bool = true;
     } else if (
-      myCharityProfile.trusteeDetails &&
+      myCharityProfile.trustees &&
       myCharityProfile.position === 'trustee' &&
-      Object.values(JSON.parse(myCharityProfile.trusteeDetails)).filter(
-        d => d !== null,
-      ).length !== 4
+      myCharityProfile.trustees.length === 0
     ) {
       bool = true;
+    } else if (
+      myCharityProfile.trustees &&
+      myCharityProfile.position === 'trustee' &&
+      myCharityProfile.trustees.length > 0
+    ) {
+      bool = true;
+      for (const trustee of myCharityProfile.trustees) {
+        if (
+          trustee.firstName?.trim() !== '' &&
+          trustee.lastName?.trim() !== '' &&
+          trustee.email?.trim() !== '' &&
+          trustee.phoneNumber?.trim() !== ''
+        ) {
+          bool = false;
+        }
+      }
     }
     if (!myCharityProfile.userPhotoId) {
       bool = true;

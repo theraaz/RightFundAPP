@@ -1,12 +1,10 @@
 /**
  *
- * Layout
+ * CharityLayout
  *
  */
 
-import React, { memo, useEffect } from 'react';
-// import PropTypes from 'prop-types';
-// import styled from 'styled-components';
+import React, { useEffect } from 'react';
 import { Row, Col, Card, Image, Alert, Button } from 'react-bootstrap';
 import { connect, shallowEqual, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
@@ -22,17 +20,19 @@ import '../../containers/HomePage/dashboard.scss';
 import Header from '../Header/Loadable';
 import Footer from '../Footer/Loadable';
 
-import { getAccountDetails, updateProfile } from '../../utils/crud/auth.crud';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
 
 import { isCharityProfileInComplete } from '../../utils/helper';
 import SessionExpired from '../SessionExpired';
 import PencilIcon from '../svg-icons/PencilIcon';
+import { charityActions } from '../../utils/action-creators/charity.action.creator';
+import { updateCharity } from '../../utils/crud/charity.crud';
 import ProfileLoadingOverlay from '../ProfileLoadingOverlay';
+import { getCharityAccountDetails } from '../../utils/crud/auth.crud';
 
 const profileImg = require('../../images/placeholder.png');
 
-function Layout({ children, updateUser, ...props }) {
+function CharityLayout({ children, updateMyCharityProfile, ...props }) {
   const { user, myCharityProfile } = useSelector(
     ({ auth, charity }) => ({
       user: auth.user,
@@ -63,19 +63,24 @@ function Layout({ children, updateUser, ...props }) {
 
       setLoading(true);
       reader.onload = e => {
-        updateProfile({
-          image: e.target.result,
-        })
+        updateCharity(
+          {
+            image: e.target.result,
+            userPhotoId: myCharityProfile.userPhotoId,
+            constitutionDoc: myCharityProfile.userPhotoId,
+          },
+          myCharityProfile.id,
+        )
           .then(res => {
             setLoading(false);
             if (res.status === 200) {
               current.src = e.target.result;
-              updateUser({
+              updateMyCharityProfile({
                 image: current.src,
               });
               handleClickVariant(
                 'success',
-                'Profile Image Updated Successfully',
+                'Charity Image Updated Successfully',
               );
             } else {
               handleClickVariant('error', res.data.response.message);
@@ -83,7 +88,7 @@ function Layout({ children, updateUser, ...props }) {
           })
           .catch(() => {
             setLoading(false);
-            handleClickVariant('error', 'Could not Update Profile Image');
+            handleClickVariant('error', 'Could not Update Charity Image');
           });
       };
       reader.readAsDataURL(file);
@@ -91,7 +96,7 @@ function Layout({ children, updateUser, ...props }) {
   };
 
   useEffect(() => {
-    getAccountDetails()
+    getCharityAccountDetails(myCharityProfile.id)
       .then(({ data, status }) => {
         if (status === 200) {
           setTotalCampaign(data.response.data.totalCampaigns);
@@ -107,7 +112,6 @@ function Layout({ children, updateUser, ...props }) {
       });
   }, []);
 
-  const userAddress = user ? JSON.parse(user?.address) : '';
   return (
     <div>
       <Header
@@ -116,8 +120,8 @@ function Layout({ children, updateUser, ...props }) {
         lastName={user?.lastName}
       />
       <div className="container mt-n5">
-        <Row>
-          <Col xs={12} sm={12} lg={7} xl={7} className="charityAmountCard">
+        <Row style={{ marginBottom: '30px' }}>
+          <Col xs={12} sm={12} lg={7} xl={7}>
             <div className="card card-header-main  shadow bg-white rounded">
               <Row>
                 <Col xs={12} sm={5} md={5}>
@@ -140,7 +144,7 @@ function Layout({ children, updateUser, ...props }) {
 
                         <Image
                           ref={uploadedImage}
-                          src={user?.image || profileImg}
+                          src={myCharityProfile?.image || profileImg}
                           alt=""
                         />
                       </div>
@@ -155,41 +159,21 @@ function Layout({ children, updateUser, ...props }) {
                 <Col xs={12} sm={7} md={7} className="titleCol">
                   <div className="card-block card-data px-2">
                     <div className="card-title">
-                      <Title>
-                        {user?.firstName} {user?.lastName}
-                      </Title>
-                      <p className="card-text">{user?.phoneNumber}</p>
-                      <p className="card-text">{user?.email}</p>
-                      <p className="card-text bioText">
-                        {user?.bio ? user.bio : ''}
+                      <Title>{myCharityProfile?.name}</Title>
+                      <p className="card-text">{myCharityProfile?.regNo}</p>
+                      <p className="card-text text-capitalize">
+                        {myCharityProfile?.position}
                       </p>
-
-                      {userAddress && (
-                        <p>
-                          {userAddress.line1 !== ''
-                            ? `${userAddress.line1}, `
-                            : ''}
-                          {userAddress.line2 !== ''
-                            ? `${userAddress.line2}, `
-                            : ''}
-                          {userAddress.city !== ''
-                            ? `${userAddress.city}, `
-                            : ''}
-                          {userAddress.state !== ''
-                            ? `${userAddress.state}, `
-                            : ''}
-                          {userAddress.country !== ''
-                            ? userAddress.country
-                            : ''}
-                        </p>
-                      )}
+                      <p className="card-text">
+                        {myCharityProfile?.charityWeb}
+                      </p>
                     </div>
                   </div>
                 </Col>
               </Row>
             </div>
           </Col>
-          <Col xs={12} sm={12} lg={5} xl={5} className="charityAmountCard">
+          <Col xs={12} sm={12} lg={5} xl={5}>
             <Card className="card-header-main shadow  bg-white">
               <Card.Body className="complaints-data">
                 <div className="compaignData">
@@ -252,11 +236,9 @@ function Layout({ children, updateUser, ...props }) {
   );
 }
 
-Layout.propTypes = {};
-
 export default withRouter(
   connect(
     null,
-    authActions,
-  )(memo(Layout)),
+    { ...authActions, ...charityActions },
+  )(CharityLayout),
 );

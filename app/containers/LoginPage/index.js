@@ -43,12 +43,6 @@ export function LoginPage(props) {
     return email.length > 0 && password.length > 0;
   }
 
-  function resetField() {
-    setEmail('');
-    setPassword('');
-    setRemeberMe(false);
-  }
-
   const handleClickVariant = (variant, message) => {
     // variant could be success, error, warning, info, or default
     enqueueSnackbar(message, {
@@ -84,7 +78,6 @@ export function LoginPage(props) {
                 token: data.response?.data?.token,
                 user: data.response?.data?.res,
               });
-              console.log(data.response?.data?.res);
               localStorage.setItem('token', data.response.data.token);
               props.history.push('/');
             }
@@ -92,8 +85,9 @@ export function LoginPage(props) {
             handleClickVariant('error', data.response.message);
           }
         })
-        .catch((error) => {
-          console.log(error);
+        .catch(error => {
+          setLoading(false);
+          handleClickVariant('error', error?.response?.data?.response?.message);
         });
     }
   }
@@ -190,7 +184,6 @@ export function LoginPage(props) {
                   </Link>
                 </Col>
               </Form.Row>
-
             </Form.Group>
 
             <Button block bssize="large" type="submit" className="submitBtn">
