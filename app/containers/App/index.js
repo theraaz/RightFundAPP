@@ -18,7 +18,7 @@ import CampaignViewContainer from 'containers/CampaignViewContainer/index';
 import DonationsContainer from 'containers/DonationsContainer/index';
 import AccountVerification from 'containers/AccountVerification/index';
 import AllDonations from 'containers/AllDonations/index';
-
+import Accounts from 'containers/Accounts/Loadable';
 import BankDetails from 'containers/BankDetails/Loadable';
 import Withdrawals from 'containers/Withdrawals/Loadable';
 
@@ -29,6 +29,8 @@ import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import GlobalStyle from '../../global-styles';
 import AuthRoute from '../../components/AuthRoutes';
 import LoginRoute from '../../components/routes';
+import AdminRoute from '../../components/AdminRoute';
+
 export default function App() {
   // localStorage.getItem('token')
   const { user } = useSelector(
@@ -79,7 +81,7 @@ export default function App() {
         <AuthRoute exact path="/donations" component={AllDonations} />
         <AuthRoute exact path="/bankDetails" component={BankDetails} />
         <AuthRoute exact path="/withdrawals" component={Withdrawals} />
-
+        <AdminRoute exact path="/accounts" component={Accounts} />
         {/* <LoginRoute exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} /> */}
         <Route component={NotFoundPage} />
       </Switch>

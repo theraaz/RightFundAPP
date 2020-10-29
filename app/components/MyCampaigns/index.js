@@ -149,7 +149,7 @@ const MyCampaigns = ({ ...props }) => {
 
     return `${
       data.length > 0 ? data[0].amountSymbolId.symbol : ''
-    } ${totalAmount}`;
+    } ${totalAmount / 100}`;
   }
 
   function deleteCampaign() {

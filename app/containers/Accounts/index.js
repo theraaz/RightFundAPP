@@ -1,0 +1,253 @@
+/**
+ *
+ * Accounts
+ *
+ */
+
+import React, { useCallback, useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
+import Layout from '../../components/Layout/index';
+import {
+  adminForceLogin,
+  adminGetAllAccounts,
+} from '../../utils/crud/admin.crud';
+import { useSnackbar } from 'notistack';
+import {
+  Button,
+  Card,
+  Container,
+  Form,
+  Modal,
+  Spinner,
+  Table,
+} from 'react-bootstrap';
+import LoadingComponent from '../../components/LoadingComponent';
+import EmptyComponent from '../../components/EmptyComponent';
+import { ExitToApp, MoreVert } from '@material-ui/icons';
+import { ListItemText, Menu, MenuItem } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
+import { connect, shallowEqual, useSelector } from 'react-redux';
+import { authActions } from '../../utils/action-creators/auth.action.creator';
+
+export function Accounts({ login, history }) {
+  const { user } = useSelector(
+    ({ auth }) => ({
+      user: auth.user,
+    }),
+    shallowEqual,
+  );
+  const [accounts, setAccounts] = useState([]);
+  const [perPage, setPerPage] = useState(10);
+  const [pageNo, setPageNo] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [singleUser, setSingleUser] = useState(null);
+
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState({
+    accounts: false,
+    login: false,
+  });
+  const [showModal, setShowModal] = useState(false);
+  const enableLoading = name => {
+    setLoading({ ...loading, [name]: true });
+  };
+  const disableLoading = name => {
+    setLoading({ ...loading, [name]: false });
+  };
+  useEffect(() => {
+    enableLoading('accounts');
+    adminGetAllAccounts({ pageNo, perPage })
+      .then(res => {
+        disableLoading('accounts');
+        setAccounts(res?.data?.response?.data?.res || []);
+        setTotalPages(res?.data?.response?.data?.totalCount || 0);
+      })
+      .catch(() => {
+        disableLoading('accounts');
+      });
+  }, [pageNo, perPage]);
+  const showAlert = (variant, message) => {
+    // variant could be success, error, warning, info, or default
+    enqueueSnackbar(message, {
+      variant,
+      anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
+    });
+  };
+  const openModal = () => {
+    setShowModal(true);
+
+    setAnchorEl(null);
+  };
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  const PerPage = event => {
+    setPerPage(event.target.value);
+  };
+  const handleChangePage = useCallback((event, value) => {
+    setPageNo(value);
+  }, []);
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+  const forceLogin = () => {
+    enableLoading('login');
+    adminForceLogin({ email: singleUser.email })
+      .then(({ data, status }) => {
+        disableLoading('login');
+        console.log('data', data);
+        if (status === 200) {
+          showAlert('success', data.response.message);
+          login({
+            token: data.response?.data?.token,
+            user: data.response?.data?.res,
+          });
+          localStorage.setItem('token', data.response.data.token);
+          history.push('/');
+          closeModal();
+        } else {
+          showAlert('error', data.response.message);
+        }
+      })
+      .catch(error => {
+        disableLoading('login');
+
+        showAlert(
+          'error',
+          error?.response?.data?.response?.message || 'Could not login!',
+        );
+      });
+  };
+  const handleClickMenuOpen = sUser => e => {
+    setSingleUser(sUser);
+    setAnchorEl(e.currentTarget);
+  };
+  return (
+    <Layout>
+      <Helmet>
+        <title>Accounts</title>
+        <meta name="description" content="All Accounts of RightFunds" />
+      </Helmet>
+      <Card className="dataCard shadow mb-5 bg-white">
+        <Card.Header style={{ background: 'transparent' }}>
+          <Card.Title className="campaignHeader">
+            <span style={{ marginTop: '8px' }}>All Accounts</span>
+          </Card.Title>
+        </Card.Header>
+
+        <Card.Body>
+          <Container>
+            {loading.accounts ? (
+              <LoadingComponent height={150} />
+            ) : accounts.length === 0 ? (
+              <EmptyComponent height={150} message="No Accounts Found!" />
+            ) : (
+              <div className="tableMain" style={{ backgroundColor: 'white' }}>
+                <div className="tableRow">
+                  <h5 className="DonationHeading">Accounts</h5>
+                </div>
+
+                <Table responsive striped size="sm" className="table1">
+                  <thead className="tableHeader">
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Phone Number</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="tableBody">
+                    {accounts.map((account, i) => (
+                      <tr key={account.id || i}>
+                        <td>{`${account?.firstName} ${account?.lastName}`}</td>
+                        <td>{account?.email || 'N/A'}</td>
+                        <td>{account?.phoneNumber || 'N/A'}</td>
+                        <td className="text-capitalize">
+                          {account?.role?.name?.toLowerCase() || 'N/A'}
+                        </td>
+                        <td className="text-capitalize">
+                          {account?.statusId?.name
+                            ?.replace('ACTIVE', ' ACTIVE')
+                            ?.toLowerCase() || 'N/A'}
+                        </td>
+                        <td>
+                          <button
+                            onClick={handleClickMenuOpen(account)}
+                            className="btn btn-icon"
+                            disabled={user?.email === account?.email}
+                          >
+                            <MoreVert />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </div>
+            )}
+
+            <div className="paginatordiv">
+              <div className="paginatorPerSize">
+                <span>Per Page</span>
+                <Form.Control
+                  as="select"
+                  className="paginatorPerPage"
+                  onChange={PerPage}
+                >
+                  <option className="paginatorPerPageOption" value="10">
+                    10
+                  </option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                </Form.Control>
+              </div>
+              <Pagination
+                count={Math.ceil(totalPages / perPage)}
+                classes={{ ul: 'paginationColor' }}
+                onChange={handleChangePage}
+                variant="outlined"
+                shape="rounded"
+                page={pageNo}
+              />
+            </div>
+          </Container>
+        </Card.Body>
+      </Card>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleCloseMenu}
+      >
+        <MenuItem className="menuList" onClick={openModal}>
+          <ExitToApp />
+          <ListItemText primary="Force Login" style={{ marginLeft: 10 }} />
+        </MenuItem>
+      </Menu>
+      <Modal show={showModal} onHide={closeModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Force Login</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to force login to this user?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="light" onClick={closeModal}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={forceLogin}>
+            Login Now{' '}
+            {loading.login && <Spinner animation="border" size="sm" />}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </Layout>
+  );
+}
+
+export default connect(
+  null,
+  authActions,
+)(Accounts);
