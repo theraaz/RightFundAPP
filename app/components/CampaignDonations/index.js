@@ -199,7 +199,7 @@ function CampaignDonations({ ...props }) {
                       >
                         <td>{formatDate(data.createdAt)}</td>
                       </OverlayTrigger>
-                      <td className='tableAmount'>{data.amountSymbolId.symbol} {data.amount}</td>
+                      <td className='tableAmount'>{data.amountSymbolId.symbol} {data.amount/100}</td>
                     </tr>
                   ))
 

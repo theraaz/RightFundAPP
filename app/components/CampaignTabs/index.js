@@ -278,7 +278,7 @@ function CampaignTabs({ children, ...props }) {
                               {campaignData
                                 ? campaignData.campaignAmountSymbol.symbol
                                 : ''}{' '}
-                              {campaignData ? campaignData.totalDonations : ''}
+                              {campaignData ? campaignData.totalDonations/100 : ''}
                             </span>
                             <span className="title">Raised</span>
                           </li>

@@ -134,7 +134,7 @@ function CampaignDetail({ ...props }) {
               <Container>
                 <Card className="campaign-card">
                   <Row>
-                    <Col xs={12} sm={6} md={6}>
+                    <Col xs={12} sm={12} md={6}>
                       <div className="campaignDetail__media">
                         {campaignDetail.video ? (
                           <iframe
@@ -165,7 +165,7 @@ function CampaignDetail({ ...props }) {
                       </div>
                     </Col>
 
-                    <Col xs={12} sm={6} md={6}>
+                    <Col xs={12} sm={12} md={6}>
                       <Card.Body className="cardBody">
                         <h3 className="campaign__title">
                           {campaignDetail.title}
