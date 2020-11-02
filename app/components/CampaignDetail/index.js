@@ -13,16 +13,27 @@ import React, { memo, useState, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
-import { Card, ProgressBar, Container, Row, Col, Image } from 'react-bootstrap';
-
+import {
+  Card, ProgressBar, Container, Row, Col, Image,
+} from 'react-bootstrap';
+import EmailIcon from '../svg-icons/emailIcon';
 import './campaignDetail.scss';
+import BackIcon from '../svg-icons/backIcon';
+import CategoryOutlinedIcon from '@material-ui/icons/CategoryOutlined';
+import LoadingComponent from '../LoadingComponent';
+import CampaignIcon from '../svg-icons/campaignIcon';
+import DonationsIcon from '../svg-icons/donationsIcon';
+import { getCampaignPackages } from '../../utils/campaigns-utilities/CampaignPackages';
+import { CustomHeading, CustomHeadingNum } from '../Forms/form.styles';
+
 
 const profileImg = require('../../images/placeholder.png');
 function CampaignDetail({ ...props }) {
   const token = localStorage.getItem('token');
   const [campaignData, setCampaignData] = useState();
-  const [youtubeId, setYoutubeId] = React.useState('');
+  const [youtubeId, setYoutubeId] = useState('');
   const [campaignDetail, setCampaignDetail] = useState();
+  const [packages, setPackages] = useState([]);
 
   function backFunction() {
     // eslint-disable-next-line react/prop-types
@@ -39,6 +50,16 @@ function CampaignDetail({ ...props }) {
     }
   }
 
+  function getAllPackages() {
+    getCampaignPackages(props.match.params.id)
+      .then(({ data }) => {
+        setPackages(data.response.data.res);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }
+
   useEffect(() => {
     const requestOptions = {
       method: 'GET',
@@ -53,7 +74,7 @@ function CampaignDetail({ ...props }) {
       requestOptions,
     )
       .then(response => response.json())
-      .then(user => {
+      .then((user) => {
         setCampaignData(user.response.data);
         fetch(
           `${process.env.baseURL}/campaign/${props.match.params.id}`,
@@ -61,19 +82,21 @@ function CampaignDetail({ ...props }) {
         )
           .then(response => response.json())
           // eslint-disable-next-line no-shadow
-          .then(user => {
+          .then((user) => {
             setCampaignDetail(user.response.data.res);
             if (user.response.data.res.video) {
               setVideo(user.response.data.res.video);
             }
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
+
+    getAllPackages();
   }, []);
 
   function progressBarVal() {
@@ -98,34 +121,9 @@ function CampaignDetail({ ...props }) {
       >
         <div className="backButtonCamapignView">
           <div onClick={backFunction}>
-            <svg
-              version="1.1"
-              id="Capa_1"
-              x="0px"
-              y="0px"
-              width="15"
-              height="15"
-              viewBox="0 0 268.833 268.833"
-            >
-              <g>
-                <path d="M256.333,121.916H42.679l58.659-58.661c4.882-4.882,4.882-12.796,0-17.678c-4.883-4.881-12.797-4.881-17.678,0l-79.998,80   c-4.883,4.882-4.883,12.796,0,17.678l80,80c2.439,2.439,5.64,3.661,8.839,3.661s6.397-1.222,8.839-3.661   c4.882-4.882,4.882-12.796,0-17.678l-58.661-58.661h213.654c6.903,0,12.5-5.598,12.5-12.5   C268.833,127.513,263.236,121.916,256.333,121.916z" />
-              </g>
-              <g />
-              <g />
-              <g />
-              <g />
-              <g />
-              <g />
-              <g />
-              <g />
-              <g />
-              <g />
-              <g />
-              <g />
-              <g />
-              <g />
-              <g />
-            </svg>
+
+            <BackIcon size="15px" />
+
             <span>Back</span>
           </div>
         </div>
@@ -187,52 +185,95 @@ function CampaignDetail({ ...props }) {
                             {campaignDetail.account
                               ? campaignDetail.account.firstName
                               : ''}
+                            {' '}
+                            {campaignDetail.account
+                              ? campaignDetail.account.lastName
+                              : ''}
                           </span>
                         </Card.Title>
 
                         <Card.Text>
                           <div className="author-email-cv">
+                            <span className="icons">
+                              <EmailIcon size="16px" />
+                            </span>
                             {campaignDetail.account
                               ? campaignDetail.account.email
                               : ''}
                           </div>
                         </Card.Text>
+                        {
+                          campaignDetail.isParent === false
+                            ? (
+                              <Card.Text>
+                                <div className="author-email-cv">
+                                  <Row>
+                                    <Col md={4} sm={4}>
+                                      <span className="icons">
+                                        <CampaignIcon />
+                                      </span>
+                                Parent Campaign:
+                                    </Col>
 
-                        <div>
-                          <Card.Text className="descriptionCampaign">
-                            {campaignAddress && (
-                              <p>
-                                {campaignAddress.line1 &&
-                                campaignAddress.line1 !== ''
-                                  ? `${campaignAddress.line1}, `
-                                  : ''}
-                                {campaignAddress.line2 &&
-                                campaignAddress.line2 !== ''
-                                  ? `${campaignAddress.line2}, `
-                                  : ''}
-                                {campaignAddress.city &&
-                                campaignAddress.city !== ''
-                                  ? `${campaignAddress.city}, `
-                                  : ''}
-                                {campaignAddress.state &&
-                                campaignAddress.state !== ''
-                                  ? `${campaignAddress.state}, `
-                                  : ''}
-                                {campaignAddress.country &&
-                                campaignAddress.country !== ''
-                                  ? campaignAddress.country
-                                  : ''}
-                              </p>
-                            )}
-                          </Card.Text>
+                                    <Col md={8} sm={8}>
+                                      {campaignDetail.parentCampaignId
+                                        ? campaignDetail.parentCampaignId.title
+                                        : ''}
+                                    </Col>
+                                  </Row>
+                                </div>
+                              </Card.Text>
+                            ) : ''
 
-                          <Card.Text
-                            className="descriptionCampaign"
-                            dangerouslySetInnerHTML={{
-                              __html: campaignDetail.description,
-                            }}
-                          />
-                        </div>
+                        }
+                        <Card.Text>
+
+                          <div className="author-campaign-category">
+                            <Row>
+                              <Col md={4} sm={4}>
+                                <span className="icons">
+                                  <CategoryOutlinedIcon
+                                    fontSize="small"
+                                    style={{
+                                      color: '#818386',
+                                    }}
+                                  />
+                                </span>
+                              Category:
+                              </Col>
+
+                              <Col md={8} sm={8}>
+
+                                {campaignDetail.categoryId
+                                  ? campaignDetail.categoryId.name
+                                  : ''}
+                              </Col>
+                            </Row>
+                          </div>
+
+                        </Card.Text>
+                        <Card.Text>
+
+                          <div className="author-campaign-category">
+                            <Row>
+                              <Col md={4} sm={4}>
+                                <span className="icons">
+                                  <DonationsIcon />
+                                </span>
+                                Zakat Eliglible:
+                              </Col>
+
+                              <Col md={8} sm={8}>
+
+                                {campaignDetail.zakatEligible
+                                  ? 'Yes'
+                                  : 'No'}
+                              </Col>
+                            </Row>
+                          </div>
+
+                        </Card.Text>
+
                         <ul className="campign-info">
                           <li className="raised">
                             <span className="title">Target</span>
@@ -274,22 +315,53 @@ function CampaignDetail({ ...props }) {
                     </Col>
                   </Row>
                   <Row>
-                    <Col>
-                      <div className="descriptionCampaignDetail">
-                        <Card.Title>Description</Card.Title>
-                        <Card.Text
-                          className="detailedDescrtiption"
-                          dangerouslySetInnerHTML={{
-                            __html: campaignDetail.description,
-                          }}
-                        />
-                      </div>
+                    <Col sm={8} md={8}>
+                      {campaignDetail.description
+                        ? (
+                          <div className="descriptionCampaignDetail">
+                            <Card.Title>Description</Card.Title>
+                            <Card.Text
+                              className="detailedDescrtiption"
+                              dangerouslySetInnerHTML={{
+                                __html: campaignDetail.description,
+                              }}
+                            />
+                          </div>
+                        )
+                        : ''}
+
+                    </Col>
+                    <Col sm={4} md={4}>
+                      {packages.length > 0
+                        ? (
+                          <div className="descriptionCampaignDetail">
+                            <Card.Title>Packages</Card.Title>
+                            {
+                              packages.map(data => (
+                                <Card className="defined-paymentsViewCampaign">
+                                  <div className="card-heading-inner">
+                                    <CustomHeading>{data.title}</CustomHeading>
+                                    <CustomHeadingNum>
+                                      {data.amountSymbolId.symbol}
+                                      {' '}
+                                      {data.amount}
+                                    </CustomHeadingNum>
+                                  </div>
+                                  <div style={{ textAlign: 'initial' }}>
+                                    <p>{data.description}</p>
+                                  </div>
+                                </Card>
+                              ))}
+                          </div>
+                        )
+                        : ''}
+
                     </Col>
                   </Row>
                 </Card>
               </Container>
             ) : (
-              ''
+              <LoadingComponent />
             )}
           </Card.Body>
         </Card>

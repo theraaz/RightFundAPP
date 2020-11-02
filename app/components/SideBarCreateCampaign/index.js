@@ -86,12 +86,14 @@ const SideBarCreateCampaign = (editCampaignData) => {
         state: values.state,
         country: values.country,
       };
+      console.log(values.parentCampaign);
       const newData = {
         title: values.campaignTitle,
-        amount: values.amount,
+        amount: JSON.parse(values.amount),
         address: JSON.stringify(address),
         endDate: values.date,
         categoryId: values.categories,
+        parentCampaignId: values.parentCampaign,
         charityId:
           user.isCharity && values.fundraiser === 'charity'
             ? myCharityProfile.id
@@ -188,18 +190,15 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   }
                 >
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${
-                      activeLink === 0 ? '' : ''
+                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 0 ? '' : ''
                     }`}
                   >
                     <div
-                      className={`${
-                        activeLink === 0 ? 'iconImageActive' : 'iconImage'
+                      className={`${activeLink === 0 ? 'iconImageActive' : 'iconImage'
                       }`}
                     >
                       <span
-                        className={`${
-                          activeLink === 0 ? 'tagNumberActive' : 'tagNumber'
+                        className={`${activeLink === 0 ? 'tagNumberActive' : 'tagNumber'
                         }`}
                       >
                         {' '}
@@ -208,10 +207,9 @@ const SideBarCreateCampaign = (editCampaignData) => {
                     </div>
 
                     <span
-                      className={`${
-                        activeLink === 0
-                          ? 'sidebartitleListActive'
-                          : 'sidebartitleList'
+                      className={`${activeLink === 0
+                        ? 'sidebartitleListActive'
+                        : 'sidebartitleList'
                       }`}
                     >
                       Campaign Information
@@ -225,28 +223,24 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   }
                 >
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${
-                      activeLink === 1 ? '' : ''
+                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 1 ? '' : ''
                     }`}
                   >
                     <div
-                      className={`${
-                        activeLink === 1 ? 'iconImageActive' : 'iconImage'
+                      className={`${activeLink === 1 ? 'iconImageActive' : 'iconImage'
                       }`}
                     >
                       <span
-                        className={`${
-                          activeLink === 1 ? 'tagNumberActive' : 'tagNumber'
+                        className={`${activeLink === 1 ? 'tagNumberActive' : 'tagNumber'
                         }`}
                       >
                         02
                       </span>
                     </div>
                     <span
-                      className={`${
-                        activeLink === 1
-                          ? 'sidebartitleListActive'
-                          : 'sidebartitleList'
+                      className={`${activeLink === 1
+                        ? 'sidebartitleListActive'
+                        : 'sidebartitleList'
                       }`}
                     >
                       Tell your story
@@ -263,28 +257,24 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   }}
                 >
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${
-                      activeLink === 2 ? '' : ''
+                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 2 ? '' : ''
                     }`}
                   >
                     <div
-                      className={`${
-                        activeLink === 2 ? 'iconImageActive' : 'iconImage'
+                      className={`${activeLink === 2 ? 'iconImageActive' : 'iconImage'
                       }`}
                     >
                       <span
-                        className={`${
-                          activeLink === 2 ? 'tagNumberActive' : 'tagNumber'
+                        className={`${activeLink === 2 ? 'tagNumberActive' : 'tagNumber'
                         }`}
                       >
                         03
                       </span>
                     </div>
                     <span
-                      className={`${
-                        activeLink === 2
-                          ? 'sidebartitleListActive'
-                          : 'sidebartitleList'
+                      className={`${activeLink === 2
+                        ? 'sidebartitleListActive'
+                        : 'sidebartitleList'
                       }`}
                     >
                       Campaign Packages
@@ -298,28 +288,24 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   }
                 >
                   <div
-                    className={`text-decoration-none d-flex iconMainDiv ${
-                      activeLink === 3 ? '' : ''
+                    className={`text-decoration-none d-flex iconMainDiv ${activeLink === 3 ? '' : ''
                     }`}
                   >
                     <div
-                      className={`${
-                        activeLink === 3 ? 'iconImageActive' : 'iconImage'
+                      className={`${activeLink === 3 ? 'iconImageActive' : 'iconImage'
                       }`}
                     >
                       <span
-                        className={`${
-                          activeLink === 3 ? 'tagNumberActive' : 'tagNumber'
+                        className={`${activeLink === 3 ? 'tagNumberActive' : 'tagNumber'
                         }`}
                       >
                         04
                       </span>
                     </div>
                     <span
-                      className={`${
-                        activeLink === 3
-                          ? 'sidebartitleListActive'
-                          : 'sidebartitleList'
+                      className={`${activeLink === 3
+                        ? 'sidebartitleListActive'
+                        : 'sidebartitleList'
                       }`}
                     >
                       Campaign Status
@@ -344,6 +330,9 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   address: editCampaignData?.editCampaignData?.address || '',
                   categories:
                     editCampaignData?.editCampaignData?.categoryId?.id || '',
+                  parentCampaign:
+                  editCampaignData?.editCampaignData?.isParent ? ''
+                    : editCampaignData?.editCampaignData?.parentCampaignId?.id,
                   amount: editCampaignData?.editCampaignData?.amount || null,
                   editorValue: editCampaignData?.editCampaignData?.description
                     ? editCampaignData.editCampaignData.description
