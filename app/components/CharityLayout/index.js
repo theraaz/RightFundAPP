@@ -33,10 +33,11 @@ import { getCharityAccountDetails } from '../../utils/crud/auth.crud';
 const profileImg = require('../../images/placeholder.png');
 
 function CharityLayout({ children, updateMyCharityProfile, ...props }) {
-  const { user, myCharityProfile } = useSelector(
+  const { user, myCharityProfile, adminCharity } = useSelector(
     ({ auth, charity }) => ({
       user: auth.user,
       myCharityProfile: charity.myCharityProfile,
+      adminCharity: charity.adminCharity,
     }),
     shallowEqual,
   );
@@ -115,6 +116,7 @@ function CharityLayout({ children, updateMyCharityProfile, ...props }) {
       });
   }, []);
 
+  const charity = adminCharity || myCharityProfile;
   return (
     <div>
       <Header
@@ -149,7 +151,7 @@ function CharityLayout({ children, updateMyCharityProfile, ...props }) {
 
                         <Image
                           ref={uploadedImage}
-                          src={myCharityProfile?.image || profileImg}
+                          src={charity?.image || profileImg}
                           alt=""
                         />
                       </div>
@@ -166,14 +168,12 @@ function CharityLayout({ children, updateMyCharityProfile, ...props }) {
                 <Col xs={12} sm={7} md={7} className="titleCol">
                   <div className="card-block card-data px-2">
                     <div className="card-title">
-                      <Title>{myCharityProfile?.name}</Title>
-                      <p className="card-text">{myCharityProfile?.regNo}</p>
+                      <Title>{charity?.name}</Title>
+                      <p className="card-text">{charity?.regNo}</p>
                       <p className="card-text text-capitalize">
-                        {myCharityProfile?.position}
+                        {charity?.position}
                       </p>
-                      <p className="card-text">
-                        {myCharityProfile?.charityWeb}
-                      </p>
+                      <p className="card-text">{charity?.charityWeb}</p>
                     </div>
                   </div>
                 </Col>

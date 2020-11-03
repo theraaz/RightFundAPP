@@ -133,7 +133,6 @@ function CharitiesList({ type, history }) {
       history.push(`/team-members/${id}`);
     }
   };
-  console.log(singleCharity);
   return (
     <Card className="dataCard shadow mb-5 bg-white">
       <Card.Header style={{ background: 'transparent' }}>

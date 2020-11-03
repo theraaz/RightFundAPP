@@ -23,6 +23,7 @@ import BankDetails from 'containers/BankDetails/Loadable';
 import Withdrawals from 'containers/Withdrawals/Loadable';
 import AdminCharities from 'containers/AdminCharities/Loadable';
 import AdminCharityView from 'containers/CharityProfileView/Loadable';
+import AdminWithdrawal from 'containers/AdminWithdrawal/Loadable';
 
 import { shallowEqual, useSelector } from 'react-redux';
 
@@ -85,6 +86,7 @@ export default function App() {
         <AuthRoute exact path="/withdrawals" component={Withdrawals} />
         <AdminRoute exact path="/accounts" component={Accounts} />
         <AdminRoute exact path="/charities" component={AdminCharities} />
+        <AdminRoute exact path="/withdrawal" component={AdminWithdrawal} />
         <AdminRoute
           exact
           path="/charities/:charityId"
