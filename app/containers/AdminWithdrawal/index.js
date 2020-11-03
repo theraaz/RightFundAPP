@@ -182,6 +182,7 @@ export function AdminWithdrawal() {
                         <td>
                           <button
                             onClick={handleClickMenuOpen(withdrawal)}
+                            disabled={withdrawal?.statusId?.id !== 4}
                             className="btn btn-icon btn-sm p-0"
                           >
                             <MoreVert />
