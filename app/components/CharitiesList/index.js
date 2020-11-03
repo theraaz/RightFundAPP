@@ -7,8 +7,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
 import {
+  adminChangeCharityStatus,
   adminGetAllCharities,
-  adminSuspendCharity,
 } from '../../utils/crud/admin.crud';
 import { getAllMyCharities } from '../../utils/crud/charity.crud';
 import {
@@ -25,9 +25,8 @@ import EmptyComponent from '../EmptyComponent';
 import { ListItemText, Menu, MenuItem, Tooltip } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { withRouter } from 'react-router-dom';
-import { MoreVert } from '@material-ui/icons';
+import { MoreVert, LockOutlined, LockOpenOutlined } from '@material-ui/icons';
 import { useSnackbar } from 'notistack';
-import SuspendIcon from '../svg-icons/suspendIcon';
 function CharitiesList({ type, history }) {
   const { user } = useSelector(
     ({ auth }) => ({
@@ -41,6 +40,7 @@ function CharitiesList({ type, history }) {
   const [totalPages, setTotalPages] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [singleCharity, setSingleCharity] = useState(null);
+  const [statusId, setStatusId] = useState(null);
   const [showModal, setShowModal] = useState({ login: false, suspend: false });
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState({
@@ -72,9 +72,9 @@ function CharitiesList({ type, history }) {
   const handleChangePage = useCallback((event, value) => {
     setPageNo(value);
   }, []);
-  const openModal = name => () => {
+  const openModal = (name, stId) => () => {
     setShowModal({ ...showModal, [name]: true });
-
+    setStatusId(stId);
     setAnchorEl(null);
   };
   const closeModal = name => () => {
@@ -93,9 +93,9 @@ function CharitiesList({ type, history }) {
       anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
     });
   };
-  const suspendCharity = () => {
+  const changeStatusCharity = () => {
     enableLoading('suspend');
-    adminSuspendCharity(singleCharity.id)
+    adminChangeCharityStatus(singleCharity.id, statusId)
       .then(({ data, status }) => {
         disableLoading('suspend');
         console.log('data', data);
@@ -112,7 +112,8 @@ function CharitiesList({ type, history }) {
 
         showAlert(
           'error',
-          error?.response?.data?.response?.message || 'Could not Suspend!',
+          error?.response?.data?.response?.message ||
+            'Could not perform this action!',
         );
       });
   };
@@ -132,7 +133,7 @@ function CharitiesList({ type, history }) {
       history.push(`/team-members/${id}`);
     }
   };
-
+  console.log(singleCharity);
   return (
     <Card className="dataCard shadow mb-5 bg-white">
       <Card.Header style={{ background: 'transparent' }}>
@@ -166,7 +167,9 @@ function CharitiesList({ type, history }) {
                 <tbody className="tableBody">
                   {myCharities.map((charity, i) => (
                     <Tooltip
-                      title="Click to View Details"
+                      title={`Click to View Charity ${
+                        type === 'team' ? 'Users' : 'Profile'
+                      }`}
                       placement="top"
                       key={charity.id || i}
                     >
@@ -253,23 +256,34 @@ function CharitiesList({ type, history }) {
         open={Boolean(anchorEl)}
         onClose={handleCloseMenu}
       >
-        <MenuItem className="menuList" onClick={openModal('suspend')}>
-          <SuspendIcon size="20px" />
+        <MenuItem
+          className="menuList"
+          disabled={singleCharity?.statusId?.id === 9}
+          onClick={openModal('suspend', 9)}
+        >
+          <LockOutlined fontSize="small" />
           <ListItemText primary="Suspend" style={{ marginLeft: 10 }} />
+        </MenuItem>
+        <MenuItem
+          className="menuList"
+          disabled={singleCharity?.statusId?.id === 1}
+          onClick={openModal('suspend', 1)}
+        >
+          <LockOpenOutlined fontSize="small" />
+          <ListItemText primary="Activate" style={{ marginLeft: 10 }} />
         </MenuItem>
       </Menu>
       <Modal show={showModal.suspend} onHide={closeModal('suspend')}>
         <Modal.Header closeButton>
-          <Modal.Title as="h5">Suspend Charity</Modal.Title>
+          <Modal.Title as="h5">Confirm</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to suspend this charity?</Modal.Body>
+        <Modal.Body>Are you sure you want to perform this action?</Modal.Body>
         <Modal.Footer>
           <Button variant="light" onClick={closeModal('suspend')}>
-            Cancel
+            No
           </Button>
-          <Button variant="primary" onClick={suspendCharity}>
-            Suspend Now{' '}
-            {loading.suspend && <Spinner animation="border" size="sm" />}
+          <Button variant="primary" onClick={changeStatusCharity}>
+            Yes {loading.suspend && <Spinner animation="border" size="sm" />}
           </Button>
         </Modal.Footer>
       </Modal>

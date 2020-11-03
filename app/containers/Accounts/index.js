@@ -8,9 +8,9 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import Layout from '../../components/Layout/index';
 import {
+  adminChangeAccountStatus,
   adminForceLogin,
   adminGetAllAccounts,
-  adminSuspendAccount,
 } from '../../utils/crud/admin.crud';
 import { useSnackbar } from 'notistack';
 import {
@@ -24,12 +24,16 @@ import {
 } from 'react-bootstrap';
 import LoadingComponent from '../../components/LoadingComponent';
 import EmptyComponent from '../../components/EmptyComponent';
-import { ExitToApp, MoreVert } from '@material-ui/icons';
+import {
+  ExitToApp,
+  MoreVert,
+  LockOutlined,
+  LockOpenOutlined,
+} from '@material-ui/icons';
 import { ListItemText, Menu, MenuItem } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { connect, shallowEqual, useSelector } from 'react-redux';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
-import SuspendIcon from '../../components/svg-icons/suspendIcon';
 
 export function Accounts({ login, history }) {
   const { user } = useSelector(
@@ -43,6 +47,7 @@ export function Accounts({ login, history }) {
   const [pageNo, setPageNo] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [statusId, setStatusId] = useState(null);
   const [singleUser, setSingleUser] = useState(null);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -80,9 +85,9 @@ export function Accounts({ login, history }) {
       anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
     });
   };
-  const openModal = name => () => {
+  const openModal = (name, stId) => () => {
     setShowModal({ ...showModal, [name]: true });
-
+    setStatusId(stId);
     setAnchorEl(null);
   };
   const closeModal = name => () => {
@@ -125,12 +130,11 @@ export function Accounts({ login, history }) {
         );
       });
   };
-  const suspendAccount = () => {
+  const changeAccountStatus = () => {
     enableLoading('suspend');
-    adminSuspendAccount(singleUser.id)
+    adminChangeAccountStatus(singleUser.id, statusId)
       .then(({ data, status }) => {
         disableLoading('suspend');
-        console.log('data', data);
         if (status === 200) {
           showAlert('success', data.response.message);
           getAccounts();
@@ -250,9 +254,21 @@ export function Accounts({ login, history }) {
         open={Boolean(anchorEl)}
         onClose={handleCloseMenu}
       >
-        <MenuItem className="menuList" onClick={openModal('suspend')}>
-          <SuspendIcon size="20px" />
+        <MenuItem
+          className="menuList"
+          disabled={singleUser?.statusId?.id === 9}
+          onClick={openModal('suspend', 9)}
+        >
+          <LockOutlined fontSize="small" />
           <ListItemText primary="Suspend" style={{ marginLeft: 10 }} />
+        </MenuItem>
+        <MenuItem
+          className="menuList"
+          disabled={singleUser?.statusId?.id === 1}
+          onClick={openModal('suspend', 1)}
+        >
+          <LockOpenOutlined fontSize="small" />
+          <ListItemText primary="Activate" style={{ marginLeft: 10 }} />
         </MenuItem>
         <MenuItem className="menuList" onClick={openModal('login')}>
           <ExitToApp fontSize="small" />
@@ -278,16 +294,15 @@ export function Accounts({ login, history }) {
       </Modal>
       <Modal show={showModal.suspend} onHide={closeModal('suspend')}>
         <Modal.Header closeButton>
-          <Modal.Title as="h5">Suspend Account</Modal.Title>
+          <Modal.Title as="h5">Confirm</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to suspend this user?</Modal.Body>
+        <Modal.Body>Are you sure you want to perform this action?</Modal.Body>
         <Modal.Footer>
           <Button variant="light" onClick={closeModal('suspend')}>
-            Cancel
+            No
           </Button>
-          <Button variant="primary" onClick={suspendAccount}>
-            Suspend Now{' '}
-            {loading.suspend && <Spinner animation="border" size="sm" />}
+          <Button variant="primary" onClick={changeAccountStatus}>
+            Yes {loading.suspend && <Spinner animation="border" size="sm" />}
           </Button>
         </Modal.Footer>
       </Modal>

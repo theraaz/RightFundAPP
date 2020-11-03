@@ -32,10 +32,10 @@ export function adminForceLogin(data) {
   return axios.post(ADMIN_FORCE_LOGIN_URL, data);
 }
 
-export function adminSuspendAccount(id) {
-  return axios.post(`${ADMIN_SUSPEND_ACCOUNT_URL}/${id}`, { statusId: 9 });
+export function adminChangeAccountStatus(id, statusId) {
+  return axios.post(`${ADMIN_SUSPEND_ACCOUNT_URL}/${id}`, { statusId });
 }
 
-export function adminSuspendCharity(id) {
-  return axios.post(`${ADMIN_SUSPEND_CHARITY_URL}/${id}`, { statusId: 9 });
+export function adminChangeCharityStatus(id, statusId) {
+  return axios.post(`${ADMIN_SUSPEND_CHARITY_URL}/${id}`, { statusId });
 }
