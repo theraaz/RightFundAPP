@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import {
   Row,
   Col,
@@ -13,6 +13,7 @@ import {
   FormGroup,
   Accordion,
 } from 'react-bootstrap';
+import { ExpandMore, ExpandLess } from '@material-ui/icons';
 
 import CustomTextInputFormik from '../inputs/CustomTextInputFormik';
 import { Heading, ToggleHeader } from '../../containers/MyProfile/myProfile';
@@ -30,66 +31,99 @@ const CharityBankDetailForm = ({
   buttonName = 'Update',
   accountNo = 'Account Holder Name',
   withdrawlAmount = 'Account Number',
+
 }) => {
+
+  const [selectedAccordion, setSelectedAccordion] = React.useState('0');
+
   const { myCharityProfile } = useSelector(
     ({ charity }) => ({
       myCharityProfile: charity.myCharityProfile,
     }),
     shallowEqual,
   );
+  const onSelectAccordion = useCallback(selected => {
+    setSelectedAccordion(selected);
+  }, []);
 
   return (
     <div>
-      <Accordion defaultActiveKey="0">
+      <Accordion defaultActiveKey="0" onSelect={onSelectAccordion}>
         <Accordion.Toggle as={ToggleHeader} onClick={bankDetails} eventKey="0">
           <Heading>{subHeading}</Heading>
-          <PlusIcon size="20px" />
+          {selectedAccordion === '0' ? <ExpandLess /> : <ExpandMore />}
+          {/* <PlusIcon size="20px" /> */}
         </Accordion.Toggle>
         <Accordion.Collapse eventKey="0">
           {loading ? (
             <LoadingComponent />
           ) : (
-            <div>
-              <Row>
-                <Col md={6}>
-                  <label>{accountNo}</label>
-                  <FormGroup className="mb-3">
-                    <CustomTextInputFormik
-                      name="userName"
-                      placeholder={accountNo}
-                    />
-                  </FormGroup>
-                </Col>
-                <Col md={6}>
-                  <label htmlFor="basic-url">Sort Code</label>
-                  <FormGroup className="mb-3">
-                    <CustomTextInputFormik
-                      name="sortCode"
-                      placeholder="Sort Code"
-                    />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <Row>
-                <Col md={6}>
-                  <label htmlFor="basic-url">{withdrawlAmount}</label>
-                  <FormGroup className="mb-3">
-                    <CustomTextInputFormik
-                      name="accountNumber"
-                      placeholder={withdrawlAmount}
-                      type="number"
-                    />
-                  </FormGroup>
-                </Col>
-              </Row>
-              <div style={{ textAlign: 'end', marginBottom: '15px' }}>
-                <Button type="submit" className="updateProfileBtn">
-                  {!loading && <div>{banksAccounts ? 'Save' : 'Add'}</div>}
-                  {loading && <Spinner animation="border" size="sm" />}
-                </Button>
+              <div>
+                <Row style={{ justifyContent: 'center' }}>
+                  <Col md={6}>
+
+                    <Col md={12}>
+                      <div className='bankDetailsFormDiv'>
+                        <Col md={4}>
+                          <label>{accountNo}</label>
+                        </Col>
+                        <Col md={8}>
+                          <FormGroup style={{ flexGrow: '1' }}>
+                            <CustomTextInputFormik
+                              name="userName"
+                              placeholder={accountNo}
+                            />
+                          </FormGroup>
+                        </Col>
+
+                      </div>
+                    </Col>
+                    <Col md={12}>
+                      <div className='bankDetailsFormDiv'>
+                        <Col md={4}>
+                          <label htmlFor="basic-url">Sort Code</label>
+                        </Col>
+                        <Col md={8}>
+                          <FormGroup style={{ flexGrow: '1' }}>
+                            <CustomTextInputFormik
+                              name="sortCode"
+                              placeholder="Sort Code"
+                            />
+                          </FormGroup>
+                        </Col>
+
+                      </div>
+                    </Col>
+                    <Col md={12}>
+                      <div className='bankDetailsFormDiv'>
+                        <Col md={4}>
+                          <label htmlFor="basic-url">{withdrawlAmount}</label>
+                        </Col>
+                        <Col md={8}>
+                          <FormGroup style={{ flexGrow: '1' }}>
+                            <CustomTextInputFormik
+                              name="accountNumber"
+                              placeholder={withdrawlAmount}
+                              type="number"
+                            />
+                          </FormGroup>
+                        </Col>
+                      </div>
+                    </Col>
+
+                    <div style={{ textAlign: 'end', marginBottom: '15px', marginRight: '26px' }}>
+                      <Button type="submit" className="updateProfileBtn">
+                        {!loading && <div>{banksAccounts ? 'Update' : 'Add'}</div>}
+                        {loading && <Spinner animation="border" size="sm" />}
+                      </Button>
+                    </div>
+                  </Col>
+
+                </Row>
+
+
               </div>
-            </div>
-          )}
+            )}
         </Accordion.Collapse>
 
         {myCharityProfile ? (
@@ -100,58 +134,83 @@ const CharityBankDetailForm = ({
               eventKey="1"
             >
               <Heading>{myCharityProfile.name}</Heading>
-              <PlusIcon size="20px" />
+              {selectedAccordion === '1' ? <ExpandLess /> : <ExpandMore />}
             </Accordion.Toggle>
             <Accordion.Collapse eventKey="1">
               {loading ? (
                 <LoadingComponent />
               ) : (
-                <div>
-                  <Row>
-                    <Col md={6}>
-                      <label>{accountNo}</label>
-                      <FormGroup className="mb-3">
-                        <CustomTextInputFormik
-                          name="userName"
-                          placeholder={accountNo}
-                        />
-                      </FormGroup>
-                    </Col>
-                    <Col md={6}>
-                      <label htmlFor="basic-url">Sort Code</label>
-                      <FormGroup className="mb-3">
-                        <CustomTextInputFormik
-                          name="sortCode"
-                          placeholder="Sort Code"
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col md={6}>
-                      <label htmlFor="basic-url">{withdrawlAmount}</label>
-                      <FormGroup className="mb-3">
-                        <CustomTextInputFormik
-                          name="accountNumber"
-                          placeholder={withdrawlAmount}
-                          type="number"
-                        />
-                      </FormGroup>
-                    </Col>
-                  </Row>
-                  <div style={{ textAlign: 'end', marginBottom: '15px' }}>
-                    <Button type="submit" className="updateProfileBtn">
-                      {!loading && <div>{buttonName}</div>}
-                      {loading && <Spinner animation="border" size="sm" />}
-                    </Button>
+                  <div>
+                    <Row style={{ justifyContent: 'center' }}>
+                      <Col md={6}>
+
+                        <Col md={12}>
+                          <div className='bankDetailsFormDiv'>
+                            <Col md={4}>
+                              <label>{accountNo}</label>
+                            </Col>
+                            <Col md={8}>
+                              <FormGroup style={{ flexGrow: '1' }}>
+                                <CustomTextInputFormik
+                                  name="userName"
+                                  placeholder={accountNo}
+                                />
+                              </FormGroup>
+                            </Col>
+
+                          </div>
+                        </Col>
+                        <Col md={12}>
+                          <div className='bankDetailsFormDiv'>
+                            <Col md={4}>
+                              <label htmlFor="basic-url">Sort Code</label>
+                            </Col>
+                            <Col md={8}>
+                              <FormGroup style={{ flexGrow: '1' }}>
+                                <CustomTextInputFormik
+                                  name="sortCode"
+                                  placeholder="Sort Code"
+                                />
+                              </FormGroup>
+                            </Col>
+
+                          </div>
+                        </Col>
+                        <Col md={12}>
+                          <div className='bankDetailsFormDiv'>
+                            <Col md={4}>
+                              <label htmlFor="basic-url">{withdrawlAmount}</label>
+                            </Col>
+                            <Col md={8}>
+                              <FormGroup style={{ flexGrow: '1' }}>
+                                <CustomTextInputFormik
+                                  name="accountNumber"
+                                  placeholder={withdrawlAmount}
+                                  type="number"
+                                />
+                              </FormGroup>
+                            </Col>
+                          </div>
+                        </Col>
+
+                        <div style={{ textAlign: 'end', marginBottom: '15px', marginRight: '26px' }}>
+                          <Button type="submit" className="updateProfileBtn">
+                            {!loading && <div>{buttonName}</div>}
+                            {loading && <Spinner animation="border" size="sm" />}
+                          </Button>
+                        </div>
+                      </Col>
+
+                    </Row>
+
+
                   </div>
-                </div>
-              )}
+                )}
             </Accordion.Collapse>
           </div>
         ) : (
-          ''
-        )}
+            ''
+          )}
       </Accordion>
     </div>
   );

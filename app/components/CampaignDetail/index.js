@@ -16,6 +16,8 @@ import { withRouter } from 'react-router-dom';
 import {
   Card, ProgressBar, Container, Row, Col, Image,
 } from 'react-bootstrap';
+import { shallowEqual, useSelector } from 'react-redux';
+
 import EmailIcon from '../svg-icons/emailIcon';
 import './campaignDetail.scss';
 import BackIcon from '../svg-icons/backIcon';
@@ -25,15 +27,26 @@ import CampaignIcon from '../svg-icons/campaignIcon';
 import DonationsIcon from '../svg-icons/donationsIcon';
 import { getCampaignPackages } from '../../utils/campaigns-utilities/CampaignPackages';
 import { CustomHeading, CustomHeadingNum } from '../Forms/form.styles';
-
+import {
+  getCampaignById,
+  getAdminCampaignById,
+  getCampaignBasicDetail
+} from '../../utils/crud/campain.crud';
 
 const profileImg = require('../../images/placeholder.png');
 function CampaignDetail({ ...props }) {
-  const token = localStorage.getItem('token');
   const [campaignData, setCampaignData] = useState();
   const [youtubeId, setYoutubeId] = useState('');
   const [campaignDetail, setCampaignDetail] = useState();
   const [packages, setPackages] = useState([]);
+
+
+  const { user } = useSelector(
+    ({ auth }) => ({
+      user: auth.user,
+    }),
+    shallowEqual,
+  );
 
   function backFunction() {
     // eslint-disable-next-line react/prop-types
@@ -61,43 +74,46 @@ function CampaignDetail({ ...props }) {
   }
 
   useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
-    fetch(
-      // eslint-disable-next-line react/prop-types
-      `${process.env.baseURL}/campaignBasicDetails/${props.match.params.id}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then((user) => {
-        setCampaignData(user.response.data);
-        fetch(
-          `${process.env.baseURL}/campaign/${props.match.params.id}`,
-          requestOptions,
-        )
-          .then(response => response.json())
-          // eslint-disable-next-line no-shadow
-          .then((user) => {
-            setCampaignDetail(user.response.data.res);
-            if (user.response.data.res.video) {
-              setVideo(user.response.data.res.video);
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
+    getCampaignDetails();
     getAllPackages();
   }, []);
+
+
+  function getCampaignDetails() {
+    if (user.role === 5) {
+      getAdminCampaignById(props.match.params.id)
+        .then(({ data }) => {
+          console.log('3242',data)
+          setCampaignDetail(data.response.data.res);
+          if (data.response.data.res.video) {
+            setVideo(data.response.data.res.video);
+          }
+        })
+        .catch(() => {
+          console.log(error)
+        });
+    } else {
+      getCampaignBasicDetail(props.match.params.id)
+        .then(({ data }) => {
+          setCampaignData(data.response.data);
+        })
+        .catch(() => {
+          console.log(error)
+        });
+
+      getCampaignById(props.match.params.id)
+        .then(({ data }) => {
+          console.log(data);
+          setCampaignDetail(data.response.data.res);
+          if (campaignDetailById.response.data.res.video) {
+            setVideo(campaignDetailById.response.data.res.video);
+          }
+        })
+        .catch(() => {
+          console.log(error)
+        });
+    }
+  }
 
   function progressBarVal() {
     let pb = 0;
@@ -109,6 +125,11 @@ function CampaignDetail({ ...props }) {
     return pb;
   }
 
+
+  function goToPreviewPage(id) {
+    // const url = `http://localhost:3000/campaignView/${id}`;
+    // window.open(url, '_blank');
+  }
   const campaignAddress = campaignDetail?.address
     ? JSON.parse(campaignDetail?.address)
     : '';
@@ -156,12 +177,12 @@ function CampaignDetail({ ...props }) {
                             alt=""
                           />
                         ) : (
-                          <Image
-                            style={{ width: '100%', height: '100%' }}
-                            src={profileImg}
-                            alt=""
-                          />
-                        )}
+                              <Image
+                                style={{ width: '100%', height: '100%' }}
+                                src={profileImg}
+                                alt=""
+                              />
+                            )}
                       </div>
                     </Col>
 
@@ -217,8 +238,10 @@ function CampaignDetail({ ...props }) {
 
                                     <Col md={8} sm={8}>
                                       {campaignDetail.parentCampaignId
-                                        ? campaignDetail.parentCampaignId.title
+                                        ? <span onClick={() => goToPreviewPage(campaignDetail.parentCampaignId.id)}>{campaignDetail.parentCampaignId.title}</span>
                                         : ''}
+
+
                                     </Col>
                                   </Row>
                                 </div>
@@ -290,7 +313,7 @@ function CampaignDetail({ ...props }) {
                               {campaignData
                                 ? campaignData.campaignAmountSymbol.symbol
                                 : ''}
-                              {campaignData ? campaignData.totalDonations : ''}
+                              {campaignData ? campaignData.totalDonations / 100 : ''}
                             </span>
                           </li>
                           <li className="donators">
@@ -361,8 +384,8 @@ function CampaignDetail({ ...props }) {
                 </Card>
               </Container>
             ) : (
-              <LoadingComponent />
-            )}
+                <LoadingComponent />
+              )}
           </Card.Body>
         </Card>
       </div>
