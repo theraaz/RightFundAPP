@@ -37,6 +37,7 @@ import { useSnackbar } from 'notistack';
 import { withRouter } from 'react-router-dom';
 import { Menu, MenuItem, ListItemText } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
+import { adminGetCharityUsers } from '../../utils/crud/admin.crud';
 export function CharityUsers({ history, match }) {
   const { user } = useSelector(
     ({ auth }) => ({
@@ -79,7 +80,9 @@ export function CharityUsers({ history, match }) {
   }, [pageNo, perPage]);
   const getUsers = params => {
     enableLoading('main');
-    getCharityUsers(params)
+    const callGetUsers =
+      user.role === 5 ? adminGetCharityUsers : getCharityUsers;
+    callGetUsers(user.role === 5 ? match?.params?.charityId : params)
       .then(({ data }) => {
         disableLoading('main');
         setTeamMembers(data?.response?.data?.res || []);

@@ -10,6 +10,7 @@ import Layout from '../../components/Layout/index';
 import {
   adminForceLogin,
   adminGetAllAccounts,
+  adminSuspendAccount,
 } from '../../utils/crud/admin.crud';
 import { useSnackbar } from 'notistack';
 import {
@@ -28,6 +29,7 @@ import { ListItemText, Menu, MenuItem } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { connect, shallowEqual, useSelector } from 'react-redux';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
+import SuspendIcon from '../../components/svg-icons/suspendIcon';
 
 export function Accounts({ login, history }) {
   const { user } = useSelector(
@@ -47,8 +49,9 @@ export function Accounts({ login, history }) {
   const [loading, setLoading] = useState({
     accounts: false,
     login: false,
+    suspend: false,
   });
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState({ login: false, suspend: false });
   const enableLoading = name => {
     setLoading({ ...loading, [name]: true });
   };
@@ -57,6 +60,9 @@ export function Accounts({ login, history }) {
   };
   useEffect(() => {
     enableLoading('accounts');
+    getAccounts();
+  }, [pageNo, perPage]);
+  const getAccounts = () => {
     adminGetAllAccounts({ pageNo, perPage })
       .then(res => {
         disableLoading('accounts');
@@ -66,7 +72,7 @@ export function Accounts({ login, history }) {
       .catch(() => {
         disableLoading('accounts');
       });
-  }, [pageNo, perPage]);
+  };
   const showAlert = (variant, message) => {
     // variant could be success, error, warning, info, or default
     enqueueSnackbar(message, {
@@ -74,13 +80,13 @@ export function Accounts({ login, history }) {
       anchorOrigin: { horizontal: 'center', vertical: 'bottom' },
     });
   };
-  const openModal = () => {
-    setShowModal(true);
+  const openModal = name => () => {
+    setShowModal({ ...showModal, [name]: true });
 
     setAnchorEl(null);
   };
-  const closeModal = () => {
-    setShowModal(false);
+  const closeModal = name => () => {
+    setShowModal({ ...showModal, [name]: false });
   };
   const PerPage = event => {
     setPerPage(event.target.value);
@@ -105,7 +111,7 @@ export function Accounts({ login, history }) {
           });
           localStorage.setItem('token', data.response.data.token);
           history.push('/');
-          closeModal();
+          closeModal('login')();
         } else {
           showAlert('error', data.response.message);
         }
@@ -116,6 +122,29 @@ export function Accounts({ login, history }) {
         showAlert(
           'error',
           error?.response?.data?.response?.message || 'Could not login!',
+        );
+      });
+  };
+  const suspendAccount = () => {
+    enableLoading('suspend');
+    adminSuspendAccount(singleUser.id)
+      .then(({ data, status }) => {
+        disableLoading('suspend');
+        console.log('data', data);
+        if (status === 200) {
+          showAlert('success', data.response.message);
+          getAccounts();
+          closeModal('suspend')();
+        } else {
+          showAlert('error', data.response.message);
+        }
+      })
+      .catch(error => {
+        disableLoading('suspend');
+
+        showAlert(
+          'error',
+          error?.response?.data?.response?.message || 'Could not Suspend!',
         );
       });
   };
@@ -221,25 +250,44 @@ export function Accounts({ login, history }) {
         open={Boolean(anchorEl)}
         onClose={handleCloseMenu}
       >
-        <MenuItem className="menuList" onClick={openModal}>
-          <ExitToApp />
+        <MenuItem className="menuList" onClick={openModal('suspend')}>
+          <SuspendIcon size="20px" />
+          <ListItemText primary="Suspend" style={{ marginLeft: 10 }} />
+        </MenuItem>
+        <MenuItem className="menuList" onClick={openModal('login')}>
+          <ExitToApp fontSize="small" />
           <ListItemText primary="Force Login" style={{ marginLeft: 10 }} />
         </MenuItem>
       </Menu>
-      <Modal show={showModal} onHide={closeModal}>
+      <Modal show={showModal.login} onHide={closeModal('login')}>
         <Modal.Header closeButton>
-          <Modal.Title>Force Login</Modal.Title>
+          <Modal.Title as="h5">Force Login</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Are you sure you want to force login to this user?
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="light" onClick={closeModal}>
+          <Button variant="light" onClick={closeModal('login')}>
             Cancel
           </Button>
           <Button variant="primary" onClick={forceLogin}>
             Login Now{' '}
             {loading.login && <Spinner animation="border" size="sm" />}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showModal.suspend} onHide={closeModal('suspend')}>
+        <Modal.Header closeButton>
+          <Modal.Title as="h5">Suspend Account</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to suspend this user?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="light" onClick={closeModal('suspend')}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={suspendAccount}>
+            Suspend Now{' '}
+            {loading.suspend && <Spinner animation="border" size="sm" />}
           </Button>
         </Modal.Footer>
       </Modal>

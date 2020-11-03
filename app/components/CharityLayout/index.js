@@ -96,7 +96,9 @@ function CharityLayout({ children, updateMyCharityProfile, ...props }) {
   };
 
   useEffect(() => {
-    getCharityAccountDetails(myCharityProfile.id)
+    getCharityAccountDetails(
+      props?.match?.params?.charityId || myCharityProfile?.id,
+    )
       .then(({ data, status }) => {
         if (status === 200) {
           setTotalCampaign(data.response.data.totalCampaigns);
@@ -108,6 +110,7 @@ function CharityLayout({ children, updateMyCharityProfile, ...props }) {
         }
       })
       .catch(error => {
+        props.history.goBack();
         console.log(error);
       });
   }, []);
@@ -126,17 +129,19 @@ function CharityLayout({ children, updateMyCharityProfile, ...props }) {
               <Row>
                 <Col xs={12} sm={5} md={5}>
                   <div className="card-header card-img border-0">
-                    <input
-                      id="myInputImage"
-                      type="file"
-                      accept="image/*"
-                      hidden
-                      multiple="false"
-                      onChange={handleImageUpload}
-                      onClick={event => {
-                        event.target.value = null;
-                      }}
-                    />
+                    {user.role !== 5 && (
+                      <input
+                        id="myInputImage"
+                        type="file"
+                        accept="image/*"
+                        hidden
+                        multiple="false"
+                        onChange={handleImageUpload}
+                        onClick={event => {
+                          event.target.value = null;
+                        }}
+                      />
+                    )}
 
                     <div className="userImgMain position-relative">
                       <div className="sub-card-img">
@@ -148,11 +153,13 @@ function CharityLayout({ children, updateMyCharityProfile, ...props }) {
                           alt=""
                         />
                       </div>
-                      <label htmlFor="myInputImage">
-                        <div className="editIconDiv">
-                          <PencilIcon size="16px" />
-                        </div>
-                      </label>
+                      {user.role !== 5 && (
+                        <label htmlFor="myInputImage">
+                          <div className="editIconDiv">
+                            <PencilIcon size="16px" />
+                          </div>
+                        </label>
+                      )}
                     </div>
                   </div>
                 </Col>

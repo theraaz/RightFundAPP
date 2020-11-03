@@ -202,8 +202,7 @@ const MainTabs = () => {
                 <g />
                 <g />
                 <g />
-              </svg>
-              {' '}
+              </svg>{' '}
             </div>
             Bank Details
           </NavLink>
@@ -248,12 +247,27 @@ const MainTabs = () => {
               to="/charity-profile"
               className="text-decoration-none listItem"
               activeClassName="active"
-            // onClick={() => setActiveCard(0)}
+              // onClick={() => setActiveCard(0)}
             >
               <div className="iconImage">
                 <CharityProfileIcon />
               </div>
               Charity Profile
+            </NavLink>
+          </ListGroup.Item>
+        )}
+        {user?.role === 5 && (
+          <ListGroup.Item className="listItem">
+            <NavLink
+              to="/charities"
+              className="text-decoration-none listItem"
+              activeClassName="active"
+              // onClick={() => setActiveCard(0)}
+            >
+              <div className="iconImage">
+                <CharityProfileIcon />
+              </div>
+              Charities
             </NavLink>
           </ListGroup.Item>
         )}

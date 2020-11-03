@@ -21,6 +21,8 @@ import AllDonations from 'containers/AllDonations/index';
 import Accounts from 'containers/Accounts/Loadable';
 import BankDetails from 'containers/BankDetails/Loadable';
 import Withdrawals from 'containers/Withdrawals/Loadable';
+import AdminCharities from 'containers/AdminCharities/Loadable';
+import AdminCharityView from 'containers/CharityProfileView/Loadable';
 
 import { shallowEqual, useSelector } from 'react-redux';
 
@@ -82,6 +84,12 @@ export default function App() {
         <AuthRoute exact path="/bankDetails" component={BankDetails} />
         <AuthRoute exact path="/withdrawals" component={Withdrawals} />
         <AdminRoute exact path="/accounts" component={Accounts} />
+        <AdminRoute exact path="/charities" component={AdminCharities} />
+        <AdminRoute
+          exact
+          path="/charities/:charityId"
+          component={AdminCharityView}
+        />
         {/* <LoginRoute exact path="/accountVerify" render={(props) => <AccountVerify {...props} />} /> */}
         <Route component={NotFoundPage} />
       </Switch>
