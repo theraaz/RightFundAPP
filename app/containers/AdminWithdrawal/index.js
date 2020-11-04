@@ -151,7 +151,8 @@ export function AdminWithdrawal() {
                 <Table responsive="md" size="md" className="table1">
                   <thead className="tableHeader">
                     <tr>
-                      <th>Withdrawal ID</th>
+                      <th>Withdrawal Type</th>
+                      <th>Name</th>
                       <th>Amount</th>
                       <th>Requested At</th>
                       <th>Status</th>
@@ -161,13 +162,20 @@ export function AdminWithdrawal() {
                   <tbody className="tableBody">
                     {withdrawals.map((withdrawal, i) => (
                       <tr key={withdrawal.id || i}>
-                        <td>{withdrawal?.id}</td>
+                        <td>{withdrawal?.charityId ? 'Charity' : 'Account'}</td>
+                        <td>
+                          {withdrawal?.charityId
+                            ? withdrawal?.charityId?.name
+                            : `${withdrawal?.accountId?.firstName} ${
+                                withdrawal?.accountId?.lastName
+                              }`}
+                        </td>
                         <td className="font-weight-bold text-dark">
                           {formatter.format(withdrawal.amount)}
                         </td>
                         <td>
                           {moment(withdrawal.createdAt).format(
-                            'DD-MM-YYYY hh:mm A',
+                            'MMM DD, YYYY h:mm A',
                           )}
                         </td>
 
