@@ -3,6 +3,7 @@ import storage from 'redux-persist/lib/storage';
 import { charityActionTypes } from '../actions/charity.actions';
 const initialCharityState = {
   myCharityProfile: undefined,
+  adminCharity: undefined,
 };
 
 export const reducer = persistReducer(
@@ -13,6 +14,11 @@ export const reducer = persistReducer(
         const { charity } = action.payload;
 
         return { myCharityProfile: charity };
+      }
+      case charityActionTypes.AddAdminCharity: {
+        const { charity } = action.payload;
+
+        return { adminCharity: charity };
       }
 
       case charityActionTypes.UpdateMyCharityProfile: {

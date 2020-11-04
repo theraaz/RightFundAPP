@@ -35,7 +35,6 @@ export function LoginPage(props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [remeberme, setRemeberMe] = useState(false);
   const [validated, setValidated] = useState(false);
   const [loading, setLoading] = useState(false);
 

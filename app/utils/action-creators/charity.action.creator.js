@@ -5,6 +5,10 @@ export const charityActions = {
     type: charityActionTypes.AddMyCharityProfile,
     payload: { charity },
   }),
+  addAdminCharity: charity => ({
+    type: charityActionTypes.AddAdminCharity,
+    payload: { charity },
+  }),
   updateMyCharityProfile: charity => ({
     type: charityActionTypes.UpdateMyCharityProfile,
     payload: { charity },

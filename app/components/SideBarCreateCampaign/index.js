@@ -86,14 +86,14 @@ const SideBarCreateCampaign = (editCampaignData) => {
         state: values.state,
         country: values.country,
       };
-      console.log(values.parentCampaign);
+      console.log('edit',values.parentCampaign);
       const newData = {
         title: values.campaignTitle,
         amount: JSON.parse(values.amount),
         address: JSON.stringify(address),
         endDate: values.date,
         categoryId: values.categories,
-        parentCampaignId: values.parentCampaign,
+        parentCampaignId: values.parentCampaign.id,
         charityId:
           user.isCharity && values.fundraiser === 'charity'
             ? myCharityProfile.id

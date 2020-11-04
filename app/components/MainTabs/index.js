@@ -131,97 +131,50 @@ const MainTabs = () => {
             <span>Team Members</span>
           </NavLink>
         </ListGroup.Item>
-
-        <ListGroup.Item className="listItem">
-          <NavLink
-            to="/bankDetails"
-            className="text-decoration-none listItem"
-            activeClassName="active"
-          >
-            <div className="iconImage">
-              <svg
-                version="1.1"
-                id="Capa_1"
-                xmlns="http://www.w3.org/2000/svg"
-                x="0px"
-                y="0px"
-                viewBox="0 0 508 508"
+        {user.role !== 5 && (
+          <>
+            <ListGroup.Item className="listItem">
+              <NavLink
+                to="/bankDetails"
+                className="text-decoration-none listItem"
+                activeClassName="active"
               >
-                <g>
-                  <g>
-                    <path d="M352.3,221.15c-8.9,0-17.6,3-24.6,8.4c-6.8-5.2-15.3-8.4-24.5-8.4c-22.6,0-41,18.4-41,41c0,22.6,18.4,41,41,41c9.3,0,17.7-3.2,24.6-8.4c7.1,5.4,15.7,8.4,24.6,8.4c22.6,0,41-18.4,41-41C393.3,239.55,374.9,221.15,352.3,221.15z M303.2,286.75c-13.6,0-24.6-11-24.6-24.6c0-13.6,11-24.6,24.6-24.6c13.6,0,24.6,11,24.6,24.6C327.7,275.65,316.7,286.75,303.2,286.75z M352.3,286.75c-5,0-9.7-1.5-13.7-4.3c3.6-6.2,5.5-13.2,5.5-20.3c0-7.1-1.9-14.1-5.5-20.3c4-2.8,8.7-4.3,13.7-4.3c13.6,0,24.6,11,24.6,24.6C376.9,275.65,365.9,286.75,352.3,286.75z" />
-                  </g>
-                </g>
-                <g>
-                  <g>
-                    <rect x="49.2" y="385.05" width="49.2" height="16.4" />
-                  </g>
-                </g>
-                <g>
-                  <g>
-                    <rect x="139.3" y="385.05" width="49.2" height="16.4" />
-                  </g>
-                </g>
-                <g>
-                  <g>
-                    <rect x="229.4" y="385.05" width="49.2" height="16.4" />
-                  </g>
-                </g>
-                <g>
-                  <g>
-                    <rect x="319.5" y="385.05" width="49.2" height="16.4" />
-                  </g>
-                </g>
-                <g>
-                  <g>
-                    <rect x="49.2" y="253.95" width="98.3" height="16.4" />
-                  </g>
-                </g>
-                <g>
-                  <g>
-                    <rect x="49.2" y="319.45" width="213" height="16.4" />
-                  </g>
-                </g>
-                <g>
-                  <g>
-                    <path d="M467,49.15H106.5c-22.6,0-41,18.4-41,41v90.1H41c-22.6,0-41,18.4-41,41v196.6c0,22.6,18.4,41,41,41h360.5c22.6,0,41-18.4,41-41v-90.1H467c22.6,0,41-18.4,41-41V90.05C508,67.45,489.6,49.15,467,49.15z M426.1,417.85c0,13.6-11,24.6-24.6,24.6H41c-13.6,0-24.6-11-24.6-24.6v-196.7c0-13.6,11-24.6,24.6-24.6h360.5c13.6,0,24.6,11,24.6,24.6V417.85z M491.6,286.75c0,13.6-11,24.6-24.6,24.6h-24.6v-90.1c0-22.6-18.4-41-41-41H81.9v-32.8h409.7V286.75z M491.6,131.05H81.9v-16.4h409.7V131.05z M491.6,98.25H81.9v-8.2c0-13.6,11-24.6,24.6-24.6H467c13.6,0,24.6,11,24.6,24.6V98.25z" />
-                  </g>
-                </g>
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-                <g />
-              </svg>
-              {' '}
-            </div>
-            Bank Details
-          </NavLink>
-        </ListGroup.Item>
+                <div className="iconImage">
+                  <CardIcon />
+                </div>
+                Bank Details
+              </NavLink>
+            </ListGroup.Item>
 
-        <ListGroup.Item className="listItem">
-          <NavLink
-            to="/withdrawals"
-            className="text-decoration-none listItem"
-            activeClassName="active"
-          >
-            <div className="iconImage">
-              <CardIcon />
-            </div>
-            Withdrawal
-          </NavLink>
-        </ListGroup.Item>
+            <ListGroup.Item className="listItem">
+              <NavLink
+                to="/withdrawals"
+                className="text-decoration-none listItem"
+                activeClassName="active"
+              >
+                <div className="iconImage">
+                  <CardIcon />
+                </div>
+                Withdrawal
+              </NavLink>
+            </ListGroup.Item>
+          </>
+        )}
 
+        {user.role === 5 && (
+          <ListGroup.Item className="listItem">
+            <NavLink
+              to="/withdrawal"
+              className="text-decoration-none listItem"
+              activeClassName="active"
+            >
+              <div className="iconImage">
+                <CardIcon />
+              </div>
+              Withdrawal
+            </NavLink>
+          </ListGroup.Item>
+        )}
         <ListGroup.Item className="listItem">
           <NavLink
             to="/profile"
@@ -248,12 +201,49 @@ const MainTabs = () => {
               to="/charity-profile"
               className="text-decoration-none listItem"
               activeClassName="active"
-            // onClick={() => setActiveCard(0)}
+              // onClick={() => setActiveCard(0)}
             >
               <div className="iconImage">
                 <CharityProfileIcon />
               </div>
               Charity Profile
+            </NavLink>
+          </ListGroup.Item>
+        )}
+        {user?.role === 5 && (
+          <ListGroup.Item className="listItem">
+            <NavLink
+              to="/charities"
+              className="text-decoration-none listItem"
+              activeClassName="active"
+              // onClick={() => setActiveCard(0)}
+            >
+              <div className="iconImage">
+                <CharityProfileIcon />
+              </div>
+              Charities
+            </NavLink>
+          </ListGroup.Item>
+        )}
+        {user.role === 5 && (
+          <ListGroup.Item className="listItem">
+            <NavLink
+              to="/accounts"
+              className="text-decoration-none listItem"
+              activeClassName="active"
+            >
+              <div className="iconImage">
+                <svg
+                  id="Layer_1"
+                  height="20"
+                  viewBox="0 0 480.001 480.001"
+                  width="20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="m319.427 342.172c-11.782 0-22.472-6-28.594-16.051-2.299-3.774-7.222-4.97-10.994-2.671-3.772 2.298-4.969 7.221-2.67 10.994 4.258 6.99 10.022 12.634 16.732 16.673l-8.291 37.627-19.989-23.017c3.629-4.172 2.753-9.046-.373-11.764-3.332-2.898-8.386-2.547-11.286.787l-14.066 16.176-35.432-39.369c3.015-5.79 4.843-12.146 5.365-18.77 68.574 20.186 137.171-31.569 137.171-102.662v-66.125c0-4.418-3.582-8-8-8s-8 3.582-8 8v66.125c0 50.177-40.822 91-91 91s-91-40.822-91-91v-67.893c19.503-1.107 36.092-13.352 42.004-35.544 33.31 21.332 70.648 35.153 109.832 40.638 4.392.612 8.422-2.451 9.032-6.814.612-4.375-2.438-8.419-6.813-9.032-39.9-5.585-78.836-20.518-113.433-45.01-5.289-3.746-12.654.065-12.622 6.581.001.199-.074 20.04-15.124 29.094-9.517 5.726-19.143 3.877-20.799 3.859-4.089-.039-7.554 3.029-8.02 7.076-.088.774-.057-1.861-.057 64.016-5.344-2.772-9-8.288-9-14.636v-97.46c0-10.477 8.523-19 19-19 3.271 0 6.213-1.992 7.428-5.029 10.928-27.319 37-44.971 66.424-44.971h68.607c39.449 0 71.541 32.093 71.541 71.541v94.919c0 4.418 3.582 8 8 8s8-3.582 8-8v-94.919c0-48.27-39.27-87.541-87.541-87.541h-68.607c-34.32 0-64.917 19.63-79.285 50.421-16.728 2.619-29.567 17.128-29.567 34.579v97.46c0 15.305 10.708 28.168 25.081 31.621 1.493 40.859 26 75.943 60.919 92.639v2.11c0 8.913-3.476 17.287-9.787 23.581-11.193 11.161-25.298 9.761-23.642 9.761-45.636 0-82.571 36.93-82.571 82.571v47.257c0 4.418 3.582 8 8 8s8-3.582 8-8v-47.257c0-36.795 29.775-66.572 66.573-66.571 3.501 0 6.996-.372 10.452-1.111l11.163 50.66c1.413 6.415 9.551 8.476 13.853 3.524l15.761-18.148-9.739 77.911c-.548 4.384 2.563 8.382 6.946 8.93 4.392.547 8.383-2.568 8.931-6.946l11.255-90.041c.509.565 4.956 5.552 5.526 6.055 3.302 2.898 8.332 2.604 11.268-.707 1.582-1.811-2.51 2.892 4.798-5.512l11.275 90.204c.547 4.378 4.537 7.494 8.931 6.946 4.384-.548 7.494-4.546 6.946-8.93l-9.739-77.911 15.761 18.148c4.308 4.961 12.442 2.88 13.853-3.524l11.163-50.662c3.389.72 6.883 1.112 10.451 1.112 36.794.001 66.572 29.775 66.572 66.573v47.257c0 4.418 3.582 8 8 8s8-3.582 8-8v-47.257c0-45.637-36.931-82.573-82.573-82.571zm-125.037 46.572-8.293-37.638c3.05-1.842 5.911-4.035 8.548-6.543l19.396 21.552z" />
+                </svg>
+              </div>
+              Accounts
             </NavLink>
           </ListGroup.Item>
         )}

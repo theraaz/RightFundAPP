@@ -175,7 +175,7 @@ const MyCampaigns = ({ ...props }) => {
     }, 0);
 
     return `${data.length > 0 ? data[0].amountSymbolId.symbol : ''
-      } ${totalAmount}`;
+      } ${totalAmount/100}`;
   }
 
 
@@ -571,7 +571,7 @@ const MyCampaigns = ({ ...props }) => {
                               <li className="raised">
                                 <span className="title">Target</span>
                                 <span className="content">
-                                  {data.amountSymbolId.symbol} {data.amount}
+                                  {data.amountSymbolId.symbol} {data.amount/100}
                                 </span>
                               </li>
                               <li className="pledged">
