@@ -14,31 +14,9 @@ import Header from '../../components/Header/Loadable';
 import Footer from '../../components/Footer/Loadable';
 
 export function CampaignViewContainer(props) {
-  const token = localStorage.getItem('token');
   const [campaignData, setCampaignData] = useState([]);
 
-  useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
-
-    fetch(
-      `${process.env.baseURL}/campaign/${props.match.params.id}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(user => {
-        console.log(user.response.data.res);
-        setCampaignData(user.response.data.res);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
+  
 
   return (
     <div>

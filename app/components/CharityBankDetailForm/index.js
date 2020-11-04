@@ -60,7 +60,7 @@ const CharityBankDetailForm = ({
           ) : (
               <div>
                 <Row style={{ justifyContent: 'center' }}>
-                  <Col md={6}>
+                  <Col md={10}>
 
                     <Col md={12}>
                       <div className='bankDetailsFormDiv'>
@@ -142,7 +142,7 @@ const CharityBankDetailForm = ({
               ) : (
                   <div>
                     <Row style={{ justifyContent: 'center' }}>
-                      <Col md={6}>
+                      <Col md={10}>
 
                         <Col md={12}>
                           <div className='bankDetailsFormDiv'>

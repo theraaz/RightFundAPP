@@ -36,6 +36,9 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { H5, H4, Errors } from '../form.styles';
 import Address from '../../Address/Loadable';
 import { getParentCampaigns } from '../../../utils/campaigns-utilities/getCampaignsUtilites';
+
+import InputDesign from "./loadOptions";
+
 const GreenRadio = withStyles({
   root: {
     // color: green[400],
@@ -90,6 +93,7 @@ const Form1 = ({
     }),
     shallowEqual,
   );
+  const [value, onChange] = React.useState(null);
   const [currency, setCurrency] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [parentCampaign, setParentCampaign] = React.useState([]);
@@ -317,8 +321,12 @@ const Form1 = ({
           {console.log(values.parentCampaign)}
 
           <Form.Group controlId="parentCampaign" bssize="large">
+
+            <InputDesign values={values} edit={edit} />
+
+            {/*          
             <Select
-              disabled={values.parentCampaign}
+              disabled
               className="categoriesSelect"
               labelId="demo-customized-select-label"
               fullWidth
@@ -330,22 +338,11 @@ const Form1 = ({
               onChange={handleSelectParentCampaign}
               input={<BootstrapInput />}
             >
-              <MenuItem value={-1} disabled>
-                <span style={{ color: '#9c9c9c' }}>Select Parent Campaign</span>
-              </MenuItem>
-              {parentCampaign.map(data => (
-                <MenuItem
-                  value={data.parentCampaignId.id || -1}
-                  name={data.parentCampaignId.title}
-                  key={data.parentCampaignId.id}
-                >
-                  {data.parentCampaignId.title}
-                </MenuItem>
-              ))}
+            
             </Select>
             {errors.parentCampaign && (
               <Errors id="feedback">{errors.parentCampaign}</Errors>
-            )}
+            )} */}
           </Form.Group>
 
           {user.isCharity && (
