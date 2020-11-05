@@ -44,7 +44,7 @@ const WithdrawalHistory = ({
                   {withdrawal.accountId?.firstName}{' '}
                   {withdrawal.accountId?.lastName}
                 </td>
-                <td>{withdrawal.charityId ? 'Charity' : 'Personal'}</td>
+                <td>{withdrawal.charityId ? 'Charity' : 'Individual'}</td>
                 <td>{moment(withdrawal.createdAt).format('DD-MM-YYYY')}</td>
 
                 <td className="text-dark font-weight-bold">
