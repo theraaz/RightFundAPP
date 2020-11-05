@@ -38,7 +38,7 @@ const CharityBankDetailForm = ({
   const { enqueueSnackbar } = useSnackbar();
   const [banksAccounts, setBanksAccounts] = React.useState(null);
   const [charityAccountsID, setCharityAccountsID] = React.useState(null);
-  const mask = [/[1-9]/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
+  const mask = [/\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/];
   const handleClickVariant = (variant, message) => {
     // variant could be success, error, warning, info, or default
     enqueueSnackbar(message, {
