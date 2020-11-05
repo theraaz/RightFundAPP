@@ -170,51 +170,53 @@ export function AllDonations() {
                     </div> */}
                 </Row>
                 {totalDonations === 0 ? <EmptyComponent message={'There is no donations for all campaigns!'} /> :
-                  <Table responsive="md" striped size="md" className="table1">
-                    <thead className="tableHeader">
-                      <tr>
-                        <th>Campaign Name</th>
-                        <th>Donner Name</th>
-                        <th>Email</th>
-                        <th>Gift Aid Enabled</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody className="tableBody">
-                      {campaignsDonation.map((data, i) => (
-                        <tr key={data.id || i}>
-                          <td>{data.campaignName}</td>
-                          <td>{data.DonarName}</td>
-                          <td>{data.DonarEmail}</td>
-
-                          <td>{data.giftAid ? 'Yes' : 'No'}</td>
-                          <OverlayTrigger
-                            key="bottom"
-                            placement="bottom"
-                            overlay={
-                              <Popover id="popover-basic">
-                                <Popover.Content
-                                  style={{
-                                    color: '#f15a24',
-                                    textAlign: 'center',
-                                  }}
-                                >
-                                  <div>{formatHHMM(data.donationDate)}</div>
-                                  {/* <div>{data.computedDateCreatedAt}</div> */}
-                                </Popover.Content>
-                              </Popover>
-                            }
-                          >
-                            <td>{formatDate(data.donationDate)}</td>
-                          </OverlayTrigger>
-                          <td className="tableAmount">
-                            {data.donationSymbol} {data.donationAmount}
-                          </td>
+                  <div style={{ overflow: 'auto' }}>
+                    <Table responsive="md" striped size="md" className="table1">
+                      <thead className="tableHeader">
+                        <tr>
+                          <th>Campaign Name</th>
+                          <th>Donner Name</th>
+                          <th>Email</th>
+                          <th>Gift Aid Enabled</th>
+                          <th>Date</th>
+                          <th>Amount</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                      </thead>
+                      <tbody className="tableBody">
+                        {campaignsDonation.map((data, i) => (
+                          <tr key={data.id || i}>
+                            <td>{data.campaignName}</td>
+                            <td>{data.DonarName}</td>
+                            <td>{data.DonarEmail}</td>
+
+                            <td>{data.giftAid ? 'Yes' : 'No'}</td>
+                            <OverlayTrigger
+                              key="bottom"
+                              placement="bottom"
+                              overlay={
+                                <Popover id="popover-basic">
+                                  <Popover.Content
+                                    style={{
+                                      color: '#f15a24',
+                                      textAlign: 'center',
+                                    }}
+                                  >
+                                    <div>{formatHHMM(data.donationDate)}</div>
+                                    {/* <div>{data.computedDateCreatedAt}</div> */}
+                                  </Popover.Content>
+                                </Popover>
+                              }
+                            >
+                              <td>{formatDate(data.donationDate)}</td>
+                            </OverlayTrigger>
+                            <td className="tableAmount">
+                              {data.donationSymbol} {data.donationAmount/100}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </Table>
+                  </div>
                 }
               </div>
               {totalDonations === 0 ? '' : <div className="paginatorDonationdiv">

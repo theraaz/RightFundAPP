@@ -78,6 +78,16 @@ function SubsCampaign({ ...props }) {
     setPageSize(event.target.value);
   };
 
+  function openLiveView(data) {
+    if (data.statusId.id === 8) {
+      handleClickVariant('error', 'This campaign is closed.');
+    } else {
+      const url = `${process.env.campaignLiveURL}/campaigndetails?id=${data.id
+        }`;
+      window.open(url, '_blank');
+    }
+  }
+
   const handleChangePage = useCallback((event, value) => {
     setPageNumber(value);
   }, []);
@@ -192,7 +202,8 @@ function SubsCampaign({ ...props }) {
                               className="descriptionCampaign flex-grow-1"
 
                             >
-                              {RemoveHTMLTags(data.description)}
+                              {data.description ? RemoveHTMLTags(data.description) : 'No Description...'}
+
                             </Card.Text>
                             <ul className="campign-info">
                               <li className="raised">
@@ -214,7 +225,7 @@ function SubsCampaign({ ...props }) {
                                 </span>
                               </li>
                             </ul>
-                            <div className="campaignBtns">
+                            {/* <div className="campaignBtns">
                               <Link to={`/campaignView/${data.id}`}>
                                 <Button className="viewCampaignBtn">
                                   View Campaign
@@ -226,7 +237,7 @@ function SubsCampaign({ ...props }) {
                               >
                                 Live View
                           </Button>{' '}
-                            </div>
+                            </div> */}
                           </Card.Body>
                         </Card>
                       </Col>

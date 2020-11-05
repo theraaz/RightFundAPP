@@ -53,7 +53,10 @@ const SideBarCreateCampaign = (editCampaignData) => {
         || (values.base64 && values.base64 !== '')
       ) {
         titleImage = await getBase64(values.base64 || false, selectedFiles[0]);
+        values.base64 = titleImage
+        console.log('values.base64', values.base64)
       }
+
       const data = {
         zakatEligible: values.zakatEligible,
         description: values.editorValue,
@@ -86,14 +89,14 @@ const SideBarCreateCampaign = (editCampaignData) => {
         state: values.state,
         country: values.country,
       };
-      console.log('edit',values.parentCampaign);
+      console.log('edit', values.parentCampaign);
       const newData = {
         title: values.campaignTitle,
         amount: JSON.parse(values.amount),
         address: JSON.stringify(address),
         endDate: values.date,
         categoryId: values.categories,
-        parentCampaignId: values.parentCampaign.id,
+        parentCampaignId: values.parentCampaign ? values.parentCampaign.id : null,
         charityId:
           user.isCharity && values.fundraiser === 'charity'
             ? myCharityProfile.id
@@ -191,15 +194,15 @@ const SideBarCreateCampaign = (editCampaignData) => {
                 >
                   <div
                     className={`text-decoration-none d-flex iconMainDiv ${activeLink === 0 ? '' : ''
-                    }`}
+                      }`}
                   >
                     <div
                       className={`${activeLink === 0 ? 'iconImageActive' : 'iconImage'
-                      }`}
+                        }`}
                     >
                       <span
                         className={`${activeLink === 0 ? 'tagNumberActive' : 'tagNumber'
-                        }`}
+                          }`}
                       >
                         {' '}
                         01
@@ -210,7 +213,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
                       className={`${activeLink === 0
                         ? 'sidebartitleListActive'
                         : 'sidebartitleList'
-                      }`}
+                        }`}
                     >
                       Campaign Information
                     </span>
@@ -224,15 +227,15 @@ const SideBarCreateCampaign = (editCampaignData) => {
                 >
                   <div
                     className={`text-decoration-none d-flex iconMainDiv ${activeLink === 1 ? '' : ''
-                    }`}
+                      }`}
                   >
                     <div
                       className={`${activeLink === 1 ? 'iconImageActive' : 'iconImage'
-                      }`}
+                        }`}
                     >
                       <span
                         className={`${activeLink === 1 ? 'tagNumberActive' : 'tagNumber'
-                        }`}
+                          }`}
                       >
                         02
                       </span>
@@ -241,7 +244,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
                       className={`${activeLink === 1
                         ? 'sidebartitleListActive'
                         : 'sidebartitleList'
-                      }`}
+                        }`}
                     >
                       Tell your story
                     </span>
@@ -258,15 +261,15 @@ const SideBarCreateCampaign = (editCampaignData) => {
                 >
                   <div
                     className={`text-decoration-none d-flex iconMainDiv ${activeLink === 2 ? '' : ''
-                    }`}
+                      }`}
                   >
                     <div
                       className={`${activeLink === 2 ? 'iconImageActive' : 'iconImage'
-                      }`}
+                        }`}
                     >
                       <span
                         className={`${activeLink === 2 ? 'tagNumberActive' : 'tagNumber'
-                        }`}
+                          }`}
                       >
                         03
                       </span>
@@ -275,7 +278,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
                       className={`${activeLink === 2
                         ? 'sidebartitleListActive'
                         : 'sidebartitleList'
-                      }`}
+                        }`}
                     >
                       Campaign Packages
                     </span>
@@ -289,15 +292,15 @@ const SideBarCreateCampaign = (editCampaignData) => {
                 >
                   <div
                     className={`text-decoration-none d-flex iconMainDiv ${activeLink === 3 ? '' : ''
-                    }`}
+                      }`}
                   >
                     <div
                       className={`${activeLink === 3 ? 'iconImageActive' : 'iconImage'
-                      }`}
+                        }`}
                     >
                       <span
                         className={`${activeLink === 3 ? 'tagNumberActive' : 'tagNumber'
-                        }`}
+                          }`}
                       >
                         04
                       </span>
@@ -306,7 +309,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
                       className={`${activeLink === 3
                         ? 'sidebartitleListActive'
                         : 'sidebartitleList'
-                      }`}
+                        }`}
                     >
                       Campaign Status
                       {' '}
@@ -331,8 +334,8 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   categories:
                     editCampaignData?.editCampaignData?.categoryId?.id || '',
                   parentCampaign:
-                  editCampaignData?.editCampaignData?.isParent ? ''
-                    : editCampaignData?.editCampaignData?.parentCampaignId,
+                    editCampaignData?.editCampaignData?.isParent ? ''
+                      : editCampaignData?.editCampaignData?.parentCampaignId,
                   amount: editCampaignData?.editCampaignData?.amount || null,
                   editorValue: editCampaignData?.editCampaignData?.description
                     ? editCampaignData.editCampaignData.description
@@ -356,56 +359,57 @@ const SideBarCreateCampaign = (editCampaignData) => {
                 {({
                   values, setFieldValue, errors, handleSubmit,
                 }) => (
-                  <form onSubmit={handleSubmit}>
-                    {activeLink === 0 && (
-                      <Form1
-                        setActiveLink={setActiveLink}
-                        setFieldValue={setFieldValue}
-                        values={values}
-                        errors={errors}
-                        loading={loading}
-                        edit={editCampaignData?.editCampaignData}
-                      />
-                    )}
-                    {activeLink === 1 && (
-                      <Form2
-                        setActiveLink={setActiveLink}
-                        setFieldValue={setFieldValue}
-                        values={values}
-                        errors={errors}
-                        selectedFiles={selectedFiles}
-                        setSelectedFiles={setSelectedFiles}
-                        loading={loading}
-                      />
-                    )}
-                    {activeLink === 2 && (
-                      <Form3
-                        setActiveLink={setActiveLink}
-                        id={
-                          editCampaignData.editCampaignData
-                            ? editCampaignData.editCampaignData.id
-                            : campaignId
-                        }
-                      />
-                    )}
-                    {activeLink === 3 && (
-                      <Form4
-                        setActiveLink={setActiveLink}
-                        id={
-                          editCampaignData.editCampaignData
-                            ? editCampaignData.editCampaignData.id
-                            : campaignId
-                        }
-                        statusId={
-                          editCampaignData.editCampaignData
-                            ? editCampaignData.editCampaignData.statusId?.id
-                            : ''
-                        }
-                        values={values}
-                      />
-                    )}
-                  </form>
-                )}
+                    <form onSubmit={handleSubmit}>
+                      {activeLink === 0 && (
+                        <Form1
+                          setActiveLink={setActiveLink}
+                          setFieldValue={setFieldValue}
+                          values={values}
+                          errors={errors}
+                          loading={loading}
+                          edit={editCampaignData?.editCampaignData}
+                        />
+                      )}
+                      {activeLink === 1 && (
+                        <Form2
+                          setActiveLink={setActiveLink}
+                          setFieldValue={setFieldValue}
+                          values={values}
+                          errors={errors}
+                          selectedFiles={selectedFiles}
+                          setSelectedFiles={setSelectedFiles}
+                          loading={loading}
+                          campaignId={campaignId}
+                        />
+                      )}
+                      {activeLink === 2 && (
+                        <Form3
+                          setActiveLink={setActiveLink}
+                          id={
+                            editCampaignData.editCampaignData
+                              ? editCampaignData.editCampaignData.id
+                              : campaignId
+                          }
+                        />
+                      )}
+                      {activeLink === 3 && (
+                        <Form4
+                          setActiveLink={setActiveLink}
+                          id={
+                            editCampaignData.editCampaignData
+                              ? editCampaignData.editCampaignData.id
+                              : campaignId
+                          }
+                          statusId={
+                            editCampaignData.editCampaignData
+                              ? editCampaignData.editCampaignData.statusId?.id
+                              : ''
+                          }
+                          values={values}
+                        />
+                      )}
+                    </form>
+                  )}
               </Formik>
             </Col>
           </div>

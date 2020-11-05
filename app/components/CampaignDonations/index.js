@@ -116,7 +116,7 @@ function CampaignDonations({ ...props }) {
         left: '45%',
         top: '55%'
       }} animation="border" size="lg" />}{' '}
-      {campaignsDonation && totalDonations === 0 ?  <EmptyComponent message={'There is no donations for this campaigns!'} /> :
+      {campaignsDonation && totalDonations === 0 ? <EmptyComponent message={'There is no donations for this campaigns!'} /> :
         <div>
           <div className='tableMain'>
             {campaignsDonation && campaignsDonation.length > 0 ? <>
@@ -163,50 +163,51 @@ function CampaignDonations({ ...props }) {
                   <input className='searchBarInput' placeholder='Search here' onChange={filterData} />
                 </div> */}
               </Row>
-
-              <Table responsive striped size="md" className='table1' >
-
-                <thead className='tableHeader'>
-                  <tr>
-                    <th >Donner Name</th>
-                    <th >Email</th>
-                    <th >Gift Aid Enabled</th>
-                    <th >Date</th>
-                    <th >Amount</th>
-                  </tr>
-                </thead>
-                <tbody className='tableBody'>
-
-                  {campaignsDonation.map(data => (
+              
+                <Table responsive striped size="md" className='table1' >
+                  <thead className='tableHeader'>
                     <tr>
-                      <td>{data.accountId.firstName}</td>
-                      <td>{data.accountId.email}</td>
-
-                      <td>{data.giftAid ? "Yes" : "No"}</td>
-                      <OverlayTrigger
-                        key='bottom'
-                        placement='bottom'
-                        overlay={
-
-                          <Popover id="popover-basic">
-                            <Popover.Content style={{ color: '#f15a24', textAlign: 'center' }}>
-                              <div>{formatHHMM(data.createdAt)}</div>
-                              <div>{data.computedDateCreatedAt}</div>
-                            </Popover.Content>
-
-                          </Popover>
-                        }
-                      >
-                        <td>{formatDate(data.createdAt)}</td>
-                      </OverlayTrigger>
-                      <td className='tableAmount'>{data.amountSymbolId.symbol} {data.amount/100}</td>
+                      <th >Donner Name</th>
+                      <th >Email</th>
+                      <th >Gift Aid Enabled</th>
+                      <th >Date</th>
+                      <th >Amount</th>
                     </tr>
-                  ))
+                  </thead>
+                  <tbody className='tableBody'>
 
-                  }
-                </tbody>
+                    {campaignsDonation.map(data => (
+                      <tr>
+                        <td>{data.accountId.firstName}</td>
+                        <td>{data.accountId.email}</td>
 
-              </Table>
+                        <td>{data.giftAid ? "Yes" : "No"}</td>
+                        <OverlayTrigger
+                          key='bottom'
+                          placement='bottom'
+                          overlay={
+
+                            <Popover id="popover-basic">
+                              <Popover.Content style={{ color: '#f15a24', textAlign: 'center' }}>
+                                <div>{formatHHMM(data.createdAt)}</div>
+                                <div>{data.computedDateCreatedAt}</div>
+                              </Popover.Content>
+
+                            </Popover>
+                          }
+                        >
+                          <td>{formatDate(data.createdAt)}</td>
+                        </OverlayTrigger>
+                        <td className='tableAmount'>{data.amountSymbolId.symbol} {data.amount / 100}</td>
+                      </tr>
+                    ))
+
+                    }
+                  </tbody>
+
+                </Table>
+
+              
             </> : ''}
           </div>
           <div className="paginatorDonationdiv">

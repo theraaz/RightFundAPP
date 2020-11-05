@@ -14,6 +14,7 @@ import './form2.scss';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import { withRouter } from 'react-router-dom';
 
 const CustomCheckbox = withStyles({
   root: {
@@ -33,6 +34,8 @@ const Form2 = ({
   setSelectedFiles,
   setActiveLink,
   loading,
+  campaignId,
+  ...props
 }) => {
   const [btnSelected, setBtnSelected] = React.useState(false);
   const [youtubeId, setYoutubeId] = React.useState('');
@@ -42,6 +45,7 @@ const Form2 = ({
 
   const handleImage = event => {
     setFieldValue('base64', null);
+    setSelectedFiles([]);
   };
 
   const setVideo = event => {
@@ -216,12 +220,21 @@ const Form2 = ({
             style={{ margin: '5px 0px 20px auto' }}
           >
             <div className="campaignBtnsForm2">
-              <Button
-                className="editCampaignBtn"
-                onClick={() => setActiveLink(0)}
-              >
-                Back
-              </Button>
+              {
+                campaignId ?
+                  <Button
+                    className="editCampaignBtn"
+                    onClick={() => props.history.push(`editCampaign/${campaignId}`)}
+                  >
+                    Back
+              </Button> :
+                  <Button
+                    className="editCampaignBtn"
+                    onClick={() => setActiveLink(0)}
+                  >
+                    Back
+            </Button>
+              }
               <Button
                 type="submit"
                 className="viewCampaignBtn"
@@ -243,4 +256,4 @@ const Form2 = ({
 
 Form2.propTypes = {};
 
-export default memo(Form2);
+export default withRouter(memo(Form2));
