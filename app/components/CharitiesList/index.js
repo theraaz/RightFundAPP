@@ -27,6 +27,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import { withRouter } from 'react-router-dom';
 import { MoreVert, LockOutlined, LockOpenOutlined } from '@material-ui/icons';
 import { useSnackbar } from 'notistack';
+import { getBadgeColorTableStatus } from '../../utils/helper';
 function CharitiesList({ type, history }) {
   const { user } = useSelector(
     ({ auth }) => ({
@@ -160,7 +161,9 @@ function CharitiesList({ type, history }) {
                     {user.role !== 5 && <th>Position</th>}
                     {user.role !== 5 && <th>Role</th>}
                     <th>Status</th>
-                    {user.role === 5 && type === 'list' && <th>Actions</th>}
+                    {user.role === 5 && type === 'list' && (
+                      <th className="text-center">Actions</th>
+                    )}
                   </tr>
                 </thead>
                 <tbody className="tableBody">
@@ -199,16 +202,27 @@ function CharitiesList({ type, history }) {
                         )}
 
                         <td className="text-capitalize">
-                          {(charity?.charityId
-                            ? charity?.charityId?.statusId?.name
-                                ?.replace('ACTIVE', ' ACTIVE')
-                                ?.toLowerCase()
-                            : charity.statusId?.name
-                                ?.replace('ACTIVE', ' ACTIVE')
-                                ?.toLowerCase()) || 'N/A'}
+                          <div
+                            style={{
+                              backgroundColor: getBadgeColorTableStatus(
+                                charity?.charityId
+                                  ? charity?.charityId?.statusId?.id
+                                  : charity?.statusId?.id,
+                              ),
+                            }}
+                            className="status-badge"
+                          >
+                            {(charity?.charityId
+                              ? charity?.charityId?.statusId?.name
+                                  ?.replace('ACTIVE', ' ACTIVE')
+                                  ?.toLowerCase()
+                              : charity.statusId?.name
+                                  ?.replace('ACTIVE', ' ACTIVE')
+                                  ?.toLowerCase()) || 'N/A'}
+                          </div>
                         </td>
                         {user.role === 5 && type === 'list' && (
-                          <td>
+                          <td className="text-center">
                             <button
                               onClick={handleClickMenuOpen(charity)}
                               className="btn btn-icon btn-sm p-0"

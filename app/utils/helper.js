@@ -76,3 +76,17 @@ export function RemoveHTMLTags(html, limit) {
     ? converted?.substring(0, limit)
     : converted;
 }
+export const getBadgeColorTableStatus = id => {
+  switch (id) {
+    case 1:
+      return '#34c31a';
+    case 2:
+      return 'grey';
+    case 4:
+      return '#f1cc1c';
+    case 9:
+      return '#e62424';
+    default:
+      return '';
+  }
+};

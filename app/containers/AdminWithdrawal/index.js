@@ -31,6 +31,7 @@ import {
 } from '@material-ui/icons';
 import Pagination from '@material-ui/lab/Pagination';
 import moment from 'moment';
+import { getBadgeColorTableStatus } from '../../utils/helper';
 export function AdminWithdrawal() {
   const [withdrawals, setWithdrawals] = useState([]);
   const [perPage, setPerPage] = useState(10);
@@ -156,13 +157,15 @@ export function AdminWithdrawal() {
                       <th>Amount</th>
                       <th>Requested At</th>
                       <th>Status</th>
-                      <th>Actions</th>
+                      <th className="text-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="tableBody">
                     {withdrawals.map((withdrawal, i) => (
                       <tr key={withdrawal.id || i}>
-                        <td>{withdrawal?.charityId ? 'Charity' : 'Account'}</td>
+                        <td>
+                          {withdrawal?.charityId ? 'Charity' : 'Individual'}
+                        </td>
                         <td>
                           {withdrawal?.charityId
                             ? withdrawal?.charityId?.name
@@ -180,14 +183,23 @@ export function AdminWithdrawal() {
                         </td>
 
                         <td className="text-capitalize">
-                          {withdrawal?.statusId?.id === 1
-                            ? 'Approved'
-                            : withdrawal?.statusId?.id === 2
-                            ? 'Not Approved'
-                            : withdrawal?.statusId?.name?.toLowerCase()}
+                          <div
+                            style={{
+                              backgroundColor: getBadgeColorTableStatus(
+                                withdrawal?.statusId?.id,
+                              ),
+                            }}
+                            className="status-badge"
+                          >
+                            {withdrawal?.statusId?.id === 1
+                              ? 'Approved'
+                              : withdrawal?.statusId?.id === 2
+                              ? 'Not Approved'
+                              : withdrawal?.statusId?.name?.toLowerCase()}
+                          </div>
                         </td>
 
-                        <td>
+                        <td className="text-center">
                           <button
                             onClick={handleClickMenuOpen(withdrawal)}
                             disabled={withdrawal?.statusId?.id !== 4}
