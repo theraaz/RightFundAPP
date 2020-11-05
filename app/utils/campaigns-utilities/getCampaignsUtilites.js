@@ -1,7 +1,12 @@
 import axios from 'axios';
 
-export const CAMPAIGN_URL = `${process.env.baseURL}/parentCampaigns`;
+export const CAMPAIGN_URL = `${process.env.baseURL}`;
+
+
 export function getParentCampaigns(params) {
-  console.log(params)
-  return axios.get(`${CAMPAIGN_URL}`,{params});
+  return axios.get(`${CAMPAIGN_URL}/parentCampaigns`, { params });
+}
+
+export function getSubCampaigns(id) {
+  return axios.get(`${CAMPAIGN_URL}/subCampaigns/${id}`);
 }

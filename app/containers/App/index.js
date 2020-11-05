@@ -24,6 +24,7 @@ import Withdrawals from 'containers/Withdrawals/Loadable';
 import AdminCharities from 'containers/AdminCharities/Loadable';
 import AdminCharityView from 'containers/CharityProfileView/Loadable';
 import AdminWithdrawal from 'containers/AdminWithdrawal/Loadable';
+import SubsCampaignContiner from 'containers/SubsCampaignContiner/index';
 
 import { shallowEqual, useSelector } from 'react-redux';
 
@@ -65,6 +66,7 @@ export default function App() {
           component={CampaignUpdatesContainer}
         />
         <AuthRoute exact path="/donations/:id" component={DonationsContainer} />
+        <AuthRoute exact path="/subs-campaigns/:id" component={SubsCampaignContiner} />
         <AuthRoute exact path="/editCampaign/:id" component={EditCampaign} />
         <LoginRoute exact path="/resetPassword" component={ResetPassword} />
         {user?.statusId ? (
@@ -86,6 +88,7 @@ export default function App() {
         <AuthRoute exact path="/withdrawals" component={Withdrawals} />
         <AdminRoute exact path="/accounts" component={Accounts} />
         <AdminRoute exact path="/charities" component={AdminCharities} />
+        
         <AdminRoute exact path="/withdrawal" component={AdminWithdrawal} />
         <AdminRoute
           exact

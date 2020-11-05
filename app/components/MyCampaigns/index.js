@@ -259,6 +259,12 @@ const MyCampaigns = ({ ...props }) => {
     if (id === 8) {
       return '#e62424';
     }
+    if (id === 5) {
+      return '#e62424';
+    }
+    if (id === 9) {
+      return '#808080';
+    }
   }
 
   function goToCampaignUpdates(id) {
