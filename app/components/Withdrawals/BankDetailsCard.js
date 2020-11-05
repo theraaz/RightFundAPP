@@ -33,7 +33,7 @@ const BankDetailsCard = ({
       <div className="text-muted account-details-card__sort-code">
         {
           conformToMask(sortCode, [
-            /[1-9]/,
+            /\d/,
             /\d/,
             '-',
             /\d/,
