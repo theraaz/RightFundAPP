@@ -31,6 +31,7 @@ import {
 } from '@material-ui/icons';
 import Pagination from '@material-ui/lab/Pagination';
 import moment from 'moment';
+import { getBadgeColorTableStatus } from '../../utils/helper';
 export function AdminWithdrawal() {
   const [withdrawals, setWithdrawals] = useState([]);
   const [perPage, setPerPage] = useState(10);
@@ -151,35 +152,54 @@ export function AdminWithdrawal() {
                 <Table responsive="md" size="md" className="table1">
                   <thead className="tableHeader">
                     <tr>
-                      <th>Withdrawal ID</th>
+                      <th>Withdrawal Type</th>
+                      <th>Name</th>
                       <th>Amount</th>
                       <th>Requested At</th>
                       <th>Status</th>
-                      <th>Actions</th>
+                      <th className="text-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="tableBody">
                     {withdrawals.map((withdrawal, i) => (
                       <tr key={withdrawal.id || i}>
-                        <td>{withdrawal?.id}</td>
+                        <td>
+                          {withdrawal?.charityId ? 'Charity' : 'Individual'}
+                        </td>
+                        <td>
+                          {withdrawal?.charityId
+                            ? withdrawal?.charityId?.name
+                            : `${withdrawal?.accountId?.firstName} ${
+                                withdrawal?.accountId?.lastName
+                              }`}
+                        </td>
                         <td className="font-weight-bold text-dark">
                           {formatter.format(withdrawal.amount)}
                         </td>
                         <td>
                           {moment(withdrawal.createdAt).format(
-                            'DD-MM-YYYY hh:mm A',
+                            'MMM DD, YYYY h:mm A',
                           )}
                         </td>
 
                         <td className="text-capitalize">
-                          {withdrawal?.statusId?.id === 1
-                            ? 'Approved'
-                            : withdrawal?.statusId?.id === 2
-                            ? 'Not Approved'
-                            : withdrawal?.statusId?.name?.toLowerCase()}
+                          <div
+                            style={{
+                              backgroundColor: getBadgeColorTableStatus(
+                                withdrawal?.statusId?.id,
+                              ),
+                            }}
+                            className="status-badge"
+                          >
+                            {withdrawal?.statusId?.id === 1
+                              ? 'Approved'
+                              : withdrawal?.statusId?.id === 2
+                              ? 'Not Approved'
+                              : withdrawal?.statusId?.name?.toLowerCase()}
+                          </div>
                         </td>
 
-                        <td>
+                        <td className="text-center">
                           <button
                             onClick={handleClickMenuOpen(withdrawal)}
                             disabled={withdrawal?.statusId?.id !== 4}

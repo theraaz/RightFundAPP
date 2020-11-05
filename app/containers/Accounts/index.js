@@ -34,6 +34,7 @@ import { ListItemText, Menu, MenuItem } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import { connect, shallowEqual, useSelector } from 'react-redux';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
+import { getBadgeColorTableStatus } from '../../utils/helper';
 
 export function Accounts({ login, history }) {
   const { user } = useSelector(
@@ -156,6 +157,7 @@ export function Accounts({ login, history }) {
     setSingleUser(sUser);
     setAnchorEl(e.currentTarget);
   };
+
   return (
     <Layout>
       <Helmet>
@@ -186,10 +188,9 @@ export function Accounts({ login, history }) {
                     <tr>
                       <th>Name</th>
                       <th>Email</th>
-                      <th>Phone Number</th>
                       <th>Role</th>
                       <th>Status</th>
-                      <th>Actions</th>
+                      <th className="text-center">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="tableBody">
@@ -197,16 +198,24 @@ export function Accounts({ login, history }) {
                       <tr key={account.id || i}>
                         <td>{`${account?.firstName} ${account?.lastName}`}</td>
                         <td>{account?.email || 'N/A'}</td>
-                        <td>{account?.phoneNumber || 'N/A'}</td>
                         <td className="text-capitalize">
                           {account?.role?.name?.toLowerCase() || 'N/A'}
                         </td>
                         <td className="text-capitalize">
-                          {account?.statusId?.name
-                            ?.replace('ACTIVE', ' ACTIVE')
-                            ?.toLowerCase() || 'N/A'}
+                          <div
+                            style={{
+                              backgroundColor: getBadgeColorTableStatus(
+                                account?.statusId?.id,
+                              ),
+                            }}
+                            className="status-badge"
+                          >
+                            {account?.statusId?.name
+                              ?.replace('ACTIVE', ' ACTIVE')
+                              ?.toLowerCase() || 'N/A'}
+                          </div>
                         </td>
-                        <td>
+                        <td className="text-center">
                           <button
                             onClick={handleClickMenuOpen(account)}
                             className="btn btn-icon"
