@@ -104,6 +104,7 @@
     "react-router-dom": "5.0.0",
     "react-select": "^3.1.0",
     "react-select-async-paginate": "^0.4.1",
+    "react-text-mask": "^5.4.3",
     "react-tinymce": "^0.7.0",
     "redux": "4.0.1",
     "redux-persist": "^6.0.0",

@@ -1,6 +1,7 @@
 import React from 'react';
 import { MoreVert } from '@material-ui/icons';
 import { Tooltip } from '@material-ui/core';
+import { conformToMask } from 'react-text-mask';
 
 const BankDetailsCard = ({
   accountHolderName,
@@ -30,7 +31,18 @@ const BankDetailsCard = ({
       </div>
       <div className="account-details-card__heading">Sort Code</div>
       <div className="text-muted account-details-card__sort-code">
-        {sortCode || 'N/A'}
+        {
+          conformToMask(sortCode, [
+            /[1-9]/,
+            /\d/,
+            '-',
+            /\d/,
+            /\d/,
+            '-',
+            /\d/,
+            /\d/,
+          ])?.conformedValue
+        }
       </div>
       <div className="account-details-card__heading">Account Number</div>
       <div className="text-muted account-details-card__sort-code">
