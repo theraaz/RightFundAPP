@@ -1,4 +1,3 @@
-import { CompareOutlined } from '@material-ui/icons';
 /**
  *
  * CampaignDonations
@@ -6,8 +5,6 @@ import { CompareOutlined } from '@material-ui/icons';
  */
 
 import React, { memo, useState, useEffect, useCallback } from 'react';
-// import PropTypes from 'prop-types';
-// import styled from 'styled-components';
 import {
   Spinner,
   Popover,
@@ -15,78 +12,62 @@ import {
   Table,
   Row,
   Form,
-  Container
+  Container,
 } from 'react-bootstrap';
 import Pagination from '@material-ui/lab/Pagination';
 
 import { withRouter } from 'react-router-dom';
 import EmptyComponent from '../EmptyComponent';
 
-
 import './campaignDontaions.scss';
+import { getCampaignDonationsById } from '../../utils/crud/campain.crud';
+import { shallowEqual, useSelector } from 'react-redux';
+import { adminGetCampaignDonationsById } from '../../utils/crud/admin.crud';
 
 function CampaignDonations({ ...props }) {
-  const token = localStorage.getItem('token');
-
+  const { user } = useSelector(
+    ({ auth }) => ({
+      user: auth.user,
+    }),
+    shallowEqual,
+  );
   const [pageSize, setPageSize] = React.useState(10);
   const [pageNumber, setPageNumber] = React.useState(1);
   const [totalDonations, setTotalDonations] = React.useState();
   const [totalPages, setTotalPages] = React.useState(0);
   const [campaignsDonation, setCampaignsDonation] = useState([]);
-  const [fiterVal, setFilterVal] = useState([]);
   const [loadingSpinner, setLoadingSpinner] = useState(false);
 
   function formatDate(createdAt) {
-    const d = new Date(createdAt)
+    const d = new Date(createdAt);
     let month = d.getMonth() + 1;
-    return (d.getDate() + '-' + month + '-' + d.getUTCFullYear());
+    return `${d.getDate()}-${month}-${d.getUTCFullYear()}`;
   }
 
   function formatHHMM(date) {
-    const popover = new Date(date)
-    function z(n) { return (n < 10 ? '0' : '') + n; }
+    const popover = new Date(date);
+    function z(n) {
+      return (n < 10 ? '0' : '') + n;
+    }
     const h = popover.getHours();
-    return z(h % 12) + ':' + z(popover.getMinutes()) + ' ' + (h < 12 ? 'AM' : 'PM');
+    return `${z(h % 12)}:${z(popover.getMinutes())} ${h < 12 ? 'AM' : 'PM'}`;
   }
-
-  const filterData = (event) => {
-    const filter = event.target.value !== '' ? fiterVal.filter(cd => cd.accountId.firstName.includes(event.target.value)) : campaignsDonation
-    setCampaignsDonation(filter);
-  }
-
-  function pageChange(event) {
-    console.log(event)
-  }
-
 
   const handleChangePage = useCallback((event, value) => {
-
     setPageNumber(value);
   }, []);
 
-
   function getDonations(pages, pageNo) {
-
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
-
-    fetch(
-      `${process.env.baseURL}/donation/campaign/${props.match.params.id}?perPage=${pages}&pageNo=${pageNo}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(user => {
-        console.log(user.response.data);
+    const getDonations =
+      user.role === 5
+        ? adminGetCampaignDonationsById
+        : getCampaignDonationsById;
+    getDonations(props.match.params.id, { perPage: pages, pageNo })
+      .then(({ data }) => {
         setLoadingSpinner(false);
-        setTotalDonations(user.response.data.totalDonations);
-        setTotalPages(Math.ceil(user.response.data.totalDonations / pageSize));
-        setCampaignsDonation(user.response.data.res);
-        setFilterVal(user.response.data.res)
+        setTotalDonations(data.response.data.totalDonations);
+        setTotalPages(Math.ceil(data.response.data.totalDonations / pageSize));
+        setCampaignsDonation(data.response.data.res);
       })
       .catch(error => {
         console.log(error);
@@ -96,33 +77,42 @@ function CampaignDonations({ ...props }) {
   useEffect(() => {
     setLoadingSpinner(true);
     getDonations(pageSize, pageNumber);
-  }, [
-    pageSize,
-    pageNumber
-  ]);
+  }, [pageSize, pageNumber]);
 
   const PerPage = event => {
     setPageNumber(1);
     setPageSize(event.target.value);
     console.log(event.target.value);
     // getDonations();
-  }
+  };
 
-  return <div>
-    <Container style={{ minHeight: '17rem' }}>
-
-      {loadingSpinner && <Spinner style={{
-        color: '#f15a24', position: 'absolute',
-        left: '45%',
-        top: '55%'
-      }} animation="border" size="lg" />}{' '}
-      {campaignsDonation && totalDonations === 0 ? <EmptyComponent message={'There is no donations for this campaigns!'} /> :
-        <div>
-          <div className='tableMain'>
-            {campaignsDonation && campaignsDonation.length > 0 ? <>
-              <Row className='tableRow'>
-                <h5 className='DonationHeading'>Donations</h5>
-                {/* <div className='searchBar'>
+  return (
+    <div>
+      <Container style={{ minHeight: '17rem' }}>
+        {loadingSpinner && (
+          <Spinner
+            style={{
+              color: '#f15a24',
+              position: 'absolute',
+              left: '45%',
+              top: '55%',
+            }}
+            animation="border"
+            size="lg"
+          />
+        )}{' '}
+        {campaignsDonation && totalDonations === 0 ? (
+          <EmptyComponent
+            message={'There is no donations for this campaigns!'}
+          />
+        ) : (
+          <div>
+            <div className="tableMain">
+              {campaignsDonation && campaignsDonation.length > 0 ? (
+                <>
+                  <Row className="tableRow">
+                    <h5 className="DonationHeading">Donations</h5>
+                    {/* <div className='searchBar'>
                   <svg version="1.1" id="Capa_1" width='15' height='15' viewBox="0 0 512.005 512.005">
                     <g>
                       <g>
@@ -162,78 +152,85 @@ function CampaignDonations({ ...props }) {
                   </svg>
                   <input className='searchBarInput' placeholder='Search here' onChange={filterData} />
                 </div> */}
-              </Row>
-              
-                <Table responsive striped size="md" className='table1' >
-                  <thead className='tableHeader'>
-                    <tr>
-                      <th >Donner Name</th>
-                      <th >Email</th>
-                      <th >Gift Aid Enabled</th>
-                      <th >Date</th>
-                      <th >Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody className='tableBody'>
+                  </Row>
 
-                    {campaignsDonation.map(data => (
+                  <Table responsive striped size="md" className="table1">
+                    <thead className="tableHeader">
                       <tr>
-                        <td>{data.accountId.firstName}</td>
-                        <td>{data.accountId.email}</td>
-
-                        <td>{data.giftAid ? "Yes" : "No"}</td>
-                        <OverlayTrigger
-                          key='bottom'
-                          placement='bottom'
-                          overlay={
-
-                            <Popover id="popover-basic">
-                              <Popover.Content style={{ color: '#f15a24', textAlign: 'center' }}>
-                                <div>{formatHHMM(data.createdAt)}</div>
-                                <div>{data.computedDateCreatedAt}</div>
-                              </Popover.Content>
-
-                            </Popover>
-                          }
-                        >
-                          <td>{formatDate(data.createdAt)}</td>
-                        </OverlayTrigger>
-                        <td className='tableAmount'>{data.amountSymbolId.symbol} {data.amount / 100}</td>
+                        <th>Donner Name</th>
+                        <th>Email</th>
+                        <th>Gift Aid Enabled</th>
+                        <th>Date</th>
+                        <th>Amount</th>
                       </tr>
-                    ))
+                    </thead>
+                    <tbody className="tableBody">
+                      {campaignsDonation.map((data, i) => (
+                        <tr key={i}>
+                          <td>{data.accountId.firstName}</td>
+                          <td>{data.accountId.email}</td>
 
-                    }
-                  </tbody>
-
-                </Table>
-
-              
-            </> : ''}
-          </div>
-          <div className="paginatorDonationdiv">
-            <div className="paginatorPerSize">
-              <span >
-                Per Page
-             </span>
-              <Form.Control
-                as="select"
-                className='paginatorPerPage'
-                onChange={PerPage}
-              >
-                <option className='paginatorPerPageOption' value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-              </Form.Control>
+                          <td>{data.giftAid ? 'Yes' : 'No'}</td>
+                          <OverlayTrigger
+                            key="bottom"
+                            placement="bottom"
+                            overlay={
+                              <Popover id="popover-basic">
+                                <Popover.Content
+                                  style={{
+                                    color: '#f15a24',
+                                    textAlign: 'center',
+                                  }}
+                                >
+                                  <div>{formatHHMM(data.createdAt)}</div>
+                                  <div>{data.computedDateCreatedAt}</div>
+                                </Popover.Content>
+                              </Popover>
+                            }
+                          >
+                            <td>{formatDate(data.createdAt)}</td>
+                          </OverlayTrigger>
+                          <td className="tableAmount">
+                            {data.amountSymbolId.symbol} {data.amount / 100}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </>
+              ) : (
+                ''
+              )}
             </div>
+            <div className="paginatorDonationdiv">
+              <div className="paginatorPerSize">
+                <span>Per Page</span>
+                <Form.Control
+                  as="select"
+                  className="paginatorPerPage"
+                  onChange={PerPage}
+                >
+                  <option className="paginatorPerPageOption" value="10">
+                    10
+                  </option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                </Form.Control>
+              </div>
 
-            <Pagination count={totalPages} classes={{ ul: 'paginationDonationColor' }} onChange={handleChangePage} variant="outlined" shape="rounded" />
+              <Pagination
+                count={totalPages}
+                classes={{ ul: 'paginationDonationColor' }}
+                onChange={handleChangePage}
+                variant="outlined"
+                shape="rounded"
+              />
+            </div>
           </div>
-        </div>
-      }
-
-    </Container>
-
-  </div >;
+        )}
+      </Container>
+    </div>
+  );
 }
 
 CampaignDonations.propTypes = {};

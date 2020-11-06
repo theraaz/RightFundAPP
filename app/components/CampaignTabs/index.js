@@ -11,7 +11,7 @@ import React, { memo, useEffect } from 'react';
 // import styled from 'styled-components';
 
 import { ListGroup, Row, Col, Card, Button } from 'react-bootstrap';
-import { NavLink, withRouter, Link } from 'react-router-dom';
+import { NavLink, withRouter } from 'react-router-dom';
 import Header from '../Header/Loadable';
 import '../../containers/HomePage/dashboard.scss';
 import Footer from '../Footer/Loadable';
@@ -22,27 +22,25 @@ import BackIcon from '../svg-icons/backIcon';
 import CampaignIcon from '../svg-icons/CampaignIcon';
 import UpdatesIcon from '../svg-icons/updatesIcon';
 import DonationsIcon from '../svg-icons/donationsIcon';
+import { getCampaignBasicDetail } from '../../utils/crud/campain.crud';
+import { shallowEqual, useSelector } from 'react-redux';
+import { adminGetCampaignBasicDetails } from '../../utils/crud/admin.crud';
 // eslint-disable-next-line react/prop-types
 function CampaignTabs({ children, ...props }) {
-  const token = localStorage.getItem('token');
+  const { user } = useSelector(
+    ({ auth }) => ({
+      user: auth.user,
+    }),
+    shallowEqual,
+  );
   const [campaignData, setCampaignData] = React.useState();
   useEffect(() => {
-    const requestOptions = {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        authorization: token,
-      },
-    };
-
-    fetch(
-      `${process.env.baseURL}/campaignBasicDetails/${props.match.params.id}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(user => {
-        console.log(user.response.data)
-        setCampaignData(user.response.data);
+    const getBasicDetails =
+      user.role === 5 ? adminGetCampaignBasicDetails : getCampaignBasicDetail;
+    getBasicDetails(props.match.params.id)
+      .then(({ data }) => {
+        console.log(data.response.data);
+        setCampaignData(data.response.data);
       })
       .catch(error => {
         console.error(error);
@@ -62,10 +60,8 @@ function CampaignTabs({ children, ...props }) {
     props.history.push(`/editCampaign/${props.match.params.id}`);
   }
 
-
-
   function totalDonationsSubCampaigns() {
-    let total = 0
+    let total = 0;
     for (let i = 0; i < campaignData?.subCampaigns?.length; i++) {
       total = campaignData.subCampaigns[i].totalDonations + total;
     }
@@ -74,7 +70,7 @@ function CampaignTabs({ children, ...props }) {
 
   return (
     <div>
-      <Header title="Dasboard" />
+      <Header title="Dashboard" />
       <div
         className="container"
         style={{ minHeight: '700px', marginTop: '-5rem' }}
@@ -88,7 +84,7 @@ function CampaignTabs({ children, ...props }) {
             tabIndex="-1"
             role="button"
           >
-            <BackIcon size='15px' />
+            <BackIcon size="15px" />
             <span>Back</span>
           </div>
         </div>
@@ -149,14 +145,16 @@ function CampaignTabs({ children, ...props }) {
                           {campaignData ? campaignData.campaignTitle : ''}
                         </span>
                         <ul className="campign-Status">
-                          {campaignData?.subCampaigns?.length > 0 ?
+                          {campaignData?.subCampaigns?.length > 0 ? (
                             <>
                               <li className="raised">
                                 <span className="content">
                                   {campaignData
                                     ? campaignData.campaignAmountSymbol.symbol
                                     : ''}{' '}
-                                  {campaignData ? campaignData.campaignTarget / 100 : ''}
+                                  {campaignData
+                                    ? campaignData.campaignTarget / 100
+                                    : ''}
                                 </span>
                                 <span className="title">Target</span>
                               </li>
@@ -165,7 +163,9 @@ function CampaignTabs({ children, ...props }) {
                                   {campaignData
                                     ? campaignData.campaignAmountSymbol.symbol
                                     : ''}{' '}
-                                  {campaignData ? campaignData.totalDonations / 100 : ''}
+                                  {campaignData
+                                    ? campaignData.totalDonations / 100
+                                    : ''}
                                 </span>
                                 <span className="title">Own Raised</span>
                               </li>
@@ -174,7 +174,9 @@ function CampaignTabs({ children, ...props }) {
                                   {campaignData
                                     ? campaignData.campaignAmountSymbol.symbol
                                     : ''}{' '}
-                                  {campaignData ? totalDonationsSubCampaigns() / 100 : ''}
+                                  {campaignData
+                                    ? totalDonationsSubCampaigns() / 100
+                                    : ''}
                                 </span>
                                 <span className="title">Other Raised</span>
                               </li>
@@ -183,7 +185,11 @@ function CampaignTabs({ children, ...props }) {
                                   {campaignData
                                     ? campaignData.campaignAmountSymbol.symbol
                                     : ''}{' '}
-                                  {campaignData ? (campaignData.totalDonations + totalDonationsSubCampaigns()) / 100 : ''}
+                                  {campaignData
+                                    ? (campaignData.totalDonations +
+                                        totalDonationsSubCampaigns()) /
+                                      100
+                                    : ''}
                                 </span>
                                 <span className="title">Total Raised</span>
                               </li>
@@ -193,14 +199,17 @@ function CampaignTabs({ children, ...props }) {
                                 </span>
                                 <span className="title">Donators</span>
                               </li> */}
-                            </> :
+                            </>
+                          ) : (
                             <>
                               <li className="raised">
                                 <span className="content">
                                   {campaignData
                                     ? campaignData.campaignAmountSymbol.symbol
                                     : ''}{' '}
-                                  {campaignData ? campaignData.campaignTarget / 100 : ''}
+                                  {campaignData
+                                    ? campaignData.campaignTarget / 100
+                                    : ''}
                                 </span>
                                 <span className="title">Target</span>
                               </li>
@@ -209,37 +218,41 @@ function CampaignTabs({ children, ...props }) {
                                   {campaignData
                                     ? campaignData.campaignAmountSymbol.symbol
                                     : ''}{' '}
-                                  {campaignData ? campaignData.totalDonations / 100 : ''}
+                                  {campaignData
+                                    ? campaignData.totalDonations / 100
+                                    : '0'}
                                 </span>
                                 <span className="title">Raised</span>
                               </li>
                               <li className="donators">
                                 <span className="content">
-                                  {campaignData ? campaignData.totalDonors : ''}
+                                  {campaignData?.totalDonors || 0}
                                 </span>
                                 <span className="title">Donators</span>
                               </li>
                             </>
-                          }
+                          )}
                         </ul>
                       </div>
                     </Col>
 
                     <Col xs={12} sm={12} md={5} lg={5}>
                       <div className="campaignUpdatesHeader">
-
-                        <Button className="campaignViewBtn" onClick={goTocampaignView}>View Campaign</Button>{' '}
-
-
-
-                        <Button className="editCampaign" onClick={goToeditCampaign}>Edit Campaign</Button>{' '}
-
+                        <Button
+                          className="campaignViewBtn"
+                          onClick={goTocampaignView}
+                        >
+                          View Campaign
+                        </Button>{' '}
+                        <Button
+                          className="editCampaign"
+                          onClick={goToeditCampaign}
+                        >
+                          Edit Campaign
+                        </Button>{' '}
                       </div>
                     </Col>
                   </Row>
-
-
-
                 </Card.Title>
               </Card.Header>
 
