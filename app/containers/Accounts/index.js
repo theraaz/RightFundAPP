@@ -219,7 +219,10 @@ export function Accounts({ login, history }) {
                           <button
                             onClick={handleClickMenuOpen(account)}
                             className="btn btn-icon"
-                            disabled={user?.email === account?.email}
+                            disabled={
+                              user?.email === account?.email ||
+                              account?.role?.id === 4
+                            }
                           >
                             <MoreVert />
                           </button>

@@ -174,7 +174,7 @@ export function AdminWithdrawal() {
                               }`}
                         </td>
                         <td className="font-weight-bold text-dark">
-                          {formatter.format(withdrawal.amount)}
+                          {formatter.format(withdrawal.amount / 100)}
                         </td>
                         <td>
                           {moment(withdrawal.createdAt).format(

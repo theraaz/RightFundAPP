@@ -4,6 +4,7 @@ import moment from 'moment';
 import EmptyComponent from '../EmptyComponent';
 import Pagination from '@material-ui/lab/Pagination';
 import LoadingComponent from '../LoadingComponent';
+import { getBadgeColorTableStatus } from '../../utils/helper';
 const formatter = new Intl.NumberFormat(undefined, {
   style: 'currency',
   currency: 'GBP',
@@ -34,7 +35,8 @@ const WithdrawalHistory = ({
               <th>Name</th>
               <th>Account Type</th>
               <th>Date</th>
-              <th>Amount</th>
+              <th>Status</th>
+              <th className="text-center">Amount</th>
             </tr>
           </thead>
           <tbody className="tableBody">
@@ -46,8 +48,23 @@ const WithdrawalHistory = ({
                 </td>
                 <td>{withdrawal.charityId ? 'Charity' : 'Individual'}</td>
                 <td>{moment(withdrawal.createdAt).format('DD-MM-YYYY')}</td>
-
-                <td className="text-dark font-weight-bold">
+                <td className="text-capitalize">
+                  <div
+                    style={{
+                      backgroundColor: getBadgeColorTableStatus(
+                        withdrawal?.statusId?.id,
+                      ),
+                    }}
+                    className="status-badge"
+                  >
+                    {withdrawal?.statusId?.id === 1
+                      ? 'Approved'
+                      : withdrawal?.statusId?.id === 2
+                      ? 'Not Approved'
+                      : withdrawal?.statusId?.name?.toLowerCase()}
+                  </div>
+                </td>
+                <td className="text-dark text-center font-weight-bold">
                   {formatter.format(withdrawal.amount / 100 || 0)}
                 </td>
               </tr>

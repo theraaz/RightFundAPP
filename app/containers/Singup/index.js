@@ -5,14 +5,9 @@
  */
 
 import React, { memo, useState } from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
-import { useInjectReducer } from 'utils/injectReducer';
-
-import { Button, Form, Col, Spinner, Dropdown } from 'react-bootstrap';
+import { Button, Form, Col, Spinner } from 'react-bootstrap';
 import './signup.scss';
 import { Helmet } from 'react-helmet';
 import { useSnackbar } from 'notistack';
@@ -21,18 +16,15 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { ErrorMessage, Formik } from 'formik';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import makeSelectSingup from './selectors';
-import reducer from './reducer';
 import Layout from '../../components/AuthLayout';
 import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik';
 import BootstrapInput from '../../components/inputs/BootstrapInput';
 
 import CustomCheckbox from '../../components/inputs/customCheckbox';
 import FormErrorMessage from '../../components/FormErrorMessage';
+import { signUp } from '../../utils/crud/auth.crud';
 
-export function Singup(props) {
-  useInjectReducer({ key: 'singup', reducer });
-
+export function Singup() {
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [termsConditon, setTermsCondition] = useState(false);
@@ -49,7 +41,6 @@ export function Singup(props) {
       regNo,
       position,
     } = values;
-    console.log('values', values);
     if (firstName?.trim() === '') {
       errors.firstName = 'Required!';
     }
@@ -89,7 +80,6 @@ export function Singup(props) {
   };
 
   const handleClickVariant = (variant, message) => {
-    console.log(variant);
     // variant could be success, error, warning, info, or default
     enqueueSnackbar(message, {
       variant,
@@ -98,30 +88,24 @@ export function Singup(props) {
   };
 
   const onSubmit = (values, { resetForm }) => {
-    console.log('values', values);
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...values,
-        position: values.isCharity ? values.position : undefined,
-        role: 1,
-      }),
-    };
     setLoading(true);
-    fetch(`${process.env.baseURL}/signup`, requestOptions)
-      .then(response => response.json())
-      .then(user => {
+    signUp({
+      ...values,
+      position: values.isCharity ? values.position : undefined,
+      role: 1,
+    })
+      .then(({ data, status }) => {
         setLoading(false);
 
-        if (user.statusCode === 200) {
-          handleClickVariant('success', user.response.message);
+        if (status === 200) {
+          handleClickVariant('success', data.response.message);
           resetForm({});
         } else {
-          handleClickVariant('error', user.response.message);
+          handleClickVariant('error', data.response.message);
         }
+      })
+      .catch(() => {
+        handleClickVariant('error', 'Something Went Wrong! Please Try Again!');
       });
   };
 
@@ -131,7 +115,7 @@ export function Singup(props) {
         <title>Register</title>
         <meta name="description" content="Please do login" />
       </Helmet>
-      <Layout title="Signup" description="Enter your detail below." >
+      <Layout title="Signup" description="Enter your detail below.">
         <div className="signup-form">
           <Formik
             initialValues={{
@@ -149,15 +133,11 @@ export function Singup(props) {
           >
             {({
               values,
-              status,
+
               setFieldValue,
               handleSubmit,
-              isSubmitting,
-              touched,
-              errors,
             }) => (
               <form onSubmit={handleSubmit}>
-                {console.log(values)}
                 <Form.Group
                   controlId="fname"
                   bssize="large"
@@ -359,26 +339,4 @@ export function Singup(props) {
   );
 }
 
-Singup.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = createStructuredSelector({
-  singup: makeSelectSingup(),
-});
-
-function mapDispatchToProps(dispatch) {
-  return {
-    dispatch,
-  };
-}
-
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
-
-export default compose(
-  withConnect,
-  memo,
-)(Singup);
+export default compose(memo)(Singup);

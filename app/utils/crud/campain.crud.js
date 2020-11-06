@@ -1,7 +1,12 @@
 import axios from 'axios';
 
 export const CAMPAIGNS_URL = `${process.env.baseURL}/campaign`;
-export const CAMPAIGNS_BASIC_URL = `${process.env.baseURL}/campaignBasicDetails`;
+export const CAMPAIGN_DONATIONS_URL = `${
+  process.env.baseURL
+}/donation/campaign`;
+export const CAMPAIGNS_BASIC_URL = `${
+  process.env.baseURL
+}/campaignBasicDetails`;
 export const ADMIN_CAMPAIGNS_URL = `${process.env.baseURL}/admin`;
 
 export function createCampaign(data) {
@@ -20,4 +25,7 @@ export function getCampaignById(id) {
 }
 export function getAdminCampaignById(id) {
   return axios.get(`${ADMIN_CAMPAIGNS_URL}/campaign/${id}`);
+}
+export function getCampaignDonationsById(id, params) {
+  return axios.get(`${CAMPAIGN_DONATIONS_URL}/${id}`, { params });
 }

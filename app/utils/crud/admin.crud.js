@@ -2,6 +2,12 @@ import axios from 'axios';
 
 const ADMIN_ACCOUNTS_URL = `${process.env.baseURL}/admin/accounts`;
 const ADMIN_CAMPAIGNS_URL = `${process.env.baseURL}/admin/campaigns`;
+const ADMIN_CAMPAIGN_BASIC_DETAILS_URL = `${
+  process.env.baseURL
+}/admin/campaignBasicDetails`;
+const ADMIN_CAMPAIGN_DONATIONS_URL = `${
+  process.env.baseURL
+}/admin/campaignDonations`;
 const ADMIN_FORCE_LOGIN_URL = `${process.env.baseURL}/admin/forceSignIn`;
 const ADMIN_CHARITIES_URL = `${process.env.baseURL}/admin/charities`;
 const ADMIN_CHARITY_BY_ID_URL = `${process.env.baseURL}/admin/charity`;
@@ -24,6 +30,12 @@ export function adminGetAllCampaigns() {
 }
 export function adminGetCampaignById(id) {
   return axios.get(`${ADMIN_CAMPAIGNS_URL}/${id}`);
+}
+export function adminGetCampaignDonationsById(id, params) {
+  return axios.get(`${ADMIN_CAMPAIGN_DONATIONS_URL}/${id}`, { params });
+}
+export function adminGetCampaignBasicDetails(id) {
+  return axios.get(`${ADMIN_CAMPAIGN_BASIC_DETAILS_URL}/${id}`);
 }
 export function adminGetAllCharities() {
   return axios.get(ADMIN_CHARITIES_URL);

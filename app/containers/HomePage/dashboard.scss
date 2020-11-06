@@ -68,11 +68,12 @@
 
   .titleCol {
     display: flex;
-    justify-content: center;
+    justify-content: start;
 
     @include respond-to(mobile) {
       // css code here
       text-align: center;
+      justify-content: center;
     }
 
     .card-data {

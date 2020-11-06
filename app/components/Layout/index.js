@@ -120,7 +120,12 @@ function Layout({ children, updateUser, ...props }) {
           <Col xs={12} sm={12} lg={7} xl={7} className="charityAmountCard">
             <div className="card card-header-main  shadow bg-white rounded">
               <Row>
-                <Col xs={12} sm={5} md={5}>
+                <Col
+                  xs={12}
+                  sm={5}
+                  md={5}
+                  className="d-flex justify-content-center"
+                >
                   <div className="card-header card-img border-0">
                     <input
                       id="myInputImage"
@@ -195,17 +200,17 @@ function Layout({ children, updateUser, ...props }) {
                 <div className="compaignData">
                   <Row>
                     <Col className="table-col1 tableRight">
-                      <Heading>{totalCampaign}</Heading>
+                      <Heading>{totalCampaign || 0}</Heading>
                       <Description>Total Campaign Created</Description>
                     </Col>
                     <Col className="table-col1">
-                      <Heading>{activeCampaign}</Heading>
+                      <Heading>{activeCampaign || 0}</Heading>
                       <Description>Active Campaign</Description>
                     </Col>
                   </Row>
                   <Row>
                     <Col className="table-col tableRight">
-                      <Heading className="mt-4">{giftAid}</Heading>
+                      <Heading className="mt-4">{giftAid || 0}</Heading>
                       <Description>Gift Aids</Description>
                     </Col>
                     <Col className="table-col">
