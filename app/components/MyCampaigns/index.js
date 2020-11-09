@@ -181,7 +181,7 @@ const MyCampaigns = ({ ...props }) => {
         if (status === 200) {
           setPageNumber(1);
           getSortCampaigns(pageSize, pageNumber, campaignSort);
-          handleClickVariant('success', 'Campaign successfully closed.');
+          handleClickVariant('success', 'Campaign successfully suspend.');
         }
       })
       .catch(error => {
@@ -197,7 +197,7 @@ const MyCampaigns = ({ ...props }) => {
         if (status === 200) {
           setPageNumber(1);
           getSortCampaigns(pageSize, pageNumber, campaignSort);
-          handleClickVariant('success', 'Campaign successfully closed.');
+          handleClickVariant('success', 'Campaign successfully live.');
         }
       })
       .catch(error => {
@@ -541,7 +541,7 @@ const MyCampaigns = ({ ...props }) => {
                               >
                                 <SuspendIcon size="18px" />
                                 <span style={{ marginLeft: '10px' }}>
-                                  Active Campaign
+                                  Live Campaign
                                 </span>
                               </MenuItem> :
                               <MenuItem
