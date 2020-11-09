@@ -9,7 +9,7 @@ import { Button, Spinner, FormGroup, Form } from 'react-bootstrap';
 
 import CustomTextInputFormik from '../inputs/CustomTextInputFormik';
 import { Heading } from '../../containers/MyProfile/myProfile';
-import '../../containers/MyProfile/myprofile.scss';
+import '../../containers/MyProfile/myProfile.scss';
 import { shallowEqual, useSelector } from 'react-redux';
 import LoadingComponent from '../LoadingComponent';
 import MaskedInput, { conformToMask } from 'react-text-mask';

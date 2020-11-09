@@ -19,7 +19,7 @@ import Footer from '../Footer/Loadable';
 import './campaignTabs.scss';
 
 import BackIcon from '../svg-icons/backIcon';
-import CampaignIcon from '../svg-icons/CampaignIcon';
+import CampaignIcon from '../svg-icons/campaignIcon';
 import UpdatesIcon from '../svg-icons/updatesIcon';
 import DonationsIcon from '../svg-icons/donationsIcon';
 import { getCampaignBasicDetail } from '../../utils/crud/campain.crud';
