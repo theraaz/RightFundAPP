@@ -139,7 +139,7 @@ function CampaignTabs({ children, ...props }) {
               >
                 <Card.Title className="campaignUpdates">
                   <Row>
-                    <Col xs={12} sm={12} md={7} lg={7}>
+                    <Col xs={12} sm={12} md={12} lg={7}>
                       <div>
                         <span style={{ marginTop: '8px' }}>
                           {campaignData ? campaignData.campaignTitle : ''}
@@ -236,7 +236,7 @@ function CampaignTabs({ children, ...props }) {
                       </div>
                     </Col>
 
-                    <Col xs={12} sm={12} md={5} lg={5}>
+                    <Col xs={12} sm={12} md={12} lg={5}>
                       <div className="campaignUpdatesHeader">
                         <Button
                           className="campaignViewBtn"

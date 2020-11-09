@@ -4,9 +4,9 @@
   text-align: end;
   margin: auto 0;
 
-  @include respond-to(handhelds) {
+  @include respond-to(smallDesktop) {
     // css code here
-    margin-top: 15px;
+    // margin-top: 15px;
     // text-align: center;
   }
 
@@ -14,6 +14,11 @@
     background: white;
     color: black;
     border-color: #f2f2f2;
+
+    @include respond-to(smallDesktop) {
+      // css code here
+      margin-top: 15px;
+    }
     &:focus {
       background: white;
       color: black;
@@ -38,10 +43,12 @@
     background: #f15a24;
     border-color: #f15a24;
 
-    @include respond-to(handhelds-landscape) {
+    @include respond-to(smallDesktop) {
       // css code here
       margin-top: 15px;
     }
+    
+
     &:focus {
       background-color: #f15a24 !important;
       border-color: #f15a24;
