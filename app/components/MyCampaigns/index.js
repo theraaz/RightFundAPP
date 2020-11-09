@@ -190,6 +190,21 @@ const MyCampaigns = ({ ...props }) => {
       });
   }
 
+
+  function activeCampaignByAdmin() {
+    suspendCampaign(currentCampaignData, 7)
+      .then(({ status }) => {
+        if (status === 200) {
+          setPageNumber(1);
+          getSortCampaigns(pageSize, pageNumber, campaignSort);
+          handleClickVariant('success', 'Campaign successfully closed.');
+        }
+      })
+      .catch(error => {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      });
+  }
   function deleteCampaign() {
     setShow(false);
 
@@ -334,9 +349,10 @@ const MyCampaigns = ({ ...props }) => {
                 </Dropdown.Menu>
               </Dropdown>
 
-              <Link to="/createCampaign" className="dropDownMain">
-                <Button className="campaignBtn">New Campaign</Button>{' '}
-              </Link>
+              {
+                user.role !== 5 && <Link to="/createCampaign" className="dropDownMain">
+                  <Button className="campaignBtn">New Campaign</Button>{' '}
+                </Link>}
             </div>
           </Card.Title>
         </Card.Header>
@@ -499,7 +515,35 @@ const MyCampaigns = ({ ...props }) => {
                                 </MenuItem>
                               </>
                             )}
-                            {user.role === 5 && (
+                            {/* {user.role === 5 && (currentCampaignStatus !== 9 ?
+                              <MenuItem
+                                className="menuList"
+                                onClick={() => {
+                                  setAnchorEl(null);
+                                  suspendCampaignByAdmin();
+                                }}
+                              >
+                                <SuspendIcon size="18px" />
+                                <span style={{ marginLeft: '10px' }}>
+                                  {currentCampaignStatus}
+                                </span>
+                              </MenuItem> : '')
+
+
+                            } */}
+                            {user.role === 5 && (currentCampaignStatus === 9 ?
+                              <MenuItem
+                                className="menuList"
+                                onClick={() => {
+                                  setAnchorEl(null);
+                                  activeCampaignByAdmin();
+                                }}
+                              >
+                                <SuspendIcon size="18px" />
+                                <span style={{ marginLeft: '10px' }}>
+                                  Active Campaign
+                                </span>
+                              </MenuItem> :
                               <MenuItem
                                 className="menuList"
                                 onClick={() => {
@@ -510,9 +554,9 @@ const MyCampaigns = ({ ...props }) => {
                                 <SuspendIcon size="18px" />
                                 <span style={{ marginLeft: '10px' }}>
                                   Suspend Campaign
-                            </span>
-                              </MenuItem>
-                            )}
+                                </span>
+                              </MenuItem>)
+                            }
                           </Menu>
                           <div className="give-card__media">
                             {data.titleImage ? (
@@ -664,7 +708,7 @@ const MyCampaigns = ({ ...props }) => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </div>
+    </div >
   );
 };
 

@@ -22,7 +22,7 @@ import '../../containers/HomePage/dashboard.scss';
 import Header from '../Header/Loadable';
 import Footer from '../Footer/Loadable';
 
-import { getAccountDetails, updateProfile } from '../../utils/crud/auth.crud';
+import { getAccountDetails, updateProfile, getAllAccountDetails } from '../../utils/crud/auth.crud';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
 
 import { isCharityProfileInComplete } from '../../utils/helper';
@@ -33,6 +33,8 @@ import ProfileLoadingOverlay from '../ProfileLoadingOverlay';
 const profileImg = require('../../images/placeholder.png');
 
 function Layout({ children, updateUser, ...props }) {
+
+
   const { user, myCharityProfile } = useSelector(
     ({ auth, charity }) => ({
       user: auth.user,
@@ -40,6 +42,7 @@ function Layout({ children, updateUser, ...props }) {
     }),
     shallowEqual,
   );
+
   const [totalCampaign, setTotalCampaign] = React.useState(0);
   const [activeCampaign, setActiveCampaign] = React.useState(0);
   const [giftAid, setGiftAid] = React.useState(0);
@@ -90,21 +93,43 @@ function Layout({ children, updateUser, ...props }) {
     }
   };
 
+  function getAccountBasicDetail() {
+    if (user.role === 5) {
+      getAllAccountDetails()
+        .then(({ data, status }) => {
+          if (status === 200) {
+            setTotalCampaign(data.response.data.totalCampaigns);
+            setActiveCampaign(data.response.data.totalLive);
+            setGiftAid(data.response.data.giftAid);
+            setTotalRaised(data.response.data.totalRaised);
+          } else {
+            // setMessage('Something went missing, Please try again');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+
+    } else {
+      getAccountDetails()
+        .then(({ data, status }) => {
+          if (status === 200) {
+            setTotalCampaign(data.response.data.totalCampaigns);
+            setActiveCampaign(data.response.data.totalLive);
+            setGiftAid(data.response.data.giftAid);
+            setTotalRaised(data.response.data.totalRaised);
+          } else {
+            // setMessage('Something went missing, Please try again');
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }
+
   useEffect(() => {
-    getAccountDetails()
-      .then(({ data, status }) => {
-        if (status === 200) {
-          setTotalCampaign(data.response.data.totalCampaigns);
-          setActiveCampaign(data.response.data.totalLive);
-          setGiftAid(data.response.data.giftAid);
-          setTotalRaised(data.response.data.totalRaised);
-        } else {
-          // setMessage('Something went missing, Please try again');
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    getAccountBasicDetail();
   }, []);
 
   const userAddress = user ? JSON.parse(user?.address) : '';
@@ -227,7 +252,7 @@ function Layout({ children, updateUser, ...props }) {
         <Row style={{ marginTop: 15, marginBottom: 15 }}>
           {isCharityProfileInComplete(myCharityProfile) && (
             <Col xs={12}>
-              <Alert show variant="warning" onClose={() => {}}>
+              <Alert show variant="warning" onClose={() => { }}>
                 <div className="d-flex justify-content-between align-items-center">
                   <span>Please Complete Your Charity Profile!</span>
                   <Button

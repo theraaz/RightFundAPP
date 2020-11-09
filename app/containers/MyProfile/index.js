@@ -70,10 +70,10 @@ export function MyProfile({ updateUser }) {
     };
     const changePasswordData = changePassword
       ? {
-          oldPassword: values.oldPassword,
-          newPassword: values.newPassword,
-          confirmPassword: values.confirmPassword,
-        }
+        oldPassword: values.oldPassword,
+        newPassword: values.newPassword,
+        confirmPassword: values.confirmPassword,
+      }
       : {};
     updateProfile({
       ...data,
@@ -91,7 +91,10 @@ export function MyProfile({ updateUser }) {
       })
       .catch(error => {
         // eslint-disable-next-line no-console
-        console.log(error);
+        setLoading(false);
+        handleClickVariant('error', error.response.data.response.message);
+        console.log('errr', error.response.data.response.message);
+
       });
   }
 
@@ -117,7 +120,7 @@ export function MyProfile({ updateUser }) {
       } else if (values.confirmPassword.length < 3) {
         errors.confirmPassword = 'Enter valid password';
       } else if (values.newPassword !== values.confirmPassword) {
-        errors.confirmPassword = 'Enter valid password';
+        errors.confirmPassword = 'Password not matched';
       } else if (!values.oldPassword) {
         errors.oldPassword = 'Required';
       }
@@ -241,8 +244,8 @@ export function MyProfile({ updateUser }) {
                   {changePassword ? (
                     <Heading>Change Password</Heading>
                   ) : (
-                    <Heading>Security</Heading>
-                  )}
+                      <Heading>Security</Heading>
+                    )}
                   <Chip onClick={() => setChangePassword(!changePassword)}>
                     <svg
                       id="Capa_1"
@@ -274,8 +277,8 @@ export function MyProfile({ updateUser }) {
                       </Col>
                     </Row>
                   ) : (
-                    ''
-                  )}
+                      ''
+                    )}
                 </div>
                 {changePassword ? (
                   <div>
@@ -316,8 +319,8 @@ export function MyProfile({ updateUser }) {
                     </Row>
                   </div>
                 ) : (
-                  ''
-                )}
+                    ''
+                  )}
                 <div style={{ textAlign: 'end' }}>
                   <Button type="submit" className="updateProfileBtn">
                     {!loading && <div>Update Profile</div>}

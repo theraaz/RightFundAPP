@@ -5,6 +5,7 @@ export const ACCOUNT_URL = `${process.env.baseURL}/account`;
 export const SIGNUP_URL = `${process.env.baseURL}/signup`;
 export const Resend_Link = `${process.env.baseURL}/signupResendVerifyLink`;
 export const ACCOUNT_DETAILS_URL = `${process.env.baseURL}/accountDetails`;
+export const ADMIN_ACCOUNT_DETAILS_URL = `${process.env.baseURL}/admin/allCampaignDetails`;
 export const CHARITY_ACCOUNT_DETAILS_URL = `${
   process.env.baseURL
 }/charityAccountDetails`;
@@ -25,6 +26,11 @@ export function resendVerifyLink(data) {
 export function getAccountDetails() {
   return axios.get(ACCOUNT_DETAILS_URL);
 }
+
+export function getAllAccountDetails() {
+  return axios.get(ADMIN_ACCOUNT_DETAILS_URL);
+}
+
 export function getCharityAccountDetails(charityId) {
   return axios.get(`${CHARITY_ACCOUNT_DETAILS_URL}/${charityId}`);
 }
