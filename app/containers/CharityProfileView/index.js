@@ -6,7 +6,7 @@
 
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import CharityLayout from '../../components/CharityLayout';
+import Layout from '../../components/Layout';
 import { adminGetCharityById } from '../../utils/crud/admin.crud';
 import { withRouter } from 'react-router-dom';
 import { charityActions } from '../../utils/action-creators/charity.action.creator';
@@ -40,7 +40,7 @@ export function CharityProfileView({ match, addAdminCharity }) {
     return details;
   };
   return (
-    <CharityLayout>
+    <Layout>
       <Helmet>
         <title>Charity Profile</title>
         <meta name="description" content="Description of CharityProfileView" />
@@ -215,7 +215,7 @@ export function CharityProfileView({ match, addAdminCharity }) {
           </Row>
         </Card.Body>
       </Card>
-    </CharityLayout>
+    </Layout>
   );
 }
 
