@@ -165,15 +165,15 @@ const MyCampaigns = ({ ...props }) => {
       });
   }
 
-  function totalRaised(data) {
-    // eslint-disable-next-line func-names
-    const totalAmount = data.reduce(function (acc, val) {
-      return acc + val.amount;
-    }, 0);
+  // function totalRaised(data) {
+  //   // eslint-disable-next-line func-names
+  //   const totalAmount = data.reduce(function (acc, val) {
+  //     return acc + val.amount;
+  //   }, 0);
 
-    return `${data.length > 0 ? data[0].amountSymbolId.symbol : ''
-      } ${totalAmount / 100}`;
-  }
+  //   return `${data.length > 0 ? data[0].amountSymbolId.symbol : ''
+  //     } ${totalAmount / 100}`;
+  // }
 
   function suspendCampaignByAdmin() {
     suspendCampaign(currentCampaignData, 9)
@@ -253,10 +253,10 @@ const MyCampaigns = ({ ...props }) => {
 
   function progressBarVal(val) {
     // eslint-disable-next-line func-names
-    const raised = val.donations.reduce(function (acc, val) {
-      return acc + val.amount;
-    }, 0);
-    const pb = Math.floor((raised / val.amount) * 100);
+    // const raised = val.totalRaised.reduce(function (acc, val) {
+    //   return acc + val.amount;
+    // }, 0);
+    const pb = Math.floor((val.totalRaised / val.amount) * 100);
     return pb;
   }
 
@@ -584,16 +584,22 @@ const MyCampaigns = ({ ...props }) => {
                           <Card.Body className="d-flex flex-column">
                             <Card.Title className="d-flex align-items-center author_details">
                               <div className="author-photo">
-                                <img
+                                {data.creatorImage ? <img
                                   alt=""
-                                  src="https://0.gravatar.com/avatar/6a7831cd395934213cf4dc10a70a7e80?s=96&amp;d=mm&amp;r=g"
+                                  src={data.creatorImage}
                                   className="avatar avatar-96 photo"
                                   height="96"
                                   width="96"
-                                />
+                                /> : <img
+                                    alt=""
+                                    src="https://0.gravatar.com/avatar/6a7831cd395934213cf4dc10a70a7e80?s=96&amp;d=mm&amp;r=g"
+                                    className="avatar avatar-96 photo"
+                                    height="96"
+                                    width="96"
+                                  />}
                               </div>
                               <span className="author-name">
-                                {data.account.firstName}
+                                {data.creatorFirstName}
                               </span>
                             </Card.Title>
                             <h3
@@ -633,13 +639,13 @@ const MyCampaigns = ({ ...props }) => {
                               <li className="pledged">
                                 <span className="title">Raised</span>
                                 <span className="content">
-                                  {totalRaised(data.donations)}
+                                  {data.totalRaised}
                                 </span>
                               </li>
                               <li className="donators">
                                 <span className="title">Donators</span>
                                 <span className="content">
-                                  {data.donations.length}
+                                  {data.totalDonors}
                                 </span>
                               </li>
                             </ul>
