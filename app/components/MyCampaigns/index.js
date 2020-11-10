@@ -583,7 +583,7 @@ const MyCampaigns = ({ ...props }) => {
                           </div>
                           <Card.Body className="d-flex flex-column">
                             <Card.Title className="d-flex align-items-center author_details">
-                              <div className="author-photo">
+                              <div className="author-photo-myCampaign">
                                 {data.creatorImage ? <img
                                   alt=""
                                   src={data.creatorImage}
