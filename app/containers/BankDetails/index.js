@@ -11,16 +11,21 @@ import { compose } from 'redux';
 import { Helmet } from 'react-helmet';
 
 import Layout from '../../components/Layout/index';
-import CharityBankDetailForm from '../../components/CharityBankDetailForm/index';
+import IndividualBankDetailForm from '../../components/CharityBankDetailForm/individualBankDetailForm';
+import CharityBankDetailForm from '../../components/CharityBankDetailForm/charityBankDetailForm';
 
 export function BankDetails() {
 
-  const { myCharityProfile } = useSelector(
-    ({ charity }) => ({
+  const { user, myCharityProfile } = useSelector(
+    ({ auth, charity }) => ({
+      user: auth.user,
       myCharityProfile: charity.myCharityProfile,
     }),
     shallowEqual,
   );
+
+  console.log(user);
+
   return (
     <div>
       <Helmet>
@@ -28,8 +33,9 @@ export function BankDetails() {
         <meta name="description" content="Description of banks" />
       </Helmet>
       <Layout>
-
-        <CharityBankDetailForm title="Please add bank details" />
+        {user.isCharity ? <CharityBankDetailForm /> :
+          <IndividualBankDetailForm title="Please add bank details" />
+        }
 
         {/* {myCharityProfile && (
                   <Col xs={12} sm={6}>

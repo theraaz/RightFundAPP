@@ -28,7 +28,7 @@ const WithdrawalDetails = () => {
   const [balance, setBalance] = useState(null);
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [withdrawalHistory, setWithdrawalHistory] = useState([]);
-
+  const [selectedBankDetails, setSelectedBankDetails] = useState('Personal Account')
   const [perPage, setPerPage] = useState(5);
   const [pageNo, setPageNo] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -43,7 +43,7 @@ const WithdrawalDetails = () => {
     if (myCharityProfile?.id) {
       getBankDetailsByCharityId(myCharityProfile?.id)
         .then(({ data }) => {
-          setCharityAccountDetails(data.response?.data?.res[0] || null);
+          setCharityAccountDetails(data.response?.data?.res || null);
         })
         .catch(err => {
           console.log(err);
@@ -64,10 +64,14 @@ const WithdrawalDetails = () => {
     getHistory({ pageNo, perPage });
   }, [perPage, pageNo]);
   const selectAccount = type => event => {
+    console.log('teee', type)
     event.stopPropagation();
     if (type === 'Charity Account') {
+      setSelectedBankDetails('Charity Account');
+      console.log('charityAccountDetails', charityAccountDetails)
       setSelectedAccount(charityAccountDetails);
     } else {
+      setSelectedBankDetails('Personal Account');
       setSelectedAccount(personalAccountDetails);
     }
   };
@@ -110,19 +114,19 @@ const WithdrawalDetails = () => {
           <Heading>Bank Details</Heading>
           <BankDetailsCard
             accountType="Personal Account"
-            accountNumber={personalAccountDetails?.accountNo}
-            accountHolderName={personalAccountDetails?.accountName}
-            sortCode={personalAccountDetails?.sortCode}
-            active={!Boolean(selectedAccount?.charityId)}
+            accountNumber={personalAccountDetails?.bankDetails?.bankName}
+            accountHolderName={personalAccountDetails?.accountName || 'Individual'}
+            sortCode={personalAccountDetails?.bankDetails?.accountLast4Digits}
+            active={!Boolean(selectedBankDetails == 'Charity Account')}
             selectAccount={selectAccount}
           />
           {myCharityProfile && (
             <BankDetailsCard
               accountType="Charity Account"
-              accountNumber={charityAccountDetails?.accountNo}
-              accountHolderName={charityAccountDetails?.accountName}
-              sortCode={charityAccountDetails?.sortCode}
-              active={Boolean(selectedAccount?.charityId)}
+              accountNumber={charityAccountDetails?.bankDetails?.bankName}
+              accountHolderName={charityAccountDetails?.accountName || 'Charity'}
+              sortCode={charityAccountDetails?.bankDetails?.accountLast4Digits}
+              active={Boolean(selectedBankDetails == 'Charity Account')}
               selectAccount={selectAccount}
             />
           )}
@@ -135,7 +139,7 @@ const WithdrawalDetails = () => {
               </div>
               <div className="account-details__amount my-2">
                 {formatter.format(
-                  (selectedAccount?.charityId
+                  (selectedBankDetails == 'Charity Account'
                     ? balance?.charityInfo?.AvailableBalance / 100
                     : balance?.accountInfo?.AvailableBalance / 100) || 0,
                 )}
@@ -147,7 +151,7 @@ const WithdrawalDetails = () => {
               </div>
               <div className="account-details__amount my-2">
                 {formatter.format(
-                  (selectedAccount?.charityId
+                  (selectedBankDetails == 'Charity Account'
                     ? balance?.charityTotalWithdrawal / 100
                     : balance?.accountTotalWithdrawal / 100) || 0,
                 )}

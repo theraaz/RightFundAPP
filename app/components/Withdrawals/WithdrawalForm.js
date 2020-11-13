@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Formik } from 'formik';
+import { ErrorMessage, Formik } from 'formik';
 import CustomTextInputFormik from '../inputs/CustomTextInputFormik';
 import { createWithdrawal } from '../../utils/crud/withdrawal.crud';
 import { useSnackbar } from 'notistack';
-import { Spinner } from 'react-bootstrap';
+import { Spinner, Form } from 'react-bootstrap';
+import FormErrorMessage from '../FormErrorMessage';
 
 const WithdrawalForm = ({ selectedAccount, getBalance }) => {
   const [loading, setLoading] = useState(false);
@@ -26,6 +27,9 @@ const WithdrawalForm = ({ selectedAccount, getBalance }) => {
     if (!values.amount) {
       errors.amount = 'Required!';
     }
+    if (values.amount < 1) {
+      errors.amount = 'Amount cannot be less than 1!';
+    }
     if (values.password.trim() === '') {
       errors.password = 'Required!';
     }
@@ -37,7 +41,7 @@ const WithdrawalForm = ({ selectedAccount, getBalance }) => {
       password: values.password,
       accountNo: selectedAccount?.accountNo,
       code: selectedAccount?.sortCode,
-      withdrawalAmount: values.amount,
+      withdrawalAmount: JSON.parse(values.amount),
       charityId: selectedAccount?.charityId?.id,
     })
       .then(({ data }) => {
@@ -65,14 +69,28 @@ const WithdrawalForm = ({ selectedAccount, getBalance }) => {
         validate={validate}
         onSubmit={handleSubmit}
       >
-        {({ handleSubmit }) => (
+        {({ handleSubmit, touched, errors, values, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <CustomTextInputFormik
+              <Form.Control
+                value={values.amount}
+                onChange={(event) => {
+                  const t = event.target.value;
+                  event.target.value = (t.indexOf('.') >= 0) ? (t.substr(0, t.indexOf('.')) + t.substr(t.indexOf('.'), 3)) : t;
+                  setFieldValue('amount', event.target.value);
+                }}
+                isValid={touched["amount"] && !errors["amount"]}
+                isInvalid={touched["amount"] && errors["amount"]}
+                placeholder="Enter Amount to withdraw"
+                type="number"
+
+              />
+              <ErrorMessage name='amount' render={FormErrorMessage} />
+              {/* <CustomTextInputFormik
                 placeholder="Enter Amount to withdraw"
                 name="amount"
                 type="number"
-              />
+              /> */}
             </div>
             <div className="form-group">
               <CustomTextInputFormik
@@ -83,7 +101,7 @@ const WithdrawalForm = ({ selectedAccount, getBalance }) => {
             </div>
             <button
               type="submit"
-              disabled={!selectedAccount || loading}
+              disabled={!selectedAccount?.payoutsEnabled || loading}
               className="btn btn-primary w-100"
             >
               Withdraw Amount

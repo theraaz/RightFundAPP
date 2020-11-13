@@ -83,7 +83,7 @@ function CampaignDetail({ ...props }) {
     if (user.role === 5) {
       getAdminCampaignById(props.match.params.id)
         .then(({ data }) => {
-          console.log('3242',data)
+          console.log('3242', data)
           setCampaignDetail(data.response.data.res);
           if (data.response.data.res.video) {
             setVideo(data.response.data.res.video);
@@ -304,7 +304,7 @@ function CampaignDetail({ ...props }) {
                               {campaignData
                                 ? campaignData.campaignAmountSymbol.symbol
                                 : ''}
-                              {campaignData ? campaignData.campaignTarget : ''}
+                              {campaignData ? campaignData.campaignTarget / 100 : ''}
                             </span>
                           </li>
                           <li className="pledged">
@@ -313,7 +313,7 @@ function CampaignDetail({ ...props }) {
                               {campaignData
                                 ? campaignData.campaignAmountSymbol.symbol
                                 : ''}
-                              {campaignData ? campaignData.totalDonations / 100 : ''}
+                              {campaignData ? campaignData.totalDonations/100 : ''}
                             </span>
                           </li>
                           <li className="donators">

@@ -14,6 +14,12 @@ export function addBankDetails() {
     return axios.post(BANKDETAIL_URL);
 }
 
+export function addCharityBankDetails(id) {
+    return axios.post(BANKDETAIL_URL, {
+        "charityId": id
+    });
+}
+
 export function updateBankDetails(id) {
     return axios.put(`${BANKDETAIL_URL}/${id}`);
 }

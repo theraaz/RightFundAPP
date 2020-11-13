@@ -639,7 +639,7 @@ const MyCampaigns = ({ ...props }) => {
                               <li className="pledged">
                                 <span className="title">Raised</span>
                                 <span className="content">
-                                  {data.totalRaised}
+                                  {data.totalRaised/100}
                                 </span>
                               </li>
                               <li className="donators">

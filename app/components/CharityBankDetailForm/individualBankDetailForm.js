@@ -24,7 +24,7 @@ import FormErrorMessage from '../FormErrorMessage';
 import { Alert, AlertTitle } from '@material-ui/lab';
 import EmptyComponent from '../EmptyComponent';
 
-const CharityBankDetailForm = ({
+const IndividualBankDetailForm = ({
   accountNo = 'Bank Name',
 
 
@@ -122,20 +122,7 @@ const CharityBankDetailForm = ({
       });
   }
 
-  function bankDetailsByCharity(id) {
-    setLoading(true);
-    setBanksAccounts(null);
-    getBankDetailsByCharityId(id)
-      .then(({ data }) => {
-        setLoading(false);
-        setCharityAccountsID(id);
-        setBanksAccounts(data.response.data.res[0]);
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log(error);
-      });
-  }
+  
   const validate = values => {
     const errors = {};
     if (values.userName?.trim() === '') {
@@ -276,4 +263,4 @@ const CharityBankDetailForm = ({
   );
 };
 
-export default memo(CharityBankDetailForm);
+export default memo(IndividualBankDetailForm);

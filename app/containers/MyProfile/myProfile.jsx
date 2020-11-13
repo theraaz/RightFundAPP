@@ -25,16 +25,14 @@ export const Heading = styled.h4`
   // border-bottom: solid;
   width: fit-content;
   margin-top: 5px;
-  position: relative;
-  padding-bottom: 12px;
-  &:before {
-    content: '';
-    position: absolute;
-    height: 2px;
-    background-color: #f36b3b;
-    bottom: 0;
-    width: 75%;
-  }
+  // &:before {
+  //   content: '';
+  //   position: absolute;
+  //   height: 2px;
+  //   background-color: #f36b3b;
+  //   bottom: 0;
+  //   width: 75%;
+  // }
 `;
 
 export const Errors = styled.div`
@@ -53,6 +51,7 @@ export const ToggleHeader = styled.div`
   color: #f15a24;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125);
   margin-bottom: 15px;
+  padding: 8px 38px 9px 21px;
 `;
 
 export const collaspeToggleIcon = styled.span`
