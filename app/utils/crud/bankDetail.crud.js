@@ -10,21 +10,12 @@ export function getBankDetailsByCharityId(id) {
     return axios.get(`${BANKDETAIL_URL}/charity/${id}`);
 }
 
-export function addBankDetails(accountName, sortCode, accountNo, charityId) {
-    return axios.post(BANKDETAIL_URL, {
-        accountName: accountName,
-        sortCode: sortCode,
-        accountNo: accountNo,
-        charityId: charityId
-    });
+export function addBankDetails() {
+    return axios.post(BANKDETAIL_URL);
 }
 
-export function updateBankDetails(id, accountName, sortCode, accountNo) {
-    return axios.put(`${BANKDETAIL_URL}/${id}`, {
-        accountName: accountName,
-        sortCode: sortCode,
-        accountNo: accountNo
-    });
+export function updateBankDetails(id) {
+    return axios.put(`${BANKDETAIL_URL}/${id}`);
 }
 
 

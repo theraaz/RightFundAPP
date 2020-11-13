@@ -104,8 +104,10 @@ export function Singup() {
           handleClickVariant('error', data.response.message);
         }
       })
-      .catch(() => {
-        handleClickVariant('error', 'Something Went Wrong! Please Try Again!');
+      .catch(error => {
+        console.log(error.response.data?.response?.message)
+        setLoading(false);
+        handleClickVariant('error', error.response.data?.response?.message);
       });
   };
 

@@ -23,6 +23,31 @@
   // height: 20px;
 }
 
+.bankDetailsAdd {
+  text-align: center;
+  min-height: 243px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+}
+.updateBtnBankDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bankDetailsHeader {
+  background: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.updateLink{
+  cursor: pointer;
+}
+
 .address {
   position: relative;
   margin-bottom: 15px;
