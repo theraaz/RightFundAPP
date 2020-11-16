@@ -170,113 +170,14 @@ const CharityBankDetailForm = ({
             </Card.Header>
 
             {networkError ? (<EmptyComponent height={363} message="Service not availble! Please try again." />) :
-                <Accordion defaultActiveKey="0" onSelect={onSelectAccordion}>
-                    <Accordion.Toggle as={ToggleHeader} onClick={bankDetails} eventKey="0">
-                        <Heading>Individual</Heading>
-                        {selectedAccordion === '0' ? <ExpandLess /> : <ExpandMore />}
-                    </Accordion.Toggle>
-                    <Accordion.Collapse eventKey="0">
-                        {loading ? <LoadingComponent /> : (
-                            banksAccounts?.id ? (
-                                <div>
-
-                                    { showAlert ?
-
-                                        <Alert severity="error" style={{ marginTop: '5px' }}>
-                                            <AlertTitle>Not Verified</AlertTitle>
-                                                 Your account is not Verified  —
-                                                 <strong onClick={updateBank} className='updateLink'> Click here to verify</strong>
-                                        </Alert>
-                                        : <Alert severity="success" style={{ marginTop: '5px' }}>
-                                            <AlertTitle>Verified</AlertTitle>
-                                                 Your account is Verified
-                                                 </Alert>
-                                    }
-                                    <Card.Body
-                                        style={{
-                                            padding: '1.25rem 20px 1.25rem 20px',
-                                        }}
-                                    >
-                                        <Row className="justify-content-center">
-                                            <Col xs={12} sm={6}>
-                                                <div className={banksAccounts?.id ? '' : 'bankDetailsAdd'}>
-
-                                                    <div className={banksAccounts?.id ? 'updateBtnBankDetails' : ''}>
-                                                    </div>
-                                                    <Formik
-                                                        initialValues={{
-                                                            userName: banksAccounts?.bankDetails?.bankName || '',
-                                                            sortCode: banksAccounts?.bankDetails?.accountLast4Digits || '',
-                                                            // accountNumber: banksAccounts?.accountNo || '',
-                                                        }}
-                                                        enableReinitialize
-                                                    >
-                                                        {({ values, errors, touched, setFieldValue }) => (
-                                                            <form>
-
-                                                                <div>
-                                                                    <div>
-                                                                        <label>{accountNo}</label>
-
-                                                                        <FormGroup style={{ flexGrow: '1' }}>
-                                                                            <CustomTextInputFormik
-                                                                                name="userName"
-                                                                                disabled={true}
-                                                                                placeholder={accountNo}
-                                                                            />
-                                                                        </FormGroup>
-                                                                    </div>
-
-                                                                    <div>
-                                                                        <label htmlFor="basic-url">Account last 4 digits</label>
-
-                                                                        <FormGroup style={{ flexGrow: '1' }}>
-                                                                            <MaskedInput
-                                                                                mask={mask}
-                                                                                isValid={touched['sortCode'] && !errors['sortCode']}
-                                                                                isInvalid={touched['sortCode'] && errors['sortCode']}
-                                                                                className="form-control"
-                                                                                disabled={true}
-                                                                                placeholder="xx-xx-xx"
-                                                                                value={
-                                                                                    conformToMask(values.sortCode, mask)?.conformedValue
-                                                                                }
-                                                                                onChange={e => {
-                                                                                    setFieldValue('sortCode', e.target?.value);
-                                                                                }}
-                                                                                render={(ref, props) => (
-                                                                                    <Form.Control ref={ref} {...props} />
-                                                                                )}
-                                                                            />
-                                                                            <ErrorMessage name={'sortCode'} render={FormErrorMessage} />
-                                                                        </FormGroup>
-                                                                    </div>
-                                                                </div>
-
-                                                            </form>
-                                                        )}
-                                                    </Formik>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </Card.Body>
-                                </div>
-                            ) :
-                                <EmptyComponent height={150} message="No Bank Account Found." />
-                        )}
-                    </Accordion.Collapse>
-
-                    {myCharityProfile ? (
-                        <div>
-                            <Accordion.Toggle
-                                as={ToggleHeader}
-                                onClick={() => bankDetailsByCharity(myCharityProfile.id)}
-                                eventKey="1"
-                            >
-                                <Heading>{myCharityProfile.name}</Heading>
-                                {selectedAccordion === '1' ? <ExpandLess /> : <ExpandMore />}
+                <Row className="justify-content-center">
+                    <Col xs={12} sm={8}>
+                        <Accordion defaultActiveKey="0" onSelect={onSelectAccordion}>
+                            <Accordion.Toggle as={ToggleHeader} onClick={bankDetails} eventKey="0">
+                                <Heading>Individual</Heading>
+                                {selectedAccordion === '0' ? <ExpandLess /> : <ExpandMore />}
                             </Accordion.Toggle>
-                            <Accordion.Collapse eventKey="1">
+                            <Accordion.Collapse eventKey="0">
                                 {loading ? <LoadingComponent /> : (
                                     banksAccounts?.id ? (
                                         <div>
@@ -363,14 +264,118 @@ const CharityBankDetailForm = ({
                                             </Card.Body>
                                         </div>
                                     ) :
-                                        <EmptyComponent height={150} message="No Charity Bank Account Found." />
+                                        <EmptyComponent height={150} message="No Bank Account Found." />
                                 )}
                             </Accordion.Collapse>
-                        </div>
-                    ) : (
-                            ''
-                        )}
-                </Accordion>
+
+                            {myCharityProfile ? (
+                                <div>
+                                    <Accordion.Toggle
+                                        as={ToggleHeader}
+                                        onClick={() => bankDetailsByCharity(myCharityProfile.id)}
+                                        eventKey="1"
+                                    >
+                                        <Heading>{myCharityProfile.name}</Heading>
+                                        {selectedAccordion === '1' ? <ExpandLess /> : <ExpandMore />}
+                                    </Accordion.Toggle>
+                                    <Accordion.Collapse eventKey="1">
+                                        {loading ? <LoadingComponent /> : (
+                                            banksAccounts?.id ? (
+                                                <div>
+
+                                                    { showAlert ?
+
+                                                        <Alert severity="error" style={{ marginTop: '5px' }}>
+                                                            <AlertTitle>Not Verified</AlertTitle>
+                                                 Your account is not Verified  —
+                                                 <strong onClick={updateBank} className='updateLink'> Click here to verify</strong>
+                                                        </Alert>
+                                                        : <Alert severity="success" style={{ marginTop: '5px' }}>
+                                                            <AlertTitle>Verified</AlertTitle>
+                                                 Your account is Verified
+                                                 </Alert>
+                                                    }
+                                                    <Card.Body
+                                                        style={{
+                                                            padding: '1.25rem 20px 1.25rem 20px',
+                                                        }}
+                                                    >
+                                                        <Row className="justify-content-center">
+                                                            <Col xs={12} sm={10}>
+                                                                <div className={banksAccounts?.id ? '' : 'bankDetailsAdd'}>
+
+                                                                    <div className={banksAccounts?.id ? 'updateBtnBankDetails' : ''}>
+                                                                    </div>
+                                                                    <Formik
+                                                                        initialValues={{
+                                                                            userName: banksAccounts?.bankDetails?.bankName || '',
+                                                                            sortCode: banksAccounts?.bankDetails?.accountLast4Digits || '',
+                                                                            // accountNumber: banksAccounts?.accountNo || '',
+                                                                        }}
+                                                                        enableReinitialize
+                                                                    >
+                                                                        {({ values, errors, touched, setFieldValue }) => (
+                                                                            <form>
+
+                                                                                <div>
+                                                                                    <div>
+                                                                                        <label>{accountNo}</label>
+
+                                                                                        <FormGroup style={{ flexGrow: '1' }}>
+                                                                                            <CustomTextInputFormik
+                                                                                                name="userName"
+                                                                                                disabled={true}
+                                                                                                placeholder={accountNo}
+                                                                                            />
+                                                                                        </FormGroup>
+                                                                                    </div>
+
+                                                                                    <div>
+                                                                                        <label htmlFor="basic-url">Account last 4 digits</label>
+
+                                                                                        <FormGroup style={{ flexGrow: '1' }}>
+                                                                                            <MaskedInput
+                                                                                                mask={mask}
+                                                                                                isValid={touched['sortCode'] && !errors['sortCode']}
+                                                                                                isInvalid={touched['sortCode'] && errors['sortCode']}
+                                                                                                className="form-control"
+                                                                                                disabled={true}
+                                                                                                placeholder="xx-xx-xx"
+                                                                                                value={
+                                                                                                    conformToMask(values.sortCode, mask)?.conformedValue
+                                                                                                }
+                                                                                                onChange={e => {
+                                                                                                    setFieldValue('sortCode', e.target?.value);
+                                                                                                }}
+                                                                                                render={(ref, props) => (
+                                                                                                    <Form.Control ref={ref} {...props} />
+                                                                                                )}
+                                                                                            />
+                                                                                            <ErrorMessage name={'sortCode'} render={FormErrorMessage} />
+                                                                                        </FormGroup>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </form>
+                                                                        )}
+                                                                    </Formik>
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+                                                    </Card.Body>
+                                                </div>
+                                            ) :
+                                                <EmptyComponent height={150} message="No Charity Bank Account Found." />
+                                        )}
+                                    </Accordion.Collapse>
+                                </div>
+                            ) : (
+                                    ''
+                                )}
+                        </Accordion>
+
+                    </Col>
+                </Row>
             }
         </Card>
     );
