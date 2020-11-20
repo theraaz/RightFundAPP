@@ -10,8 +10,8 @@ export const CHARITY_ACCOUNT_DETAILS_URL = `${
   process.env.baseURL
 }/charityAccountDetails`;
 
-export function login(email, password) {
-  return axios.post(LOGIN_URL, { email, password });
+export function login(email, password, rememberMe) {
+  return axios.post(LOGIN_URL, { email, password, rememberMe });
 }
 export function updateProfile(data) {
   return axios.put(ACCOUNT_URL, data);

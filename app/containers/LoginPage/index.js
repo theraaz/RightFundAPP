@@ -35,6 +35,7 @@ export function LoginPage(props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [remmberMeFlag, setRemmberMeFlag] = useState(false);
   const [validated, setValidated] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -62,7 +63,7 @@ export function LoginPage(props) {
     if (validateForm()) {
       setLoading(true);
 
-      login(email, password)
+      login(email, password, remmberMeFlag)
         .then(({ data, status }) => {
           setLoading(false);
           if (status === 200) {
@@ -173,7 +174,9 @@ export function LoginPage(props) {
               <Form.Row>
                 <Col controlid="remeberme">
                   <FormControlLabel
-                    control={<CustomCheckbox />}
+                    control={<CustomCheckbox
+                      onChange={e => setRemmberMeFlag(e.target.checked)}
+                    />}
                     label="Remember me"
                   />
                 </Col>

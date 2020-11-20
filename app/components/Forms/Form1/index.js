@@ -191,6 +191,7 @@ const Form1 = ({
         <div className="mainForm">
           <Form.Group controlId="email" bssize="large">
             <Row>
+
               <Col sm={3}>
                 <H5 className="label-field" style={{ marginTop: '13px' }}>
                   Campaign Goal
@@ -220,7 +221,7 @@ const Form1 = ({
                     <Col sm={10} className="p-0">
                       <Form.Control
                         className="inputForm"
-                        placeholder="Enter amount here"
+                        placeholder="Enter amount here*"
                         type="number"
                         isInvalid={errors.amount}
                         value={values.amount}
@@ -231,6 +232,8 @@ const Form1 = ({
                   </div>
                 </Row>
               </Col>
+              {/* <span>*</span> */}
+
             </Row>
 
             {errors.amount && (
@@ -250,7 +253,7 @@ const Form1 = ({
               isInvalid={errors.campaignTitle}
               value={values.campaignTitle}
               name="campaignTitle"
-              placeholder="Campaign Title"
+              placeholder="Campaign Title*"
               className="controlForm"
               onChange={event => setFieldValue('campaignTitle', event.target.value)
               }
@@ -280,7 +283,7 @@ const Form1 = ({
                 headerColor="#f15a24"
                 // isInvalid={errors.date}
                 // inputVariant="outlined"
-                placeholder="Campaign end date"
+                placeholder="Campaign end date*"
                 value={values.date}
                 onChange={handleDateChange}
               />
@@ -296,13 +299,13 @@ const Form1 = ({
               style={{ textAlign: 'initial' }}
               name="categories"
               id="demo-customized-select"
-              placeholder="Categories"
+              placeholder="Categories*"
               value={values.categories || -1}
               onChange={handleChangeCategories}
               input={<BootstrapInput />}
             >
               <MenuItem value={-1} disabled>
-                <span style={{ color: '#9c9c9c' }}>Categories</span>
+                <span style={{ color: '#9c9c9c' }}>Categories*</span>
               </MenuItem>
               {categories.map(data => (
                 <MenuItem

@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { Heading } from '../../containers/MyProfile/myProfile';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import LoadingComponent from '../LoadingComponent';
 
 import {
   getBankDetails,
@@ -14,6 +16,9 @@ import {
   getWithdrawal,
   getWithdrawalHistory,
 } from '../../utils/crud/withdrawal.crud';
+import {
+  updateBankDetails,
+} from '../../utils/crud/bankDetail.crud';
 
 const WithdrawalDetails = () => {
   const { myCharityProfile } = useSelector(
@@ -51,6 +56,7 @@ const WithdrawalDetails = () => {
     }
     getBankDetails()
       .then(({ data }) => {
+        console.log('ttt', data)
         setPersonalAccountDetails(data.response?.data?.res);
         setSelectedAccount(data.response?.data?.res);
       })
@@ -75,6 +81,25 @@ const WithdrawalDetails = () => {
       setSelectedAccount(personalAccountDetails);
     }
   };
+
+
+  function openStripeURL(url) {
+    // window.open(url, '_self');
+  }
+
+  function updateBank() {
+    let id = selectedAccount.id;
+    // setLoading(true)
+    console.log(selectedAccount)
+    updateBankDetails(id)
+      .then(({ data }) => {
+        openStripeURL(data.response.data.accountInfo.url);
+      })
+      .catch(() => {
+        // setLoading(false);
+      });
+  }
+
   const getBalance = refresh => {
     console.log('balance');
     if (refresh) {
@@ -109,61 +134,74 @@ const WithdrawalDetails = () => {
   });
   return (
     <div>
-      <Row>
-        <Col xs={12} sm={6} className="py-2 pr-5">
-          <Heading>Bank Details</Heading>
-          <BankDetailsCard
-            accountType="Personal Account"
-            accountNumber={personalAccountDetails?.bankDetails?.bankName}
-            accountHolderName={personalAccountDetails?.accountName || 'Individual'}
-            sortCode={personalAccountDetails?.bankDetails?.accountLast4Digits}
-            active={!Boolean(selectedBankDetails == 'Charity Account')}
-            selectAccount={selectAccount}
-          />
-          {myCharityProfile && (
+      {personalAccountDetails ? <div>
+        {(selectedAccount?.id && selectedAccount?.payoutsEnabled == false) ? <div>
+          <Alert severity="error" style={{ marginTop: '5px', marginBottom: '10px' }}>
+            <AlertTitle>Not Verified</AlertTitle>
+            Your account is not Verified. Please verify to withdraw  —
+                    <strong onClick={updateBank} className='updateLinkWithdraw'> Click here to verify</strong>
+          </Alert>
+        </div> :
+          ""
+        }
+        <Row>
+          <Col xs={12} sm={6} className="py-2 pr-5">
+            <Heading>Bank Details</Heading>
             <BankDetailsCard
-              accountType="Charity Account"
-              accountNumber={charityAccountDetails?.bankDetails?.bankName}
-              accountHolderName={charityAccountDetails?.accountName || 'Charity'}
-              sortCode={charityAccountDetails?.bankDetails?.accountLast4Digits}
-              active={Boolean(selectedBankDetails == 'Charity Account')}
+              accountType="Personal Account"
+              accountNumber={personalAccountDetails?.bankDetails?.bankName}
+              accountHolderName={personalAccountDetails?.accountName || 'Individual'}
+              sortCode={personalAccountDetails?.bankDetails?.accountLast4Digits}
+              active={!Boolean(selectedBankDetails == 'Charity Account')}
               selectAccount={selectAccount}
             />
-          )}
-        </Col>
-        <Col xs={12} sm={6}>
-          <div className="d-flex justify-content-between account-details__balance ">
-            <div className="text-center">
-              <div className="account-details-card__heading">
-                Total Available Balance
+            {myCharityProfile && (
+              <BankDetailsCard
+                accountType="Charity Account"
+                accountNumber={charityAccountDetails?.bankDetails?.bankName}
+                accountHolderName={charityAccountDetails?.accountName || 'Charity'}
+                sortCode={charityAccountDetails?.bankDetails?.accountLast4Digits}
+                active={Boolean(selectedBankDetails == 'Charity Account')}
+                selectAccount={selectAccount}
+              />
+            )}
+          </Col>
+          <Col xs={12} sm={6}>
+            <div className="d-flex justify-content-between account-details__balance ">
+              <div className="text-center">
+                <div className="account-details-card__heading">
+                  Total Available Balance
               </div>
-              <div className="account-details__amount my-2">
-                {formatter.format(
-                  (selectedBankDetails == 'Charity Account'
-                    ? balance?.charityInfo?.AvailableBalance / 100
-                    : balance?.accountInfo?.AvailableBalance / 100) || 0,
-                )}
+                <div className="account-details__amount my-2">
+                  {formatter.format(
+                    (selectedBankDetails == 'Charity Account'
+                      ? balance?.charityInfo?.AvailableBalance / 100
+                      : balance?.accountInfo?.AvailableBalance / 100) || 0,
+                  )}
+                </div>
+              </div>
+              <div className="text-center">
+                <div className="account-details-card__heading">
+                  Total Withdrawals
+              </div>
+                <div className="account-details__amount my-2">
+                  {formatter.format(
+                    (selectedBankDetails == 'Charity Account'
+                      ? balance?.charityTotalWithdrawal / 100
+                      : balance?.accountTotalWithdrawal / 100) || 0,
+                  )}
+                </div>
               </div>
             </div>
-            <div className="text-center">
-              <div className="account-details-card__heading">
-                Total Withdrawals
-              </div>
-              <div className="account-details__amount my-2">
-                {formatter.format(
-                  (selectedBankDetails == 'Charity Account'
-                    ? balance?.charityTotalWithdrawal / 100
-                    : balance?.accountTotalWithdrawal / 100) || 0,
-                )}
-              </div>
-            </div>
-          </div>
-          <WithdrawalForm
-            selectedAccount={selectedAccount}
-            getBalance={getBalance}
-          />
-        </Col>
-      </Row>
+            <WithdrawalForm
+              selectedAccount={selectedAccount}
+              getBalance={getBalance}
+            />
+          </Col>
+        </Row>
+
+      </div> : <LoadingComponent />}
+
       <hr />
       <WithdrawalHistory
         withdrawalHistory={withdrawalHistory}
