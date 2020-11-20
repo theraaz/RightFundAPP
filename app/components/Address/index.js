@@ -51,7 +51,7 @@ function Address({ setFieldValue, values, errors }) {
   if (typeof window !== 'undefined' && !loaded.current) {
     if (!document.querySelector('#google-maps')) {
       loadScript(
-        'https://maps.googleapis.com/maps/api/js?key=AIzaSyAAKtIYZReaNU9GhuI9aC_SRS2POhskIRg&libraries=places',
+        `https://maps.googleapis.com/maps/api/js?key=${process.env.googleLocationProviderKey}`,
         document.querySelector('head'),
         'google-maps',
       );

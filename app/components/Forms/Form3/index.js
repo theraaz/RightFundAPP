@@ -149,7 +149,7 @@ const Form3 = ({ id, setActiveLink }) => {
           authorization: token,
         },
         body: JSON.stringify({
-          amount: JSON.parse(amount),
+          amount: (JSON.parse(amount))/100,
           amountSymbolId: selectedCurrency,
           description,
           title,
@@ -180,7 +180,7 @@ const Form3 = ({ id, setActiveLink }) => {
           authorization: token,
         },
         body: JSON.stringify({
-          amount: JSON.parse(amount),
+          amount: (JSON.parse(amount))/100,
           amountSymbolId: selectedCurrency,
           description,
           title,

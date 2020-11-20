@@ -334,7 +334,7 @@ const SideBarCreateCampaign = (editCampaignData) => {
                   parentCampaign:
                     editCampaignData?.editCampaignData?.isParent ? ''
                       : editCampaignData?.editCampaignData?.parentCampaignId,
-                  amount: editCampaignData?.editCampaignData?.amount || null,
+                  amount: editCampaignData?.editCampaignData?.amount/100 || null,
                   editorValue: editCampaignData?.editCampaignData?.description
                     ? editCampaignData.editCampaignData.description
                     : '',
