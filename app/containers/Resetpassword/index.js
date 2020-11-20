@@ -28,7 +28,6 @@ import CustomTextInputFormik from '../../components/inputs/CustomTextInputFormik
 
 export function Resetpassword(props) {
   let name = props.location.search.split('=');
-  console.log('token', name[1]);
 
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -42,8 +41,6 @@ export function Resetpassword(props) {
 
 
   const handleClickVariant = (variant, message) => {
-
-    console.log(variant)
     // variant could be success, error, warning, info, or default
     enqueueSnackbar(message, { variant, anchorOrigin: { horizontal: 'center', vertical: 'bottom' } });
 
@@ -75,7 +72,6 @@ export function Resetpassword(props) {
       fetch(`${process.env.baseURL}/resetPassword`, requestOptions).then(response => response.json())
         .then(user => {
           setLoading(true);
-          console.log(user)
           if (user.statusCode == 200) {
             handleClickVariant('success', user.response.message);
           } else {
@@ -108,7 +104,6 @@ export function Resetpassword(props) {
     fetch(`${process.env.baseURL}/resetPassword`, requestOptions).then(response => response.json())
       .then(user => {
         setLoading(true);
-        console.log(user)
         if (user.statusCode == 200) {
           handleClickVariant('success', user.response.message);
         } else {

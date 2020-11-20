@@ -23,10 +23,8 @@ export function AccountVerification() {
     shallowEqual,
   );
 
-  console.log(user);
   function resendEmail() {
     resendVerifyLink({ email: user.email }).then(({ data, status }) => {
-      console.log(data);
     });
   }
 

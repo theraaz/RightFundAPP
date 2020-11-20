@@ -25,6 +25,7 @@ import Pagination from '@material-ui/lab/Pagination';
 import Layout from '../../components/Layout/index';
 import '../../components/CampaignDonations/campaignDontaions.scss';
 import EmptyComponent from '../../components/EmptyComponent';
+import LoadingComponent from '../../components/LoadingComponent';
 
 export function AllDonations() {
   const token = localStorage.getItem('token');
@@ -61,7 +62,6 @@ export function AllDonations() {
   };
 
   function pageChange(event) {
-    console.log(event);
   }
 
   const handleChangePage = useCallback((event, value) => {
@@ -84,7 +84,6 @@ export function AllDonations() {
     )
       .then(response => response.json())
       .then(user => {
-        console.log(user.response.data);
         setLoadingSpinner(false);
         setTotalDonations(user.response.data.total);
         setTotalPages(Math.ceil(user.response.data.total / pageSize));
@@ -103,7 +102,6 @@ export function AllDonations() {
   const PerPage = event => {
     setPageNumber(1);
     setPageSize(event.target.value);
-    console.log(event.target.value);
     // getDonations();
   };
 
@@ -115,22 +113,15 @@ export function AllDonations() {
       </Helmet>
       <Layout>
         <Container style={{ minHeight: '57vh' }}>
-          {loadingSpinner && (
-            <Spinner
-              style={{
-                color: '#f15a24',
-                position: 'absolute',
-                left: '50%',
-                top: '55%',
-              }}
-              animation="border"
-              size="lg"
-            />
-          )}{' '}
-          {!loadingSpinner && campaignsDonation ? (
-
+          {campaignsDonation ? (
             <>
-              <div className="tableMain" style={{ backgroundColor: 'white', boxShadow: '0px 0px 9px #eaeaea' }}>
+              <div
+                className="tableMain"
+                style={{
+                  backgroundColor: 'white',
+                  boxShadow: '0px 0px 9px #eaeaea',
+                }}
+              >
                 <Row className="tableRow">
                   <h5 className="DonationHeading">Donations</h5>
                   {/* <div className="searchBar">
@@ -169,7 +160,13 @@ export function AllDonations() {
                       />
                     </div> */}
                 </Row>
-                {totalDonations === 0 ? <EmptyComponent message={'There is no donations for all campaigns!'} /> :
+                {loadingSpinner ? (
+                  <LoadingComponent />
+                ) : totalDonations === 0 ? (
+                  <EmptyComponent
+                    message={'There is no donations for all campaigns!'}
+                  />
+                ) : (
                   <div style={{ overflow: 'auto' }}>
                     <Table responsive="md" striped size="md" className="table1">
                       <thead className="tableHeader">
@@ -210,42 +207,48 @@ export function AllDonations() {
                               <td>{formatDate(data.donationDate)}</td>
                             </OverlayTrigger>
                             <td className="tableAmount">
-                              {data.donationSymbol} {data.donationAmount/100}
+                              {data.donationSymbol} {data.donationAmount / 100}
                             </td>
                           </tr>
                         ))}
                       </tbody>
                     </Table>
                   </div>
-                }
+                )}
               </div>
-              {totalDonations === 0 ? '' : <div className="paginatorDonationdiv">
-                <div className="paginatorPerSize">
-                  <span>Per Page</span>
-                  <Form.Control
-                    as="select"
-                    className="paginatorPerPage"
-                    onChange={PerPage}
-                  >
-                    <option className="paginatorPerPageOption" value="10">
-                      10
-                    </option>
-                    <option value="15">15</option>
-                    <option value="20">20</option>
-                  </Form.Control>
-                </div>
+              {totalDonations === 0 ? (
+                ''
+              ) : (
+                <div className="paginatorDonationdiv">
+                  <div className="paginatorPerSize">
+                    <span>Per Page</span>
+                    <Form.Control
+                      as="select"
+                      className="paginatorPerPage"
+                      onChange={PerPage}
+                      value={pageSize}
+                    >
+                      <option className="paginatorPerPageOption" value="10">
+                        10
+                      </option>
+                      <option value="15">15</option>
+                      <option value="20">20</option>
+                    </Form.Control>
+                  </div>
 
-                <Pagination
-                  count={totalPages}
-                  classes={{ ul: 'paginationDonationColor' }}
-                  onChange={handleChangePage}
-                  variant="outlined"
-                  shape="rounded"
-                />
-              </div>
-              }
+                  <Pagination
+                    count={totalPages}
+                    classes={{ ul: 'paginationDonationColor' }}
+                    onChange={handleChangePage}
+                    variant="outlined"
+                    shape="rounded"
+                  />
+                </div>
+              )}
             </>
-          ) : ''}
+          ) : (
+            ''
+          )}
         </Container>
       </Layout>
     </div>

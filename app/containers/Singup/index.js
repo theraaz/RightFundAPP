@@ -59,9 +59,7 @@ export function Singup() {
     if (password?.trim() === '') {
       errors.password = 'Required!';
     } else if (
-      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/.test(
-        password,
-      )
+      !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W)(?=.{8,})/.test(password)
     ) {
       errors.password =
         'Password Must Contain Atleast (1 loweCaseCharacter, 1 upperCaseCharacter, 1 numericCharacter, 1 specialCharacter)!';
@@ -105,7 +103,7 @@ export function Singup() {
         }
       })
       .catch(error => {
-        console.log(error.response.data?.response?.message)
+        console.log(error.response.data?.response?.message);
         setLoading(false);
         handleClickVariant('error', error.response.data?.response?.message);
       });

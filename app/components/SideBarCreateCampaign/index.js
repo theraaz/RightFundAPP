@@ -54,7 +54,6 @@ const SideBarCreateCampaign = (editCampaignData) => {
       ) {
         titleImage = await getBase64(values.base64 || false, selectedFiles[0]);
         values.base64 = titleImage
-        console.log('values.base64', values.base64)
       }
 
       const data = {
@@ -89,7 +88,6 @@ const SideBarCreateCampaign = (editCampaignData) => {
         state: values.state,
         country: values.country,
       };
-      console.log('edit', values.parentCampaign);
       const newData = {
         title: values.campaignTitle,
         amount: JSON.parse(values.amount),

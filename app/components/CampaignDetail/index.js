@@ -13,9 +13,7 @@ import React, { memo, useState, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { withRouter } from 'react-router-dom';
-import {
-  Card, ProgressBar, Container, Row, Col, Image,
-} from 'react-bootstrap';
+import { Card, ProgressBar, Container, Row, Col, Image } from 'react-bootstrap';
 import { shallowEqual, useSelector } from 'react-redux';
 
 import EmailIcon from '../svg-icons/emailIcon';
@@ -30,7 +28,7 @@ import { CustomHeading, CustomHeadingNum } from '../Forms/form.styles';
 import {
   getCampaignById,
   getAdminCampaignById,
-  getCampaignBasicDetail
+  getCampaignBasicDetail,
 } from '../../utils/crud/campain.crud';
 
 const profileImg = require('../../images/placeholder.png');
@@ -39,7 +37,6 @@ function CampaignDetail({ ...props }) {
   const [youtubeId, setYoutubeId] = useState('');
   const [campaignDetail, setCampaignDetail] = useState();
   const [packages, setPackages] = useState([]);
-
 
   const { user } = useSelector(
     ({ auth }) => ({
@@ -68,8 +65,8 @@ function CampaignDetail({ ...props }) {
       .then(({ data }) => {
         setPackages(data.response.data.res);
       })
-      .catch(() => {
-        setLoading(false);
+      .catch(error => {
+        console.log(error);
       });
   }
 
@@ -78,39 +75,36 @@ function CampaignDetail({ ...props }) {
     getAllPackages();
   }, []);
 
-
   function getCampaignDetails() {
     if (user.role === 5) {
       getAdminCampaignById(props.match.params.id)
         .then(({ data }) => {
-          console.log('3242', data)
           setCampaignDetail(data.response.data.res);
           if (data.response.data.res.video) {
             setVideo(data.response.data.res.video);
           }
         })
-        .catch(() => {
-          console.log(error)
+        .catch(error => {
+          console.log(error);
         });
     } else {
       getCampaignBasicDetail(props.match.params.id)
         .then(({ data }) => {
           setCampaignData(data.response.data);
         })
-        .catch(() => {
-          console.log(error)
+        .catch(error => {
+          console.log(error);
         });
 
       getCampaignById(props.match.params.id)
         .then(({ data }) => {
-          console.log(data);
           setCampaignDetail(data.response.data.res);
-          if (campaignDetailById.response.data.res.video) {
-            setVideo(campaignDetailById.response.data.res.video);
+          if (data.response.data.res.video) {
+            setVideo(data.response.data.res.video);
           }
         })
-        .catch(() => {
-          console.log(error)
+        .catch(error => {
+          console.log(error);
         });
     }
   }
@@ -125,14 +119,10 @@ function CampaignDetail({ ...props }) {
     return pb;
   }
 
-
   function goToPreviewPage(id) {
     // const url = `http://localhost:3000/campaignView/${id}`;
     // window.open(url, '_blank');
   }
-  const campaignAddress = campaignDetail?.address
-    ? JSON.parse(campaignDetail?.address)
-    : '';
 
   return (
     <div>
@@ -142,7 +132,6 @@ function CampaignDetail({ ...props }) {
       >
         <div className="backButtonCamapignView">
           <div onClick={backFunction}>
-
             <BackIcon size="15px" />
 
             <span>Back</span>
@@ -177,12 +166,12 @@ function CampaignDetail({ ...props }) {
                             alt=""
                           />
                         ) : (
-                              <Image
-                                style={{ width: '100%', height: '100%' }}
-                                src={profileImg}
-                                alt=""
-                              />
-                            )}
+                          <Image
+                            style={{ width: '100%', height: '100%' }}
+                            src={profileImg}
+                            alt=""
+                          />
+                        )}
                       </div>
                     </Col>
 
@@ -205,97 +194,88 @@ function CampaignDetail({ ...props }) {
                           <span className="author-name">
                             {campaignDetail.account
                               ? campaignDetail.account.firstName
-                              : ''}
-                            {' '}
+                              : ''}{' '}
                             {campaignDetail.account
                               ? campaignDetail.account.lastName
                               : ''}
                           </span>
                         </Card.Title>
 
-                        <Card.Text>
-                          <div className="author-email-cv">
-                            <span className="icons">
-                              <EmailIcon size="16px" />
-                            </span>
-                            {campaignDetail.account
-                              ? campaignDetail.account.email
-                              : ''}
-                          </div>
-                        </Card.Text>
-                        {
-                          campaignDetail.isParent === false
-                            ? (
-                              <Card.Text>
-                                <div className="author-email-cv">
-                                  <Row>
-                                    <Col md={4} sm={4}>
-                                      <span className="icons">
-                                        <CampaignIcon />
-                                      </span>
+                        <div className="mb-3 author-email-cv">
+                          <span className="icons">
+                            <EmailIcon size="16px" />
+                          </span>
+                          {campaignDetail.account
+                            ? campaignDetail.account.email
+                            : ''}
+                        </div>
+                        {campaignDetail.isParent === false ? (
+                          <div className="mb-2 author-email-cv">
+                            {/*<div >*/}
+                            <Row>
+                              <Col md={4} sm={4}>
+                                <span className="icons">
+                                  <CampaignIcon />
+                                </span>
                                 Parent Campaign:
-                                    </Col>
+                              </Col>
 
-                                    <Col md={8} sm={8}>
-                                      {campaignDetail.parentCampaignId
-                                        ? <span onClick={() => goToPreviewPage(campaignDetail.parentCampaignId.id)}>{campaignDetail.parentCampaignId.title}</span>
-                                        : ''}
-
-
-                                    </Col>
-                                  </Row>
-                                </div>
-                              </Card.Text>
-                            ) : ''
-
-                        }
-                        <Card.Text>
-
-                          <div className="author-campaign-category">
-                            <Row>
-                              <Col md={4} sm={4}>
-                                <span className="icons">
-                                  <CategoryOutlinedIcon
-                                    fontSize="small"
-                                    style={{
-                                      color: '#818386',
-                                    }}
-                                  />
-                                </span>
+                              <Col md={8} sm={8}>
+                                {campaignDetail.parentCampaignId ? (
+                                  <span
+                                    onClick={() =>
+                                      goToPreviewPage(
+                                        campaignDetail.parentCampaignId.id,
+                                      )
+                                    }
+                                  >
+                                    {campaignDetail.parentCampaignId.title}
+                                  </span>
+                                ) : (
+                                  ''
+                                )}
+                              </Col>
+                            </Row>
+                            {/*</div>*/}
+                          </div>
+                        ) : (
+                          ''
+                        )}
+                        <div className="mb-2 author-campaign-category">
+                          <Row>
+                            <Col md={4} sm={4}>
+                              <span className="icons">
+                                <CategoryOutlinedIcon
+                                  fontSize="small"
+                                  style={{
+                                    color: '#818386',
+                                  }}
+                                />
+                              </span>
                               Category:
-                              </Col>
+                            </Col>
 
-                              <Col md={8} sm={8}>
+                            <Col md={8} sm={8}>
+                              {campaignDetail.categoryId
+                                ? campaignDetail.categoryId.name
+                                : ''}
+                            </Col>
+                          </Row>
+                        </div>
+                        <div className="mb-2 author-campaign-category">
+                          <Row>
+                            <Col md={4} sm={4}>
+                              <span className="icons">
+                                <DonationsIcon />
+                              </span>
+                              Zakat Eliglible:
+                            </Col>
 
-                                {campaignDetail.categoryId
-                                  ? campaignDetail.categoryId.name
-                                  : ''}
-                              </Col>
-                            </Row>
-                          </div>
-
-                        </Card.Text>
-                        <Card.Text>
-
-                          <div className="author-campaign-category">
-                            <Row>
-                              <Col md={4} sm={4}>
-                                <span className="icons">
-                                  <DonationsIcon />
-                                </span>
-                                Zakat Eliglible:
-                              </Col>
-
-                              <Col md={8} sm={8}>
-
-                                {campaignDetail.zakatEligible
-                                  ? 'Yes'
-                                  : 'No'}
-                              </Col>
-                            </Row>
-                          </div>
-
-                        </Card.Text>
+                            <Col md={8} sm={8}>
+                              {campaignDetail.zakatEligible ? 'Yes' : 'No'}
+                            </Col>
+                          </Row>
+                        </div>
 
                         <ul className="campign-info">
                           <li className="raised">
@@ -304,7 +284,9 @@ function CampaignDetail({ ...props }) {
                               {campaignData
                                 ? campaignData.campaignAmountSymbol.symbol
                                 : ''}
-                              {campaignData ? campaignData.campaignTarget / 100 : ''}
+                              {campaignData
+                                ? campaignData.campaignTarget / 100
+                                : ''}
                             </span>
                           </li>
                           <li className="pledged">
@@ -313,7 +295,9 @@ function CampaignDetail({ ...props }) {
                               {campaignData
                                 ? campaignData.campaignAmountSymbol.symbol
                                 : ''}
-                              {campaignData ? campaignData.totalDonations/100 : ''}
+                              {campaignData
+                                ? campaignData.totalDonations / 100
+                                : ''}
                             </span>
                           </li>
                           <li className="donators">
@@ -339,53 +323,51 @@ function CampaignDetail({ ...props }) {
                   </Row>
                   <Row>
                     <Col sm={8} md={8}>
-                      {campaignDetail.description
-                        ? (
-                          <div className="descriptionCampaignDetail">
-                            <Card.Title>Description</Card.Title>
-                            <Card.Text
-                              className="detailedDescrtiption"
-                              dangerouslySetInnerHTML={{
-                                __html: campaignDetail.description,
-                              }}
-                            />
-                          </div>
-                        )
-                        : ''}
-
+                      {campaignDetail.description ? (
+                        <div className="descriptionCampaignDetail">
+                          <Card.Title>Description</Card.Title>
+                          <Card.Text
+                            className="detailedDescrtiption"
+                            dangerouslySetInnerHTML={{
+                              __html: campaignDetail.description,
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        ''
+                      )}
                     </Col>
                     <Col sm={4} md={4}>
-                      {packages.length > 0
-                        ? (
-                          <div className="descriptionCampaignDetail">
-                            <Card.Title>Packages</Card.Title>
-                            {
-                              packages.map(data => (
-                                <Card className="defined-paymentsViewCampaign">
-                                  <div className="card-heading-inner">
-                                    <CustomHeading>{data.title}</CustomHeading>
-                                    <CustomHeadingNum>
-                                      {data.amountSymbolId.symbol}
-                                      {' '}
-                                      {data.amount}
-                                    </CustomHeadingNum>
-                                  </div>
-                                  <div style={{ textAlign: 'initial' }}>
-                                    <p>{data.description}</p>
-                                  </div>
-                                </Card>
-                              ))}
-                          </div>
-                        )
-                        : ''}
-
+                      {packages.length > 0 ? (
+                        <div className="descriptionCampaignDetail">
+                          <Card.Title>Packages</Card.Title>
+                          {packages.map((data, i) => (
+                            <Card
+                              key={i}
+                              className="defined-paymentsViewCampaign"
+                            >
+                              <div className="card-heading-inner">
+                                <CustomHeading>{data.title}</CustomHeading>
+                                <CustomHeadingNum>
+                                  {data.amountSymbolId.symbol} {data.amount}
+                                </CustomHeadingNum>
+                              </div>
+                              <div style={{ textAlign: 'initial' }}>
+                                {data.description}
+                              </div>
+                            </Card>
+                          ))}
+                        </div>
+                      ) : (
+                        ''
+                      )}
                     </Col>
                   </Row>
                 </Card>
               </Container>
             ) : (
-                <LoadingComponent />
-              )}
+              <LoadingComponent />
+            )}
           </Card.Body>
         </Card>
       </div>

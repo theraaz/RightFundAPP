@@ -14,7 +14,6 @@ import CampaignUpdates from '../../components/CampaignUpdates/index';
 
 
 export function CampaignUpdatesContainer(props) {
-  console.log('id', props.match.params.id);
 
   return (
     <div>

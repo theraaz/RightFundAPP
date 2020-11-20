@@ -155,7 +155,6 @@ const DropZone = ({
   const closeModal = () => {
     modalRef.current.style.display = 'none';
     modalImageRef.current.style.backgroundImage = 'none';
-    console.log(imageFile);
     removeFile(imageFile.name);
   };
 

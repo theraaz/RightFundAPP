@@ -88,7 +88,6 @@ const Form3 = ({ id, setActiveLink }) => {
 
 
   const handleClickVariant = (variant, message) => {
-    console.log(variant);
     // variant could be success, error, warning, info, or default
     enqueueSnackbar(message, {
       variant,
@@ -99,7 +98,6 @@ const Form3 = ({ id, setActiveLink }) => {
 
   useEffect(() => {
     setLoading(true);
-    console.log(id);
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -111,7 +109,6 @@ const Form3 = ({ id, setActiveLink }) => {
       .then(response => response.json())
       .then((user) => {
         setLoading(false);
-        console.log(user.response.data.res);
         setCurrency(user.response.data.res);
       })
       .catch((error) => {
@@ -126,7 +123,6 @@ const Form3 = ({ id, setActiveLink }) => {
     setLoading(true);
     getCampaignPackages(id)
       .then(({ data }) => {
-        console.log(data);
         setPackages(data.response.data.res);
         setLoading(false);
       })
@@ -172,7 +168,6 @@ const Form3 = ({ id, setActiveLink }) => {
           } else {
             handleClickVariant('error', user.response.message);
           }
-          console.log(user);
         })
         .catch((error) => {
           console.log(error);
@@ -206,7 +201,6 @@ const Form3 = ({ id, setActiveLink }) => {
           } else {
             handleClickVariant('error', user.response.message);
           }
-          console.log(user);
         })
         .catch((error) => {
           console.log(error);
@@ -248,7 +242,6 @@ const Form3 = ({ id, setActiveLink }) => {
         } else {
           handleClickVariant('error', user.response.message);
         }
-        console.log(user);
       })
       .catch((error) => {
         console.log(error);

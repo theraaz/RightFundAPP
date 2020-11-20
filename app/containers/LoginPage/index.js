@@ -5,32 +5,25 @@
  */
 
 import React, { memo, useState, useCallback } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { useInjectReducer } from 'utils/injectReducer';
 
 import './login.scss';
 
 import { Helmet } from 'react-helmet';
 
-import {
-  Button, Form, Col, Spinner,
-} from 'react-bootstrap';
+import { Button, Form, Col, Spinner } from 'react-bootstrap';
 
 import { Link } from 'react-router-dom';
 
 import { useSnackbar } from 'notistack';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Layout from '../../components/AuthLayout';
-import reducer from './reducer';
 import { login } from '../../utils/crud/auth.crud';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
 import EmailIcon from '../../components/svg-icons/emailIcon';
 import CustomCheckbox from '../../components/inputs/customCheckbox';
 export function LoginPage(props) {
-  useInjectReducer({ key: 'loginPage', reducer });
-
   const { enqueueSnackbar } = useSnackbar();
 
   const [email, setEmail] = useState('');
@@ -91,7 +84,7 @@ export function LoginPage(props) {
     }
   }
 
-  const onChange = useCallback((e) => {
+  const onChange = useCallback(e => {
     setPassword(e.target.value);
   }, []);
 
@@ -113,9 +106,7 @@ export function LoginPage(props) {
               style={{ position: 'relative' }}
             >
               <div className="formsDiv">
-
                 <EmailIcon />
-
               </div>
 
               <Form.Control
@@ -186,10 +177,11 @@ export function LoginPage(props) {
             </Form.Group>
 
             <Button block bssize="large" type="submit" className="submitBtn">
-              {' '}
-              {loading == false && <div>Login</div>}
-              {loading && <Spinner animation="border" size="sm" />}
-              {' '}
+              {loading ? (
+                <Spinner animation="border" size="sm" />
+              ) : (
+                <div>Login</div>
+              )}
             </Button>
           </Form>
           <div className="signupBtn">
@@ -202,10 +194,6 @@ export function LoginPage(props) {
     </>
   );
 }
-
-LoginPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
 
 const withConnect = connect(
   null,

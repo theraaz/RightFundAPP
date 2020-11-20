@@ -99,7 +99,6 @@ function CharitiesList({ type, history }) {
     adminChangeCharityStatus(singleCharity.id, statusId)
       .then(({ data, status }) => {
         disableLoading('suspend');
-        console.log('data', data);
         if (status === 200) {
           showAlert('success', data.response.message);
           getCharities();

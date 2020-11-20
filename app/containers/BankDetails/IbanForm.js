@@ -48,9 +48,7 @@ const IbanForm = () => {
       }
     });
 
-    console.log("[PaymentMethod1]", payload);
     const iban = elements.getElement(IbanElement);
-    console.log(iban);
 
     const result = await stripe.createToken({
         pii: {id_number: paymentMethod.id},
@@ -62,7 +60,6 @@ const IbanForm = () => {
     } else {
       // Send the token to your server.
       // This function does not exist yet; we will define it in the next step.
-      console.log(result.token);
     }
   };
 
@@ -85,18 +82,6 @@ const IbanForm = () => {
         IBAN
         <IbanElement
           options={options}
-          onReady={() => {
-            console.log("IbanElement [ready]");
-          }}
-          onChange={event => {
-            console.log("IbanElement [change]", event);
-          }}
-          onBlur={() => {
-            console.log("IbanElement [blur]");
-          }}
-          onFocus={() => {
-            console.log("IbanElement [focus]");
-          }}
         />
       </label>
       <button type="submit" disabled={!stripe}>

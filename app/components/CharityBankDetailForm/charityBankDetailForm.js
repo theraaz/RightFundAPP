@@ -72,7 +72,6 @@ const CharityBankDetailForm = ({
     }
 
     function addCharityBank() {
-        console.log(selectedAccordion);
         setLoading(true);
         addCharityBankDetails(charityAccountsID)
             .then(({ data }) => {
@@ -88,7 +87,6 @@ const CharityBankDetailForm = ({
         setLoading(true)
         updateBankDetails(id)
             .then(({ data }) => {
-                console.log(data);
                 openStripeURL(data.response.data.accountInfo.url);
             })
             .catch(() => {
@@ -101,7 +99,6 @@ const CharityBankDetailForm = ({
         setLoading(true)
         updateBankDetails(id)
             .then(({ data }) => {
-                console.log(data);
                 openStripeURL(data.response.data.accountInfo.url);
             })
             .catch(() => {
@@ -118,7 +115,6 @@ const CharityBankDetailForm = ({
         setBanksAccounts(null);
         getBankDetails()
             .then(({ data }) => {
-                console.log('data', data);
                 setLoading(false);
                 setCharityAccountsID(null);
                 setBanksAccounts(data.response.data?.res);
@@ -138,7 +134,6 @@ const CharityBankDetailForm = ({
 
     function bankDetailsByCharity(id) {
         setLoading(true);
-        console.log('chairty')
         setBanksAccounts(null);
         getBankDetailsByCharityId(id)
             .then(({ data }) => {

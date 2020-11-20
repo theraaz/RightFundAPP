@@ -60,7 +60,6 @@ const Form2 = ({
     var match = video ? video.match(regExp) : '';
 
     if (match && match[2].length == 11) {
-      console.log(match[2])
       id = match[2];
       // setYoutubeId(match[2]);
     }
@@ -162,7 +161,7 @@ const Form2 = ({
             onChange={setVideo}
           />
           {values.video != '' ?
-            <iframe width="100%" style={{ marginTop: '10px' }} height="315" src={`//www.youtube.com/embed/${getVideoId(values.video)}`} frameborder="0" allowfullscreen></iframe>
+            <iframe width="100%" style={{ marginTop: '10px' }} height="315" src={`//www.youtube.com/embed/${getVideoId(values.video)}`} frameBorder="0" allowFullScreen></iframe>
             : ''}
 
           <Form.Group>
@@ -238,7 +237,6 @@ const Form2 = ({
               <Button
                 type="submit"
                 className="viewCampaignBtn"
-                onClick={() => console.log(selectedFiles)}
               >
                 {' '}
                 {loading == false && <div> Save and Continue</div>}

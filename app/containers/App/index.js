@@ -2,10 +2,10 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
-import MyProfile from 'containers/MyProfile/Loadable';
-import CharityProfile from 'containers/CharityProfile/Loadable';
-import TeamMembers from 'containers/TeamsMembers/Loadable';
-import CharityUsers from 'containers/CharityUsers/Loadable';
+import MyProfile from 'containers/MyProfile/index';
+import CharityProfile from 'containers/CharityProfile/index';
+import TeamMembers from 'containers/TeamsMembers/index';
+import CharityUsers from 'containers/CharityUsers/index';
 import LoginPage from 'containers/LoginPage/Loadable';
 import Signup from 'containers/Singup/Loadable';
 import forgetPass from 'containers/ForgetPassword/Loadable';
@@ -18,12 +18,12 @@ import CampaignViewContainer from 'containers/CampaignViewContainer/index';
 import DonationsContainer from 'containers/DonationsContainer/index';
 import AccountVerification from 'containers/AccountVerification/index';
 import AllDonations from 'containers/AllDonations/index';
-import Accounts from 'containers/Accounts/Loadable';
-import BankDetails from 'containers/BankDetails/Loadable';
-import Withdrawals from 'containers/Withdrawals/Loadable';
-import AdminCharities from 'containers/AdminCharities/Loadable';
-import AdminCharityView from 'containers/CharityProfileView/Loadable';
-import AdminWithdrawal from 'containers/AdminWithdrawal/Loadable';
+import Accounts from 'containers/Accounts/index';
+import BankDetails from 'containers/BankDetails/index';
+import Withdrawals from 'containers/Withdrawals/index';
+import AdminCharities from 'containers/AdminCharities/index';
+import AdminCharityView from 'containers/CharityProfileView/index';
+import AdminWithdrawal from 'containers/AdminWithdrawal/index';
 import SubsCampaignContiner from 'containers/SubsCampaignContiner/index';
 
 import { shallowEqual, useSelector } from 'react-redux';
@@ -66,7 +66,11 @@ export default function App() {
           component={CampaignUpdatesContainer}
         />
         <AuthRoute exact path="/donations/:id" component={DonationsContainer} />
-        <AuthRoute exact path="/subs-campaigns/:id" component={SubsCampaignContiner} />
+        <AuthRoute
+          exact
+          path="/subs-campaigns/:id"
+          component={SubsCampaignContiner}
+        />
         <AuthRoute exact path="/editCampaign/:id" component={EditCampaign} />
         <LoginRoute exact path="/resetPassword" component={ResetPassword} />
         {user?.statusId ? (
@@ -88,7 +92,7 @@ export default function App() {
         <AuthRoute exact path="/withdrawals" component={Withdrawals} />
         <AdminRoute exact path="/accounts" component={Accounts} />
         <AdminRoute exact path="/charities" component={AdminCharities} />
-        
+
         <AdminRoute exact path="/withdrawal" component={AdminWithdrawal} />
         <AdminRoute
           exact

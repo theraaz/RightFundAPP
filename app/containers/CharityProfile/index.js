@@ -83,7 +83,6 @@ export function CharityProfile({ updateMyCharityProfile }) {
         if (res.status === 200) {
           showAlert('success', res.data.response.message);
           updateMyCharityProfile(data);
-          console.log(res.data);
         } else {
           showAlert('error', res.data.response.message);
         }

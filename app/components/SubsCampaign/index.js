@@ -98,7 +98,6 @@ function SubsCampaign({ ...props }) {
       .then(({ data }) => {
         setLoading(false);
         setTotalPages(Math.ceil(data.response.data.totalCount / pageSize));
-        console.log(data);
         setCampaign(data.response.data.res)
       })
       .catch(() => {

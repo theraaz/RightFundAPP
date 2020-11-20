@@ -108,7 +108,6 @@ export function Accounts({ login, history }) {
     adminForceLogin({ email: singleUser.email })
       .then(({ data, status }) => {
         disableLoading('login');
-        console.log('data', data);
         if (status === 200) {
           showAlert('success', data.response.message);
           login({

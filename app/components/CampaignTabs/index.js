@@ -39,7 +39,6 @@ function CampaignTabs({ children, ...props }) {
       user.role === 5 ? adminGetCampaignBasicDetails : getCampaignBasicDetail;
     getBasicDetails(props.match.params.id)
       .then(({ data }) => {
-        console.log(data.response.data);
         setCampaignData(data.response.data);
       })
       .catch(error => {
@@ -153,7 +152,7 @@ function CampaignTabs({ children, ...props }) {
                                     ? campaignData.campaignAmountSymbol.symbol
                                     : ''}{' '}
                                   {campaignData
-                                    ? (campaignData.campaignTarget / 100) || 0
+                                    ? campaignData.campaignTarget / 100 || 0
                                     : ''}
                                 </span>
                                 <span className="title">Target</span>
@@ -187,8 +186,8 @@ function CampaignTabs({ children, ...props }) {
                                     : ''}{' '}
                                   {campaignData
                                     ? (campaignData.totalDonations +
-                                      totalDonationsSubCampaigns()) /
-                                    100
+                                        totalDonationsSubCampaigns()) /
+                                      100
                                     : ''}
                                 </span>
                                 <span className="title">Total Raised</span>
@@ -201,37 +200,37 @@ function CampaignTabs({ children, ...props }) {
                               </li> */}
                             </>
                           ) : (
-                              <>
-                                <li className="raised">
-                                  <span className="content">
-                                    {campaignData
-                                      ? campaignData.campaignAmountSymbol.symbol
-                                      : ''}{' '}
-                                    {campaignData
-                                      ? ((campaignData.campaignTarget / 100) || 0)
-                                      : '0'}
-                                  </span>
-                                  <span className="title">Target</span>
-                                </li>
-                                <li className="pledged">
-                                  <span className="content">
-                                    {campaignData
-                                      ? campaignData.campaignAmountSymbol.symbol
-                                      : ''}{' '}
-                                    {campaignData
-                                      ? campaignData.totalDonations / 100
-                                      : '0'}
-                                  </span>
-                                  <span className="title">Raised</span>
-                                </li>
-                                <li className="donators">
-                                  <span className="content">
-                                    {campaignData?.totalDonors || 0}
-                                  </span>
-                                  <span className="title">Donators</span>
-                                </li>
-                              </>
-                            )}
+                            <>
+                              <li className="raised">
+                                <span className="content">
+                                  {campaignData
+                                    ? campaignData.campaignAmountSymbol.symbol
+                                    : ''}{' '}
+                                  {campaignData
+                                    ? campaignData.campaignTarget / 100 || 0
+                                    : '0'}
+                                </span>
+                                <span className="title">Target</span>
+                              </li>
+                              <li className="pledged">
+                                <span className="content">
+                                  {campaignData
+                                    ? campaignData.campaignAmountSymbol.symbol
+                                    : ''}{' '}
+                                  {campaignData
+                                    ? campaignData.totalDonations / 100
+                                    : '0'}
+                                </span>
+                                <span className="title">Raised</span>
+                              </li>
+                              <li className="donators">
+                                <span className="content">
+                                  {campaignData?.totalDonors || 0}
+                                </span>
+                                <span className="title">Donators</span>
+                              </li>
+                            </>
+                          )}
                         </ul>
                       </div>
                     </Col>
@@ -244,13 +243,14 @@ function CampaignTabs({ children, ...props }) {
                         >
                           View Campaign
                         </Button>{' '}
-                        {user.role !== 5 &&
+                        {user.role !== 5 && (
                           <Button
                             className="editCampaign"
                             onClick={goToeditCampaign}
                           >
                             Edit Campaign
-                        </Button>}
+                          </Button>
+                        )}
                       </div>
                     </Col>
                   </Row>

@@ -19,7 +19,6 @@ export function AccountVerify(props) {
   const [message, setMessage] = useState('');
 
   let name = props.location.search.split('=');
-  console.log('token', name[1]);
 
   const requestOptions = {
     method: 'GET',
@@ -38,7 +37,6 @@ export function AccountVerify(props) {
         } else {
           setMessage('Link Expired!, Please try again');
         }
-        console.log(message);
       });
     //   return ()=>{
     // //Component unmount

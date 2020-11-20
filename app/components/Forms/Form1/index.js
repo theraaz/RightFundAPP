@@ -123,7 +123,6 @@ const Form1 = ({
   };
 
   const handleChange = (event) => {
-    console.log(event.target.value);
     setFieldValue('currencySymbol', event.target.value);
   };
 
@@ -318,7 +317,6 @@ const Form1 = ({
               <Errors id="feedback">{errors.categories}</Errors>
             )}
           </Form.Group>
-          {console.log(values.parentCampaign)}
 
           <Form.Group controlId="parentCampaign" bssize="large">
 

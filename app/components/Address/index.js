@@ -129,7 +129,6 @@ function Address({ setFieldValue, values, errors }) {
 
   }
   const onChange = (event, newValue) => {
-    console.log(newValue)
     reset();
     let map = new window.google.maps.Map(
       document.getElementById("map")
@@ -140,7 +139,6 @@ function Address({ setFieldValue, values, errors }) {
         placeId: newValue && newValue.place_id
       },
       function (place, status) {
-        console.log("place", place);
         if (
           status === window.google.maps.places.PlacesServiceStatus.OK
         ) {

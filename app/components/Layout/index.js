@@ -22,7 +22,11 @@ import '../../containers/HomePage/dashboard.scss';
 import Header from '../Header/Loadable';
 import Footer from '../Footer/Loadable';
 
-import { getAccountDetails, updateProfile, getAllAccountDetails } from '../../utils/crud/auth.crud';
+import {
+  getAccountDetails,
+  updateProfile,
+  getAllAccountDetails,
+} from '../../utils/crud/auth.crud';
 import { authActions } from '../../utils/action-creators/auth.action.creator';
 
 import { isCharityProfileInComplete } from '../../utils/helper';
@@ -33,8 +37,6 @@ import ProfileLoadingOverlay from '../ProfileLoadingOverlay';
 const profileImg = require('../../images/placeholder.png');
 
 function Layout({ children, updateUser, ...props }) {
-
-
   const { user, myCharityProfile } = useSelector(
     ({ auth, charity }) => ({
       user: auth.user,
@@ -109,7 +111,6 @@ function Layout({ children, updateUser, ...props }) {
         .catch(error => {
           console.log(error);
         });
-
     } else {
       getAccountDetails()
         .then(({ data, status }) => {
@@ -157,7 +158,6 @@ function Layout({ children, updateUser, ...props }) {
                       type="file"
                       accept="image/*"
                       hidden
-                      multiple="false"
                       onChange={handleImageUpload}
                       onClick={event => {
                         event.target.value = null;
@@ -252,7 +252,7 @@ function Layout({ children, updateUser, ...props }) {
         <Row style={{ marginTop: 15, marginBottom: 15 }}>
           {isCharityProfileInComplete(myCharityProfile) && (
             <Col xs={12}>
-              <Alert show variant="warning" onClose={() => { }}>
+              <Alert show variant="warning" onClose={() => {}}>
                 <div className="d-flex justify-content-between align-items-center">
                   <span>Please Complete Your Charity Profile!</span>
                   <Button

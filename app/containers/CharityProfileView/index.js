@@ -25,7 +25,6 @@ export function CharityProfileView({ match, addAdminCharity }) {
   useEffect(() => {
     adminGetCharityById(match?.params?.charityId)
       .then(res => {
-        console.log('res', res);
         addAdminCharity(res?.data?.response?.data?.res || null);
       })
       .catch(() => {

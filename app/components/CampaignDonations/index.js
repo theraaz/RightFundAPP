@@ -82,7 +82,6 @@ function CampaignDonations({ ...props }) {
   const PerPage = event => {
     setPageNumber(1);
     setPageSize(event.target.value);
-    console.log(event.target.value);
     // getDonations();
   };
 

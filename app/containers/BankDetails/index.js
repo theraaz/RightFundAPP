@@ -4,7 +4,7 @@
  *
  */
 
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect, shallowEqual, useSelector } from 'react-redux';
 import { compose } from 'redux';
@@ -15,16 +15,12 @@ import IndividualBankDetailForm from '../../components/CharityBankDetailForm/ind
 import CharityBankDetailForm from '../../components/CharityBankDetailForm/charityBankDetailForm';
 
 export function BankDetails() {
-
-  const { user, myCharityProfile } = useSelector(
-    ({ auth, charity }) => ({
+  const { user } = useSelector(
+    ({ auth }) => ({
       user: auth.user,
-      myCharityProfile: charity.myCharityProfile,
     }),
     shallowEqual,
   );
-
-  console.log(user);
 
   return (
     <div>
@@ -33,16 +29,17 @@ export function BankDetails() {
         <meta name="description" content="Description of banks" />
       </Helmet>
       <Layout>
-        {user.isCharity ? <CharityBankDetailForm /> :
+        {user.isCharity ? (
+          <CharityBankDetailForm />
+        ) : (
           <IndividualBankDetailForm title="Please add bank details" />
-        }
+        )}
 
         {/* {myCharityProfile && (
                   <Col xs={12} sm={6}>
                     <CharityBankDetailForm title="Charity" />
                   </Col>
                 )} */}
-
       </Layout>
     </div>
   );
