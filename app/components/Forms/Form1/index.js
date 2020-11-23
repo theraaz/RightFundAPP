@@ -37,7 +37,7 @@ import { H5, H4, Errors } from '../form.styles';
 import Address from '../../Address/Loadable';
 import { getParentCampaigns } from '../../../utils/campaigns-utilities/getCampaignsUtilites';
 
-import InputDesign from "./loadOptions";
+import InputDesign from './loadOptions';
 
 const GreenRadio = withStyles({
   root: {
@@ -79,13 +79,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Form1 = ({
-  setFieldValue,
-  values,
-  errors,
-  loading,
-  edit,
-}) => {
+const Form1 = ({ setFieldValue, values, errors, loading, edit }) => {
   const classes = useStyles();
   const { user } = useSelector(
     ({ auth }) => ({
@@ -100,35 +94,41 @@ const Form1 = ({
   const token = localStorage.getItem('token');
   const [isOpen, setIsOpen] = React.useState(false);
 
-  const handleRadioChange = (event) => {
+  const handleRadioChange = event => {
     setFieldValue('fundraiser', event.target.value);
   };
 
-  const handleAmountChange = (event) => {
+  const handleAmountChange = event => {
     const t = event.target.value;
-    event.target.value = (t.indexOf('.') >= 0) ? (t.substr(0, t.indexOf('.')) + t.substr(t.indexOf('.'), 3)) : t;
+    event.target.value =
+      t.indexOf('.') >= 0
+        ? t.substr(0, t.indexOf('.')) + t.substr(t.indexOf('.'), 3)
+        : t;
     setFieldValue('amount', event.target.value);
   };
 
-  const handleDateChange = (date) => {
+  const handleDateChange = date => {
     setFieldValue('date', date);
   };
 
-  const handleChangeCategories = (event) => {
+  const handleChangeCategories = event => {
     setFieldValue('categories', event.target.value);
   };
 
-  const handleSelectParentCampaign = (event) => {
+  const handleSelectParentCampaign = event => {
     setFieldValue('parentCampaign', event.target.value);
   };
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     setFieldValue('currencySymbol', event.target.value);
   };
 
-  const validate = function (e) {
+  const validate = function(e) {
     const t = e.value;
-    e.value = (t.indexOf('.') >= 0) ? (t.substr(0, t.indexOf('.')) + t.substr(t.indexOf('.'), 3)) : t;
+    e.value =
+      t.indexOf('.') >= 0
+        ? t.substr(0, t.indexOf('.')) + t.substr(t.indexOf('.'), 3)
+        : t;
   };
 
   function getAllParentCampaigns() {
@@ -138,7 +138,7 @@ const Form1 = ({
           setParentCampaign(data.response.data.parentCampaignsRes);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
   }
@@ -154,23 +154,23 @@ const Form1 = ({
 
     fetch(`${process.env.baseURL}/currency`, requestOptions)
       .then(response => response.json())
-      .then((user) => {
+      .then(user => {
         if (user.statusCode == 200) {
         } else {
           setMessage('Something went missing, Please try again');
         }
         setCurrency(user.response.data.res);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
 
     fetch(`${process.env.baseURL}/category`, requestOptions)
       .then(response => response.json())
-      .then((user) => {
+      .then(user => {
         setCategories(user.response.data.res);
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error);
       });
 
@@ -190,7 +190,6 @@ const Form1 = ({
         <div className="mainForm">
           <Form.Group controlId="email" bssize="large">
             <Row>
-
               <Col sm={3}>
                 <H5 className="label-field" style={{ marginTop: '13px' }}>
                   Campaign Goal
@@ -232,7 +231,6 @@ const Form1 = ({
                 </Row>
               </Col>
               {/* <span>*</span> */}
-
             </Row>
 
             {errors.amount && (
@@ -254,7 +252,8 @@ const Form1 = ({
               name="campaignTitle"
               placeholder="Campaign Title*"
               className="controlForm"
-              onChange={event => setFieldValue('campaignTitle', event.target.value)
+              onChange={event =>
+                setFieldValue('campaignTitle', event.target.value)
               }
             />
             {errors.campaignTitle && (
@@ -279,7 +278,7 @@ const Form1 = ({
                 id="date-picker-dialog"
                 format="MM/dd/yyyy"
                 disablePast
-                headerColor="#f15a24"
+                // headerColor="#f15a24"
                 // isInvalid={errors.date}
                 // inputVariant="outlined"
                 placeholder="Campaign end date*"
@@ -322,10 +321,9 @@ const Form1 = ({
           </Form.Group>
 
           <Form.Group controlId="parentCampaign" bssize="large">
-
             <InputDesign values={values} edit={edit} />
 
-            {/*          
+            {/*
             <Select
               disabled
               className="categoriesSelect"
@@ -339,7 +337,7 @@ const Form1 = ({
               onChange={handleSelectParentCampaign}
               input={<BootstrapInput />}
             >
-            
+
             </Select>
             {errors.parentCampaign && (
               <Errors id="feedback">{errors.parentCampaign}</Errors>
@@ -357,7 +355,7 @@ const Form1 = ({
                 <div style={{ margin: '0 10px' }}>
                   <GreenRadio
                     checked={values.fundraiser === 'individual'}
-                    disabled={edit}
+                    disabled={!!edit}
                     onChange={() => setFieldValue('fundraiser', 'individual')}
                   />
                   <span style={{ color: '#9d9d9d' }}>Individual</span>
@@ -365,7 +363,7 @@ const Form1 = ({
                 <div style={{ margin: '0 10px' }}>
                   <GreenRadio
                     checked={values.fundraiser === 'charity'}
-                    disabled={edit}
+                    disabled={!!edit}
                     onChange={() => setFieldValue('fundraiser', 'charity')}
                   />
                   <span style={{ color: '#9d9d9d' }}>Charity</span>
@@ -385,8 +383,7 @@ const Form1 = ({
               <Button type="submit" className="viewCampaignBtn">
                 {' '}
                 {!loading && <div> Save and Continue</div>}
-                {loading && <Spinner animation="border" size="sm" />}
-                {' '}
+                {loading && <Spinner animation="border" size="sm" />}{' '}
               </Button>
             </div>
           </div>

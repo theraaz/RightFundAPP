@@ -11,9 +11,7 @@ import { Card, Button, Container, Spinner } from 'react-bootstrap';
 
 import './campaignUpdates.scss';
 
-import { SnackbarProvider, useSnackbar } from 'notistack';
-
-import TinyMCE from 'react-tinymce';
+import { useSnackbar } from 'notistack';
 
 import Timeline from '@material-ui/lab/Timeline';
 import TimelineItem from '@material-ui/lab/TimelineItem';
@@ -31,6 +29,7 @@ import {
   campaignStatusUpdate,
   campaignAddStatus,
 } from '../../utils/crud/campaignStatus.crud';
+import QuillTextEditor from '../inputs/QuillTextEditor';
 
 const CampaignUpdates = ({ editCampaignData, ...props }) => {
   const [editorVal, setEditorVal] = useState('');
@@ -44,8 +43,8 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
   const [updateDataId, setUpdateDataId] = React.useState();
   const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleEditorChange = event => {
-    setEditorVal(event.target.getContent());
+  const handleEditorChange = value => {
+    setEditorVal(value);
   };
 
   const handleClick = data => event => {
@@ -113,8 +112,8 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
           if (status === 200) {
             setLoading(false);
             setEditStatus(false);
+            setEditorVal('');
             handleClickVariant('success', data.response.message);
-            tinymce.activeEditor.setContent('');
             getUpdates();
           }
         })
@@ -128,7 +127,7 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
           if (status === 200) {
             setLoading(false);
             handleClickVariant('success', data.response.message);
-            tinymce.activeEditor.setContent('');
+            setEditorVal('');
             getUpdates();
           }
         })
@@ -142,7 +141,7 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
   function edit() {
     handleClose();
     setEditStatus(true);
-    tinymce.activeEditor.setContent(updateDataId.description);
+    setEditorVal(updateDataId.description);
   }
 
   function deleteupdateStatus() {
@@ -162,66 +161,13 @@ const CampaignUpdates = ({ editCampaignData, ...props }) => {
   return (
     <div>
       <Container>
-        <TinyMCE
+        <QuillTextEditor
           placeholder="Updates"
-          className="editorTiny"
-          // content={updateData}
-          config={{
-            plugins: 'image code',
-            toolbar:
-              'undo redo | bold italic | alignleft aligncenter alignright | link image | code',
-            /* enable title field in the Image dialog*/
-            image_title: true,
-            /* enable automatic uploads of images represented by blob or data URIs*/
-            automatic_uploads: true,
-            /*
-              URL of our upload handler (for more details check: https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_url)
-              images_upload_url: 'postAcceptor.php',
-              here we add custom filepicker only to Image dialog
-            */
-            file_picker_types: 'image',
-            /* and here's our custom image picker*/
-            file_picker_callback: function(cb) {
-              var input = document.createElement('input');
-              input.setAttribute('type', 'file');
-              input.setAttribute('accept', 'image/*');
-
-              /*
-                Note: In modern browsers input[type="file"] is functional without
-                even adding it to the DOM, but that might not be the case in some older
-                or quirky browsers like IE, so you might want to add it to the DOM
-                just in case, and visually hide it. And do not forget do remove it
-                once you do not need it anymore.
-              */
-
-              input.onchange = function() {
-                let file = this.files[0];
-
-                let reader = new FileReader();
-                reader.onload = function() {
-                  /*
-                    Note: Now we need to register the blob in TinyMCEs image blob
-                    registry. In the next release this part hopefully won't be
-                    necessary, as we are looking to handle it internally.
-                  */
-                  let id = `blobid${new Date().getTime()}`;
-                  let blobCache = tinymce.activeEditor.editorUpload.blobCache;
-                  let base64 = reader.result.split(',')[1];
-                  let blobInfo = blobCache.create(id, file, base64);
-                  blobCache.add(blobInfo);
-
-                  /* call the callback and populate the Title field with the file name */
-                  cb(blobInfo.blobUri(), { title: file.name });
-                };
-                reader.readAsDataURL(file);
-              };
-
-              input.click();
-            },
-          }}
-          // value={updateData}
-          onChange={handleEditorChange}
+          value={editorVal}
+          onChangeEditor={handleEditorChange}
+          inputImage={true}
         />
+
         <div className="addUpdate">
           <Button className="updateBtn" onClick={addUpdates}>
             {loading ? (

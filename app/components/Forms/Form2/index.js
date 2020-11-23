@@ -5,16 +5,15 @@
  */
 
 import React, { memo } from 'react';
-import TinyMCE from 'react-tinymce';
 import { Button, Form, Col, Spinner } from 'react-bootstrap';
 import { H5, H4 } from '../form.styles';
-
 import DropZone from '../../DropZone/index';
 import './form2.scss';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withRouter } from 'react-router-dom';
+import QuillTextEditor from '../../inputs/QuillTextEditor';
 
 const CustomCheckbox = withStyles({
   root: {
@@ -24,7 +23,7 @@ const CustomCheckbox = withStyles({
     },
   },
   checked: {},
-})((props) => <Checkbox color="default" {...props} />);
+})(props => <Checkbox color="default" {...props} />);
 
 const Form2 = ({
   setFieldValue,
@@ -38,21 +37,17 @@ const Form2 = ({
   ...props
 }) => {
   const [btnSelected, setBtnSelected] = React.useState(false);
-  const [youtubeId, setYoutubeId] = React.useState('');
-  const handleEditorChange = event => {
-    setFieldValue('editorValue', event.target.getContent());
+  const handleEditorChange = value => {
+    setFieldValue('editorValue', value);
   };
-
-  const handleImage = event => {
+  const handleImage = () => {
     setFieldValue('base64', null);
     setSelectedFiles([]);
   };
 
   const setVideo = event => {
     setFieldValue('video', event.target.value);
-
-  }
-
+  };
 
   function getVideoId(video) {
     let id = '';
@@ -79,36 +74,35 @@ const Form2 = ({
         </div>
 
         <div className="mainForm">
-          <TinyMCE
+          <QuillTextEditor
             placeholder="content here"
-            className="editorTiny"
-            content={values.editorValue}
-            config={{
-              plugins: 'autolink link image lists print preview',
-              toolbar:
-                'undo redo | bold italic | alignleft aligncenter alignright | media image link',
-            }}
-            name="editorValue"
             value={values.editorValue}
-            onChange={handleEditorChange}
+            onChangeEditor={handleEditorChange}
           />
-
+          {/*<ReactQuill*/}
+          {/*  className="quill-editor"*/}
+          {/*  placeholder="content here"*/}
+          {/*  value={values.editorValue}*/}
+          {/*  modules={editorModules}*/}
+          {/*  formats={editorFormats}*/}
+          {/*  onChange={handleEditorChange}*/}
+          {/*/>*/}
           <Form.Group controlId="zakatEligible" className="formGroupMain">
             <div>
               <H5>Zakat Eligible</H5>
             </div>
             <Form.Row>
               <Col>
-
-
-
                 <FormControlLabel
-                  control={<CustomCheckbox
-
-                    value={values.zakatEligible}
-                    checked={values.zakatEligible}
-                    onChange={e =>
-                      setFieldValue('zakatEligible', e.target.checked)} />}
+                  control={
+                    <CustomCheckbox
+                      value={values.zakatEligible}
+                      checked={values.zakatEligible}
+                      onChange={e =>
+                        setFieldValue('zakatEligible', e.target.checked)
+                      }
+                    />
+                  }
                   label="Yes, this campaign is zakat eligible."
                 />
               </Col>
@@ -125,10 +119,11 @@ const Form2 = ({
                 <div className="toggle-custom">
                   <Button
                     style={{ width: '41%' }}
-                    className={`${btnSelected
-                      ? 'toggle-unselectedBtn'
-                      : 'toggle-selectedBtn'
-                      } `}
+                    className={`${
+                      btnSelected
+                        ? 'toggle-unselectedBtn'
+                        : 'toggle-selectedBtn'
+                    } `}
                     onClick={() => setBtnSelected(false)}
                   >
                     {' '}
@@ -136,18 +131,17 @@ const Form2 = ({
                   </Button>
                   <Button
                     style={{ width: '50%' }}
-                    className={`${btnSelected
-                      ? 'toggle-selectedBtn'
-                      : 'toggle-unselectedBtn'
-                      }`}
+                    className={`${
+                      btnSelected
+                        ? 'toggle-selectedBtn'
+                        : 'toggle-unselectedBtn'
+                    }`}
                     onClick={() => setBtnSelected(true)}
                   >
                     {' '}
                     UK Gift Aid
                   </Button>
                 </div>
-
-
               </Col>
             </Form.Row>
           </Form.Group>
@@ -160,13 +154,20 @@ const Form2 = ({
             className="controlForm"
             onChange={setVideo}
           />
-          {values.video != '' ?
-            <iframe width="100%" style={{ marginTop: '10px' }} height="315" src={`//www.youtube.com/embed/${getVideoId(values.video)}`} frameBorder="0" allowFullScreen></iframe>
-            : ''}
+          {values.video != '' ? (
+            <iframe
+              width="100%"
+              style={{ marginTop: '10px' }}
+              height="315"
+              src={`//www.youtube.com/embed/${getVideoId(values.video)}`}
+              frameBorder="0"
+              allowFullScreen
+            />
+          ) : (
+            ''
+          )}
 
-          <Form.Group>
-
-          </Form.Group>
+          <Form.Group />
           <Form.Group>
             <div style={{ position: 'relative' }}>
               {values.base64 ? (
@@ -207,37 +208,34 @@ const Form2 = ({
                   </svg>
                 </div>
               ) : (
-                  <DropZone
-                    selectedFiles={selectedFiles}
-                    setSelectedFiles={setSelectedFiles}
-                  />
-                )}
+                <DropZone
+                  selectedFiles={selectedFiles}
+                  setSelectedFiles={setSelectedFiles}
+                />
+              )}
             </div>
           </Form.Group>
 
-          <div
-            style={{ margin: '5px 0px 20px auto' }}
-          >
+          <div style={{ margin: '5px 0px 20px auto' }}>
             <div className="campaignBtnsForm2">
-              {
-                campaignId ?
-                  <Button
-                    className="editCampaignBtn"
-                    onClick={() => props.history.push(`editCampaign/${campaignId}`)}
-                  >
-                    Back
-              </Button> :
-                  <Button
-                    className="editCampaignBtn"
-                    onClick={() => setActiveLink(0)}
-                  >
-                    Back
-            </Button>
-              }
-              <Button
-                type="submit"
-                className="viewCampaignBtn"
-              >
+              {campaignId ? (
+                <Button
+                  className="editCampaignBtn"
+                  onClick={() =>
+                    props.history.push(`editCampaign/${campaignId}`)
+                  }
+                >
+                  Back
+                </Button>
+              ) : (
+                <Button
+                  className="editCampaignBtn"
+                  onClick={() => setActiveLink(0)}
+                >
+                  Back
+                </Button>
+              )}
+              <Button type="submit" className="viewCampaignBtn">
                 {' '}
                 {loading == false && <div> Save and Continue</div>}
                 {loading && <Spinner animation="border" size="sm" />}{' '}
@@ -248,7 +246,7 @@ const Form2 = ({
           {/* <button onClick={doStuffWhenFileChanges} >Hello</button> */}
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 
