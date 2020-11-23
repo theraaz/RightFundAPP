@@ -628,23 +628,13 @@ const MyCampaigns = ({ ...props }) => {
                       <Card.Body className="d-flex flex-column">
                         <Card.Title className="d-flex align-items-center author_details">
                           <div className="author-photo-myCampaign">
-                            {data.creatorImage ? (
-                              <img
-                                alt=""
-                                src={data.creatorImage}
-                                className="avatar avatar-96 photo"
-                                height="96"
-                                width="96"
-                              />
-                            ) : (
-                              <img
-                                alt=""
-                                src="https://0.gravatar.com/avatar/6a7831cd395934213cf4dc10a70a7e80?s=96&amp;d=mm&amp;r=g"
-                                className="avatar avatar-96 photo"
-                                height="96"
-                                width="96"
-                              />
-                            )}
+                            <img
+                              alt=""
+                              src={data.creatorImage || profileImg}
+                              className="avatar avatar-96 photo"
+                              height="96"
+                              width="96"
+                            />
                           </div>
                           <span className="author-name">
                             {data.creatorFirstName}

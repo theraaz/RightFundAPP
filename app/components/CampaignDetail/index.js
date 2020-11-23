@@ -184,7 +184,7 @@ function CampaignDetail({ ...props }) {
                           <div className="author-photo">
                             <img
                               alt=""
-                              src="https://0.gravatar.com/avatar/6a7831cd395934213cf4dc10a70a7e80?s=96&amp;d=mm&amp;r=g"
+                              src={profileImg}
                               className="avatar avatar-96 photo"
                               height="96"
                               width="96"
