@@ -1,4 +1,4 @@
-@import 'App/styles/mixin.scss';
+@import 'app/styles/mixin.scss';
 
 .main-div {
   // background: #e8e7e73b;
@@ -78,6 +78,37 @@
           flex: 0 0 100%;
           max-width: 100%;
         }
+        .secondColLogo {
+          display: none;
+          img {
+            max-width: 120px;
+          }
+          @include respond-to(handhelds-landscape) {
+            // css code here
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+          }
+          @include respond-to(handhelds) {
+            // css code here
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+          }
+          @include respond-to(mobile) {
+            // css code here
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+          }
+          @include respond-to(mobile-portrait) {
+            // css code here
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+          }
+        }
+
         .form-main-div-signup {
           // margin-left: -9px;
           margin-top: 20px;
@@ -103,7 +134,7 @@
         }
         .form-main-div {
           // margin-left: -9px;
-          margin-top: 78px;
+          margin-top: 38px;
           // padding: 0 44px 0 44px;
           padding: 0 44px;
           display: flex;

@@ -1,0 +1,117 @@
+@import 'app/styles/mixin.scss';
+
+.main-form4 {
+  text-align: center;
+  margin: 30px 0 0 0;
+  min-height: 400px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .main-heading {
+    padding: 0 143px;
+
+    @include respond-to(largeDesktop) {
+      // css code here
+      padding: 0 75px;
+    }
+    @include respond-to(smallDesktop) {
+      // css code here
+      padding: 0 35px;
+    }
+    @include respond-to(handhelds) {
+      // css code here
+      padding: 0;
+    }
+  }
+  .success-icon {
+    display: flex;
+    /* flex-direction: column; */
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+
+    .icon-main {
+      width: 100px;
+      border: 1px solid;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      div {
+        height: 49px;
+        width: 49px;
+      }
+    }
+  }
+
+  .campaignsBtnForm4Div {
+    margin: 10px 0 20px;
+    padding: 0 140px;
+
+    @include respond-to(largeDesktop) {
+      // css code here
+      padding: 0 75px;
+    }
+    @include respond-to(smallDesktop) {
+      // css code here
+      padding: 0 35px;
+    }
+    @include respond-to(handhelds) {
+      // css code here
+      padding: 0;
+    }
+
+    .campaignBtnsForm4 {
+      text-align: end;
+
+      .viewCampaignBtn {
+        background-color: #f15a24;
+        border-color: #f2f2f2;
+        width: 120px;
+        height: 40px;
+        margin-left: 5px;
+        font-size: 11px;
+
+        a {
+          color: white;
+        }
+        &:focus {
+          box-shadow: none !important;
+        }
+        &:active {
+          background: white;
+          color: black;
+          border-color: #f2f2f2;
+          a {
+            color: black;
+          }
+        }
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+      .editCampaignBtn {
+        background-color: gray;
+        border-color: #f2f2f2;
+        width: 120px;
+        height: 40px;
+        margin-left: 10px;
+        font-size: 11px;
+
+        &:hover {
+          opacity: 0.8;
+        }
+        &:focus {
+          box-shadow: none !important;
+        }
+        &:active {
+          background: white;
+          color: black;
+          border-color: #f2f2f2;
+        }
+      }
+    }
+  }
+}

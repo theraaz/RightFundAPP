@@ -1,12 +1,13 @@
-@import 'App/styles/mixin.scss';
+@import 'app/styles/mixin.scss';
 
 .card-body {
-  padding: 1.25rem 8px 1.25rem 8px;
+  padding: 1.25rem 8px 1.25rem 8px !important;
 }
 
 .card-header-main {
-  margin-bottom: 15px;
+  // margin-bottom: 15px;
   min-height: 223px;
+  height: 100%;
   /* text-align: center; */
   justify-content: center;
   .compaignData {
@@ -22,40 +23,81 @@
     // height: 90%;
     // width: 215px;
     justify-content: center;
-    border-radius: 50;
+    border-radius: 50px;
     align-items: center;
     text-align: center;
     margin: 10px 10px;
     background: transparent;
+    position: relative;
+
+    .editIconDiv {
+      background-color: #f15a24;
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 5px solid white;
+      right: 0;
+      top: 15px;
+      padding: 4px;
+      cursor: pointer;
+      z-index: 1;
+      .editIcon {
+        color: white;
+      }
+    }
+    .userImgMain {
+      display: flex;
+      flex-direction: column;
+    }
 
     .sub-card-img {
       width: 178px;
+      height: 178px;
+      border: 3px solid #adadad;
+      border-radius: 50%;
+      overflow: hidden;
     }
 
     img {
-      border-radius: 94px;
       width: 100%;
-      border: 2px solid #adadad;
+      object-fit: cover;
+      height: 100%;
     }
   }
 
   .titleCol {
     display: flex;
-    justify-content: center;
+    justify-content: start;
 
     @include respond-to(mobile) {
       // css code here
       text-align: center;
+      justify-content: center;
     }
 
     .card-data {
       display: flex;
       flex-direction: column;
       justify-content: center;
-
+      padding-top: 10px;
       vertical-align: middle;
       position: relative;
     }
+
+    .card-text {
+      margin-bottom: 1.5px !important;
+    }
+  }
+
+  .bioText {
+    min-height: 20px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    margin: 0;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-align: initial !important;
   }
 
   .table-col1 {
@@ -79,6 +121,55 @@
   }
 }
 
+.modalBtnYes {
+  background-color: #f15a24;
+  border-color: #f2f2f2;
+  margin-left: 5px;
+  min-width: 120px;
+  &:focus {
+    box-shadow: none !important;
+    background: white;
+    color: black;
+    border-color: #f2f2f2;
+  }
+  &:active {
+    background: white;
+    color: black;
+    border-color: #f2f2f2;
+  }
+
+  &:hover {
+    opacity: 0.8;
+    background-color: #f15a24;
+    border-color: #f15a24;
+  }
+}
+
+.modalBtnNo {
+  min-width: 120px;
+  background: white;
+  color: black;
+  border-color: #f2f2f2;
+
+  &:focus {
+    box-shadow: none !important;
+    background: white;
+    color: black;
+    border-color: #f2f2f2;
+  }
+  &:active {
+    background: white !important;
+    color: black;
+    border-color: #f2f2f2;
+  }
+  &:hover {
+    opacity: 0.8;
+    background: white !important;
+    color: black;
+    border-color: #f2f2f2;
+  }
+}
+
 .sideNav {
   height: 28rem;
   @include respond-to(handhelds) {
@@ -92,11 +183,29 @@
   display: flex;
   color: unset;
 
+  @include respond-to(largeDesktop) {
+    // css code here
+    font-size: 14px;
+  }
+  @include respond-to(smallDesktop) {
+    // css code here
+    font-size: 12px;
+  }
+
   &:hover {
-    color: #f15a24;
+    color: #f15a24 !important;
+    div > svg {
+      color: #f15a24 !important;
+    }
   }
   .active {
-    color: #f15a24;
+    color: #f15a24 !important;
+    div > svg {
+      color: #f15a24 !important;
+    }
+  }
+  .iconImage {
+    color: rgba(0, 0, 0, 0.33);
   }
 }
 .line {
@@ -108,12 +217,43 @@
 
 .iconImage {
   width: 20px;
-  margin: 0 10px 0 0px;
+  margin-right: 20px;
+
+  @include respond-to(smallDesktop) {
+    // css code here
+    display: none;
+  }
 }
 
+.descriptionCampaign {
+  max-height: 37px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  margin: 0;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-align: initial !important;
+  & p {
+    margin: 0;
+  }
+}
 .campaign-card {
   margin: 10px 0;
+  overflow: hidden;
+  position: relative;
+
+  .badgeCampaign {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+    padding: 5px 8px;
+    border-radius: 3px;
+  }
 }
+
 .dataCard {
   border-radius: 6px;
   padding: 7px 12px;
@@ -122,17 +262,29 @@
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    // @include respond-to(mobile) {
-    //   // css code here
-    //   flex-direction: column;
-    // }
+    @include respond-to(handhelds) {
+      // css code here
+      flex-direction: column;
+    }
+
     .campaignHeader1 {
       justify-content: space-between;
+      @include respond-to(handhelds) {
+        // css code here
+        margin-top: 10px;
+        justify-content: center;
+      }
+      @include respond-to(mobile-smallest) {
+        // css code here
+        flex-direction: column;
+      }
     }
     .dropBtn {
+      min-width: 120px;
       background: white;
       color: black;
       border-color: #f2f2f2;
+
       &:focus {
         box-shadow: none !important;
       }
@@ -153,12 +305,37 @@
           background-color: #f15a24;
         }
       }
+
+      @include respond-to(mobile-small) {
+        // css code here
+        font-size: 12px;
+      }
+      @include respond-to(mobile-smallest) {
+        // css code here
+        width: 130px;
+      }
+    }
+
+    .dropDownMain {
+      @include respond-to(mobile-smallest) {
+        // css code here
+        text-align: center;
+        margin: 5px;
+      }
     }
 
     .campaignBtn {
       background-color: #f15a24;
       border-color: #f2f2f2;
       margin-left: 5px;
+      @include respond-to(mobile-small) {
+        // css code here
+        font-size: 12px;
+      }
+      @include respond-to(mobile-smallest) {
+        // css code here
+        width: 130px;
+      }
       &:focus {
         box-shadow: none !important;
       }
@@ -182,16 +359,32 @@
       overflow: hidden;
       border-radius: 3px;
       margin-right: 10px;
-      display: inline-block;
       float: left;
       margin-top: 5px;
+    }
+
+    .author-photo-myCampaign {
+      width: 20px;
+      height: 20px;
+      line-height: 0;
+      overflow: hidden;
+      border-radius: 3px;
+      margin-right: 10px;
+      float: left;
+      margin-top: 5px;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
     }
 
     .author-name {
       font-size: 13px;
       font-weight: 700;
       display: inline-block;
-      margin-top: 0;
+      margin-top: 4px;
       color: #6a6a6a;
     }
 
@@ -208,6 +401,11 @@
     font-weight: 600;
     letter-spacing: -1px;
     font-size: 18px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    margin: 0;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .skillbar {
@@ -223,6 +421,7 @@
 
     .progress {
       height: 0.4rem;
+      width: 100%;
       .progress-bar {
         background-color: #f15a24;
       }
@@ -252,6 +451,17 @@
     }
   }
 
+  .anchorTag {
+    text-decoration: none;
+    color: unset !important;
+    &:hover {
+      text-decoration: none !important;
+      color: unset !important;
+    }
+    &:focus {
+      outline: 0 !important;
+    }
+  }
   .campign-info {
     list-style: none;
     margin: 15px 0 15px;
@@ -275,12 +485,12 @@
   }
 
   .campaignBtns {
-    justify-content: space-between;
+    justify-content: space-evenly;
     display: flex;
     .viewCampaignBtn {
       background-color: #f15a24;
       border-color: #f2f2f2;
-      width: 100%;
+      // width: 100%;
       font-size: 11px;
       &:focus {
         box-shadow: none;
@@ -297,9 +507,9 @@
     .editCampaignBtn {
       background-color: gray;
       border-color: #f2f2f2;
-      margin-left: 5px;
+      // margin-left: 5px;
       font-size: 11px;
-      width: 100%;
+      width: 95px;
 
       &:hover {
         opacity: 0.8;
@@ -314,4 +524,96 @@
       }
     }
   }
+}
+
+.deleteIcon {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  color: #fff;
+  cursor: pointer;
+  background: #f15a24;
+  // background: #fb4d4d;
+  text-align: center;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+}
+
+.paginatordiv {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .paginatorPerSize {
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-right: 5px;
+    }
+
+    .paginatorPerPage {
+      width: 65px;
+      text-align: center;
+      display: flex;
+      font-size: 13px;
+
+      .paginatorPerPageOption {
+        background-color: #fefefe !important;
+        &:hover {
+          background-color: #f15a24 !important;
+        }
+      }
+    }
+  }
+
+  .paginationColor {
+    & .Mui-selected {
+      background-color: #f15a24;
+      border-color: #f15a24;
+      color: white;
+    }
+  }
+}
+
+.menuSetting {
+  box-shadow: none !important;
+  transform-origin: 0px 26px;
+
+  border-radius: 6px;
+}
+
+.menuList {
+  &:focus {
+    opacity: 0.8;
+  }
+  &:hover {
+    color: #f15a25;
+    opacity: 1;
+  }
+}
+
+.give-card__media {
+  min-width: 230px;
+  height: 130px;
+
+  @include respond-to(handhelds) {
+    // css code here
+    max-width: 100%;
+  }
+  @include respond-to(mobile-smallest) {
+    // css code here
+    min-width: 100%;
+    max-width: 100%;
+  }
+}
+
+.popup-modal {
+  z-index: 9999 !important;
+}
+
+.charityAmountCard {
+  margin-bottom: 30px;
 }

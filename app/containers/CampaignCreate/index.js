@@ -8,15 +8,12 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
-import './createCampaign.scss'
+import './createCampaign.scss';
 import { compose } from 'redux';
 
 import Header from '../../components/Header/Loadable';
 import SideBarCreateCampaign from '../../components/SideBarCreateCampaign/Loadable';
 import Footer from '../../components/Footer/Loadable';
-
-import { Row, Col, ListGroup, Dropdown, Button, Container, ProgressBar } from 'react-bootstrap/'
-
 
 export function CampaignCreate() {
   return (
@@ -27,9 +24,8 @@ export function CampaignCreate() {
       </Helmet>
       <Header title="Create Campaign" />
       <SideBarCreateCampaign />
-        
-     
-      {/* <Footer /> */}
+
+      <Footer />
     </div>
   );
 }

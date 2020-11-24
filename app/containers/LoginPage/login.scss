@@ -45,15 +45,15 @@
     position: absolute;
     right: 8px;
     cursor: pointer;
-    top: 3px;
+    top: 10px;
     font-size: 14px;
   }
 }
 
 .signupBtn {
   position: relative;
-  // margin-top: 10px;
-  text-align: end;
+  text-align: center;
+  margin-top: 10px;
 
   .forgetPassLabel {
     color: #f15a24;
@@ -74,4 +74,8 @@
     outline: 0;
     box-shadow: none !important;
   }
+}
+
+.MuiFormControlLabel-label {
+  font-size: 14px !important;
 }

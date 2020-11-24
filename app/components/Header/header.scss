@@ -1,12 +1,22 @@
+@import 'app/styles/mixin.scss';
 .header {
   display: flex;
   justify-content: space-between;
   padding: 15px 40px;
   background: white;
-
+  @include respond-to(mobile) {
+    // css code here
+    padding: 15px;
+  }
+  @include respond-to(mobile-small) {
+    // css code here
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
   .img {
     max-width: 140px;
-    margin-left: 40px;
+    cursor: pointer;
   }
 
   .profile {
@@ -14,11 +24,54 @@
     /* padding: 0px 0 0 0; */
     margin-top: 12px;
 
+    .dropper {
+      margin: 0 5px;
+
+      button {
+        background-color: transparent;
+        border: transparent;
+        color: black;
+        &:focus {
+          box-shadow: none !important;
+          background-color: transparent;
+          border: transparent;
+          color: black;
+        }
+        &:active {
+          background-color: transparent;
+          border: transparent;
+          color: black;
+        }
+        &:hover {
+          background-color: transparent;
+          border: transparent;
+          color: black;
+        }
+      }
+
+      .dropItem {
+        padding: 5px 10px 5px 15px;
+
+        span {
+          margin-left: 10px;
+        }
+        &:hover {
+          color: #f15a24;
+        }
+        &:active {
+          color: #fff;
+          text-decoration: none;
+          background-color: #f15a24;
+        }
+      }
+    }
+
     .profileImg {
       width: 35px;
       border: 1px solid gray;
       border-radius: 50px;
       height: 35px;
+      overflow: hidden;
     }
   }
 }
@@ -27,13 +80,5 @@
   height: 175px;
   width: 100%;
   background: #f15a24;
-}
-
-.logout {
-  color: #f15a24;
-
-  &:hover {
-    color: #f15a24;
-    text-decoration: none;
-  }
+  // position: relative;
 }

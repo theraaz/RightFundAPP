@@ -1,53 +1,196 @@
+@import 'app/styles/mixin.scss';
+
 .main {
-  height: 70vh;
   width: 100%;
 
+  @include respond-to(handhelds) {
+    // css code here
+    min-height: unset;
+  }
   .main-box {
     background-color: white;
     display: flex;
     width: 100%;
-    margin: 0px 10px;
+    margin: 0px 10px 20px;
+    border-radius: 4px;
+    border-radius: 6px;
+
+    @include respond-to(handhelds) {
+      // css code here
+      display: block;
+    }
 
     .firstCol {
       height: 100%;
-      background-color: #f6f6f6;
+      background-color: #f0f0f0;
+      border-top-left-radius: 6px;
+      border-bottom-left-radius: 6px;
 
-      .listItem {
-        // border: none;
-        height: 50px;
-        display: flex;
-        color: unset;
-        background: transparent;
-        &:hover {
-          color: #f15a24;
+      @include respond-to(largeDesktop) {
+        // css code here
+        flex: 0 0 30%;
+        max-width: 30%;
+      }
+      // @include respond-to(handhelds-landscape) {
+      //   // css code here
+      //   display: none;
+      // }
+      @include respond-to(handhelds) {
+        // css code here
+        height: auto;
+        max-width: unset;
+        border-top-right-radius: 6px;
+        border-bottom-left-radius: 0;
+      }
+      .listGroupDiv {
+        @include respond-to(handhelds) {
+          // css code here
+          justify-content: space-around;
+          flex-direction: row;
         }
-        .active {
-          color: #f15a24;
-        }
 
-        .iconImage {
-          width: auto;
-          margin: 0 10px 0 0px;
+        .listItem {
+          height: 80px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          color: unset;
+          background: transparent;
 
-          .tagNumber {
-            border: 1px solid #f6f6f6;
+          @include respond-to(handhelds) {
+            // css code here
+            padding: 0;
+            border: 0;
+          }
+          &:hover {
+            color: #f15a24 !important;
+            div > svg{
+              color: #f15a24 !important;
+            }
+          }
+          .active {
+            color: #f15a24 !important;
+            div > svg{
+              color: #f15a24 !important;
+            }
+          }
+          .sidebartitleListActive {
+            margin-top: 7px;
+            font-size: 16px;
+            color: #21263b;
+            @include respond-to(smallDesktop) {
+              // css code here
+              font-size: 12px;
+              margin-top: 5px;
+            }
+            @include respond-to(handhelds) {
+              // css code here
+              font-size: 12px;
+            }
+          }
+          .sidebartitleList {
+            margin-top: 7px;
+            font-size: 16px;
+            color: #ababab;
+            @include respond-to(smallDesktop) {
+              // css code here
+              font-size: 12px;
+              margin-top: 5px;
+            }
+            @include respond-to(handhelds) {
+              // css code here
+              font-size: 12px;
+            }
+          }
+          .iconMainDiv {
+            @include respond-to(handhelds) {
+              // css code here
+              align-items: center;
+              flex-direction: column;
+              text-align: center;
+            }
+          }
+          .iconImageActive {
             border-radius: 50%;
-            margin: -1px;
-            padding: 5px;
-            background: #e4e0e0;
-            color: black;
+            background: #f15a24;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            margin: 0 10px 0 0px;
+            @include respond-to(smallDesktop) {
+              // css code here
+              width: 25px;
+              height: 25px;
+            }
+            @include respond-to(handhelds) {
+              // css code here
+              width: 25px;
+              height: 25px;
+            }
+          }
+          .iconImage {
+            border-radius: 50%;
+            background: #c2c2c2;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            @include respond-to(smallDesktop) {
+              // css code here
+              width: 25px;
+              height: 25px;
+            }
+
+            @include respond-to(handhelds) {
+              // css code here
+              width: 25px;
+              height: 25px;
+            }
+          }
+          .tagNumber {
+            font-size: 13px;
+            font-weight: 500;
+            @include respond-to(smallDesktop) {
+              // css code here
+              font-size: 12px;
+            }
+            @include respond-to(handhelds) {
+              // css code here
+              font-size: 12px;
+            }
           }
 
           .tagNumberActive {
-            border: 1px solid #f6f6f6;
+            // border: 1px solid #f6f6f6;
             border-radius: 50%;
-            margin: -1px;
             padding: 5px;
             background: #f15a24;
             color: white;
+            font-size: 13px;
+            font-weight: 500;
+            @include respond-to(smallDesktop) {
+              // css code here
+              font-size: 12px;
+            }
+            @include respond-to(handhelds) {
+              // css code here
+              font-size: 12px;
+            }
           }
         }
       }
     }
+  }
+
+  .formsMain {
+    background-color: white;
+    border-radius: 4px;
   }
 }

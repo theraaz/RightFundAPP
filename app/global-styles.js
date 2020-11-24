@@ -5,6 +5,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     height: 100%;
     width: 100%;
+    background-color: #fafafa;
   }
 
   body {
@@ -17,7 +18,7 @@ const GlobalStyle = createGlobalStyle`
 
   #app {
     background-color: #fafafa;
-    min-height: 100%;
+    height: 100%;
     min-width: 100%;
   }
 
@@ -34,7 +35,28 @@ const GlobalStyle = createGlobalStyle`
 
   .form-control:valid{
     background-image: none !important;
-    box-shadow: 0 !important;
+    box-shadow: none;
+  }
+
+  .MuiPickersToolbar-toolbar {
+    background-color: #f15a24 !important;
+  }
+
+  .MuiPickersDay-daySelected {
+    background-color: #f15a24 !important;
+  }
+
+  .MuiButton-textPrimary{
+    color: #f15a24 !important;
+  }
+
+  body:not(.modal-open){
+    padding-right: 0px !important;
+    overflow: auto !important;
+  }
+
+  button:focus {
+    outline: none !important;
   }
 `;
 

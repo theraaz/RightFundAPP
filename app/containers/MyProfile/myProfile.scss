@@ -1,0 +1,64 @@
+.updateProfileBtn {
+  background-color: #f15a24;
+  border-color: #f15a24;
+  font-size: 14px;
+  &:hover {
+    background-color: #f15a24;
+    border-color: #f15a24;
+    opacity: 0.8;
+  }
+  &:focus {
+    box-shadow: none !important;
+    border-color: #f15a24 !important;
+    background-color: #f15a24 !important;
+  }
+  &:active {
+    background-color: #f15a24 !important;
+    border-color: #f15a24;
+    color: black;
+  }
+}
+.profile-icon {
+  width: 15px;
+  // height: 20px;
+}
+
+.bankDetailsAdd {
+  text-align: center;
+  min-height: 243px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+}
+.updateBtnBankDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.bankDetailsHeader {
+  background: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.updateLink{
+  cursor: pointer;
+}
+
+.address {
+  position: relative;
+  margin-bottom: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.125) !important;
+  border-radius: 4px;
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+}
+
+.bioLimit {
+  text-align: end;
+  color: #f15a24;
+  padding: 5px;
+}

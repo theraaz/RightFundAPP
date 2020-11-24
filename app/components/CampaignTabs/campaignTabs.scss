@@ -1,0 +1,119 @@
+@import 'app/styles/mixin.scss';
+
+.campaignUpdatesHeader {
+  text-align: end;
+  margin: auto 0;
+
+  @include respond-to(smallDesktop) {
+    // css code here
+    // margin-top: 15px;
+    // text-align: center;
+  }
+
+  .campaignViewBtn {
+    background: white;
+    color: black;
+    border-color: #f2f2f2;
+
+    @include respond-to(smallDesktop) {
+      // css code here
+      margin-top: 15px;
+    }
+    &:focus {
+      background: white;
+      color: black;
+      border-color: #f2f2f2;
+      box-shadow: none !important;
+      opacity: 0.8;
+    }
+    &:hover {
+      background: white;
+      color: black;
+      border-color: #f2f2f2;
+    }
+    &:active {
+      background: white !important;
+      color: black;
+      border-color: #f2f2f2 !important;
+    }
+  }
+
+  .editCampaign {
+    margin-left: 5px;
+    background: #f15a24;
+    border-color: #f15a24;
+
+    @include respond-to(smallDesktop) {
+      // css code here
+      margin-top: 15px;
+    }
+    
+
+    &:focus {
+      background-color: #f15a24 !important;
+      border-color: #f15a24;
+      box-shadow: none !important;
+      opacity: 0.8;
+    }
+    &:hover {
+      background-color: #f15a24 !important;
+      border-color: #f15a24 !important;
+    }
+    &:active {
+      background-color: #f15a24 !important;
+      border-color: #f15a24 !important;
+    }
+  }
+}
+
+.backButtonMain {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+  position: relative;
+  top: -37px;
+
+  div {
+    margin-left: auto;
+    color: white;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    span {
+      margin-left: 10px;
+    }
+  }
+}
+.campaignUpdates {
+  // display: flex;
+  padding-bottom: 10px;
+  justify-content: space-between;
+  // flex-direction: row;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.campign-Status {
+  list-style: none;
+  margin: 0;
+  padding: 12px 0 0;
+  border-top: none;
+  text-align: center;
+  display: flex;
+  // justify-content: space-between;
+
+  li {
+    margin: 0 15px 0 0px;
+  }
+
+  .title {
+    font-size: 13px;
+    display: block;
+    color: #c1bfbf;
+  }
+  .content {
+    color: #f15a24;
+    font-size: 14px;
+    font-weight: 700;
+  }
+}

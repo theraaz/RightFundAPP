@@ -1,0 +1,51 @@
+.account-details-card{
+  padding: 12px;
+  background-color: #fcfcfc;
+  border: 1px solid #edeced;
+  border-radius: 6px;
+  cursor: pointer;
+  &:hover{
+    background-color: darken(#fcfcfc, 5%);
+  }
+  .btn-icon{
+    color: #cfcfcf;
+  }
+}
+.account-details-card__badge{
+  position: absolute;
+  //padding: 5px;
+  //border-radius: 4px;
+  //background-color: $text-muted;
+  font-size: 11px;
+  right: 12px;
+  bottom: 14px;
+  color: $text-muted;
+}
+.account-details-card-active{
+  border: 1px solid $primary;
+
+}
+.account-details-card__heading{
+  font-weight: 600;
+  font-size: 14px;
+}
+.account-details__amount{
+  color: $primary;
+  font-weight: 600;
+  font-size: 24px;
+}
+.account-details__balance{
+  border-bottom: 1px solid #f8f7f7 ;
+}
+
+.updateLinkWithdraw{
+  cursor: pointer;
+}
+.account-details-card__name{
+  font-weight: 500;
+  font-size: 18px;
+}
+.account-details-card__sort-code{
+  font-size: 14px;
+  color: #bdbdbd;
+}

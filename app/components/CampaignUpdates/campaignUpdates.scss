@@ -1,0 +1,94 @@
+.addUpdate {
+  text-align: end;
+  margin: 25px 0px 20px;
+
+  .updateBtn {
+    background: #f15a24;
+    border-color: #f15a24;
+    &:focus {
+      background-color: #f15a24 !important;
+      border-color: #f15a24;
+      box-shadow: none !important;
+      opacity: 0.8;
+    }
+    &:hover {
+      background-color: #f15a24 !important;
+      border-color: #f15a24 !important;
+    }
+    &:active {
+      background-color: #f15a24 !important;
+      border-color: #f15a24 !important;
+    }
+  }
+}
+
+.mce-container {
+  border-radius: 4px;
+  border-color: rgba(0, 0, 0, 0.05);
+
+  #mceu_23-body {
+    display: none !important;
+  }
+}
+
+.mce-path-item {
+  display: none !important;
+}
+.timelineItem {
+  &::before {
+    content: unset !important;
+  }
+}
+
+.timelineContent {
+  margin-top: -9px;
+
+  .timelineHeader {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    margin-bottom: 10px;
+
+    h3 {
+      font-size: 18px !important;
+    }
+
+    span {
+      color: #f15a24;
+      font-size: 12px;
+    }
+  }
+
+  img {
+    width: 300px;
+    object-fit: contain;
+    height: 200px;
+  }
+}
+
+.MuiTimelineDot-outlinedGrey {
+  box-shadow: none;
+  border-color: #f15a24 !important;
+  background-color: transparent !important;
+}
+
+.MuiTimelineDot-root {
+  height: 18px !important;
+  margin: 0 !important;
+  width: 18px !important;
+}
+
+.MuiTimeline-root {
+  margin: 0 !important;
+  padding: 0px 16px !important;
+}
+
+.MuiTimelineConnector-root {
+  width: 5px !important;
+  flex-grow: 1 !important;
+  background-color: #f0f0f0 !important;
+}
+
+.statusUpdatesIcon {
+  cursor: pointer;
+}

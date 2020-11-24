@@ -1,0 +1,119 @@
+.tableMain {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 4px;
+  // overflow: auto;
+
+  padding: 0 2px;
+  .table1 {
+    min-width: max-content;
+
+    .tableHeader {
+      color: #f15a24;
+      font-size: 14px;
+      tr{
+        background-color: #fff !important;
+      }
+    }
+    tr:nth-of-type(odd){
+      background-color: #f9f9f9;
+    }
+    tr:nth-of-type(even){
+      background-color: #fcfcfc;
+    }
+    tr{
+      td{
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .tableBody {
+    color: #9c9c9c;
+    font-family: Ubuntu, sans-serif;
+    font-size: 15px;
+
+    .tableAmount {
+      color: black;
+      font-weight: 600;
+    }
+  }
+
+  .table thead th {
+    border-bottom: none !important;
+    border-top: none !important;
+  }
+  .tableRow {
+    margin: 0 !important;
+    background-color: #fcfcfc;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px 10px;
+    border-bottom: 1px solid #dee2e6 !important;
+    .DonationHeading {
+      // padding: 15px 20px 10px;
+      font-size: 18px;
+      margin-top: 5px;
+      font-size: 18px;
+    }
+
+    .searchBar {
+      background-color: white;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      padding: 0px 10px;
+      margin-bottom: 1px;
+      .searchBarInput {
+        border-radius: 4px;
+        border: none;
+        padding: 1px 10px;
+
+        &:focus {
+          outline: 0;
+        }
+      }
+    }
+  }
+}
+.table-row__hover{
+  &:hover{
+    cursor: pointer;
+    background-color: darken(#f9f9f9, 1%) !important;
+  }
+}
+.paginatorDonationdiv {
+  padding: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .paginatorPerSize {
+    display: flex;
+    align-items: center;
+
+    span {
+      margin-right: 5px;
+    }
+
+    .paginatorPerPage {
+      width: 65px;
+      text-align: center;
+      display: flex;
+      font-size: 13px;
+
+      .paginatorPerPageOption {
+        background-color: #fefefe !important;
+        &:hover {
+          background-color: #f15a24 !important;
+        }
+      }
+    }
+  }
+
+  .paginationDonationColor {
+    & .Mui-selected {
+      background-color: #f15a24;
+      border-color: #f15a24;
+      color: white;
+    }
+  }
+}

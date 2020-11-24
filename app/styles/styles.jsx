@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.section`
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  height: 100vh;
+display: flex;
+flex-direction: column;
+justify-content: center;
+height: 100%;
 `;
 
 export const Title = styled.h1`

@@ -1,0 +1,272 @@
+@import 'app/styles/mixin.scss';
+
+.main-form1 {
+  text-align: center;
+  margin: 30px 0 0 0;
+
+  .main-heading {
+    padding: 0 143px;
+    margin-bottom: 30px;
+
+    @include respond-to(largeDesktop) {
+      // css code here
+      padding: 0 85px;
+    }
+    @include respond-to(smallDesktop) {
+      // css code here
+      padding: 0 35px;
+    }
+    @include respond-to(handhelds) {
+      // css code here
+      padding: 0;
+    }
+  }
+
+  .mainForm {
+    display: flex;
+    flex-direction: column;
+    padding: 0 130px;
+    // text-align: center;
+    margin: 0 auto;
+
+    @include respond-to(largeDesktop) {
+      // css code here
+      padding: 0 75px;
+    }
+    @include respond-to(smallDesktop) {
+      // css code here
+      padding: 0 35px;
+    }
+    @include respond-to(handhelds) {
+      // css code here
+      padding: 0;
+    }
+
+    .formGroup {
+      position: relative;
+      display: flex;
+
+      .label-field {
+        margin-top: 12px;
+        margin-right: 10px;
+      }
+    }
+
+    .campaignGoal {
+      border: 1px solid #e9e9e9;
+      border-radius: 4px;
+      width: 100%;
+      display: flex;
+      margin-right: 15px;
+
+      @include respond-to(mobile) {
+        // css code here
+        margin-left: 15px;
+      }
+
+      .selection-col-div {
+        border-right: 1px solid #e9e9e9;
+
+        @include respond-to(mobile) {
+          // css code here
+          width: min-content;
+        }
+      }
+      .selectClass {
+        border: none;
+        font-size: 16px;
+        font-weight: 600;
+
+        div {
+          &:focus {
+            box-shadow: none;
+            border-color: transparent;
+            border-radius: 0;
+            background-color: transparent;
+          }
+        }
+      }
+
+      .inputForm {
+        // padding: 0 10px;
+        border: none !important;
+        &:focus {
+          outline: 0;
+          box-shadow: none !important;
+        }
+        &::-webkit-input-placeholder {
+          color: #9c9c9c;
+        }
+      }
+    }
+  }
+
+  .controlForm {
+    border: 1px solid #e9e9e9;
+
+    &::-webkit-input-placeholder {
+      color: #9c9c9c;
+      font: 13px;
+    }
+  }
+  .categoriesSelect {
+    div {
+      border: 1px solid #e9e9e9;
+      padding: 8px 26px 8px 12px;
+      border-radius: 4px;
+      box-shadow: none;
+    }
+  }
+  .datePicker {
+    border: 1px solid #e9e9e9;
+    border-radius: 4px;
+    font-family: 'Ubuntu', sans-serif;
+
+    div {
+      font-family: 'Ubuntu', sans-serif;
+
+      &:focus {
+        outline: 0;
+      }
+
+      &:hover {
+        outline: 0 !important;
+      }
+      input {
+        padding: 8px 12px !important;
+        &::-webkit-input-placeholder {
+          color: #9c9c9c;
+          opacity: 1;
+        }
+      }
+
+      button {
+        color: #e9e9e9;
+        &:hover {
+          background-color: transparent;
+        }
+        &:focus {
+          outline: none !important;
+        }
+      }
+    }
+
+    &:focus {
+      outline: 0;
+    }
+    .MuiInput-underline:before {
+      border-bottom: none !important;
+    }
+
+    .MuiInput-underline:after {
+      border-bottom: none !important;
+    }
+  }
+
+  .dropBtn {
+    background: white;
+    color: black;
+    border-color: #f2f2f2;
+    margin: 0 10px;
+    &:focus {
+      box-shadow: none !important;
+    }
+    &:active {
+      background: white;
+      color: black;
+      border-color: #f2f2f2;
+    }
+
+    .dropItem {
+      &:active {
+        color: #fff;
+        text-decoration: none;
+        background-color: #f15a24;
+      }
+    }
+  }
+
+  .campaignBtnsForm1 {
+    // width: 160px;
+    // height: 40px;
+
+    .viewCampaignBtn {
+      background-color: #f15a25;
+      border-color: #f15a25;
+      // width: 98%;
+      font-size: 13px;
+
+      &:focus {
+        box-shadow: none !important;
+      }
+      &:active {
+        border-color: #f15a25;
+        background: white;
+        color: black;
+      }
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+.address {
+  position: relative;
+  margin-bottom: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.125) !important;
+  border-radius: 4px;
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+}
+
+.locationLabel {
+  display: block;
+  margin-left: 5px;
+  text-align: initial;
+}
+
+
+.filter {
+  
+
+  &__control {
+    border: 1px solid #e9e9e9 !important;
+    box-shadow: none !important;
+    padding-left: 7px;
+    text-align: initial;
+    &:hover {
+      border: 1px solid #e9e9e9 !important;
+    }
+
+    &:focus {
+      box-shadow: none !important;
+      border: 1px solid #e9e9e9 !important;
+    }
+  }
+
+  &__placeholder {
+    color: #9c9c9c !important;
+    opacity: 1;
+    margin-left: 3px !important;
+    margin-right: 2px;
+    font-family: 'Ubuntu', sans-serif !important;
+  }
+
+  &__menu {
+    // margin: 0.125rem auto;
+    text-align: initial !important;
+  }
+
+  &__option {
+    background-color: white;
+
+    &--is-focused {
+      background-color: #f15a25 !important;
+      color: white !important;
+    }
+  }
+
+  &__group {
+    padding: 0;
+  }
+}

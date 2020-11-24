@@ -18,22 +18,21 @@
   }
 }
 
-
 .remberMeLabel {
   .form-check-label {
     color: unset !important;
   }
 }
 
-
 .loginBtn {
   position: relative;
   text-align: end;
+  margin-top: 6px;
 
   .forgetPassLabel {
     color: #f15a24;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -50,5 +49,28 @@
   &:focus {
     outline: 0;
     box-shadow: none !important;
+  }
+}
+
+.MuiFormControlLabel-label {
+  font-size: 14px !important;
+}
+
+.MuiFormControlLabel-root {
+  margin-right: 0 !important;
+}
+.selectClass {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  font-size: 16px;
+  font-weight: 600;
+
+  div {
+    &:focus {
+      box-shadow: none;
+      border-color: transparent;
+      border-radius: 0;
+      background-color: transparent;
+    }
   }
 }

@@ -8,7 +8,6 @@
 // Needed for redux-saga es6 generator support
 import '@babel/polyfill';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 // Import all the third party stuff
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -16,10 +15,10 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import history from 'utils/history';
 import 'sanitize.css/sanitize.css';
-import {SnackbarProvider} from 'notistack'; 
+import { SnackbarProvider } from 'notistack';
 // Import root app
 import App from 'containers/App';
-
+import './styles/main.scss';
 // Import Language Provider
 import LanguageProvider from 'containers/LanguageProvider';
 
@@ -29,27 +28,33 @@ import '!file-loader?name=[name].[ext]!./images/favicon.ico';
 import 'file-loader?name=.htaccess!./.htaccess';
 /* eslint-enable import/no-unresolved, import/extensions */
 
+import axios from 'axios';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
 import configureStore from './configureStore';
 
 // Import i18n messages
 import { translationMessages } from './i18n';
-
+import { setupAxios } from './utils/axiosSetup';
 // Create redux store with history
 const initialState = {};
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
+const persistor = persistStore(store);
+setupAxios(axios, store);
 const render = messages => {
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
-      
-        <ConnectedRouter history={history}>
-        <SnackbarProvider maxSnack={3}>
-          <App />
-        </SnackbarProvider>
-        </ConnectedRouter>
-      </LanguageProvider>
+      <PersistGate persistor={persistor}>
+        <LanguageProvider messages={messages}>
+          <ConnectedRouter history={history}>
+            <SnackbarProvider maxSnack={3}>
+              <App />
+            </SnackbarProvider>
+          </ConnectedRouter>
+        </LanguageProvider>
+      </PersistGate>
     </Provider>,
     MOUNT_NODE,
   );
