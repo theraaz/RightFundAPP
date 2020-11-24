@@ -279,7 +279,7 @@ const DropZone = ({
           ))}
         </div>
       </div>
-      <div className="modal" ref={modalRef}>
+      <div className="dropzone-modal" ref={modalRef}>
         <div className="overlay" />
         <span className="close" onClick={() => closeModal()}>
           <svg version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 496 496">
@@ -319,11 +319,11 @@ const DropZone = ({
             </div>
           </div>
         ) : (
-          <div className="modal-image" ref={modalImageRef} />
+          <div className="dropzone-modal-image" ref={modalImageRef} />
         )}
       </div>
 
-      <div className="upload-modal" ref={uploadModalRef}>
+      <div className="upload-dropzone-modal" ref={uploadModalRef}>
         <div className="overlay" />
         <div className="close" onClick={() => closeUploadModal()}>
           <svg version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 496 496">
