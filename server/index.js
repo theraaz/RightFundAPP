@@ -16,7 +16,7 @@ const app = express();
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
-app.use('/statuss', (req, res) => res.send({
+app.use('/status', (req, res) => res.send({
   ok: true,
   ts: process.env.GIT_SHA_TS,
   sha: process.env.GIT_SHA
