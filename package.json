@@ -25,7 +25,7 @@
     "start": "cross-env NODE_ENV=development GIT_SHA=\"$(git rev-parse HEAD)\" GIT_SHA_TS=\"$(git log -1 --format=%ai)\" node server",
     "start:tunnel": "cross-env NODE_ENV=development ENABLE_TUNNEL=true node server",
     "start:production": "npm run build && npm run start:prod",
-    "start:prod": "cross-env NODE_ENV=production node server",
+    "start:prod": "cross-env NODE_ENV=production GIT_SHA=\"$(git rev-parse HEAD)\" GIT_SHA_TS=\"$(git log -1 --format=%ai)\" node server",
     "presetup": "npm i chalk shelljs",
     "setup": "node ./internals/scripts/setup.js",
     "clean": "shjs ./internals/scripts/clean.js",
