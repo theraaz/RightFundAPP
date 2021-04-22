@@ -46,6 +46,7 @@ export function Accounts({ login, history }) {
   const [accounts, setAccounts] = useState([]);
   const [perPage, setPerPage] = useState(10);
   const [pageNo, setPageNo] = useState(1);
+  const [q, setq] = useState('');
   const [totalPages, setTotalPages] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [statusId, setStatusId] = useState(null);
@@ -69,7 +70,7 @@ export function Accounts({ login, history }) {
     getAccounts();
   }, [pageNo, perPage]);
   const getAccounts = () => {
-    adminGetAllAccounts({ pageNo, perPage })
+    adminGetAllAccounts({ pageNo, perPage, q })
       .then(res => {
         disableLoading('accounts');
         setAccounts(res?.data?.response?.data?.res || []);
@@ -157,6 +158,15 @@ export function Accounts({ login, history }) {
     setAnchorEl(e.currentTarget);
   };
 
+  const onChangeSearch = event => {
+    setq(event.target.value);
+  }
+
+  const onSubmitSearch = event => {
+    event.preventDefault();
+    getAccounts();
+  }
+
   return (
     <Layout>
       <Helmet>
@@ -167,6 +177,14 @@ export function Accounts({ login, history }) {
         <Card.Header style={{ background: 'transparent' }}>
           <Card.Title className="campaignHeader">
             <span style={{ marginTop: '8px' }}>All Accounts</span>
+            <form onSubmit={onSubmitSearch}>
+              <input
+                type="search"
+                name="q"
+                onChange={onChangeSearch}
+                value={q}
+                placeholder="Search by Email..." />
+            </form>
           </Card.Title>
         </Card.Header>
 
