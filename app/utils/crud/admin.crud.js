@@ -37,8 +37,8 @@ export function adminGetCampaignDonationsById(id, params) {
 export function adminGetCampaignBasicDetails(id) {
   return axios.get(`${ADMIN_CAMPAIGN_BASIC_DETAILS_URL}/${id}`);
 }
-export function adminGetAllCharities() {
-  return axios.get(ADMIN_CHARITIES_URL);
+export function adminGetAllCharities(params) {
+  return axios.get(ADMIN_CHARITIES_URL, {params});
 }
 
 export function adminGetCharityById(id) {
