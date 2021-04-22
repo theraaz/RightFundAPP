@@ -188,7 +188,7 @@ export function AdminWithdrawal() {
                         <td>
                           {withdrawal?.charityId
                             ? withdrawal?.charityId?.name
-                            : `${withdrawal?.accountId?.firstName} ${withdrawal?.accountId?.lastName
+                            : `${withdrawal?.firstName} ${withdrawal?.lastName
                             }`}
                         </td>
                         <td className="font-weight-bold text-dark">
