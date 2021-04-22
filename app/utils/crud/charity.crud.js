@@ -17,8 +17,8 @@ export function deleteCharityUser(params) {
   return axios.delete(CHARITY_USER_URL, { params });
 }
 
-export function getAllMyCharities({ pageNo, perPage }) {
-  return axios.get(GET_ALL_MY_CHARITIES_URL, { params: { pageNo, perPage } });
+export function getAllMyCharities({ pageNo, perPage, q }) {
+  return axios.get(GET_ALL_MY_CHARITIES_URL, { params: { pageNo, perPage, q } });
 }
 export function getCharityUsers(params) {
   return axios.get(CHARITY_USER_URL, { params: params });
