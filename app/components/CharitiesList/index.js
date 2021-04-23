@@ -38,6 +38,7 @@ function CharitiesList({ type, history }) {
   const [myCharities, setMyCharities] = useState([]);
   const [perPage, setPerPage] = useState(10);
   const [pageNo, setPageNo] = useState(1);
+  const [q, setq] = useState('');
   const [totalPages, setTotalPages] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [singleCharity, setSingleCharity] = useState(null);
@@ -55,7 +56,7 @@ function CharitiesList({ type, history }) {
   const getCharities = () => {
     const callGetCharities =
       user.role === 5 ? adminGetAllCharities : getAllMyCharities;
-    callGetCharities({ pageNo, perPage })
+    callGetCharities({ pageNo, perPage, q })
       .then(({ data }) => {
         disableLoading('charities');
         setMyCharities(data?.response?.data?.res || []);
@@ -113,7 +114,7 @@ function CharitiesList({ type, history }) {
         showAlert(
           'error',
           error?.response?.data?.response?.message ||
-            'Could not perform this action!',
+          'Could not perform this action!',
         );
       });
   };
@@ -133,6 +134,16 @@ function CharitiesList({ type, history }) {
       history.push(`/team-members/${id}`);
     }
   };
+
+  const onChangeSearch = event => {
+    setq(event.target.value);
+  }
+
+  const onSubmitSearch = event => {
+    event.preventDefault();
+    getCharities();
+  }
+
   return (
     <Card className="dataCard shadow mb-5 bg-white">
       <Card.Header style={{ background: 'transparent' }}>
@@ -140,6 +151,14 @@ function CharitiesList({ type, history }) {
           <span style={{ marginTop: '8px' }}>
             {user.role !== 5 && 'My'} Charities
           </span>
+          <form onSubmit={onSubmitSearch}>
+            <input
+type="search"
+              name="q"
+              onChange={onChangeSearch}
+              value={q}
+              placeholder="Search by charity Name..." />
+          </form>
         </Card.Title>
       </Card.Header>
 
@@ -168,9 +187,8 @@ function CharitiesList({ type, history }) {
                 <tbody className="tableBody">
                   {myCharities.map((charity, i) => (
                     <Tooltip
-                      title={`Click to View Charity ${
-                        type === 'team' ? 'Users' : 'Profile'
-                      }`}
+                      title={`Click to View Charity ${type === 'team' ? 'Users' : 'Profile'
+                        }`}
                       placement="top"
                       key={charity.id || i}
                     >
@@ -213,11 +231,11 @@ function CharitiesList({ type, history }) {
                           >
                             {(charity?.charityId
                               ? charity?.charityId?.statusId?.name
-                                  ?.replace('ACTIVE', ' ACTIVE')
-                                  ?.toLowerCase()
+                                ?.replace('ACTIVE', ' ACTIVE')
+                                ?.toLowerCase()
                               : charity.statusId?.name
-                                  ?.replace('ACTIVE', ' ACTIVE')
-                                  ?.toLowerCase()) || 'N/A'}
+                                ?.replace('ACTIVE', ' ACTIVE')
+                                ?.toLowerCase()) || 'N/A'}
                           </div>
                         </td>
                         {user.role === 5 && type === 'list' && (

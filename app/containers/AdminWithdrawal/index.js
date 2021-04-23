@@ -36,6 +36,7 @@ export function AdminWithdrawal() {
   const [withdrawals, setWithdrawals] = useState([]);
   const [perPage, setPerPage] = useState(10);
   const [pageNo, setPageNo] = useState(1);
+  const [q, setq] = useState('');
   const [totalPages, setTotalPages] = useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
   const [singleWithdrawal, setSingleWithdrawal] = useState(null);
@@ -48,17 +49,17 @@ export function AdminWithdrawal() {
   });
   useEffect(() => {
     enableLoading('main');
-    getWithdrawals({ pageNo, perPage });
+    getWithdrawals();
   }, [pageNo, perPage]);
-  const getWithdrawals = params => {
-    adminGetAllWithdrawals(params)
+  const getWithdrawals = () => {
+    adminGetAllWithdrawals({ pageNo, perPage, q })
       .then(res => {
         disableLoading('main');
         setWithdrawals(res?.data?.response?.data?.res || []);
         setTotalPages(
           res?.data?.response?.data?.count ||
-            res?.data?.response?.data?.totalCount ||
-            0,
+          res?.data?.response?.data?.totalCount ||
+          0,
         );
       })
       .catch(() => {
@@ -111,7 +112,7 @@ export function AdminWithdrawal() {
         showAlert(
           'error',
           error?.response?.data?.response?.message ||
-            'Could not perform this action!',
+          'Could not perform this action!',
         );
       });
   };
@@ -129,6 +130,16 @@ export function AdminWithdrawal() {
     currency: 'GBP',
     minimumFractionDigits: 0,
   });
+
+  const onChangeSearch = event => {
+    setq(event.target.value);
+  }
+
+  const onSubmitSearch = event => {
+    event.preventDefault();
+    getWithdrawals();
+  }
+
   return (
     <Layout>
       <Helmet>
@@ -138,6 +149,14 @@ export function AdminWithdrawal() {
         <Card.Header style={{ background: 'transparent' }}>
           <Card.Title className="campaignHeader">
             <span style={{ marginTop: '8px' }}>Withdrawals</span>
+            <form onSubmit={onSubmitSearch}>
+              <input
+                type="search"
+                name="q"
+                onChange={onChangeSearch}
+                value={q}
+                placeholder="Search by FirstName..." />
+            </form>
           </Card.Title>
         </Card.Header>
 
@@ -169,9 +188,8 @@ export function AdminWithdrawal() {
                         <td>
                           {withdrawal?.charityId
                             ? withdrawal?.charityId?.name
-                            : `${withdrawal?.accountId?.firstName} ${
-                                withdrawal?.accountId?.lastName
-                              }`}
+                            : `${withdrawal?.firstName} ${withdrawal?.lastName
+                            }`}
                         </td>
                         <td className="font-weight-bold text-dark">
                           {formatter.format(withdrawal.amount / 100)}
@@ -194,8 +212,8 @@ export function AdminWithdrawal() {
                             {withdrawal?.statusId?.id === 1
                               ? 'Approved'
                               : withdrawal?.statusId?.id === 2
-                              ? 'Not Approved'
-                              : withdrawal?.statusId?.name?.toLowerCase()}
+                                ? 'Not Approved'
+                                : withdrawal?.statusId?.name?.toLowerCase()}
                           </div>
                         </td>
 
