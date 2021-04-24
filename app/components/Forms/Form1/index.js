@@ -37,7 +37,7 @@ import { H5, H4, Errors } from '../form.styles';
 import Address from '../../Address/Loadable';
 import { getParentCampaigns } from '../../../utils/campaigns-utilities/getCampaignsUtilites';
 
-import InputDesign from './loadOptions';
+import { InputDesign, CharityInputDesign } from './loadOptions';
 
 const GreenRadio = withStyles({
   root: {
@@ -123,7 +123,7 @@ const Form1 = ({ setFieldValue, values, errors, loading, edit }) => {
     setFieldValue('currencySymbol', event.target.value);
   };
 
-  const validate = function(e) {
+  const validate = function (e) {
     const t = e.value;
     e.value =
       t.indexOf('.') >= 0
@@ -371,6 +371,10 @@ const Form1 = ({ setFieldValue, values, errors, loading, edit }) => {
               </div>
             </Form.Group>
           )}
+
+          <Form.Group controlId="parentCampaign" bssize="large">
+            <CharityInputDesign values={values} edit={edit} />
+          </Form.Group>
 
           <p style={{ textAlign: 'initial', color: '#9c9c9c' }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
