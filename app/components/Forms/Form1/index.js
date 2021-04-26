@@ -37,7 +37,10 @@ import { H5, H4, Errors } from '../form.styles';
 import Address from '../../Address/Loadable';
 import { getParentCampaigns } from '../../../utils/campaigns-utilities/getCampaignsUtilites';
 
-import { InputDesign, CharityInputDesign } from './loadOptions';
+import {
+  InputDesign,
+  // CharityInputDesign
+} from './loadOptions';
 
 const GreenRadio = withStyles({
   root: {
@@ -372,9 +375,9 @@ const Form1 = ({ setFieldValue, values, errors, loading, edit }) => {
             </Form.Group>
           )}
 
-          <Form.Group controlId="parentCampaign" bssize="large">
+          {/* <Form.Group controlId="charities" bssize="large">
             <CharityInputDesign values={values} edit={edit} />
-          </Form.Group>
+          </Form.Group> */}
 
           <p style={{ textAlign: 'initial', color: '#9c9c9c' }}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
