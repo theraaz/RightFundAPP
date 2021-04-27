@@ -349,7 +349,7 @@ function CampaignDetail({ ...props }) {
                               <div className="card-heading-inner">
                                 <CustomHeading>{data.title}</CustomHeading>
                                 <CustomHeadingNum>
-                                  {data.amountSymbolId.symbol} {data.amount}
+                                  {data.amountSymbolId.symbol} {(data.amount / 100)}
                                 </CustomHeadingNum>
                               </div>
                               <div style={{ textAlign: 'initial' }}>

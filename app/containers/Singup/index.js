@@ -62,7 +62,7 @@ export function Singup() {
       !/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*\W)(?=.{8,})/.test(password)
     ) {
       errors.password =
-        'Password Must Contain Atleast (1 loweCaseCharacter, 1 upperCaseCharacter, 1 numericCharacter, 1 specialCharacter)!';
+        'Password Must Contain Atleast (1 lowerCaseCharacter, 1 upperCaseCharacter, 1 numericCharacter, 1 specialCharacter)!';
     }
     if (isCharity && (!charityName || charityName?.trim() === '')) {
       errors.charityName = 'Required!';
