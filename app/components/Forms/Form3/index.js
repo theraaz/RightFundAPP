@@ -149,7 +149,7 @@ const Form3 = ({ id, setActiveLink }) => {
           authorization: token,
         },
         body: JSON.stringify({
-          amount: (JSON.parse(amount))/100,
+          amount: amount,
           amountSymbolId: selectedCurrency,
           description,
           title,
@@ -285,7 +285,7 @@ const Form3 = ({ id, setActiveLink }) => {
                       <CustomHeadingNum>
                         {data.amountSymbolId.symbol}
                         {' '}
-                        {data.amount}
+                        {(data.amount / 100)}
                       </CustomHeadingNum>
                     </div>
                     <span className="menuIcon" onClick={handleClick(data)}>
