@@ -213,7 +213,7 @@ const Form3 = ({ id, setActiveLink }) => {
     setShowEnterPackaje(true);
     setTitle(packageData.title);
     setDescription(packageData.description);
-    setAmount(packageData.amount);
+    setAmount((packageData.amount / 100));
     setSelectedCurrency(packageData.amountSymbolId.id);
     handleClose();
     setPackageId(packageData.id);
