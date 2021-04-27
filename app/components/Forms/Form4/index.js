@@ -34,7 +34,7 @@ function Form4({ id, statusId, values, ...props }) {
   }
 
   function goToPreviewPage() {
-    const url = `http://localhost:3000/campaignView/${id}`;
+    const url = `${process.env.mainURL}/campaignView/${id}`; 
     window.open(url, '_blank');
   }
 
